@@ -1,0 +1,79 @@
+/* Alpha Studios design tokens. Source of truth for colour, type, space and motion.
+   Proposed values: confirm in the refine stage. Do not hardcode these values elsewhere. */
+
+:root {
+  /* Colour roles. Every pairing below clears 4.5:1 text contrast on Obsidian. */
+  --obsidian: #0B0C0D;      /* page background, vault walls */
+  --graphite: #16181B;      /* panels, pedestals, cards */
+  --line: #26292D;          /* hairline borders on dark */
+  --chrome: #E9ECEF;        /* headlines, reflective surfaces, key highlights (16.5:1) */
+  --silver: #A9AFB6;        /* body text, labels (8.9:1) */
+  --gold: #C9A24B;          /* focus, the logo flick, featured project, admin (8.2:1) */
+  --emerald: #1F9D6B;       /* interactive controls, live status (5.7:1) */
+  --emerald-glow: #3DDC97;  /* small green text, hover glow (11.1:1) */
+
+  /* Gold budget: at most one gold element per view, except admin-only controls in the portal.
+     Gold and emerald never share an element. */
+
+  /* Metallic fills used by the logo and 3D materials */
+  --grad-chrome: linear-gradient(135deg, #9AA1A8 0%, #F7F9FA 45%, #B5BBC2 100%);
+  --grad-gold: linear-gradient(135deg, #E8CE86 0%, #C9A24B 55%, #9C7727 100%);
+
+  /* Typography: self-host open-licence fonts. Regular (400) and medium (500) weights only. */
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --step--1: 0.8rem;
+  --step-0: 1rem;
+  --step-1: 1.25rem;
+  --step-2: 1.563rem;
+  --step-3: 1.953rem;
+  --step-4: 2.441rem;
+  --step-5: 3.052rem;
+  --leading-body: 1.6;
+  --leading-tight: 1.15;
+
+  /* Spacing: one 8 px scale (4 px half-step allowed inside components) */
+  --space-half: 4px;
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 48px;
+  --space-6: 64px;
+  --space-7: 96px;
+
+  /* Shape */
+  --radius-s: 8px;
+  --radius-m: 12px;
+  --radius-l: 16px;
+
+  /* Motion: one curve, three durations. Nothing bounces. */
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --dur-fast: 160ms;
+  --dur-base: 320ms;
+  --dur-slow: 720ms;
+
+  /* Focus */
+  --focus-ring: 2px solid var(--gold);
+  --focus-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 1ms;
+    --dur-base: 1ms;
+    --dur-slow: 1ms;
+  }
+}
+
+html {
+  background: var(--obsidian);
+  color: var(--silver);
+  font-family: var(--font-sans);
+  line-height: var(--leading-body);
+}
+
+:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
