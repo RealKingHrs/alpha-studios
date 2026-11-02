@@ -4,3 +4,7 @@ public/content.json
 supabase/.temp
 *.svg
 *.png
+design
+content
+README.md
+supabase

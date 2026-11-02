@@ -8,3 +8,4 @@ supabase/.temp
 supabase/.branches
 *.log
 coverage
+public/content.json

@@ -43,4 +43,15 @@ Read `docs/SPEC.md` before any work. It is the source of truth. If this file and
 
 ## Commands
 
-Fill this in during milestone 1 and keep it current: install, dev server, build, test, lint, publish job dry run.
+Run from the repo root. Node 22.
+
+- Install: `npm ci`
+- Dev server: `npm run dev` (serves under `/alpha-studios/`; copies the placeholder snapshot if none exists)
+- Build and prerender every address: `npm run build` (set `SITE_BASE=/` for a root deploy, `SITE_URL` for share-image links)
+- Preview the build: `npm run preview`
+- Lint, format check, typecheck: `npm run lint`, `npm run format:check`, `npm run typecheck`
+- Unit and build tests: `npm test` (the build tests need `npm run build` first and skip otherwise)
+- Role tests (visitor, crew, admin): `npx supabase start -x studio,imgproxy,vector,logflare,edge-runtime,realtime,storage-api,inbucket,mailpit`, then `npm run test:rls`. Needs Docker. `npx supabase db reset` reapplies migrations and seed.
+- Publish job dry run: `npm run publish:dry` (seed only, no network). Real run: `npm run publish:snapshot` with `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` set.
+- Regenerate icons from the favicon cut: `npm run icons`. Regenerate `supabase/seed.sql`: `npx tsx scripts/seed-sql.ts`.
+- Operations, secrets and recovery: `docs/RUNBOOK.md`.

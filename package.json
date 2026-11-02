@@ -4,7 +4,9 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "predev": "node scripts/ensure-snapshot.mjs",
     "dev": "vite",
+    "prebuild": "node scripts/ensure-snapshot.mjs",
     "build": "tsc --noEmit && vite build && tsx scripts/prerender.ts",
     "preview": "vite preview",
     "lint": "eslint .",
@@ -37,6 +39,7 @@
     "png-to-ico": "^3.0.2",
     "prettier": "^3.9.10",
     "sharp": "^0.35.5",
+    "supabase": "^3.0.0",
     "tsx": "^4.23.15",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.72.1",

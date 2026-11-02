@@ -1,0 +1,51 @@
+name: publish
+# Builds content.json from the backend, rebuilds the site and deploys it to GitHub Pages.
+# Triggers: manual, an API dispatch after the portal publishes, a push to main, a daily run,
+# and a second daily run so a missed trigger heals within hours.
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [publish]
+  push:
+    branches: [main]
+  schedule:
+    - cron: '17 5 * * *'
+    - cron: '43 13 * * *'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      SITE_BASE: /${{ github.event.repository.name }}/
+      SITE_URL: https://${{ github.repository_owner }}.github.io
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - name: Build snapshot
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          GITHUB_TOKEN: ${{ secrets.REPO_READ_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -n "$SUPABASE_URL" ]; then npm run publish:snapshot; else npm run publish:dry; fi
+      - run: npm run build
+      - run: npm test
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: dist }
+      - id: deployment
+        uses: actions/deploy-pages@v4
