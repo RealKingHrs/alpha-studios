@@ -67,6 +67,7 @@ export const SiteSettings = z.object({
   studioStatement: z.string(),
   introEnabled: z.boolean(),
   soundDefault: z.literal('off'),
+  contactEmail: z.string().email().optional(),
 });
 
 export const Snapshot = z

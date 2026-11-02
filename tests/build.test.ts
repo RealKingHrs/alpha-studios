@@ -17,6 +17,9 @@ d('built site', () => {
   const routes = [
     'index.html',
     '404.html',
+    'projects/index.html',
+    'crew/index.html',
+    'contact/index.html',
     'portal/index.html',
     'projects/project-one/index.html',
     'crew/member-one/index.html',

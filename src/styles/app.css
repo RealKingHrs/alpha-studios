@@ -40,3 +40,331 @@ a {
   font-family: var(--font-mono);
   font-size: var(--step--1);
 }
+
+/* ---------------------------------------------------------------- shell */
+html.js:not(.ready) .page {
+  visibility: hidden;
+}
+html.reduce-motion {
+  --dur-fast: 1ms;
+  --dur-base: 1ms;
+  --dur-slow: 1ms;
+}
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.skip-link {
+  position: fixed;
+  left: var(--space-2);
+  top: -100px;
+  z-index: 40;
+  padding: var(--space-1) var(--space-2);
+  background: var(--graphite);
+  color: var(--chrome);
+}
+.skip-link:focus {
+  top: var(--space-2);
+}
+ul {
+  padding-left: var(--space-3);
+}
+footer {
+  margin-top: var(--space-5);
+}
+.quiet {
+  color: var(--silver);
+  font-size: var(--step--1);
+}
+.flow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+/* ---------------------------------------------------------------- position index and controls */
+.index {
+  position: fixed;
+  top: var(--space-3);
+  right: var(--space-3);
+  z-index: 3;
+}
+.index ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-1);
+  justify-items: end;
+}
+.index a {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  color: var(--silver);
+  text-decoration: none;
+  font-size: var(--step--1);
+  padding: var(--space-half) 0;
+  transition: color var(--dur-fast) var(--ease);
+}
+.index a:hover {
+  color: var(--emerald-glow);
+}
+.index a[aria-current='location'] {
+  color: var(--chrome);
+}
+.index a[aria-current='location']::after {
+  content: '';
+  width: var(--space-3);
+  height: 1px;
+  background: var(--chrome);
+}
+.index .mono {
+  font-family: var(--font-mono);
+}
+html:not(.vault) .index {
+  position: sticky;
+  top: auto;
+  bottom: 0;
+  right: auto;
+  padding: var(--space-2) var(--space-3);
+  background: var(--obsidian);
+  border-top: 1px solid var(--line);
+}
+html:not(.vault) .index ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+  justify-items: start;
+}
+.controls {
+  position: fixed;
+  right: var(--space-3);
+  bottom: var(--space-4);
+  z-index: 3;
+  display: flex;
+  gap: var(--space-1);
+}
+.control {
+  min-width: var(--space-7);
+  padding: var(--space-1) var(--space-2);
+  text-align: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+  background: var(--obsidian);
+  color: var(--emerald-glow);
+  text-decoration: none;
+  transition: border-color var(--dur-fast) var(--ease);
+}
+.control:hover {
+  border-color: var(--emerald);
+}
+.control[aria-disabled='true'] {
+  color: var(--line);
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------- the vault layer */
+.vault-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: var(--obsidian);
+}
+.vault-layer canvas {
+  display: block;
+  touch-action: none;
+}
+.vault-fade {
+  position: absolute;
+  inset: 0;
+  background: var(--obsidian);
+  animation: unveil var(--dur-fade) var(--ease) forwards;
+  pointer-events: none;
+}
+@keyframes unveil {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+html.vault,
+html.vault body {
+  height: 100%;
+  overflow: hidden;
+}
+html.vault .page {
+  position: fixed;
+  left: var(--space-4);
+  bottom: var(--space-6);
+  z-index: 2;
+  width: min(420px, calc(100vw - var(--space-6)));
+  max-height: 55vh;
+  margin: 0;
+  overflow: auto;
+  padding: var(--space-3);
+  background: color-mix(in srgb, var(--obsidian) 90%, transparent);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+}
+html.vault .page h1 {
+  font-size: var(--step-3);
+  margin-top: var(--space-2);
+}
+html.vault .flow,
+html.vault .page footer {
+  display: none;
+}
+@media (max-width: 767px) {
+  html.vault .page {
+    left: var(--space-2);
+    right: var(--space-2);
+    bottom: calc(var(--space-7) - var(--space-1));
+    width: auto;
+    max-height: 38vh;
+    padding: var(--space-2);
+  }
+  html.vault .page h1 {
+    font-size: var(--step-2);
+  }
+  .index {
+    top: var(--space-2);
+    right: var(--space-2);
+  }
+  html.vault .index-label {
+    display: none;
+  }
+  html.vault .index a[aria-current='location']::after {
+    display: none;
+  }
+  .controls {
+    left: var(--space-2);
+    right: var(--space-2);
+    bottom: var(--space-3);
+    justify-content: space-between;
+  }
+  .control {
+    flex: 1;
+    padding: var(--space-2);
+  }
+}
+
+/* ---------------------------------------------------------------- intro */
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+}
+.intro--fade {
+  opacity: 0;
+  transition: opacity var(--dur-fade) var(--ease);
+  pointer-events: none;
+}
+.intro-door {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50.2%;
+  background: var(--obsidian);
+  transition: transform var(--t-open) var(--ease);
+}
+.intro-door--left {
+  left: 0;
+  border-right: 1px solid var(--line);
+}
+.intro-door--right {
+  right: 0;
+  border-left: 1px solid var(--line);
+}
+.intro--open {
+  pointer-events: none;
+}
+.intro--open .intro-door--left {
+  transform: translateX(-101%);
+}
+.intro--open .intro-door--right {
+  transform: translateX(101%);
+}
+.intro-mark {
+  position: relative;
+  width: min(62vw, 420px);
+  transition: opacity var(--t-open) var(--ease);
+}
+.intro--open .intro-mark {
+  opacity: 0;
+}
+.intro-stroke {
+  fill: url(#intro-chrome);
+  fill-opacity: 0;
+  stroke: var(--chrome);
+  stroke-width: 1.2;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  transition: fill-opacity var(--t-fill) var(--ease);
+}
+.intro--draw .intro-stroke {
+  animation: draw var(--t-draw) var(--ease) both;
+}
+.intro-stroke.is-filled {
+  fill-opacity: 1;
+}
+@keyframes draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.intro-gold {
+  fill: url(#intro-gold);
+}
+.intro-flick-reveal {
+  transform-box: fill-box;
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform var(--t-fill) var(--ease);
+}
+.intro-flick-reveal.is-on {
+  transform: scaleX(1);
+}
+.intro-skip {
+  position: absolute;
+  right: var(--space-4);
+  bottom: var(--space-4);
+  padding: var(--space-1) var(--space-2);
+  background: transparent;
+  color: var(--silver);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+  font: inherit;
+  font-size: var(--step--1);
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease);
+}
+.intro-skip:hover {
+  color: var(--emerald-glow);
+}
+
+/* ---------------------------------------------------------------- dev panel */
+.dev-panel {
+  position: fixed;
+  left: var(--space-2);
+  top: var(--space-2);
+  z-index: 30;
+  padding: var(--space-1) var(--space-2);
+  background: var(--graphite);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+  color: var(--silver);
+  line-height: 1.5;
+}

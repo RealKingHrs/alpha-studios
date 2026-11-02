@@ -4,6 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!--head-->
+    <script>
+      // Hide the page only until the opening is ready, and never for more than 3 s if scripts fail.
+      document.documentElement.classList.add('js');
+      setTimeout(function () {
+        document.documentElement.classList.add('ready');
+      }, 3000);
+    </script>
   </head>
   <body>
     <div id="root"><!--app--></div>

@@ -1,45 +1,97 @@
 import type { ReactNode } from 'react';
 import type { Snapshot } from '../content/schema';
+import { BEATS, type Beat } from '../routes';
 
-type Link = (path: string) => string;
+export type Link = (path: string) => string;
 
-function Shell({ link, children }: { link: Link; children: ReactNode }) {
+/** Previous and next beat links: also the plain vertical flow when the 3D scene is off. */
+function Flow({ beat, link }: { beat: Beat; link: Link }) {
+  const i = BEATS.findIndex((b) => b.id === beat);
+  const prev = BEATS[i - 1];
+  const next = BEATS[i + 1];
   return (
-    <main className="page">
+    <nav className="flow" aria-label="Continue the journey">
+      {prev && <a href={link(prev.path)}>Back to {prev.label.toLowerCase()}</a>}
+      {next && <a href={link(next.path)}>On to {next.label.toLowerCase()}</a>}
+    </nav>
+  );
+}
+
+function Shell({ link, beat, children }: { link: Link; beat?: Beat; children: ReactNode }) {
+  return (
+    <main className="page" id="main">
       <header>
         <a href={link('/')} className="wordmark">
           Alpha Studios
         </a>
       </header>
       {children}
+      {beat && <Flow beat={beat} link={link} />}
+      <footer>
+        <a href={link('/portal/')} className="quiet">
+          Crew login
+        </a>
+      </footer>
     </main>
   );
 }
 
 export function Home({ snap, link }: { snap: Snapshot; link: Link }) {
   return (
-    <Shell link={link}>
+    <Shell link={link} beat="entrance">
       <h1>Alpha Studios</h1>
       <p>{snap.settings.studioStatement}</p>
-      <h2>Projects</h2>
+    </Shell>
+  );
+}
+
+export function Hall({ snap, link }: { snap: Snapshot; link: Link }) {
+  return (
+    <Shell link={link} beat="projects">
+      <h1>Projects</h1>
+      <p>Each pedestal holds one project. Select one to see it.</p>
       <ul>
         {snap.projects.map((p) => (
           <li key={p.slug}>
             <a href={link(`/projects/${p.slug}/`)}>{p.name}</a>
+            <span className="mono"> {p.status}</span>
           </li>
         ))}
       </ul>
-      <h2>Crew</h2>
+    </Shell>
+  );
+}
+
+export function Gallery({ snap, link }: { snap: Snapshot; link: Link }) {
+  return (
+    <Shell link={link} beat="crew">
+      <h1>Crew</h1>
+      <p>The people who build at Alpha Studios.</p>
       <ul>
         {snap.members.map((m) => (
           <li key={m.slug}>
-            <a href={link(`/crew/${m.slug}/`)}>{m.name}</a>, {m.role}
+            <a href={link(`/crew/${m.slug}/`)}>{m.name}</a>
+            <span className="mono"> {m.role}</span>
           </li>
         ))}
       </ul>
-      <p>
-        <a href={link('/portal/')}>Crew login</a>
-      </p>
+    </Shell>
+  );
+}
+
+export function Contact({ snap, link }: { snap: Snapshot; link: Link }) {
+  const email = snap.settings.contactEmail;
+  return (
+    <Shell link={link} beat="contact">
+      <h1>Get in touch</h1>
+      {email ? (
+        <p>
+          Write to <a href={`mailto:${email}`}>{email}</a>.
+        </p>
+      ) : (
+        <p>Contact details are added with the real content.</p>
+      )}
+      <p>To join the crew, ask the admin for an invite code, then use the crew login.</p>
     </Shell>
   );
 }
@@ -74,6 +126,9 @@ export function ProjectPage({ snap, slug, link }: { snap: Snapshot; slug: string
           </li>
         ))}
       </ul>
+      <nav className="flow" aria-label="Continue the journey">
+        <a href={link('/projects/')}>Back to the project hall</a>
+      </nav>
     </Shell>
   );
 }
@@ -103,15 +158,18 @@ export function MemberPage({ snap, slug, link }: { snap: Snapshot; slug: string;
           </li>
         ))}
       </ul>
+      <nav className="flow" aria-label="Continue the journey">
+        <a href={link('/crew/')}>Back to the crew gallery</a>
+      </nav>
     </Shell>
   );
 }
 
 export function Portal({ link }: { link: Link }) {
   return (
-    <Shell link={link}>
+    <Shell link={link} beat="portal">
       <h1>Crew portal</h1>
-      <p>Sign-in arrives in milestone 5.</p>
+      <p>A door for crew and the admin. Sign-in arrives in milestone 5.</p>
     </Shell>
   );
 }

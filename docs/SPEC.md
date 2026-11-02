@@ -73,7 +73,7 @@ Tokens live in `design/tokens.css`. Colour roles:
 - Icons and imagery: one outline icon set at one stroke weight. Project imagery is real app screenshots in device frames, never stock photos.
 - States: designed loading, empty, error and offline states for every screen, including a branded 404 inside the vault.
 - Accessibility: full keyboard navigation of the vault, visible gold focus rings, text alternatives for 3D objects, a reduced-motion mode that replaces camera moves with fades, labels for any sound cues.
-- Performance (Proposed targets): under 3 MB downloaded before the corridor appears with other 3D assets streaming during the intro; 60 frames per second on a recent laptop; automatic lite mode if frame rate stays under 30 for two seconds or the device reports low power; compressed models and textures; each project room loaded only when visited.
+- Performance targets (decided): under 3 MB downloaded before the corridor appears with other 3D assets streaming during the intro; 60 frames per second on a recent laptop; automatic lite mode if frame rate stays under 30 for two seconds or the device reports low power; compressed models and textures; each project room loaded only when visited.
 
 ## 5. The vault
 

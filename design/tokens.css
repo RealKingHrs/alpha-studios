@@ -52,6 +52,8 @@
   --dur-fast: 160ms;
   --dur-base: 320ms;
   --dur-slow: 720ms;
+  /* Reduced motion swaps camera flights for fades. This one stays on in that mode. */
+  --dur-fade: 320ms;
 
   /* Focus */
   --focus-ring: 2px solid var(--gold);

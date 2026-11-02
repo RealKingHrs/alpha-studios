@@ -1,10 +1,12 @@
 // Writes real HTML for every address into dist/, plus 404.html. Run after `vite build`.
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
+import { createElement } from 'react';
 import { renderToString } from 'react-dom/server';
 import { App } from '../src/App';
 import { Snapshot } from '../src/content/schema';
-import { allPaths, matchRoute } from '../src/routes';
+import { pageMeta } from '../src/meta';
+import { allPaths } from '../src/routes';
 
 const base = process.env.SITE_BASE ?? '/alpha-studios/';
 const siteUrl = (process.env.SITE_URL ?? '').replace(/\/$/, '');
@@ -14,26 +16,8 @@ const template = await readFile(join(dist, 'index.html'), 'utf8');
 
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 
-function meta(path: string): { title: string; description: string } {
-  const route = matchRoute(base + path.replace(/^\//, ''), base, snap);
-  const studio = 'Alpha Studios';
-  if (route.name === 'project') {
-    const p = snap.projects.find((x) => x.slug === route.slug)!;
-    return { title: `${p.name} | ${studio}`, description: p.summary };
-  }
-  if (route.name === 'member') {
-    const m = snap.members.find((x) => x.slug === route.slug)!;
-    return { title: `${m.name}, ${m.role} | ${studio}`, description: m.bio };
-  }
-  if (route.name === 'portal')
-    return { title: `Crew portal | ${studio}`, description: 'Sign in for crew and admin.' };
-  if (route.name === 'not-found')
-    return { title: `Page not found | ${studio}`, description: 'This address does not exist.' };
-  return { title: studio, description: snap.settings.studioStatement };
-}
-
 function page(path: string): string {
-  const { title, description } = meta(path);
+  const { title, description } = pageMeta(base + path.replace(/^\//, ''), base, snap);
   const image = `${siteUrl}${base}og.png`;
   const head = [
     `<title>${esc(title)}</title>`,
@@ -47,7 +31,9 @@ function page(path: string): string {
     `<link rel="icon" href="${base}favicon.svg" type="image/svg+xml" />`,
     `<link rel="apple-touch-icon" href="${base}apple-touch-icon.png" />`,
   ].join('\n    ');
-  const html = renderToString(App({ snap, pathname: base + path.replace(/^\//, ''), base }));
+  const html = renderToString(
+    createElement(App, { snap, pathname: base + path.replace(/^\//, ''), base }),
+  );
   return template.replace('<!--head-->', head).replace('<!--app-->', html);
 }
 
