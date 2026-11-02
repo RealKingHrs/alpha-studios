@@ -1,0 +1,6 @@
+dist
+node_modules
+public/content.json
+supabase/.temp
+*.svg
+*.png
