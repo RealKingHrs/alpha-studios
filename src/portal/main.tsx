@@ -1,24 +1,40 @@
 import { createRoot } from 'react-dom/client';
-import { LocalAvatarStore } from '../avatar/store';
 import '../styles/app.css';
 import '../styles/portal.css';
-import { Builder } from './avatar/Builder';
+import { AuthProvider, useAuth } from './auth';
+import { Login } from './screens/Login';
+import { Redeem } from './screens/Redeem';
+import { Shell } from './Shell';
+import { configured } from './supabase';
+import { Loading, OfflineBanner } from './ui';
 
-const store = new LocalAvatarStore();
-const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function Gate() {
+  const { state } = useAuth();
+  if (state.status === 'loading') return <Loading what="Checking your sign-in." />;
+  if (state.status === 'signed-out') return <Login />;
+  if (state.status === 'no-profile') return <Redeem email={state.email} />;
+  return <Shell me={state.me} />;
+}
 
 function Portal() {
+  if (!configured) {
+    return (
+      <main className="portal">
+        <h1>Crew portal</h1>
+        <p role="status" className="state">
+          The portal is not connected to a backend in this build. Set the project address and public
+          key, then build again. See docs/RUNBOOK.md.
+        </p>
+      </main>
+    );
+  }
   return (
-    <main className="portal">
-      <header>
-        <a className="wordmark" href={import.meta.env.BASE_URL}>
-          Alpha Studios
-        </a>
-        <span className="mono">Crew portal</span>
-      </header>
-      <h1>Avatar builder</h1>
-      <Builder store={store} reduce={reduce} />
-    </main>
+    <AuthProvider>
+      <div className="portal">
+        <OfflineBanner />
+        <Gate />
+      </div>
+    </AuthProvider>
   );
 }
 

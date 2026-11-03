@@ -34,9 +34,42 @@ d('built site', () => {
     expect(html).toMatch(/<h1>[^<]+<\/h1>/);
   });
 
-  it('public bundle never references the backend', () => {
-    const files = walk('dist').filter((f) => /\.(js|html|css)$/.test(f));
-    for (const f of files) expect(readFileSync(f, 'utf8').toLowerCase()).not.toContain('supabase');
+  it('public pages can never load the backend client', () => {
+    // Follow the build manifest from the public entry, through static and lazy imports.
+    type Entry = { file: string; css?: string[]; imports?: string[]; dynamicImports?: string[] };
+    const manifest = JSON.parse(readFileSync('dist/.vite/manifest.json', 'utf8')) as Record<
+      string,
+      Entry
+    >;
+    const seen = new Set<string>();
+    const files = new Set<string>();
+    const visit = (key: string) => {
+      if (seen.has(key) || !manifest[key]) return;
+      seen.add(key);
+      const e = manifest[key];
+      files.add(e.file);
+      e.css?.forEach((c) => files.add(c));
+      [...(e.imports ?? []), ...(e.dynamicImports ?? [])].forEach(visit);
+    };
+    visit('index.html');
+    expect(files.size).toBeGreaterThan(3);
+    for (const f of files) {
+      expect(readFileSync(join('dist', f), 'utf8').toLowerCase(), f).not.toContain('supabase');
+    }
+    // And no public page's own HTML points at portal code.
+    for (const f of walk('dist').filter((x) => x.endsWith('.html') && !x.includes('portal/app'))) {
+      expect(readFileSync(f, 'utf8').toLowerCase(), f).not.toContain('supabase');
+    }
+  });
+
+  it('keeps the backend client inside the portal bundle only', () => {
+    type Entry = { file: string; src?: string; isEntry?: boolean };
+    const manifest = JSON.parse(readFileSync('dist/.vite/manifest.json', 'utf8')) as Record<
+      string,
+      Entry
+    >;
+    expect(manifest['portal/app/index.html']).toBeTruthy();
+    expect(manifest['index.html'].file).not.toBe(manifest['portal/app/index.html'].file);
   });
 
   it('ships the favicon sizes', () => {

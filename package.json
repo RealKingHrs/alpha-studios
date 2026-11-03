@@ -17,6 +17,7 @@
     "test:rls": "RLS=1 vitest run tests/rls",
     "icons": "tsx scripts/icons.ts",
     "placeholders": "tsx scripts/placeholders.ts",
+    "dev:users": "tsx scripts/dev-users.ts",
     "publish:dry": "tsx scripts/publish.ts --dry-run",
     "publish:snapshot": "tsx scripts/publish.ts"
   },

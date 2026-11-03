@@ -34,6 +34,35 @@ Local test keys come from `npx supabase status` at run time and belong to a thro
 5. Add the repo secrets listed above.
 6. Run the publish workflow from the Actions tab.
 
+## The portal
+
+The portal is a separate app at `/portal/app/` (hash routes, so GitHub Pages needs no fallback). It is the only code that talks to the backend.
+
+| Variable                 | Where                             | Value                                                                |
+| ------------------------ | --------------------------------- | -------------------------------------------------------------------- |
+| `VITE_SUPABASE_URL`      | GitHub repo variable (not secret) | Project URL                                                          |
+| `VITE_SUPABASE_ANON_KEY` | GitHub repo variable (not secret) | The public anon key. Safe only because row-level security is strict. |
+
+Without them the portal builds but shows a "not connected" page.
+
+Local try-out, no hosted account needed: start the local stack (`npx supabase start`), run `npm run dev:users` (creates a throwaway admin and crew login, writes `.env.local` and `.dev-credentials`, both uncommitted; it refuses to run against anything but localhost), then `npm run build` and `npm run preview`, and open `/alpha-studios/portal/app/`.
+
+### Invites
+
+- The admin issues a code on the Crew screen. The code is shown once, only a bcrypt hash is stored, and it works once and expires after seven days. Reissuing expires the old code and unlinks the old login.
+- A person creates a login (GitHub or email and password), enters the code and agrees that their name, role, bio and links are public. Five wrong codes in 15 minutes lock that login out of trying for a while.
+- Honest limit: with GitHub or email sign-up, the login row exists before the code is checked. A login with no linked profile can do nothing (every rule needs an active member), and `app.sweep_orphan_logins()` removes such logins after a day. Hosted projects schedule it with pg_cron when the extension is on; otherwise run `select app.sweep_orphan_logins();` now and then from the SQL editor.
+
+### Publishing from the portal
+
+Changes in the portal reach the public site when the publish job runs. To start it right after a change:
+
+1. Deploy the function: `npx supabase functions deploy publish-trigger`.
+2. Set its secrets in the dashboard (Edge Functions, Secrets): `WEBHOOK_SECRET` (a long random string), `GITHUB_REPO` (`owner/repo`) and `GITHUB_DISPATCH_TOKEN` (a fine-grained GitHub token limited to this repo with Contents: read and write, which repository dispatch needs).
+3. In Database, Webhooks, create one webhook for each of `members`, `projects`, `project_members` and `site_settings` on insert, update and delete, calling the function with the header `x-webhook-secret: <the same string>`.
+
+A burst of edits makes a burst of requests. The workflow's concurrency group keeps one run going and one waiting, so it becomes at most two builds. The twice-daily scheduled runs remain as the fallback if a webhook is missed.
+
 ## Creating the single admin
 
 Exactly one admin exists, created once, directly in the backend.

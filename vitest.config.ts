@@ -8,5 +8,7 @@ export default defineConfig({
       : ['tests/**/*.test.ts', 'src/**/*.test.ts'],
     exclude: process.env.RLS ? [] : ['tests/rls/**', 'node_modules/**'],
     testTimeout: 20000,
+    // The role tests share one database and each needs to be the only admin.
+    fileParallelism: !process.env.RLS,
   },
 });

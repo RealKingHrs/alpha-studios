@@ -30,6 +30,10 @@ jobs:
     env:
       SITE_BASE: /${{ github.event.repository.name }}/
       SITE_URL: https://${{ github.repository_owner }}.github.io
+      # The portal needs the project address and the public (anon) key. Both are public values, so they
+      # are repository variables, not secrets. Without them the portal shows a 'not connected' page.
+      VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+      VITE_SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
