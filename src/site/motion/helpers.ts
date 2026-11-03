@@ -58,7 +58,7 @@ export function currentSection(tops: number[], line: number): number {
 }
 
 /** The two timings of a page change, in milliseconds: when the old page is fully covered, and when it is done. */
-export const WIPE = { cover: 380, total: 780 } as const;
+export const WIPE = { cover: 170, total: 560 } as const;
 
 /**
  * How far the panel behind is covered by the one scrolling over it, 0 to 1. `nextTop` is the covering

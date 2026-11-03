@@ -294,7 +294,7 @@ export function Portrait({
                 cy={eyeY + 22}
                 rx={9}
                 ry={5.5}
-                fill="var(--gold)"
+                fill="var(--tomato)"
                 opacity={0.12}
               />
             ))}
@@ -361,7 +361,7 @@ export function Portrait({
               {s.mouth.kind === 'open' && (
                 <g>
                   <ellipse cx={CX} cy={134} rx={12} ry={10} fill={INK} />
-                  <ellipse cx={CX} cy={139} rx={7} ry={4} fill="var(--gold)" />
+                  <ellipse cx={CX} cy={139} rx={7} ry={4} fill="var(--tomato)" />
                 </g>
               )}
             </g>

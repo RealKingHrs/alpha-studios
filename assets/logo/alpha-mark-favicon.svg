@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-12 -20 240 240" role="img" aria-label="Alpha Studios mark"><defs>
 <clipPath id="flick"><path d="M120 126 L240 90 L240 230 L120 230 Z"/></clipPath>
-</defs><rect x="-12" y="-20" width="240" height="240" rx="52" fill="#0A1430"/>
+</defs><rect x="-12" y="-20" width="240" height="240" rx="52" fill="#0B0C0D"/>
 <g transform="translate(108 100) scale(.84) translate(-108 -100)">
-<path d="M22 100 A64 52 0 1 0 150 100 A64 52 0 1 0 22 100 Z M56 100 A32 28 0 1 0 120 100 A32 28 0 1 0 56 100 Z" fill-rule="evenodd" fill="#FBF8F1" transform="rotate(-12 86 100)"/>
+<path d="M22 100 A64 52 0 1 0 150 100 A64 52 0 1 0 22 100 Z M56 100 A32 28 0 1 0 120 100 A32 28 0 1 0 56 100 Z" fill-rule="evenodd" fill="#E9ECEF" transform="rotate(-12 86 100)"/>
 <path id="stem" d="M146 32 L178 42 C174 74 162 104 152 126 C158 136 172 134 202 114 C190 152 162 170 134 160 C110 152 104 132 112 108 C120 80 134 56 146 32 Z"/>
-<use href="#stem" style="fill:#FBF8F1"/>
-<use href="#stem" style="fill:#D4AF5A" clip-path="url(#flick)"/>
+<use href="#stem" style="fill:#E9ECEF"/>
+<use href="#stem" style="fill:#C9A24B" clip-path="url(#flick)"/>
 </g></svg>

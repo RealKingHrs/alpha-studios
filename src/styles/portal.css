@@ -76,7 +76,7 @@ a {
   border-bottom: 3px solid transparent;
 }
 .portal-head nav a:hover {
-  border-bottom-color: var(--sand);
+  border-bottom-color: var(--sun);
 }
 .portal-head nav a[aria-current='page'] {
   border-bottom-color: var(--ink);
@@ -103,7 +103,7 @@ a {
 .offline {
   margin: 0;
   padding: var(--space-1) var(--space-3);
-  background: var(--sand);
+  background: var(--sun);
   border-bottom: 2px solid var(--ink);
   color: var(--ink);
 }
@@ -196,7 +196,7 @@ a {
 }
 .code-card {
   border-color: var(--ink);
-  background: var(--sand);
+  background: var(--sun);
 }
 .confirm {
   display: inline-flex;
@@ -363,7 +363,7 @@ button:disabled {
     transform var(--dur-fast) var(--ease);
 }
 .choice:hover {
-  background: var(--sand);
+  background: var(--sun);
 }
 .choice[aria-pressed='true'] {
   background: var(--ink);
@@ -426,7 +426,7 @@ button:disabled {
   aspect-ratio: 1;
   overflow: hidden;
   border-radius: 50%;
-  background: var(--slate);
+  background: var(--sky);
   border: 2px solid var(--ink);
 }
 .stage-hop {
@@ -501,7 +501,7 @@ button:disabled {
   margin-left: 0.6rem;
 }
 .status-approved {
-  background: var(--teal);
+  background: var(--mint);
 }
 .status-declined {
   background: var(--paper-2);

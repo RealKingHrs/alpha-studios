@@ -1,28 +1,26 @@
 /* The bright site. Paper, ink and five accents; formal grid, playful details. */
-/* Accent surfaces are light tints with midnight text, even inside a dark section. */
-:is(.a-gold, .a-sand, .a-teal, .a-slate, .a-sage) {
-  --ink: #0a1430;
-  --ink-soft: #475365;
-  --paper: #fbf8f1;
-  --paper-2: #eee9dc;
+/* Accent surfaces are bright fills with ink text, even inside a dark section. */
+:is(.a-tomato, .a-sun, .a-mint, .a-sky, .a-lilac) {
+  --ink: #14110f;
+  --ink-soft: #4a443d;
+  --paper: #f6f1e7;
+  --paper-2: #ede6d6;
   color: var(--ink);
 }
-.a-gold {
-  --accent: var(--gold);
-  /* Gold is the strongest fill, so even secondary text stays full midnight on it. */
-  --ink-soft: #0a1430;
+.a-tomato {
+  --accent: var(--tomato);
 }
-.a-sand {
-  --accent: var(--sand);
+.a-sun {
+  --accent: var(--sun);
 }
-.a-teal {
-  --accent: var(--teal);
+.a-mint {
+  --accent: var(--mint);
 }
-.a-slate {
-  --accent: var(--slate);
+.a-sky {
+  --accent: var(--sky);
 }
-.a-sage {
-  --accent: var(--sage);
+.a-lilac {
+  --accent: var(--lilac);
 }
 
 .site {
@@ -114,16 +112,7 @@
   background: var(--ink);
   color: var(--paper) !important;
 }
-.s-btn--gold {
-  background: var(--gold);
-  border-color: var(--gold);
-  color: var(--midnight) !important;
-}
-.s-btn--gold:hover {
-  box-shadow: var(--shadow-2);
-  background: var(--gold-soft);
-  border-color: var(--gold-soft);
-}
+
 .s-btn--line {
   background: transparent;
 }
@@ -132,7 +121,7 @@
   box-shadow: var(--shadow-2);
 }
 .s-btn--ink:hover {
-  box-shadow: 4px 4px 0 var(--sand);
+  box-shadow: 4px 4px 0 var(--sun);
 }
 .s-btn--line:hover {
   background: var(--paper);
@@ -151,7 +140,7 @@
     color var(--dur-fast) var(--ease);
 }
 .s-pill:hover {
-  background: var(--gold);
+  background: var(--tomato);
   color: var(--ink) !important;
 }
 .s-chips {
@@ -174,7 +163,7 @@
   color: var(--paper);
 }
 a.s-chip:hover {
-  background: var(--accent, var(--sand));
+  background: var(--accent, var(--sun));
   color: var(--ink);
 }
 
@@ -228,7 +217,7 @@ a.s-chip:hover {
   right: 0;
   bottom: 0;
   height: 4px;
-  background: var(--sand);
+  background: var(--sun);
   border-radius: 4px;
   transform: scaleX(0);
   transform-origin: left;
@@ -291,29 +280,6 @@ a.s-chip:hover {
   background: var(--paper);
   color: var(--ink);
 }
-/* Fine lines like a drafting sheet, fading out toward the edges. */
-.s-hero-lines {
-  position: absolute;
-  inset: -10% 0;
-  z-index: -1;
-  background-image:
-    linear-gradient(to right, rgb(251 248 241 / 0.06) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(251 248 241 / 0.06) 1px, transparent 1px);
-  background-size: 96px 96px;
-  mask-image: radial-gradient(ellipse at 70% 40%, #000 20%, transparent 72%);
-  -webkit-mask-image: radial-gradient(ellipse at 70% 40%, #000 20%, transparent 72%);
-}
-.s-hero::after {
-  content: '';
-  position: absolute;
-  z-index: -1;
-  right: -12%;
-  top: -30%;
-  width: min(70vw, 900px);
-  aspect-ratio: 1;
-  background: radial-gradient(circle, rgb(212 175 90 / 0.16), transparent 62%);
-  pointer-events: none;
-}
 .s-hero-grid {
   position: relative;
   display: grid;
@@ -336,9 +302,6 @@ a.s-chip:hover {
 .s-hero-line {
   display: block;
 }
-.s-hero-gold {
-  color: var(--gold);
-}
 .s-hero-proof {
   display: grid;
   grid-template-columns: repeat(3, auto);
@@ -353,13 +316,7 @@ a.s-chip:hover {
   display: grid;
   gap: 0.1rem;
 }
-.s-hero-proof b {
-  font-size: 2.2rem;
-  font-weight: 500;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-  color: var(--gold);
-}
+
 .s-hero-proof span {
   font-size: 0.66rem;
   letter-spacing: 0.06em;
@@ -458,7 +415,7 @@ a.s-chip:hover {
 }
 .s-work:hover {
   translate: 0 -6px;
-  box-shadow: 0 44px 70px -34px rgb(10 20 48 / 0.6);
+  box-shadow: 0 44px 70px -34px rgb(20 17 15 / 0.6);
 }
 @media (min-width: 900px) {
   .s-work {
@@ -502,7 +459,7 @@ a.s-chip:hover {
 .device {
   position: absolute;
   background: var(--ink);
-  box-shadow: 0 24px 40px -18px rgb(10 20 48 / 0.5);
+  box-shadow: 0 24px 40px -18px rgb(20 17 15 / 0.5);
   transition: transform var(--dur-base) var(--ease);
 }
 .device img {
@@ -570,14 +527,14 @@ a.s-chip:hover {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: var(--gold);
+  background: var(--tomato);
   border: 1.5px solid var(--ink);
 }
 .device-bar i:nth-child(2) {
-  background: var(--sand);
+  background: var(--sun);
 }
 .device-bar i:nth-child(3) {
-  background: var(--teal);
+  background: var(--mint);
 }
 .device-bar span {
   margin-left: 8px;
@@ -711,7 +668,7 @@ a.s-chip:hover {
   background: var(--accent);
   border: var(--line-w) solid var(--ink);
   border-radius: 24px;
-  box-shadow: 0 22px 36px -24px rgb(10 20 48 / 0.5);
+  box-shadow: 0 22px 36px -24px rgb(20 17 15 / 0.5);
 }
 .s-stat strong {
   font-size: clamp(3rem, 8vw, 5.5rem);
@@ -995,7 +952,7 @@ html.reveal-on .s-rule {
 .device {
   box-shadow:
     0 2px 0 rgb(255 255 255 / 0.08) inset,
-    0 26px 38px -20px rgb(10 20 48 / 0.55);
+    0 26px 38px -20px rgb(20 17 15 / 0.55);
 }
 
 /* running index */
@@ -1022,20 +979,6 @@ html.reveal-on .s-rule {
 }
 
 /* page change wipe */
-.wipe {
-  position: fixed;
-  inset: 0;
-  z-index: 140;
-  pointer-events: none;
-  overflow: hidden;
-}
-.wipe-band {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 20.2%;
-  translate: 0 101%;
-}
 
 /* cursor */
 .cursor {
@@ -1189,7 +1132,7 @@ html.reveal-on .s-rule {
 /* ============================================================ the opening */
 .intro {
   --mark-edge: #b7c0cc;
-  --mark-core: var(--ivory);
+  --mark-core: var(--paper-fixed);
   position: fixed;
   inset: 0;
   z-index: 200;
@@ -1273,7 +1216,7 @@ html.reveal-on .s-rule {
   cursor: pointer;
 }
 .intro-skip:hover {
-  background: var(--sand);
+  background: var(--sun);
 }
 
 @media (max-width: 899px) {
@@ -1561,7 +1504,7 @@ html.reduce-motion .orbit {
   scale: 0.97;
 }
 .s-pill:hover {
-  background: var(--sand);
+  background: var(--sun);
   color: var(--ink) !important;
 }
 
@@ -1575,7 +1518,7 @@ html.reduce-motion .orbit {
   right: 0;
   bottom: -2px;
   height: 3px;
-  background: var(--gold);
+  background: var(--tomato);
   transform-origin: 0 50%;
   pointer-events: none;
 }
@@ -1972,7 +1915,7 @@ html.reduce-motion .wv-hand {
   height: 4px;
   margin-top: 0.4rem;
   border-radius: 99px;
-  background: rgb(10 20 48 / 0.12);
+  background: rgb(20 17 15 / 0.12);
   overflow: hidden;
 }
 .crew-progress i {
@@ -2078,7 +2021,7 @@ html.reduce-motion .wv-hand {
   scale: 1.07;
 }
 .mcard-art .portrait {
-  filter: drop-shadow(0 12px 14px rgb(10 20 48 / 0.22));
+  filter: drop-shadow(0 12px 14px rgb(20 17 15 / 0.22));
 }
 .mcard-panel {
   position: absolute;
@@ -2223,7 +2166,7 @@ html.reduce-motion .mcard * {
 .s-section--tint {
   border-radius: clamp(24px, 4vw, 56px) clamp(24px, 4vw, 56px) 0 0;
   margin-top: calc(clamp(24px, 4vw, 56px) * -0.5);
-  box-shadow: 0 -18px 30px -24px rgb(10 20 48 / 0.35);
+  box-shadow: 0 -18px 30px -24px rgb(20 17 15 / 0.35);
 }
 
 /* ---------------------------------------------------------------- vision and about */
@@ -2252,7 +2195,7 @@ html.reduce-motion .mcard * {
   display: block;
   margin-bottom: 0.8rem;
   font-size: 0.78rem;
-  color: var(--gold-deep);
+  color: var(--ink-soft);
 }
 .s-principles h3 {
   margin: 0 0 0.5rem;
@@ -2275,16 +2218,14 @@ html.reduce-motion .mcard * {
   font-weight: 500;
   color: var(--ink);
   text-decoration: none;
-  background: linear-gradient(var(--gold), var(--gold)) 0 100% / 100% 2px no-repeat;
+  background: linear-gradient(var(--tomato), var(--tomato)) 0 100% / 100% 2px no-repeat;
   padding-bottom: 0.2rem;
   transition: background-size var(--dur-base) var(--ease);
 }
-.s-link:hover {
-  background-size: 100% 100%;
-}
+
 .s-about-hero {
   padding: clamp(72px, 10vw, 150px) 0 clamp(56px, 8vw, 110px);
-  background: var(--paper);
+  background: var(--accent, var(--paper));
   color: var(--ink);
 }
 .s-about-title {
@@ -2332,7 +2273,7 @@ html.reduce-motion .mcard * {
   padding: clamp(56px, 7vw, 96px) 0 var(--space-4);
   background: var(--paper);
   color: var(--ink);
-  border-top: 3px solid var(--gold);
+  border-top: 3px solid var(--tomato);
 }
 .s-footer-grid {
   display: grid;
@@ -2376,7 +2317,7 @@ html.reduce-motion .mcard * {
   font-size: 0.72rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--tomato);
 }
 .s-footer-nav ul {
   list-style: none;
@@ -2390,7 +2331,7 @@ html.reduce-motion .mcard * {
   text-decoration: none;
 }
 .s-footer-nav a {
-  background: linear-gradient(var(--gold), var(--gold)) 0 100% / 0 1px no-repeat;
+  background: linear-gradient(var(--tomato), var(--tomato)) 0 100% / 0 1px no-repeat;
   transition: background-size var(--dur-base) var(--ease);
 }
 .s-footer-nav a:hover {
@@ -2411,7 +2352,7 @@ html.reduce-motion .mcard * {
 .s-hello {
   position: relative;
   padding-block: clamp(72px, 11vw, 150px);
-  background: var(--paper);
+  background: var(--accent, var(--paper));
   color: var(--ink);
 }
 .s-hello--page,
@@ -2434,7 +2375,7 @@ html.reduce-motion .mcard * {
   display: inline-block;
   margin-top: var(--space-3);
   font-size: clamp(1.5rem, 4.6vw, 3.6rem);
-  color: var(--gold);
+  color: var(--ink);
   text-decoration: none;
   background: linear-gradient(currentColor, currentColor) 0 100% / 0% 2px no-repeat;
   transition: background-size var(--dur-slow) var(--ease);
@@ -2452,7 +2393,7 @@ html.reduce-motion .mcard * {
   font-size: clamp(6rem, 22vw, 16rem);
   line-height: 0.9;
   color: transparent;
-  -webkit-text-stroke: 1.5px var(--gold);
+  -webkit-text-stroke: 1.5px var(--tomato);
 }
 .s-lost .s-actions {
   margin-top: var(--space-4);
@@ -2464,7 +2405,7 @@ html.reduce-motion .mcard * {
   isolation: isolate;
   overflow: hidden;
   padding: clamp(64px, 9vw, 130px) 0 clamp(64px, 9vw, 130px);
-  background: var(--paper);
+  background: var(--accent, var(--paper));
   color: var(--ink);
 }
 .lp-hero-grid {
@@ -2484,11 +2425,16 @@ html.reduce-motion .mcard * {
   line-height: 1.03;
 }
 .lp-title > span,
-.lp-title > .lp-title-gold {
+.lp-title > .lp-title-accent {
   display: block;
 }
-.lp-title-gold {
-  color: var(--gold);
+.lp-title-accent {
+  display: inline-block;
+  margin-top: 0.1em;
+  padding: 0 0.16em 0.05em;
+  background: var(--paper);
+  border: 1.5px solid var(--ink);
+  border-radius: 0.2em;
 }
 .lp-hero .s-lede {
   max-width: 36rem;
@@ -2536,8 +2482,8 @@ html.reduce-motion .mcard * {
   right: 1.2rem;
   top: -0.9rem;
   padding: 0.3rem 0.9rem;
-  background: var(--gold);
-  color: var(--midnight);
+  background: var(--tomato);
+  color: var(--ink-fixed);
   border-radius: 99px;
   font-size: 0.72rem;
 }
@@ -2549,9 +2495,9 @@ html.reduce-motion .mcard * {
   place-items: center;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: var(--gold);
-  border: 1.5px solid var(--midnight);
-  color: var(--midnight);
+  background: var(--tomato);
+  border: 1.5px solid var(--ink-fixed);
+  color: var(--ink-fixed);
   box-shadow: var(--shadow-1);
 }
 .sticker svg:first-child {
@@ -2561,7 +2507,7 @@ html.reduce-motion .mcard * {
   height: 100%;
 }
 .sticker text {
-  fill: var(--midnight);
+  fill: var(--ink-fixed);
   font-family: var(--font-mono);
   font-size: 15px;
   letter-spacing: 0.14em;
@@ -2570,8 +2516,8 @@ html.reduce-motion .mcard * {
 .sticker-mark {
   width: 40%;
   height: auto;
-  --mark-edge: var(--midnight);
-  --mark-core: var(--midnight);
+  --mark-edge: var(--ink-fixed);
+  --mark-core: var(--ink-fixed);
 }
 
 /* ---------------------------------------------------------------- the hidden entrance */
@@ -2589,9 +2535,9 @@ html.reduce-motion .mcard * {
   width: min(100%, 460px);
   padding: clamp(1.4rem, 4vw, 2.2rem);
   text-align: center;
-  background: linear-gradient(160deg, var(--midnight-2), var(--midnight));
-  color: var(--ivory);
-  border: 1px solid rgb(212 175 90 / 0.5);
+  background: linear-gradient(160deg, var(--ink-2), var(--ink-fixed));
+  color: var(--paper-fixed);
+  border: 1px solid rgb(201 162 75 / 0.5);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-3);
 }
@@ -2635,11 +2581,11 @@ html.reduce-motion .mcard * {
   width: clamp(44px, 12vw, 58px);
   height: clamp(60px, 16vw, 78px);
   font-size: 2.2rem;
-  color: var(--midnight);
+  color: var(--ink-fixed);
   background: linear-gradient(180deg, #f3dc98, #d4af5a 55%, #a97c25);
   border-radius: 12px;
   box-shadow:
-    inset 0 -6px 10px rgb(10 20 48 / 0.28),
+    inset 0 -6px 10px rgb(20 17 15 / 0.28),
     0 6px 14px rgb(0 0 0 / 0.35);
   transition: box-shadow var(--dur-base) var(--ease);
 }
@@ -2649,7 +2595,7 @@ html.reduce-motion .mcard * {
 }
 .cx.is-solved .cx-letter {
   box-shadow:
-    inset 0 -6px 10px rgb(10 20 48 / 0.28),
+    inset 0 -6px 10px rgb(20 17 15 / 0.28),
     0 0 28px rgb(243 220 152 / 0.85);
 }
 .cx-status {
@@ -2671,176 +2617,137 @@ html.reduce-motion .mcard * {
   cursor: pointer;
 }
 
-/* ================================================================ premium layer: light, gold and glass */
+/* ================================================================ polish layer, in the original colours */
 ::selection {
-  background: var(--gold);
-  color: var(--midnight);
-}
-html {
-  scrollbar-width: thin;
-  scrollbar-color: var(--gold) var(--paper-2);
+  background: var(--sun);
+  color: var(--ink-fixed);
 }
 
-/* aurora: a midnight ground with a slow sapphire, indigo and emerald light */
-.theme-dark.aurora {
-  position: relative;
-  isolation: isolate;
-  background: var(--aurora);
-  overflow: hidden;
+/* the hero: warm paper with a soft pool of light and calm shapes */
+.s-hero {
+  background: var(--paper);
+  color: var(--ink);
 }
-.theme-dark.aurora::before {
+.s-hero::after {
   content: '';
   position: absolute;
-  inset: -20%;
-  z-index: -2;
-  background:
-    radial-gradient(34% 30% at 24% 30%, rgb(59 91 255 / 0.22), transparent 70%),
-    radial-gradient(30% 28% at 76% 70%, rgb(31 191 143 / 0.13), transparent 70%);
-  animation: aurora-drift 28s ease-in-out infinite alternate;
+  z-index: -1;
+  right: -10%;
+  top: -25%;
+  width: min(70vw, 900px);
+  aspect-ratio: 1;
+  background: radial-gradient(circle, rgb(255 200 61 / 0.28), transparent 62%);
   pointer-events: none;
 }
-@keyframes aurora-drift {
-  to {
-    transform: translate3d(5%, -4%, 0) scale(1.08);
-  }
+.s-hero-accent {
+  display: block;
+  width: fit-content;
+  padding: 0 0.18em 0.06em;
+  margin-top: 0.06em;
+  background: var(--tomato);
+  color: var(--ink-fixed);
+  border-radius: 0.2em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
-/* fine grain over every dark ground */
-.theme-dark.aurora::after {
-  content: '';
+.s-shapes {
   position: absolute;
   inset: 0;
   z-index: -1;
-  opacity: 0.35;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .06 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
   pointer-events: none;
 }
-.s-hero.theme-dark.aurora::after {
-  right: auto;
-  top: auto;
-  width: auto;
-  aspect-ratio: auto;
+.shape-slot {
+  position: absolute;
+  inset: 0;
+}
+.shape {
+  position: absolute;
+  display: block;
+  background: var(--accent);
+  border: 1.5px solid var(--ink);
+}
+.shape--circle {
+  top: 12%;
+  right: 7%;
+  width: clamp(56px, 8vw, 120px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+.shape--square {
+  top: 62%;
+  right: 24%;
+  width: clamp(40px, 5vw, 72px);
+  aspect-ratio: 1;
+  border-radius: 14px;
+  rotate: 12deg;
+}
+.shape--pill {
+  bottom: 9%;
+  left: 5%;
+  width: clamp(80px, 11vw, 160px);
+  aspect-ratio: 2.4;
+  border-radius: 999px;
+}
+.shape--ring {
+  top: 18%;
+  left: 47%;
+  width: clamp(36px, 4vw, 60px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: transparent;
+  border-color: var(--ink);
+}
+@media (max-width: 899px) {
+  .shape--square,
+  .shape--ring {
+    display: none;
+  }
 }
 
-/* the pointer spotlight */
-[data-spot] .spot-glow {
-  display: none;
-}
-[data-spot].is-lit {
+/* the pointer: a soft warm pool of light inside hero sections */
+[data-spot] {
   --glow: radial-gradient(
-    420px circle at var(--mx, 50%) var(--my, 30%),
-    rgb(243 220 152 / 0.1),
+    380px circle at var(--mx, 70%) var(--my, 30%),
+    rgb(255 200 61 / 0.2),
     transparent 70%
   );
 }
-[data-spot].is-lit > .s-hero-lines,
-[data-spot].is-lit .lp-hero-grid,
-[data-spot].is-lit .s-wrap:first-child {
+[data-spot].is-lit .s-wrap {
   background-image: var(--glow);
 }
 
-/* gold foil */
-.foil,
-.foil .sw-word,
-.foil .sw-line,
-.foil .sw-mask {
-  background-image: var(--foil);
-  background-size: 220% 100%;
-  background-position: 100% 0;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-}
-.foil {
-  animation: foil-sweep 2.8s var(--ease) 0.6s 1 both;
-}
-@keyframes foil-sweep {
-  from {
-    background-position: 100% 0;
-  }
-  to {
-    background-position: 0 0;
-  }
-}
-.s-btn--gold {
-  position: relative;
-  overflow: hidden;
-  background-image: var(--foil);
-  background-size: 200% 100%;
-  background-position: 100% 0;
-  border-color: rgb(243 220 152 / 0.9);
-  box-shadow:
-    0 8px 24px -10px rgb(212 175 90 / 0.65),
-    inset 0 1px 0 rgb(255 255 255 / 0.5);
-  transition:
-    background-position var(--dur-slow) var(--ease),
-    box-shadow var(--dur-base) var(--ease),
-    translate var(--dur-base) var(--ease);
-}
-.s-btn--gold:hover {
-  background-position: 0 0;
-  box-shadow:
-    0 14px 34px -10px rgb(212 175 90 / 0.8),
-    inset 0 1px 0 rgb(255 255 255 / 0.6);
-  translate: 0 -2px;
-}
-
-/* glass panels with a gold hairline edge */
+/* glass-style panels */
 .s-hero-proof,
 .lp-credit {
   position: relative;
-  background: linear-gradient(160deg, rgb(255 255 255 / 0.07), rgb(255 255 255 / 0.02));
-  border: 1px solid transparent;
-  background-clip: padding-box;
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
-}
-.s-hero-proof::before,
-.lp-credit::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  padding: 1px;
-  border-radius: inherit;
-  background: linear-gradient(
-    135deg,
-    rgb(243 220 152 / 0.9),
-    rgb(243 220 152 / 0.08) 45%,
-    rgb(106 85 255 / 0.5)
-  );
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.7), rgb(255 255 255 / 0.35));
+  border: 1px solid rgb(20 17 15 / 0.85);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-1);
 }
 .s-hero-proof {
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-l);
-  border-top: 0;
 }
 .s-hero-proof b {
-  background-image: var(--foil);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--ink);
 }
 
-/* ivory sections get a warmer light, not a flat sheet */
+/* sections get warm light, not a flat sheet */
 .s-section {
   background-image:
-    radial-gradient(60% 40% at 90% 0%, rgb(186 200 255 / 0.22), transparent 70%),
-    radial-gradient(50% 40% at 0% 100%, rgb(242 223 174 / 0.35), transparent 70%);
+    radial-gradient(60% 40% at 92% 0%, rgb(127 178 255 / 0.16), transparent 70%),
+    radial-gradient(50% 40% at 0% 100%, rgb(255 200 61 / 0.16), transparent 70%);
 }
 .s-section--tint {
   background-color: var(--paper-2);
 }
 
-/* gold numbering and rules */
+/* numbering, icons and rules */
 .s-num {
-  background: var(--foil);
-  color: var(--midnight);
+  background: var(--ink);
+  color: var(--paper);
 }
 .s-principle-icon {
   display: inline-grid;
@@ -2848,30 +2755,34 @@ html {
   width: 64px;
   height: 64px;
   margin-bottom: 0.9rem;
-  color: var(--gold-deep);
-  border: 1px solid var(--gold);
+  color: var(--ink);
+  border: 1.5px solid var(--ink);
   border-radius: 18px;
-  background: linear-gradient(160deg, rgb(255 255 255 / 0.7), rgb(242 223 174 / 0.4));
+  background: var(--accent, var(--sun));
   box-shadow: var(--shadow-1);
 }
+.s-principles > li:nth-child(1) .s-principle-icon {
+  --accent: var(--sun);
+}
+.s-principles > li:nth-child(2) .s-principle-icon {
+  --accent: var(--mint);
+}
+.s-principles > li:nth-child(3) .s-principle-icon {
+  --accent: var(--lilac);
+}
 .s-principles > li {
-  border-top: 1px solid transparent;
-  border-image: linear-gradient(90deg, var(--gold), transparent) 1;
+  border-top: 1.5px solid var(--ink);
 }
 .s-vision-title {
-  background: linear-gradient(120deg, var(--ink) 40%, #2a3f86 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--ink);
 }
 
-/* the projects: a glow behind the devices and a gold hairline on the panel */
+/* the projects: light behind the devices and a soft edge */
 .s-work {
   background-image: linear-gradient(140deg, rgb(255 255 255 / 0.35), transparent 55%);
   box-shadow:
     var(--shadow-2),
     inset 0 1px 0 rgb(255 255 255 / 0.7);
-  border: 1px solid rgb(10 20 48 / 0.18);
 }
 .s-work-stage::before,
 .stage::before {
@@ -2884,43 +2795,20 @@ html {
   pointer-events: none;
 }
 
-/* marquee: a midnight band with gold foil type */
+/* marquee: the accent band, calmer, fading at the edges */
 .marquee {
   position: relative;
-  background: linear-gradient(90deg, #0a1430, #12224a 50%, #0a1430);
-  border-block: 1px solid rgb(243 220 152 / 0.45);
-  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-}
-.marquee li {
-  background-image: var(--foil);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background: var(--accent);
+  border-block: 1.5px solid var(--ink);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
 }
 
-/* footer: a glowing gold rule and a large faint wordmark */
-.s-footer {
-  border-top: 0;
-}
-.s-footer .s-footer-grid::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: calc(-1 * clamp(56px, 7vw, 96px));
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  box-shadow: 0 0 24px 2px rgb(212 175 90 / 0.55);
-}
-.s-footer .s-footer-grid {
-  position: relative;
-}
+/* footer */
 
-/* crew cards: a gold hairline and a light behind the character */
+/* crew cards: light behind the character */
 .mcard-bg {
   background-image: linear-gradient(150deg, rgb(255 255 255 / 0.5), transparent 60%);
-  border-color: rgb(10 20 48 / 0.55);
   box-shadow:
     var(--shadow-2),
     inset 0 1px 0 rgb(255 255 255 / 0.6);
@@ -2933,25 +2821,70 @@ html {
   background: radial-gradient(closest-side, rgb(255 255 255 / 0.65), transparent 75%);
 }
 
-/* links glow in sapphire on hover */
-.s-link:hover {
-  filter: drop-shadow(0 0 10px rgb(59 91 255 / 0.4));
-}
-
-html.reduce-motion .theme-dark.aurora::before,
-html.reduce-motion .foil {
-  animation: none;
-}
-@media (prefers-reduced-motion: reduce) {
-  .theme-dark.aurora::before,
-  .foil {
-    animation: none;
-  }
-}
 .s-hero .s-scroll-cue {
   left: auto;
   right: clamp(20px, 4vw, 48px);
 }
 .s-hero {
   padding-block: clamp(48px, 7vw, 100px) clamp(56px, 7vw, 96px);
+}
+
+/* ---------------------------------------------------------------- changing page */
+.page {
+  transition:
+    opacity var(--dur-fast) var(--ease),
+    transform var(--dur-fast) var(--ease);
+}
+.page--cover {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+.page--reveal {
+  animation: page-in var(--dur-slow) var(--ease) both;
+}
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+.page-line {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 140;
+  height: 3px;
+  background: var(--tomato);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  opacity: 0;
+  pointer-events: none;
+}
+.page-line--cover {
+  opacity: 1;
+  transform: scaleX(0.55);
+  transition: transform var(--dur-slow) var(--ease);
+}
+.page-line--reveal {
+  animation: page-line var(--dur-slow) var(--ease) both;
+}
+@keyframes page-line {
+  from {
+    opacity: 1;
+    transform: scaleX(0.55);
+  }
+  60% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+  to {
+    opacity: 0;
+    transform: scaleX(1);
+  }
+}
+html.reduce-motion .page,
+html.reduce-motion .page-line {
+  animation: none;
+  transition: none;
 }

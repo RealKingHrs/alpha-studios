@@ -198,7 +198,7 @@ export function Footer({ link }: { link: LinkFn }) {
     ],
   ] as const;
   return (
-    <footer className="s-footer theme-dark aurora">
+    <footer className="s-footer theme-dark">
       <div className="s-wrap s-footer-grid">
         <div className="s-footer-brand">
           <a className="s-footer-logo" href={link('/')} aria-label="Alpha Studios, home">
@@ -239,12 +239,15 @@ export function Footer({ link }: { link: LinkFn }) {
   );
 }
 
-/** The hero: a midnight ground, direct words, a calm monogram that draws itself once, and layers that part slowly as you scroll. */
+/** The hero: warm paper, direct words, the mark drawing itself once, and calm shapes that part slowly as you scroll. */
 export function Hero({ snap, link }: { snap: Snapshot; link: LinkFn }) {
   const ref = useRef<HTMLElement>(null);
   const on = useMotionOn();
   const { scrollYProgress: p } = useScroll({ target: ref, offset: ['start start', 'end start'] });
-  const gridY = useTransform(p, [0, 1], ['0%', '12%']);
+  const gridY = useTransform(p, [0, 1], ['0%', '-10%']);
+  const shapeA = useTransform(p, [0, 1], ['0%', '-18%']);
+  const shapeB = useTransform(p, [0, 1], ['0%', '-9%']);
+  const shapeC = useTransform(p, [0, 1], ['0%', '-24%']);
   const markY = useTransform(p, [0, 1], ['0%', '10%']);
   const copyY = useTransform(p, [0, 1], ['0%', '-6%']);
   const copyOpacity = useTransform(p, [0, 0.85], [1, 0.15]);
@@ -270,12 +273,21 @@ export function Hero({ snap, link }: { snap: Snapshot; link: LinkFn }) {
   ] as const;
 
   return (
-    <section ref={ref} className="s-hero theme-dark aurora" data-spot aria-labelledby="hero-title">
-      <motion.div
-        className="s-hero-lines"
-        aria-hidden="true"
-        style={on ? { y: gridY } : undefined}
-      />
+    <section ref={ref} className="s-hero" data-spot aria-labelledby="hero-title">
+      <div className="s-shapes" aria-hidden="true">
+        <motion.span className="shape-slot" style={on ? { y: shapeA } : undefined}>
+          <span className="shape shape--circle a-tomato" />
+        </motion.span>
+        <motion.span className="shape-slot" style={on ? { y: shapeB } : undefined}>
+          <span className="shape shape--square a-sun" />
+        </motion.span>
+        <motion.span className="shape-slot" style={on ? { y: shapeC } : undefined}>
+          <span className="shape shape--pill a-mint" />
+        </motion.span>
+        <motion.span className="shape-slot" style={on ? { y: gridY } : undefined}>
+          <span className="shape shape--ring a-sky" />
+        </motion.span>
+      </div>
       <div className="s-wrap s-hero-grid">
         <motion.div
           className="s-hero-copy"
@@ -288,7 +300,7 @@ export function Hero({ snap, link }: { snap: Snapshot; link: LinkFn }) {
               <span className="s-hero-line">
                 <SplitText text={HEADLINE[0]} delay={0.2} step={0.1} />
               </span>
-              <span className="s-hero-line s-hero-gold foil">
+              <span className="s-hero-line s-hero-accent">
                 <SplitText text={HEADLINE[1]} delay={0.55} step={0.1} />
               </span>
             </span>
@@ -296,7 +308,7 @@ export function Hero({ snap, link }: { snap: Snapshot; link: LinkFn }) {
           <p className="s-lede">{snap.settings.studioStatement}</p>
           <p className="s-actions">
             <Magnetic>
-              <a className="s-btn s-btn--gold" href="#work">
+              <a className="s-btn s-btn--ink" href="#work">
                 See our projects
               </a>
             </Magnetic>

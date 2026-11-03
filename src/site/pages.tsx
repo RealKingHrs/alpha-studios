@@ -30,8 +30,7 @@ function Hello({ snap, link, page = false }: { snap: Snapshot; link: LinkFn; pag
     <section
       id="contact"
       data-section
-      className={`s-hello theme-dark aurora ${page ? 's-hello--page' : ''}`}
-      data-spot
+      className={`s-hello ${page ? 's-hello--page a-lilac' : 'theme-dark'}`}
       aria-labelledby="hello-title"
     >
       <div className="s-wrap">
@@ -77,7 +76,7 @@ export function Home({ snap, link, asset }: PageProps) {
   return (
     <>
       <Hero snap={snap} link={link} />
-      <Marquee items={marqueeItems(snap)} accent="gold" label="Platforms and technologies used" />
+      <Marquee items={marqueeItems(snap)} accent="tomato" label="Platforms and technologies used" />
       <Vision link={link} />
       <section id="work" data-section className="s-section" aria-labelledby="work-title">
         <div className="s-wrap">
@@ -135,7 +134,7 @@ export function WorkPage({ snap, link, asset }: PageProps) {
   return (
     <>
       <PageHead
-        accent="sand"
+        accent="sun"
         eyebrow="Projects"
         title="Projects"
         lede="Each project has its own case study: the story, the people, the code and where to try it."
@@ -157,7 +156,7 @@ export function CrewPage({ snap, link }: PageProps) {
   return (
     <>
       <PageHead
-        accent="teal"
+        accent="mint"
         eyebrow="Crew"
         title="The people behind it"
         lede="The people who build at Alpha Studios. Select a card for their story and projects."
@@ -317,15 +316,15 @@ export function CaseStudy({ snap, slug, link, asset }: PageProps & { slug: strin
               <SplitText text="On GitHub" />
             </h2>
             <div className="s-stats">
-              <Reveal className="s-stat a-sand">
+              <Reveal className="s-stat a-sun">
                 <strong className="display">{repo.stars}</strong>
                 <span className="mono">stars</span>
               </Reveal>
-              <Reveal className="s-stat a-slate" delay={80}>
+              <Reveal className="s-stat a-sky" delay={80}>
                 <strong className="display">{repo.recentCommits.length}</strong>
                 <span className="mono">recent commits</span>
               </Reveal>
-              <Reveal className="s-stat a-teal" delay={160}>
+              <Reveal className="s-stat a-mint" delay={160}>
                 <strong className="display">{repo.contributors.length}</strong>
                 <span className="mono">contributors</span>
               </Reveal>
@@ -403,7 +402,7 @@ export function CrewProfile({ snap, slug, link }: PageProps & { slug: string }) 
 
 export function PortalDoor({ link }: { link: LinkFn }) {
   return (
-    <section className="s-hello s-hello--page a-slate" aria-labelledby="pt">
+    <section className="s-hello s-hello--page a-sky" aria-labelledby="pt">
       <div className="s-wrap">
         <p className="s-eyebrow mono">Crew only</p>
         <h1 id="pt" className="display s-hello-title">
@@ -426,7 +425,7 @@ export function PortalDoor({ link }: { link: LinkFn }) {
 
 export function NotFoundPage({ link }: { link: LinkFn }) {
   return (
-    <section className="s-hello theme-dark aurora s-lost" aria-labelledby="pt">
+    <section className="s-hello a-tomato s-lost" aria-labelledby="pt">
       <div className="s-wrap">
         <p className="s-lost-code display" aria-hidden="true">
           404
@@ -440,7 +439,7 @@ export function NotFoundPage({ link }: { link: LinkFn }) {
         </p>
         <p className="s-actions">
           <Magnetic>
-            <a className="s-btn s-btn--gold" href={link('/')}>
+            <a className="s-btn s-btn--ink" href={link('/')}>
               Back to the start
             </a>
           </Magnetic>

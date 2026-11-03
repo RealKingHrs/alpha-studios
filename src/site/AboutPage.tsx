@@ -16,7 +16,7 @@ const TOWARDS = [
 export function AboutPage({ snap, link }: { snap: Snapshot; link: LinkFn }) {
   return (
     <>
-      <section className="s-about-hero theme-dark aurora" data-spot aria-labelledby="pt">
+      <section className="s-about-hero a-sun" aria-labelledby="pt">
         <div className="s-wrap">
           <p className="s-eyebrow mono">About Alpha Studios</p>
           <h1 id="pt" className="display s-about-title">
@@ -78,14 +78,14 @@ export function AboutPage({ snap, link }: { snap: Snapshot; link: LinkFn }) {
         </div>
       </section>
 
-      <section className="s-about-cta theme-dark aurora" aria-labelledby="cta-title">
+      <section className="s-about-cta theme-dark" aria-labelledby="cta-title">
         <div className="s-wrap">
           <h2 id="cta-title" className="display">
             Have an idea that deserves to exist?
           </h2>
           <p className="s-actions">
             <Magnetic>
-              <a className="s-btn s-btn--gold" href={link('/launchpad/')}>
+              <a className="s-btn s-btn--ink" href={link('/launchpad/')}>
                 Bring it to Launchpad
               </a>
             </Magnetic>

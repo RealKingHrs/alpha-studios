@@ -16,17 +16,17 @@ const BRING = [
 
 const WHO = [
   [
-    'a-sand',
+    'a-sun',
     'Still studying',
     'You build on weekends and between classes. Your idea does not need to wait for a job title.',
   ],
   [
-    'a-teal',
+    'a-mint',
     'Building solo',
     'You have been carrying a project alone. It is more fun with a crew behind you.',
   ],
   [
-    'a-sage',
+    'a-lilac',
     'Just starting out',
     'You have an idea and no idea where to begin. That is a perfectly good place to be.',
   ],
@@ -34,12 +34,16 @@ const WHO = [
 
 const GET = [
   [
-    'a-slate',
+    'a-sky',
     'People in your corner',
     'A crew that has built things and wants to see yours come alive.',
   ],
-  ['a-gold', 'Someone to learn from', 'Honest feedback and a bit of mentoring when you get stuck.'],
-  ['a-sand', 'A real launch', 'Help getting your work in front of the people it was made for.'],
+  [
+    'a-tomato',
+    'Someone to learn from',
+    'Honest feedback and a bit of mentoring when you get stuck.',
+  ],
+  ['a-sun', 'A real launch', 'Help getting your work in front of the people it was made for.'],
 ] as const;
 
 const FAQ = [
@@ -61,14 +65,13 @@ export function LaunchpadPage({ snap, link }: { snap: Snapshot; link: LinkFn }) 
   const pitch = link('/portal/app/#/pitch');
   return (
     <>
-      <section className="lp-hero theme-dark aurora" data-spot aria-labelledby="pt">
-        <div className="s-hero-lines" aria-hidden="true" />
+      <section className="lp-hero a-mint" aria-labelledby="pt">
         <div className="s-wrap lp-hero-grid">
           <div>
             <p className="s-eyebrow mono">Launchpad</p>
             <h1 id="pt" className="display lp-title">
               <SplitText text="Bring us your idea." />
-              <span className="lp-title-gold foil">
+              <span className="lp-title-accent">
                 <SplitText text="Keep your name on it." delay={0.35} />
               </span>
             </h1>
@@ -80,7 +83,7 @@ export function LaunchpadPage({ snap, link }: { snap: Snapshot; link: LinkFn }) 
               </p>
               <p className="s-actions">
                 <Magnetic>
-                  <a className="s-btn s-btn--gold" href={pitch}>
+                  <a className="s-btn s-btn--ink" href={pitch}>
                     Pitch your idea
                   </a>
                 </Magnetic>
@@ -112,7 +115,7 @@ export function LaunchpadPage({ snap, link }: { snap: Snapshot; link: LinkFn }) 
         </div>
       </section>
 
-      <Marquee items={BRING} accent="gold" label="Things people bring to Launchpad" />
+      <Marquee items={BRING} accent="tomato" label="Things people bring to Launchpad" />
 
       <section className="lp-section" aria-labelledby="who-title">
         <div className="s-wrap">
@@ -207,7 +210,7 @@ export function LaunchpadPage({ snap, link }: { snap: Snapshot; link: LinkFn }) 
         </div>
       </section>
 
-      <section className="lp-final a-sand" aria-labelledby="final-title">
+      <section className="lp-final a-sun" aria-labelledby="final-title">
         <div className="s-wrap">
           <h2 id="final-title" className="display">
             <SplitText text="Ready when you are." />

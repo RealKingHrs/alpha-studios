@@ -21,7 +21,7 @@ export function PopScene({ scene }: { scene: SceneId }) {
             />
             <path
               d="M 33 200 L 63 200 L 68 210 H 28 Z"
-              fill="var(--teal)"
+              fill="var(--mint)"
               stroke="var(--ink)"
               strokeWidth="3"
               strokeLinejoin="round"
@@ -38,7 +38,7 @@ export function PopScene({ scene }: { scene: SceneId }) {
             />
             <path
               d="M 138 192 A 22 22 0 0 0 178 192 Z"
-              fill="var(--sage)"
+              fill="var(--lilac)"
               stroke="var(--ink)"
               strokeWidth="3"
             />
@@ -92,7 +92,7 @@ export function PopScene({ scene }: { scene: SceneId }) {
               cx={x}
               cy={y}
               r="5"
-              fill="var(--gold)"
+              fill="var(--tomato)"
               stroke="var(--ink)"
               strokeWidth="2.5"
             />
@@ -101,7 +101,7 @@ export function PopScene({ scene }: { scene: SceneId }) {
             className="sc-thread"
             d="M 40 55 L 100 48 L 155 70 L 140 120 L 60 110 L 40 55"
             fill="none"
-            stroke="var(--gold)"
+            stroke="var(--tomato)"
             strokeWidth="3"
             strokeDasharray="6 5"
           />
@@ -111,7 +111,7 @@ export function PopScene({ scene }: { scene: SceneId }) {
             y="72"
             width="30"
             height="22"
-            fill="var(--sand)"
+            fill="var(--sun)"
             stroke="var(--ink)"
             strokeWidth="2.5"
           />
@@ -132,7 +132,7 @@ export function PopScene({ scene }: { scene: SceneId }) {
               style={{ animationDelay: `${i * -1.3}s` }}
               transform={`translate(${x} ${y})`}
             >
-              <rect width={r} height={r} fill="var(--teal)" stroke="var(--ink)" strokeWidth="3" />
+              <rect width={r} height={r} fill="var(--mint)" stroke="var(--ink)" strokeWidth="3" />
               <rect y={r * 0.62} width={r} height={r * 0.38} fill="var(--ink)" opacity="0.28" />
               <rect x={r * 0.62} width={r * 0.38} height={r} fill="var(--ink)" opacity="0.14" />
             </g>
@@ -146,12 +146,12 @@ export function PopScene({ scene }: { scene: SceneId }) {
             cx="100"
             cy="120"
             r="52"
-            fill="var(--sand)"
+            fill="var(--sun)"
             stroke="var(--ink)"
             strokeWidth="3"
           />
           {[110, 124, 138, 152].map((y) => (
-            <rect key={y} x="40" y={y} width="120" height={(y - 100) / 14} fill="var(--gold)" />
+            <rect key={y} x="40" y={y} width="120" height={(y - 100) / 14} fill="var(--tomato)" />
           ))}
           {[
             [14, 150, 26, 80],
@@ -176,7 +176,7 @@ export function PopScene({ scene }: { scene: SceneId }) {
             <path d="M 100 0 V 40" stroke="var(--ink)" strokeWidth="3" />
             <path
               d="M 70 70 Q 100 30 130 70 Z"
-              fill="var(--gold)"
+              fill="var(--tomato)"
               stroke="var(--ink)"
               strokeWidth="3"
               strokeLinejoin="round"
@@ -191,7 +191,7 @@ export function PopScene({ scene }: { scene: SceneId }) {
           />
           <path
             d="M 140 206 H 188 Q 190 190 164 184 Q 138 190 140 206 Z"
-            fill="var(--sage)"
+            fill="var(--lilac)"
             stroke="var(--ink)"
             strokeWidth="3"
           />
@@ -235,7 +235,7 @@ export function PopScene({ scene }: { scene: SceneId }) {
               cx="150"
               cy="110"
               r="34"
-              fill="var(--sage)"
+              fill="var(--lilac)"
               stroke="var(--ink)"
               strokeWidth="3"
             />
@@ -256,7 +256,7 @@ export function PopScene({ scene }: { scene: SceneId }) {
             cx="40"
             cy="170"
             r="14"
-            fill="var(--sand)"
+            fill="var(--sun)"
             stroke="var(--ink)"
             strokeWidth="3"
           />
@@ -289,7 +289,7 @@ export function PopScene({ scene }: { scene: SceneId }) {
               className="sc-twinkle"
               style={{ animationDelay: `${i * -0.7}s`, transformOrigin: `${x}px ${y}px` }}
               d={`M ${x} ${y - 8} L ${x + 3} ${y - 3} L ${x + 8} ${y} L ${x + 3} ${y + 3} L ${x} ${y + 8} L ${x - 3} ${y + 3} L ${x - 8} ${y} L ${x - 3} ${y - 3} Z`}
-              fill="var(--sand)"
+              fill="var(--sun)"
               stroke="var(--ink)"
               strokeWidth="1.5"
             />
@@ -311,7 +311,7 @@ export function PopScene({ scene }: { scene: SceneId }) {
               className="sc-twinkle"
               style={{ animationDelay: `${i * -0.6}s`, transformOrigin: `${x}px ${y}px` }}
               d={`M ${x} ${y - 14} L ${x + 4} ${y - 4} L ${x + 14} ${y} L ${x + 4} ${y + 4} L ${x} ${y + 14} L ${x - 4} ${y + 4} L ${x - 14} ${y} L ${x - 4} ${y - 4} Z`}
-              fill={['var(--sand)', 'var(--slate)', 'var(--sage)'][i % 3]}
+              fill={['var(--sun)', 'var(--sky)', 'var(--lilac)'][i % 3]}
               stroke="var(--ink)"
               strokeWidth="2.5"
               strokeLinejoin="round"

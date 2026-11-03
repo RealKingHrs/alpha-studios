@@ -71,8 +71,7 @@ export function MemberPage({ snap, slug, link }: { snap: Snapshot; slug: string;
     <>
       <section
         ref={hero}
-        className="mp-hero theme-dark aurora"
-        data-spot
+        className={`mp-hero a-${accent}`}
         aria-labelledby="pt"
         onPointerMove={onMove}
       >
@@ -110,7 +109,7 @@ export function MemberPage({ snap, slug, link }: { snap: Snapshot; slug: string;
         </a>
       </section>
 
-      <Marquee items={ticker} accent="gold" label={`${m.name} at a glance`} />
+      <Marquee items={ticker} accent="tomato" label={`${m.name} at a glance`} />
 
       {m.bio && (
         <section id="about" className="mp-about" aria-labelledby="about-title">

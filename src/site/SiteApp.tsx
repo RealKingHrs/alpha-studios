@@ -168,7 +168,9 @@ export function SiteApp({
           Skip to content
         </a>
         <Header route={route} link={link} />
-        <main id="main">{page}</main>
+        <main id="main" className={`page page--${phase}`}>
+          {page}
+        </main>
         <Footer link={link} />
         {route.name === 'home' && <SectionIndex labels={HOME_SECTIONS} />}
         <SmoothScroll enabled={enabled} />

@@ -15,7 +15,7 @@ await mkdir('public/screens', { recursive: true });
 
 const tokens = readFileSync('design/tokens.css', 'utf8');
 const hex = (name: string) => new RegExp(`--${name}:\\s*(#[0-9a-fA-F]{6})`).exec(tokens)![1];
-const ACCENTS = ['gold', 'sand', 'teal', 'slate', 'sage'].map(hex);
+const ACCENTS = ['tomato', 'sun', 'mint', 'sky', 'lilac'].map(hex);
 
 for (const [pi, p] of snap.projects.entries()) {
   for (const [si, s] of p.screenshots.entries()) {

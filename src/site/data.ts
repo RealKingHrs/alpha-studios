@@ -1,7 +1,7 @@
 import type { Member, Project, Snapshot } from '../content/schema';
 import { platformLabel } from '../rooms';
 
-export const ACCENTS = ['slate', 'sand', 'teal', 'sage', 'gold'] as const;
+export const ACCENTS = ['tomato', 'sun', 'mint', 'sky', 'lilac'] as const;
 export type Accent = (typeof ACCENTS)[number];
 
 /** Each project, and each person, keeps the same accent colour wherever it appears. */

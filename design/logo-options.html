@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Logo options</title>
+<style>
+  body{margin:0;padding:32px;background:#F6F1E7;color:#14110F;font:16px/1.5 Inter,system-ui,sans-serif}
+  h1{font:600 28px Georgia,serif;margin:0 0 4px}
+  p{margin:0 0 24px;color:#4A443D}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+  .card{border:1.5px solid #14110F;border-radius:16px;padding:20px;background:#fff8}
+  .card h2{font:600 18px Georgia,serif;margin:0 0 4px}
+  .card p{font-size:14px;margin:0 0 14px}
+  .row{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+  .tile{border-radius:14px;display:grid;place-items:center;width:150px;height:150px}
+  .paper{background:#EDE6D6}.ink{background:#14110F}
+  .word{font:600 22px Georgia,serif;display:flex;align-items:center;gap:8px}
+</style>
+</head>
+<body>
+<h1>Alpha mark: four directions</h1>
+<p>Each is shown on paper, on ink, at favicon size and beside the wordmark. Tell me the number you like.</p>
+<div class="grid" id="g"></div>
+<script>
+const GOLD='#C9A24B';
+const opts=[
+{n:'1. Refined original',d:'Your current idea, cleaned up: a balanced loop, a tapered stem and a sharper gold flick.',
+ svg:(ink,s)=>`<svg viewBox="0 0 120 120" width="${s}" height="${s}"><ellipse cx="46" cy="64" rx="29" ry="22" transform="rotate(-14 46 64)" fill="none" stroke="${ink}" stroke-width="12"/><path d="M84 24 L99 29 C97 52 92 70 85 84 C80 93 72 100 79 103 C66 98 65 85 69 72 C73 55 79 40 84 24Z" fill="${ink}"/><path d="M85 84 C89 94 101 92 114 80 C108 100 92 108 79 103 C84 100 86 92 85 84Z" fill="${GOLD}"/></svg>`},
+{n:'2. Monoline',d:'One even line that loops once and ends in a small tail. Calm, modern and very clean at any size.',
+ svg:(ink,s)=>`<svg viewBox="0 0 120 120" width="${s}" height="${s}"><ellipse cx="50" cy="64" rx="26" ry="24" fill="none" stroke="${ink}" stroke-width="9"/><path d="M76 30 V84 C76 96 86 100 96 94" fill="none" stroke="${ink}" stroke-width="9" stroke-linecap="round"/><circle cx="100" cy="92" r="6" fill="${GOLD}"/></svg>`},
+{n:'3. Contained',d:'The alpha inside a rounded square. Strongest as an app icon and favicon.',
+ svg:(ink,s)=>`<svg viewBox="0 0 120 120" width="${s}" height="${s}"><rect x="8" y="8" width="104" height="104" rx="28" fill="none" stroke="${ink}" stroke-width="8"/><ellipse cx="53" cy="62" rx="20" ry="17" fill="none" stroke="${ink}" stroke-width="8"/><path d="M76 38 V74 C76 84 84 86 92 80" fill="none" stroke="${ink}" stroke-width="8" stroke-linecap="round"/><circle cx="94" cy="79" r="5" fill="${GOLD}"/></svg>`},
+{n:'4. Bold geometric',d:'A ring and a straight stem with a quarter-circle gold tail. Very legible when tiny.',
+ svg:(ink,s)=>`<svg viewBox="0 0 120 120" width="${s}" height="${s}"><circle cx="50" cy="62" r="26" fill="none" stroke="${ink}" stroke-width="13"/><rect x="71" y="20" width="13" height="66" fill="${ink}"/><path d="M71.5 86 A22 22 0 0 0 98 106 L98 93 A9 9 0 0 1 84 86Z" fill="${GOLD}"/></svg>`}
+];
+document.getElementById('g').innerHTML=opts.map(o=>`<section class="card"><h2>${o.n}</h2><p>${o.d}</p>
+<div class="row"><div class="tile paper">${o.svg('#14110F',110)}</div><div class="tile ink">${o.svg('#F6F1E7',110)}</div></div>
+<div class="row">${o.svg('#14110F',32)}${o.svg('#14110F',16)}<span class="word">${o.svg('#14110F',28)} Alpha Studios</span></div></section>`).join('');
+</script>
+</body>
+</html>

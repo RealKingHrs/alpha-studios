@@ -19,10 +19,10 @@ const base = '/alpha-studios/';
 
 describe('accents and initials', () => {
   it('gives the same colour to the same position, wrapping round the five accents', () => {
-    expect(accentFor(0)).toBe('slate');
-    expect(accentFor(4)).toBe('gold');
-    expect(accentFor(5)).toBe('slate');
-    expect(accentFor(-1)).toBe('gold');
+    expect(accentFor(0)).toBe('tomato');
+    expect(accentFor(4)).toBe('lilac');
+    expect(accentFor(5)).toBe('tomato');
+    expect(accentFor(-1)).toBe('lilac');
     expect(ACCENTS).toHaveLength(5);
   });
 
