@@ -22,8 +22,7 @@ d('built site', () => {
     'contact/index.html',
     'portal/index.html',
     'projects/project-one/index.html',
-    'projects/project-one/room/index.html',
-    'projects/project-two/room/index.html',
+    'projects/project-two/index.html',
     'crew/member-one/index.html',
   ];
 

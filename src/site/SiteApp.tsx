@@ -1,24 +1,30 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Snapshot } from '../content/schema';
 import { Intro } from '../intro/Intro';
 import { pageMeta } from '../meta';
 import { matchRoute } from '../routes';
 import { usePathname } from '../router';
-import { Effects } from '../ui/Effects';
 import { hasSeenIntro, markIntroSeen, safeGet, safeSet } from '../util/storage';
+import { MotionProvider, useIsoLayoutEffect } from './motion/context';
+import { WIPE } from './motion/helpers';
+import { Cursor } from './motion/Cursor';
+import { useTapRipples } from './motion/ripples';
+import { scrollToTop, SmoothScroll } from './motion/SmoothScroll';
+import { PageWipe, type WipePhase } from './PageWipe';
 import {
   CaseStudy,
   ContactPage,
   CrewPage,
   CrewProfile,
+  HOME_SECTIONS,
   Home,
   NotFoundPage,
   PortalDoor,
   WorkPage,
 } from './pages';
-import { Footer, Header } from './parts';
+import { Footer, Header, SectionIndex } from './parts';
 
-/** The default site: bright, editorial, and complete as plain HTML before any script runs. */
+/** The site: premium, animated, and complete as plain HTML before any script runs. */
 export function SiteApp({
   snap,
   pathname: initial,
@@ -28,57 +34,90 @@ export function SiteApp({
   pathname: string;
   base: string;
 }) {
-  const pathname = usePathname(initial);
-  const route = matchRoute(pathname, base, snap);
+  const target = usePathname(initial);
+  const [shown, setShown] = useState(initial);
+  const route = matchRoute(shown, base, snap);
   const link = useCallback((path: string) => base + path.replace(/^\//, ''), [base]);
-  const here = base + pathname.slice(base.length);
-  const exploreHref = `${here}?explore`;
 
-  const [reduce, setReduce] = useState(false);
-  const [fxChoice, setFxChoice] = useState(true);
-  const [mounted, setMounted] = useState(false);
+  const [allowed, setAllowed] = useState(false); // false on the server and until the first check: nothing animates
+  const [pref, setPref] = useState(true);
+  const [fine, setFine] = useState(false);
   const [introDone, setIntroDone] = useState(true);
+  const [phase, setPhase] = useState<WipePhase>('idle');
+  const [announce, setAnnounce] = useState('');
   const firstVisit = useMemo(() => (typeof window === 'undefined' ? false : !hasSeenIntro()), []);
+  const arrived = useRef(false);
 
-  // Everything below needs the browser, so it waits until after hydration and the first paint matches the server.
-  useEffect(() => {
+  // Runs before the first paint on the client, so motion starts from a clean frame instead of flashing.
+  useIsoLayoutEffect(() => {
     const q = new URLSearchParams(location.search);
-    const r =
+    const reduced =
       matchMedia('(prefers-reduced-motion: reduce)').matches || q.get('motion') === 'reduce';
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setReduce(r);
-    setFxChoice(safeGet('alpha:fx') !== '0');
-    // The opening is for the first visit to the start page only.
-    setIntroDone(!(firstVisit && matchRoute(location.pathname, base, snap).name === 'home'));
-    setMounted(true);
+    setAllowed(!reduced);
+    setPref(safeGet('alpha:fx') !== '0');
+    setFine(matchMedia('(pointer: fine)').matches);
+    setIntroDone(
+      !(firstVisit && matchRoute(location.pathname, base, snap).name === 'home' && !reduced),
+    );
+    document.documentElement.classList.toggle('reduce-motion', reduced);
     document.documentElement.classList.add('ready');
   }, [base, snap, firstVisit]);
 
+  const enabled = allowed && pref;
   useEffect(() => {
-    document.documentElement.classList.toggle('reduce-motion', reduce);
-  }, [reduce]);
-
-  const fxAvailable = mounted && !reduce;
-  const fxOn = fxAvailable && fxChoice;
-  useEffect(() => {
-    document.documentElement.classList.toggle('fx', fxOn);
+    document.documentElement.classList.toggle('fx', enabled && fine);
     return () => document.documentElement.classList.remove('fx');
-  }, [fxOn]);
+  }, [enabled, fine]);
+  useTapRipples(enabled);
 
-  // Keep the tab title and description in step with the address, and start each page at its top.
+  // Changing page: cover the old one with bands, swap underneath, then uncover. Without motion, just swap.
   useEffect(() => {
-    const { title, description } = pageMeta(pathname, base, snap);
+    if (target === shown) return;
+    if (!enabled) {
+      // The address changed outside React (back button, link), so the page it shows follows it.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setShown(target);
+      scrollToTop();
+      return;
+    }
+    setPhase('cover');
+    const swap = setTimeout(() => {
+      setShown(target);
+      scrollToTop(true);
+      setPhase('reveal');
+    }, WIPE.cover);
+    const done = setTimeout(() => setPhase('idle'), WIPE.total);
+    return () => {
+      clearTimeout(swap);
+      clearTimeout(done);
+    };
+    // `shown` is deliberately read once: the swap itself changes it.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [target, enabled]);
+
+  // Title and description follow the page, focus moves to its heading, and screen readers are told.
+  useEffect(() => {
+    const { title, description } = pageMeta(shown, base, snap);
     document.title = title;
     document.querySelector('meta[name="description"]')?.setAttribute('content', description);
-    if (!location.hash) window.scrollTo(0, 0);
-  }, [pathname, base, snap]);
+    if (!arrived.current) {
+      arrived.current = true;
+      return;
+    }
+    const h1 = document.querySelector<HTMLElement>('main h1');
+    if (h1) {
+      h1.setAttribute('tabindex', '-1');
+      h1.focus({ preventScroll: true });
+    }
+    setAnnounce(title.split(' | ')[0]);
+  }, [shown, base, snap]);
 
   const onIntroDone = useCallback(() => {
     markIntroSeen();
     setIntroDone(true);
   }, []);
 
-  const props = { snap, link, asset: link, exploreHref };
+  const props = { snap, link, asset: link };
   let page;
   switch (route.name) {
     case 'home':
@@ -88,7 +127,6 @@ export function SiteApp({
       page = <WorkPage {...props} />;
       break;
     case 'project':
-    case 'room':
       page = <CaseStudy {...props} slug={route.slug} />;
       break;
     case 'crew':
@@ -108,26 +146,32 @@ export function SiteApp({
   }
 
   return (
-    <div className="site">
-      <a className="skip-link" href="#main">
-        Skip to content
-      </a>
-      <Header route={route} link={link} exploreHref={exploreHref} />
-      <main id="main">{page}</main>
-      <Footer
-        snap={snap}
-        link={link}
-        fxAvailable={fxAvailable}
-        fxOn={fxOn}
-        onFx={() => {
-          safeSet('alpha:fx', fxChoice ? '0' : '1');
-          setFxChoice(!fxChoice);
-        }}
-      />
-      {fxOn && <Effects />}
-      {mounted && !introDone && (
-        <Intro variant="site" ready reduceMotion={reduce} firstVisit onDone={onIntroDone} />
-      )}
-    </div>
+    <MotionProvider enabled={enabled}>
+      <div className="site">
+        <a className="skip-link" href="#main">
+          Skip to content
+        </a>
+        <Header route={route} link={link} />
+        <main id="main">{page}</main>
+        <Footer
+          snap={snap}
+          link={link}
+          fxAvailable={allowed}
+          fxOn={enabled}
+          onFx={() => {
+            safeSet('alpha:fx', pref ? '0' : '1');
+            setPref(!pref);
+          }}
+        />
+        {route.name === 'home' && <SectionIndex labels={HOME_SECTIONS} />}
+        <SmoothScroll enabled={enabled} />
+        {enabled && fine && <Cursor />}
+        <PageWipe phase={phase} />
+        <div className="visually-hidden" role="status" aria-live="polite">
+          {announce}
+        </div>
+        {!introDone && <Intro ready reduceMotion={!allowed} firstVisit onDone={onIntroDone} />}
+      </div>
+    </MotionProvider>
   );
 }

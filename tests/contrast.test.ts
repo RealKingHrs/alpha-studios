@@ -21,39 +21,7 @@ const ratio = (a: string, b: string) => {
 };
 
 describe('colour contrast of the design tokens', () => {
-  // Every pairing the interface uses for text, on both surfaces text sits on.
-  const text = ['chrome', 'silver', 'emerald-glow'];
-  const surfaces = ['obsidian', 'graphite'];
-  for (const t of text) {
-    for (const s of surfaces) {
-      it(`${t} text on ${s} reaches 4.5:1`, () => {
-        expect(ratio(hex(t), hex(s))).toBeGreaterThanOrEqual(4.5);
-      });
-    }
-  }
-
-  it('emerald, used for controls and borders, reaches 3:1 on both surfaces', () => {
-    for (const s of surfaces) expect(ratio(hex('emerald'), hex(s))).toBeGreaterThanOrEqual(3);
-  });
-
-  it('the gold focus ring reaches 3:1 on both surfaces, as a non-text indicator needs', () => {
-    for (const s of surfaces) expect(ratio(hex('gold'), hex(s))).toBeGreaterThanOrEqual(3);
-  });
-
-  it('matches the contrast figures the spec quotes for obsidian', () => {
-    const quoted: Record<string, number> = {
-      chrome: 16.5,
-      silver: 8.9,
-      gold: 8.2,
-      emerald: 5.7,
-      'emerald-glow': 11.1,
-    };
-    for (const [name, want] of Object.entries(quoted)) {
-      expect(ratio(hex(name), hex('obsidian')), name).toBeCloseTo(want, 0);
-    }
-  });
-
-  describe('the bright site', () => {
+  describe('paper, ink and the accents', () => {
     const accents = ['tomato', 'sun', 'mint', 'sky', 'lilac'];
 
     it('ink text on paper and on the paper tint reaches 7:1', () => {

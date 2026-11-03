@@ -14,8 +14,6 @@ const slowMs = () =>
   parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--dur-slow')) || 720;
 
 interface Props {
-  /** 'vault' is the dark doors; 'site' is paper with coloured bands. */
-  variant: 'vault' | 'site';
   /** True once the scene can show its first frame. The intro doubles as the loader. */
   ready: boolean;
   reduceMotion: boolean;
@@ -27,7 +25,7 @@ interface Props {
  * The silent opening: the alpha draws as one stroke, fills with chrome, the gold spreads along the
  * flick, then the doors part. Reduced motion shows a still logo that fades.
  */
-export function Intro({ variant, ready, reduceMotion, firstVisit, onDone }: Props) {
+export function Intro({ ready, reduceMotion, firstVisit, onDone }: Props) {
   const [t] = useState(() => {
     const unit = slowMs() * (firstVisit ? 1 : REPEAT_SCALE);
     return { draw: FULL.draw * unit, fill: FULL.fill * unit, open: FULL.open * unit };
@@ -82,7 +80,7 @@ export function Intro({ variant, ready, reduceMotion, firstVisit, onDone }: Prop
     );
 
   useEffect(() => {
-    // Capture phase, so skipping the intro never also triggers the vault's own Escape shortcut.
+    // Capture phase, so skipping the intro never also triggers another Escape shortcut.
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return;
       e.stopPropagation();
@@ -96,7 +94,7 @@ export function Intro({ variant, ready, reduceMotion, firstVisit, onDone }: Prop
   const filled = phase !== 'draw';
   return (
     <div
-      className={`intro intro--${phase} intro--${variant}`}
+      className={`intro intro--${phase} intro--site`}
       role="img"
       aria-label="Alpha Studios"
       style={
@@ -107,20 +105,13 @@ export function Intro({ variant, ready, reduceMotion, firstVisit, onDone }: Prop
         } as React.CSSProperties
       }
     >
-      {variant === 'vault' ? (
-        <>
-          <div className="intro-door intro-door--left" />
-          <div className="intro-door intro-door--right" />
-        </>
-      ) : (
-        ['tomato', 'sun', 'mint', 'sky', 'lilac'].map((c, i) => (
-          <div
-            key={c}
-            className="intro-band"
-            style={{ '--i': i, background: `var(--${c})` } as React.CSSProperties}
-          />
-        ))
-      )}
+      {['tomato', 'sun', 'mint', 'sky', 'lilac'].map((c, i) => (
+        <div
+          key={c}
+          className="intro-band"
+          style={{ '--i': i, background: `var(--${c})` } as React.CSSProperties}
+        />
+      ))}
       <svg className="intro-mark" viewBox={MARK_VIEWBOX} aria-hidden="true">
         <defs>
           <linearGradient

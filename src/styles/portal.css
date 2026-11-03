@@ -416,3 +416,43 @@ button:disabled {
     grid-template-columns: 1fr;
   }
 }
+
+/* the live character in the builder */
+.stage {
+  display: grid;
+  place-items: center;
+  background: var(--paper-2);
+}
+.stage-disc {
+  position: relative;
+  width: min(86%, 440px);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--sky);
+  border: 2px solid var(--ink);
+}
+.stage-hop {
+  position: absolute;
+  inset: 0;
+  animation: stage-hop 0.55s var(--ease);
+}
+.stage-hop .portrait {
+  position: absolute;
+  left: 3%;
+  bottom: -4%;
+  width: 94%;
+}
+@keyframes stage-hop {
+  35% {
+    transform: translateY(-14px) scale(1.01);
+  }
+  70% {
+    transform: translateY(1px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stage-hop {
+    animation: none;
+  }
+}

@@ -1,3 +1,5 @@
+> **Retired on 3 November 2026.** The 3D vault, project rooms and Explore mode were removed in the redesign. This brief is kept as history. See `docs/SPEC.md` section 5.
+
 # Milestone 3: Project rooms
 
 ## Goal

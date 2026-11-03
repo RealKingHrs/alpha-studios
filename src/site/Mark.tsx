@@ -1,8 +1,31 @@
+import { motion } from 'motion/react';
 import { BOWL_PATH, BOWL_TRANSFORM, MARK_VIEWBOX, STEM_PATH } from '../brand/mark';
+import { useMotionOn } from './motion/context';
 
-/** The alpha mark in ink with the gold flick, as inline SVG. */
-export function Mark({ className = '', title }: { className?: string; title?: string }) {
+/** The alpha mark in ink with the gold flick, as inline SVG. With motion on, it draws itself, then fills. */
+export function Mark({
+  className = '',
+  title,
+  draw = false,
+}: {
+  className?: string;
+  title?: string;
+  draw?: boolean;
+}) {
+  const on = useMotionOn() && draw;
   const id = `m-${className.replace(/\W+/g, '') || 'x'}`;
+  const common = on
+    ? {
+        initial: { pathLength: 0, fillOpacity: 0 },
+        animate: { pathLength: 1, fillOpacity: 1 },
+        transition: {
+          pathLength: { duration: 1.5, ease: [0.65, 0, 0.35, 1] as const, delay: 0.25 },
+          fillOpacity: { duration: 0.7, delay: 1.35 },
+        },
+        stroke: 'var(--ink)',
+        strokeWidth: 2.2,
+      }
+    : {};
   return (
     <svg
       className={`mark ${className}`.trim()}
@@ -17,15 +40,26 @@ export function Mark({ className = '', title }: { className?: string; title?: st
         </clipPath>
       </defs>
       <g transform={BOWL_TRANSFORM}>
-        <path d={BOWL_PATH} fillRule="evenodd" className="mark-ink" />
+        <motion.path d={BOWL_PATH} fillRule="evenodd" className="mark-ink" {...common} />
       </g>
-      <path d={STEM_PATH} className="mark-ink" />
-      <path d={STEM_PATH} className="mark-gold" clipPath={`url(#${id}-flick)`} />
+      <motion.path d={STEM_PATH} className="mark-ink" {...common} />
+      <motion.path
+        d={STEM_PATH}
+        className="mark-gold"
+        clipPath={`url(#${id}-flick)`}
+        {...(on
+          ? {
+              initial: { opacity: 0 },
+              animate: { opacity: 1 },
+              transition: { delay: 1.8, duration: 0.6 },
+            }
+          : {})}
+      />
     </svg>
   );
 }
 
-/** The spinning round sticker: text set on a circle around a small mark. */
+/** The round sticker: text set on a circle around a small mark. It spins by CSS. */
 export function Sticker({ text, className = '' }: { text: string; className?: string }) {
   const id = `ring-${text.replace(/\W+/g, '').slice(0, 8)}`;
   const line = `${text} • ${text} • `;

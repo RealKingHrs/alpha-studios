@@ -10,3 +10,4 @@ supabase/.branches
 coverage
 public/content.json
 .dev-credentials
+dist-dev

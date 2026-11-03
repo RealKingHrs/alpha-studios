@@ -1,56 +1,68 @@
 import type { Snapshot } from '../content/schema';
+import { Portrait } from '../avatar/Portrait';
 import { contributorsWithCrew, platformLabel, projectLinks, statusLabel } from '../rooms';
 import { CrewLineup } from './CrewLineup';
-import {
-  accentFor,
-  initials,
-  languageShares,
-  marqueeItems,
-  memberAccent,
-  stackOrder,
-} from './data';
-import { DeviceMock } from './DeviceMock';
+import { accentFor, languageShares, marqueeItems, memberAccent, stackOrder } from './data';
 import { Mark, Sticker } from './Mark';
 import { Marquee } from './Marquee';
-import { Hero, SectionHead, WorkPanel, type LinkFn } from './parts';
+import { Magnetic } from './motion/Magnetic';
+import { SplitText } from './motion/SplitText';
+import { Hero, SectionHead, WorkList, type LinkFn } from './parts';
 import { Reveal } from './Reveal';
+import { WorkStage } from './WorkStage';
 
 interface PageProps {
   snap: Snapshot;
   link: LinkFn;
-  /** Addresses of files under the site root (screenshots), which do not carry a query string. */
+  /** Addresses of files under the site root (screenshots). */
   asset: LinkFn;
-  exploreHref: string;
 }
 
-const email = (snap: Snapshot) => snap.settings.contactEmail;
+/** The titles of the home page's sections, in order, for the running index. */
+export const HOME_SECTIONS = ['Work', 'Crew', 'Contact'];
 
-function WorkList({ snap, link, asset }: Pick<PageProps, 'snap' | 'link' | 'asset'>) {
+function Hello({
+  snap,
+  link,
+  page = false,
+  accent,
+}: {
+  snap: Snapshot;
+  link: LinkFn;
+  page?: boolean;
+  accent?: string;
+}) {
+  const mail = snap.settings.contactEmail;
+  const Title = page ? 'h1' : 'h2';
   return (
-    <div className="s-work-list">
-      {snap.projects.map((p, i) => (
-        <WorkPanel key={p.slug} project={p} index={i} link={link} assetBase={asset} />
-      ))}
-    </div>
-  );
-}
-
-function Hello({ snap, link }: { snap: Snapshot; link: LinkFn }) {
-  const mail = email(snap);
-  return (
-    <section id="contact" className="s-hello s-hello--dark" aria-labelledby="hello-title">
+    <section
+      id="contact"
+      data-section
+      className={`s-hello ${page ? `s-hello--page a-${accent}` : 's-hello--dark'}`}
+      aria-labelledby="hello-title"
+    >
       <div className="s-wrap">
         <Sticker text="SAY HELLO" className="s-hello-sticker" />
-        <p className="s-eyebrow mono">
-          <span>03</span> Contact
-        </p>
-        <h2 id="hello-title" className="display s-hello-title">
-          Say hello.
-        </h2>
+        <Reveal>
+          <p className="s-eyebrow mono">
+            {page ? (
+              'Contact'
+            ) : (
+              <>
+                <span>03</span> Contact
+              </>
+            )}
+          </p>
+        </Reveal>
+        <Title id="hello-title" className="display s-hello-title">
+          <SplitText text="Say hello." />
+        </Title>
         {mail ? (
-          <a className="s-hello-mail display" href={`mailto:${mail}`}>
-            {mail}
-          </a>
+          <Magnetic strength={0.5}>
+            <a className="s-hello-mail display" href={`mailto:${mail}`} data-cursor="Write">
+              {mail}
+            </a>
+          </Magnetic>
         ) : (
           <p className="s-lede">Contact details are added with the real content.</p>
         )}
@@ -63,28 +75,27 @@ function Hello({ snap, link }: { snap: Snapshot; link: LinkFn }) {
   );
 }
 
-export function Home({ snap, link, asset, exploreHref }: PageProps) {
+export function Home({ snap, link, asset }: PageProps) {
   return (
     <>
-      <Hero snap={snap} exploreHref={exploreHref} />
+      <Hero snap={snap} />
       <Marquee items={marqueeItems(snap)} accent="tomato" label="Platforms and technologies used" />
-      <section id="work" className="s-section" aria-labelledby="work-title">
+      <section id="work" data-section className="s-section" aria-labelledby="work-title">
         <div className="s-wrap">
-          <SectionHead num="01" eyebrow="Work" title="Selected work" />
-          <h2 id="work-title" className="visually-hidden">
-            Selected work
-          </h2>
+          <SectionHead num="01" eyebrow="Work" title="Selected work" id="work-title" />
         </div>
         <div className="s-wrap s-wrap--wide">
           <WorkList snap={snap} link={link} asset={asset} />
         </div>
       </section>
-      <section id="crew" className="s-section s-section--tint" aria-labelledby="crew-title">
+      <section
+        id="crew"
+        data-section
+        className="s-section s-section--tint"
+        aria-labelledby="crew-title"
+      >
         <div className="s-wrap">
-          <SectionHead num="02" eyebrow="Crew" title="The people behind it" />
-          <h2 id="crew-title" className="visually-hidden">
-            The people behind it
-          </h2>
+          <SectionHead num="02" eyebrow="Crew" title="The people behind it" id="crew-title" />
           <CrewLineup members={snap.members} link={link} />
         </div>
       </section>
@@ -93,21 +104,43 @@ export function Home({ snap, link, asset, exploreHref }: PageProps) {
   );
 }
 
+function PageHead({
+  accent,
+  eyebrow,
+  title,
+  lede,
+}: {
+  accent: string;
+  eyebrow: string;
+  title: string;
+  lede: string;
+}) {
+  return (
+    <section className={`s-page-head a-${accent}`} aria-labelledby="pt">
+      <div className="s-wrap">
+        <Reveal>
+          <p className="s-eyebrow mono">{eyebrow}</p>
+        </Reveal>
+        <h1 id="pt" className="display">
+          <SplitText text={title} />
+        </h1>
+        <Reveal delay={150}>
+          <p className="s-lede">{lede}</p>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
 export function WorkPage({ snap, link, asset }: PageProps) {
   return (
     <>
-      <section className="s-page-head a-sun" aria-labelledby="pt">
-        <div className="s-wrap">
-          <p className="s-eyebrow mono">Work</p>
-          <h1 id="pt" className="display">
-            Selected work
-          </h1>
-          <p className="s-lede">
-            Each project has its own case study: the story, the people, the code and where to try
-            it.
-          </p>
-        </div>
-      </section>
+      <PageHead
+        accent="sun"
+        eyebrow="Work"
+        title="Selected work"
+        lede="Each project has its own case study: the story, the people, the code and where to try it."
+      />
       <section className="s-section" aria-labelledby="all-work">
         <h2 id="all-work" className="visually-hidden">
           All projects
@@ -123,17 +156,12 @@ export function WorkPage({ snap, link, asset }: PageProps) {
 export function CrewPage({ snap, link }: PageProps) {
   return (
     <>
-      <section className="s-page-head a-mint" aria-labelledby="pt">
-        <div className="s-wrap">
-          <p className="s-eyebrow mono">Crew</p>
-          <h1 id="pt" className="display">
-            The people behind it
-          </h1>
-          <p className="s-lede">
-            The people who build at Alpha Studios. Select a card for their story and projects.
-          </p>
-        </div>
-      </section>
+      <PageHead
+        accent="mint"
+        eyebrow="Crew"
+        title="The people behind it"
+        lede="The people who build at Alpha Studios. Select a card for their story and projects."
+      />
       <section className="s-section">
         <div className="s-wrap">
           <CrewLineup members={snap.members} link={link} />
@@ -144,29 +172,7 @@ export function CrewPage({ snap, link }: PageProps) {
 }
 
 export function ContactPage({ snap, link }: PageProps) {
-  const mail = email(snap);
-  return (
-    <section className="s-hello s-hello--page a-lilac" aria-labelledby="pt">
-      <div className="s-wrap">
-        <Sticker text="SAY HELLO" className="s-hello-sticker" />
-        <p className="s-eyebrow mono">Contact</p>
-        <h1 id="pt" className="display s-hello-title">
-          Say hello.
-        </h1>
-        {mail ? (
-          <a className="s-hello-mail display" href={`mailto:${mail}`}>
-            {mail}
-          </a>
-        ) : (
-          <p className="s-lede">Contact details are added with the real content.</p>
-        )}
-        <p className="s-lede">
-          To join the crew, ask the admin for an invite code, then use the{' '}
-          <a href={link('/portal/')}>crew login</a>.
-        </p>
-      </div>
-    </section>
-  );
+  return <Hello snap={snap} link={link} page accent="lilac" />;
 }
 
 export function CaseStudy({ snap, slug, link, asset }: PageProps & { slug: string }) {
@@ -193,43 +199,36 @@ export function CaseStudy({ snap, slug, link, asset }: PageProps & { slug: strin
               {String(index + 1).padStart(2, '0')}
             </p>
             <h1 id="pt" className="display">
-              {p.name}
+              <SplitText text={p.name} />
             </h1>
-            <p className="s-lede">{p.summary}</p>
-            <ul className="s-chips" aria-label="Status and platforms">
-              <li className="s-chip s-chip--solid">{statusLabel[p.status]}</li>
-              {p.platforms.map((x) => (
-                <li key={x} className="s-chip">
-                  {platformLabel[x]}
-                </li>
-              ))}
-            </ul>
-            {buttons.length > 0 && (
-              <p className="s-actions">
-                {buttons.map((b, i) => (
-                  <a
-                    key={b.key}
-                    className={`s-btn ${i === 0 ? 's-btn--ink' : 's-btn--line'}`}
-                    href={b.href}
-                    rel="noopener noreferrer"
-                  >
-                    {b.label}
-                  </a>
+            <Reveal delay={120}>
+              <p className="s-lede">{p.summary}</p>
+              <ul className="s-chips" aria-label="Status and platforms">
+                <li className="s-chip s-chip--solid">{statusLabel[p.status]}</li>
+                {p.platforms.map((x) => (
+                  <li key={x} className="s-chip">
+                    {platformLabel[x]}
+                  </li>
                 ))}
-              </p>
-            )}
+              </ul>
+              {buttons.length > 0 && (
+                <p className="s-actions">
+                  {buttons.map((b, i) => (
+                    <Magnetic key={b.key}>
+                      <a
+                        className={`s-btn ${i === 0 ? 's-btn--ink' : 's-btn--line'}`}
+                        href={b.href}
+                        rel="noopener noreferrer"
+                      >
+                        {b.label}
+                      </a>
+                    </Magnetic>
+                  ))}
+                </p>
+              )}
+            </Reveal>
           </div>
-          <div className="s-work-stage s-work-stage--case">
-            {shots.map((s, i) => (
-              <DeviceMock
-                key={s.src}
-                shot={s}
-                src={asset(`/${s.src}`)}
-                label={p.name}
-                className={`d${i}`}
-              />
-            ))}
-          </div>
+          <WorkStage shots={shots} name={p.name} asset={asset} className="s-work-stage--case" />
         </div>
       </section>
 
@@ -240,7 +239,9 @@ export function CaseStudy({ snap, slug, link, asset }: PageProps & { slug: strin
             <h2 id="story-title" className="visually-hidden">
               The story
             </h2>
-            <p className="s-story display">{p.story || p.summary}</p>
+            <Reveal>
+              <p className="s-story display">{p.story || p.summary}</p>
+            </Reveal>
           </div>
           <aside aria-label="Built with">
             <p className="s-eyebrow mono">Built with</p>
@@ -260,7 +261,7 @@ export function CaseStudy({ snap, slug, link, asset }: PageProps & { slug: strin
                       className={`s-avatar a-${memberAccent(snap.members, m.slug)}`}
                       aria-hidden="true"
                     >
-                      {initials(m.name)}
+                      <Portrait record={m.avatar} />
                     </span>
                     <span>
                       {m.name}
@@ -279,7 +280,7 @@ export function CaseStudy({ snap, slug, link, asset }: PageProps & { slug: strin
           <div className="s-wrap">
             <p className="s-eyebrow mono">In the open</p>
             <h2 id="gh-title" className="display s-h2">
-              On GitHub
+              <SplitText text="On GitHub" />
             </h2>
             <div className="s-stats">
               <Reveal className="s-stat a-sun">
@@ -349,7 +350,11 @@ export function CaseStudy({ snap, slug, link, asset }: PageProps & { slug: strin
       <section className="s-next" aria-label="Next case study">
         <div className="s-wrap">
           <p className="s-eyebrow mono">Next</p>
-          <a className="display s-next-link" href={link(`/projects/${next.slug}/`)}>
+          <a
+            className="display s-next-link"
+            href={link(`/projects/${next.slug}/`)}
+            data-cursor="Go"
+          >
             {next.name} <span aria-hidden="true">→</span>
           </a>
         </div>
@@ -375,34 +380,38 @@ export function CrewProfile({ snap, slug, link }: PageProps & { slug: string }) 
             <a href={link('/crew/')}>Crew</a> / {m.role}
           </p>
           <h1 id="pt" className="display">
-            {m.name}
+            <SplitText text={m.name} />
           </h1>
-          <p className="s-lede">{m.bio}</p>
-          {Object.keys(m.links).length > 0 && (
-            <ul className="s-links" aria-label="Links">
-              {Object.entries(m.links).map(([k, v]) => (
-                <li key={k}>
-                  <a className="s-btn s-btn--line" href={v} rel="noopener noreferrer">
-                    {k[0].toUpperCase() + k.slice(1)}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          )}
-          {projects.length > 0 && (
-            <>
-              <p className="s-eyebrow mono s-space">Works on</p>
-              <ul className="s-chips">
-                {projects.map((p) => (
-                  <li key={p.slug}>
-                    <a className="s-chip s-chip--solid" href={link(`/projects/${p.slug}/`)}>
-                      {p.name}
-                    </a>
+          <Reveal delay={120}>
+            <p className="s-lede">{m.bio}</p>
+            {Object.keys(m.links).length > 0 && (
+              <ul className="s-links" aria-label="Links">
+                {Object.entries(m.links).map(([k, v]) => (
+                  <li key={k}>
+                    <Magnetic>
+                      <a className="s-btn s-btn--line" href={v} rel="noopener noreferrer">
+                        {k[0].toUpperCase() + k.slice(1)}
+                      </a>
+                    </Magnetic>
                   </li>
                 ))}
               </ul>
-            </>
-          )}
+            )}
+            {projects.length > 0 && (
+              <>
+                <p className="s-eyebrow mono s-space">Works on</p>
+                <ul className="s-chips">
+                  {projects.map((p) => (
+                    <li key={p.slug}>
+                      <a className="s-chip s-chip--solid" href={link(`/projects/${p.slug}/`)}>
+                        {p.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+          </Reveal>
         </div>
       </div>
     </section>
@@ -415,15 +424,17 @@ export function PortalDoor({ link }: { link: LinkFn }) {
       <div className="s-wrap">
         <p className="s-eyebrow mono">Crew only</p>
         <h1 id="pt" className="display s-hello-title">
-          Crew login
+          <SplitText text="Crew login" />
         </h1>
         <p className="s-lede">
           A door for the crew and the admin to keep their profiles and projects up to date.
         </p>
         <p className="s-actions">
-          <a className="s-btn s-btn--ink" href={`${link('/portal/app/')}`}>
-            Open the portal
-          </a>
+          <Magnetic>
+            <a className="s-btn s-btn--ink" href={link('/portal/app/')}>
+              Open the portal
+            </a>
+          </Magnetic>
         </p>
       </div>
     </section>
@@ -436,19 +447,23 @@ export function NotFoundPage({ link }: { link: LinkFn }) {
       <div className="s-wrap">
         <Sticker text="404 · LOST · 404 · LOST" className="s-lost-sticker" />
         <h1 id="pt" className="display s-hello-title">
-          This page wandered off.
+          <SplitText text="This page wandered off." />
         </h1>
         <p className="s-lede">
           This address does not lead anywhere on the site. It may have moved, or the link may have a
           typo.
         </p>
         <p className="s-actions">
-          <a className="s-btn s-btn--ink" href={link('/')}>
-            Back to the start
-          </a>
-          <a className="s-btn s-btn--line" href={link('/projects/')}>
-            See the work
-          </a>
+          <Magnetic>
+            <a className="s-btn s-btn--ink" href={link('/')}>
+              Back to the start
+            </a>
+          </Magnetic>
+          <Magnetic>
+            <a className="s-btn s-btn--line" href={link('/projects/')}>
+              See the work
+            </a>
+          </Magnetic>
         </p>
         <Mark className="s-lost-mark" />
       </div>

@@ -3,28 +3,26 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { siteBudget } from '../scripts/sizes';
 
-// Run `npm run build` first. The spec's target: under 3 MB downloaded before the page appears.
+// Run `npm run build` first. The spec's target is under 3 MB before the page appears; this site holds itself to far less.
 const built = existsSync('dist/.vite/manifest.json');
 const d = built ? describe : describe.skip;
 
 d('download budget', () => {
   const b = siteBudget();
 
-  it('keeps the first visit to the bright site under 3 MB (gzip)', () => {
+  it('keeps the first visit under 3 MB (gzip), as the spec requires', () => {
     expect(b.total).toBeLessThan(3 * 1024 * 1024);
   });
 
-  it('does not put any 3D code in the first visit', () => {
+  it('keeps it under 500 kB (gzip), so an extra library or font does not slip in unnoticed', () => {
+    expect(b.total).toBeLessThan(500 * 1024);
+  });
+
+  it('ships no 3D code and no backend client in the public site', () => {
     for (const f of b.siteFiles.filter((x) => x.endsWith('.js'))) {
       const text = readFileSync(join('dist', f), 'utf8');
       expect(text, f).not.toContain('WebGLRenderer');
+      expect(text.toLowerCase(), f).not.toContain('supabase');
     }
-  });
-
-  it('keeps Explore, avatars, rooms and sound as separate downloads', () => {
-    expect(b.explore).toBeGreaterThan(100 * 1024);
-    for (const l of b.lazy) expect(l.bytes, l.name).toBeGreaterThan(0);
-    const names = b.parts.map((p) => p.name).join(' ');
-    expect(names).not.toMatch(/3D|room|sound/i);
   });
 });

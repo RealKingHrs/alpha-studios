@@ -1,17 +1,10 @@
 /* Alpha Studios design tokens. Source of truth for colour, type, space and motion.
-   Two palettes: the bright site (paper, ink and accents) and the dark vault used by Explore in 3D.
+   Paper, ink and five accents; gold only for the logo flick and admin marks.
    Do not hardcode these values elsewhere. */
 
 :root {
-  /* Colour roles. Every pairing below clears 4.5:1 text contrast on Obsidian. */
-  --obsidian: #0B0C0D;      /* page background, vault walls */
-  --graphite: #16181B;      /* panels, pedestals, cards */
-  --line: #26292D;          /* hairline borders on dark */
-  --chrome: #E9ECEF;        /* headlines, reflective surfaces, key highlights (16.5:1) */
-  --silver: #A9AFB6;        /* body text, labels (8.9:1) */
-  --gold: #C9A24B;          /* focus, the logo flick, featured project, admin (8.2:1) */
-  --emerald: #1F9D6B;       /* interactive controls, live status (5.7:1) */
-  --emerald-glow: #3DDC97;  /* small green text, hover glow (11.1:1) */
+  /* Gold appears only as the flick of the logo, and on admin-only controls in the portal. */
+  --gold: #C9A24B;
 
   /* The bright site. Accents are fills with ink text, never text on paper. */
   --paper: #F6F1E7;
@@ -25,23 +18,16 @@
   --sky: #7FB2FF;
   --lilac: #C4B0FF;
 
-  /* Mark colours: the ink mark on paper, chrome on the dark vault */
+  /* Mark colours */
   --mark-edge: var(--ink-soft);
   --mark-core: var(--ink);
 
-  /* Theme roles. The site is light by default; html.explore flips them to the dark vault. */
+  /* Theme roles */
   --bg: var(--paper);
   --fg: var(--ink);
   --fg-soft: var(--ink-soft);
   --focus-color: var(--ink);
   --cursor-color: var(--ink);
-
-  /* Gold budget: at most one gold element per view, except admin-only controls in the portal.
-     Gold and emerald never share an element. */
-
-  /* Metallic fills used by the logo and 3D materials */
-  --grad-chrome: linear-gradient(135deg, #9AA1A8 0%, #F7F9FA 45%, #B5BBC2 100%);
-  --grad-gold: linear-gradient(135deg, #E8CE86 0%, #C9A24B 55%, #9C7727 100%);
 
   /* Typography: self-host open-licence fonts. Regular (400) and medium (500) weights only. */
   --font-display: "Fraunces Variable", Georgia, "Times New Roman", serif;
@@ -81,7 +67,7 @@
   --dur-fast: 160ms;
   --dur-base: 320ms;
   --dur-slow: 720ms;
-  /* Reduced motion swaps camera flights for fades. This one stays on in that mode. */
+  /* Reduced motion keeps this short fade; everything else is switched off. */
   --dur-fade: 320ms;
 
   /* Focus */
@@ -104,16 +90,6 @@ html {
   line-height: var(--leading-body);
 }
 
-/* Explore in 3D is the dark vault. */
-html.explore {
-  --bg: var(--obsidian);
-  --fg: var(--silver);
-  --fg-soft: var(--silver);
-  --focus-color: var(--gold);
-  --cursor-color: var(--chrome);
-  --mark-edge: var(--silver);
-  --mark-core: var(--chrome);
-}
 
 :focus-visible {
   outline: 3px solid var(--focus-color);

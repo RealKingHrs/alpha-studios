@@ -50,53 +50,14 @@ html.reduce-motion {
 .skip-link:focus {
   top: var(--space-2);
 }
-html.explore .skip-link {
-  background: var(--graphite);
-  color: var(--chrome);
-}
 
-/* Cursor and tap ripples, shared by the site and Explore */
-.cursor {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 90;
-  width: 0;
-  height: 0;
-  pointer-events: none;
-  display: none;
-}
-.cursor::before {
-  content: '';
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  margin: -5px 0 0 -5px;
-  border-radius: 50%;
-  background: var(--cursor-color);
-  transition:
-    width var(--dur-fast) var(--ease),
-    height var(--dur-fast) var(--ease),
-    margin var(--dur-fast) var(--ease),
-    background var(--dur-fast) var(--ease),
-    border-color var(--dur-fast) var(--ease);
-}
-.cursor.is-hot::before {
-  width: 40px;
-  height: 40px;
-  margin: -20px 0 0 -20px;
-  background: transparent;
-  border: 2px solid var(--cursor-color);
-}
+/* The native cursor hides only while the custom one is on, for mouse users */
 @media (pointer: fine) {
-  html.fx .cursor {
-    display: block;
-  }
   html.fx,
   html.fx body,
   html.fx a,
   html.fx button,
-  html.fx .vault-layer canvas {
+  html.fx [data-cursor] {
     cursor: none !important;
   }
   html.fx input,
@@ -105,20 +66,13 @@ html.explore .skip-link {
     cursor: text;
   }
 }
-.control,
-.button,
-.toggle,
-.intro-skip,
-.s-btn {
-  will-change: transform;
-}
 .ripple {
   position: fixed;
-  z-index: 90;
+  z-index: 190;
   width: 8px;
   height: 8px;
   margin: -4px 0 0 -4px;
-  border: 2px solid var(--cursor-color);
+  border: 1.5px solid var(--ink);
   border-radius: 50%;
   pointer-events: none;
   animation: ripple var(--dur-slow) var(--ease) forwards;

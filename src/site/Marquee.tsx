@@ -1,4 +1,19 @@
-/** A band of words sliding past on an accent colour. The copy that repeats it is hidden from assistive tech. */
+import {
+  motion,
+  useAnimationFrame,
+  useScroll,
+  useSpring,
+  useTransform,
+  useVelocity,
+} from 'motion/react';
+import { useRef } from 'react';
+import { useMotionOn } from './motion/context';
+import { marqueeStep, velocitySkew } from './motion/helpers';
+
+/**
+ * A band of words sliding past on an accent colour. With motion on, it speeds up and leans while the page
+ * scrolls. Without it, a plain CSS slide (or, for reduced motion, nothing). Copies are hidden from assistive tech.
+ */
 export function Marquee({
   items,
   accent = 'sun',
@@ -8,9 +23,23 @@ export function Marquee({
   accent?: string;
   label: string;
 }) {
+  const on = useMotionOn();
+  const track = useRef<HTMLDivElement>(null);
+  const first = useRef<HTMLUListElement>(null);
+  const x = useRef(0);
+  const { scrollY } = useScroll();
+  const velocity = useSpring(useVelocity(scrollY), { stiffness: 300, damping: 60 });
+  const skewX = useTransform(velocity, (v) => velocitySkew(v));
+
+  useAnimationFrame((_, delta) => {
+    if (!on || !track.current || !first.current) return;
+    x.current = marqueeStep(x.current, delta / 1000, velocity.get(), first.current.offsetWidth);
+    track.current.style.transform = `translate3d(${x.current}px,0,0)`;
+  });
+
   if (items.length === 0) return null;
-  const row = (hidden: boolean) => (
-    <ul className="marquee-row" aria-hidden={hidden || undefined}>
+  const row = (hidden: boolean, ref?: React.Ref<HTMLUListElement>) => (
+    <ul className="marquee-row" aria-hidden={hidden || undefined} ref={ref}>
       {items.map((t, i) => (
         <li key={`${t}-${i}`}>
           {t}
@@ -20,12 +49,14 @@ export function Marquee({
     </ul>
   );
   return (
-    <section className={`marquee a-${accent}`} aria-label={label}>
-      <div className="marquee-track">
-        {row(false)}
-        {row(true)}
-        {row(true)}
-      </div>
+    <section className={`marquee a-${accent} ${on ? 'is-js' : ''}`} aria-label={label}>
+      <motion.div style={on ? { skewX } : undefined}>
+        <div className="marquee-track" ref={track}>
+          {row(false, first)}
+          {row(true)}
+          {row(true)}
+        </div>
+      </motion.div>
     </section>
   );
 }

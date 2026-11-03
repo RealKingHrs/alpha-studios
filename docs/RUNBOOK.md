@@ -143,7 +143,7 @@ Tick each line with the date and who checked it. Nothing here is done until a pe
 
 - [ ] Publish workflow ran green from the Actions tab and the live site shows the new content.
 - [ ] A change in the portal appears on the live site after the next publish.
-- [ ] Direct links to a room, a profile and an unknown address work on the live host (the unknown one shows the in-vault 404).
+- [ ] Direct links to a case study, a profile and an unknown address work on the live host (the unknown one shows the playful 404).
 - [ ] Backup export taken: from the Supabase dashboard, a database backup or `pg_dump`, plus a copy of the published `content.json`. Stored outside the repo. Date: ________.
 - [ ] Free-tier limits rechecked today.
 
@@ -151,5 +151,5 @@ Tick each line with the date and who checked it. Nothing here is done until a pe
 
 - [ ] Performance measured on a real recent laptop and a real mid-range phone; numbers written in `docs/PERFORMANCE.md`; gaps accepted by the owner.
 - [ ] Keyboard-only walkthrough and a real screen reader pass (VoiceOver on Mac and iPhone) by a person.
-- [ ] Opened on a real phone: the home page, a case study, the crew row with its 3D avatars, Explore in 3D (travel by swipe, a room), and the portal sign-in.
+- [ ] Opened on a real phone: the home page, the stacking project panels, a case study, the crew characters, and the portal sign-in.
 - [ ] Share previews checked by pasting a few addresses into a chat or social post.

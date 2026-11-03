@@ -3,7 +3,6 @@ import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import { Snapshot } from '../src/content/schema';
-import { isExplore } from '../src/router';
 import { App } from '../src/App';
 import {
   ACCENTS,
@@ -93,40 +92,37 @@ describe('device stack', () => {
   });
 });
 
-describe('Explore in 3D is opt-in', () => {
-  it('turns on only with ?explore, and keeps other switches', () => {
-    expect(isExplore('')).toBe(false);
-    expect(isExplore('?mode=lite')).toBe(false);
-    expect(isExplore('?explore')).toBe(true);
-    expect(isExplore('?mode=lite&explore')).toBe(true);
-  });
-
-  it('renders the bright site by default, complete without any script', () => {
+describe('the site', () => {
+  it('renders complete, real HTML without any script', () => {
     const html = renderToStaticMarkup(createElement(App, { snap, pathname: base, base }));
     expect(html).toContain('class="site"');
     expect(html).toContain('Apps for iPhone, Mac and the web.');
-    expect(html).toContain('Explore in 3D');
-    // both projects are on the page as real links, and the crew is there as text
     expect(html).toContain('href="/alpha-studios/projects/project-one/"');
     expect(html).toContain('href="/alpha-studios/projects/project-two/"');
     expect(html).toContain('Member one');
-    expect(html).not.toContain('vault-layer');
+    expect(html).not.toMatch(/explore|vault|3D/i);
   });
 
-  it('keeps the heading structure sane on every address', () => {
-    for (const path of [
+  it('keeps one first-level heading on every address', () => {
+    const paths = [
       '',
       'projects/',
       'projects/project-one/',
-      'projects/project-one/room/',
       'crew/',
       'crew/member-two/',
       'contact/',
       'portal/',
       'nowhere/',
-    ]) {
+    ];
+    for (const path of paths) {
       const html = renderToStaticMarkup(createElement(App, { snap, pathname: base + path, base }));
       expect((html.match(/<h1[ >]/g) ?? []).length, path).toBe(1);
     }
+  });
+
+  it('shows no content that depends on animation having run', () => {
+    const html = renderToStaticMarkup(createElement(App, { snap, pathname: base + 'crew/', base }));
+    expect(html).not.toContain('opacity:0');
+    expect(html).toContain('The people behind it');
   });
 });

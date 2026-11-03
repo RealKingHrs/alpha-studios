@@ -1,6 +1,6 @@
-import { Canvas } from '@react-three/fiber';
-import { useEffect, useMemo, useState } from 'react';
-import { AvatarBust } from '../../avatar/AvatarBust';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { usePortraitLook } from '../../avatar/look';
+import { Portrait } from '../../avatar/Portrait';
 import {
   COUNTS,
   GROUPS,
@@ -32,6 +32,8 @@ export function Builder({ store, reduce }: { store: AvatarStore; reduce: boolean
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState<Status>({ kind: 'idle' });
   const [reactKey, setReactKey] = useState(0);
+  const stage = useRef<HTMLDivElement>(null);
+  usePortraitLook(stage, !reduce);
 
   useEffect(() => {
     let live = true;
@@ -55,35 +57,21 @@ export function Builder({ store, reduce }: { store: AvatarStore; reduce: boolean
     setStatus({ kind: 'idle' });
     setReactKey((k) => k + 1);
   };
-  const warm = useMemo(
-    () => getComputedStyle(document.documentElement).getPropertyValue('--light-warm').trim(),
-    [],
-  );
-  const bg = useMemo(
-    () => getComputedStyle(document.documentElement).getPropertyValue('--obsidian').trim(),
-    [],
-  );
 
   if (loading) return <p role="status">Loading your avatar.</p>;
 
   return (
     <div className="builder">
-      <div className="stage" role="img" aria-label="Live preview of your avatar">
-        <Canvas camera={{ position: [0, 0.6, 2.2], rotation: [0, 0, 0], fov: 32 }} dpr={[1, 2]}>
-          <color attach="background" args={[bg]} />
-          <hemisphereLight args={['#ffffff', bg, 1.6]} />
-          <pointLight position={[1.2, 1.6, 2]} intensity={16} color={warm} />
-          <pointLight position={[-1.4, 0.6, 1.4]} intensity={6} />
-          <pointLight position={[0, 1.2, -1.5]} intensity={8} />
-          <AvatarBust
-            record={record}
-            position={[0, 0, 0]}
-            follow
-            reactKey={reactKey}
-            reduce={reduce}
-            scale={1.2}
-          />
-        </Canvas>
+      <div className="stage" ref={stage}>
+        <div className="stage-disc">
+          <div key={reactKey} className="stage-hop">
+            <Portrait
+              record={record}
+              label="Live preview of your avatar"
+              className="portrait--big"
+            />
+          </div>
+        </div>
       </div>
 
       <div className="controls-column">

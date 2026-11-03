@@ -15,10 +15,6 @@ export function pageMeta(
       const p = snap.projects.find((x) => x.slug === route.slug)!;
       return { title: `${p.name} | ${STUDIO}`, description: p.summary };
     }
-    case 'room': {
-      const p = snap.projects.find((x) => x.slug === route.slug)!;
-      return { title: `${p.name}, the room | ${STUDIO}`, description: p.story || p.summary };
-    }
     case 'member': {
       const m = snap.members.find((x) => x.slug === route.slug)!;
       return { title: `${m.name}, ${m.role} | ${STUDIO}`, description: m.bio };

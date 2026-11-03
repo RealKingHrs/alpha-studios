@@ -12,7 +12,7 @@ import { allPaths } from '../src/routes';
 
 const base = process.env.SITE_BASE ?? '/alpha-studios/';
 const siteUrl = (process.env.SITE_URL ?? '').replace(/\/$/, '');
-const dist = 'dist';
+const dist = process.env.DIST ?? 'dist';
 const snap = Snapshot.parse(JSON.parse(await readFile(join(dist, 'content.json'), 'utf8')));
 const template = await readFile(join(dist, 'index.html'), 'utf8');
 
@@ -95,15 +95,10 @@ function page(path: string): string {
     `<link rel="icon" href="${base}favicon.ico" sizes="48x48" />`,
     `<link rel="icon" href="${base}favicon.svg" type="image/svg+xml" />`,
     `<link rel="apple-touch-icon" href="${base}apple-touch-icon.png" />`,
-    ...(path.endsWith('/room/')
-      ? [
-          `<link rel="canonical" href="${siteUrl}${base}${path.replace(/^\//, '').replace(/room\/$/, '')}" />`,
-        ]
-      : []),
     `<link rel="manifest" href="${base}manifest.webmanifest" />`,
   ].join('\n    ');
   const html = renderToString(
-    createElement(App, { snap, pathname: base + path.replace(/^\//, ''), base, search: '' }),
+    createElement(App, { snap, pathname: base + path.replace(/^\//, ''), base }),
   );
   return template.replace('<!--head-->', head).replace('<!--app-->', html);
 }

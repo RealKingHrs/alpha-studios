@@ -4,7 +4,7 @@ Status: ready for implementation. Items marked **Proposed** are recommendations 
 
 ## 1. Vision
 
-Alpha Studios gets a portfolio that leads with the work: a bright, confident, playful studio site where visitors see two projects and five people straight away, with an optional explorable 3D vault ("Explore in 3D") for those who want to wander. Alpha Studios builds native iOS and macOS apps, web apps and more. At launch the vault holds two projects and five crew members, and visitors can try each project through the App Store, Play Store or GitHub.
+Alpha Studios gets a portfolio that leads with the work: a bright, premium, richly animated studio site where visitors see two projects and five people straight away. (The explorable 3D vault was retired on 3 November 2026.) Alpha Studios builds native iOS and macOS apps, web apps and more. At launch the site shows two projects and five crew members, and visitors can try each project through the App Store, Play Store or GitHub.
 
 Principles:
 
@@ -12,10 +12,10 @@ Principles:
 - Nothing generic. No purple gradients, frosted-glass card grids, stock copy or emoji icons. One easing curve, one spacing scale, one icon style.
 - Open to everyone. Visitors see and try everything without logging in.
 - Owned by the people in it. Crew manage their own profiles; the admin owns the studio.
-- One flow, three experiences. Full 3D vault on desktop, a lighter touch version on phones, a calm static path for reduced-motion users.
+- One site, three feels. Full motion with smooth scrolling and a custom cursor on desktop, a lighter touch version on phones, a calm static path for reduced-motion users.
 - Free to run. Static frontend plus a free-tier backend.
 
-Launch scope. In: the vault with intro, corridor and sound toggle; two project rooms; five crew busts and the avatar builder; the portal with invite codes, profile and project editors, and admin tools; live GitHub details and GitHub sign-in; phone lite mode and reduced-motion mode. Later: full-body avatars, a custom domain if wanted, embedded live demos for web projects, analytics, and any projects or crew beyond the launch set.
+Launch scope. In: the animated site with intro, work, case studies and crew profiles; five geometric crew characters and the avatar builder; the portal with invite codes, profile and project editors, and admin tools; live GitHub details and GitHub sign-in; reduced-motion mode. Later: full-body avatars, a custom domain if wanted, embedded live demos for web projects, analytics, and any projects or crew beyond the launch set.
 
 ## 2. Decisions
 
@@ -24,16 +24,16 @@ Launch scope. In: the vault with intro, corridor and sound toggle; two project r
 | Studio            | Alpha Studios: native iOS and macOS apps, web apps and more                                                                              | Decided                           |
 | Concept           | The vault, an explorable 3D space, in a quiet luxury mood                                                                                | Decided                           |
 | Logo              | A bold, calligraphic lowercase alpha in chrome with a gold flick                                                                         | Decided; trademark check pending  |
-| Project page      | A gallery room per project with floating device mockups, team avatars and store or GitHub buttons                                        | Decided                           |
+| Project page      | A case study per project with parallax device mockups, team characters and store or GitHub buttons                                       | Decided                           |
 | Typography        | A clean sans with monospace accents (Inter and JetBrains Mono)                                                                           | Direction decided; fonts proposed |
 | Colors            | Black, silver, chrome, gold and green with the roles in `design/tokens.css`                                                              | Proposed                          |
 | Finishing touches | Cinematic intro that doubles as the loader, custom cursor with hover physics, sound off by default                                       | Decided                           |
 | Avatars           | Head-and-shoulders 3D busts from a parts-kit builder, no AI; full-body later                                                             | Decided                           |
 | Photos            | Used only as a reference while building an avatar, never stored                                                                          | Decided                           |
 | Portal            | A separate dashboard at its own address, same brand                                                                                      | Decided                           |
-| Devices           | Desktop first with the full 3D vault; phones get a lighter version                                                                       | Decided                           |
+| Devices           | Desktop first with smooth scrolling and a custom cursor; phones keep native touch scrolling                                              | Decided                           |
 | Backend           | Static frontend plus a free-tier backend for data, login and uploads                                                                     | Decided; Supabase proposed        |
-| Public content    | Visitors read a static content snapshot, so the vault stays up if the backend sleeps                                                     | Proposed                          |
+| Public content    | Visitors read a static content snapshot, so the site stays up if the backend sleeps                                                      | Proposed                          |
 | GitHub            | Live repo data on project cards, GitHub sign-in, contributors mapped to crew profiles                                                    | Decided                           |
 | Access            | The admin issues one-time invite codes; the member then chooses their own login                                                          | Decided                           |
 | Launch content    | Two projects and five crew members                                                                                                       | Decided                           |
@@ -54,54 +54,34 @@ The mark is a bold, calligraphic lowercase alpha: a wide oval bowl with thick si
 
 Tokens live in `design/tokens.css`. Colour roles:
 
-| Role         | Hex     | Contrast on Obsidian | Used for                                       |
-| ------------ | ------- | -------------------- | ---------------------------------------------- |
-| Obsidian     | #0B0C0D | n/a                  | Page background, vault walls                   |
-| Graphite     | #16181B | n/a                  | Panels, pedestals, cards                       |
-| Chrome       | #E9ECEF | 16.5:1               | Headlines, reflective surfaces, key highlights |
-| Silver       | #A9AFB6 | 8.9:1                | Body text, labels, hairline borders            |
-| Gold         | #C9A24B | 8.2:1                | Focus, the logo flick, featured project, admin |
-| Emerald      | #1F9D6B | 5.7:1                | Interactive controls and live status           |
-| Emerald glow | #3DDC97 | 11.1:1               | Small green text and glow on hover             |
+| Role | Hex | Contrast on Obsidian | Used for |
+| ---- | --- | -------------------- | -------- |
 
-- Colour rules (site): accent colours are fills with ink text, never text on paper. Gold appears only as the flick of the logo, plus admin-only controls in the portal. In Explore (dark), the earlier rules apply: at most one gold element per view, emerald for things you can act on.
-- Focus: a 3 px ink ring on paper (gold does not reach 3:1 on paper); gold in Explore.
+- Colour rules (site): accent colours are fills with ink text, never text on paper. Gold appears only as the flick of the logo, plus admin-only controls in the portal.
+- Focus: a 3 px ink ring on paper (gold does not reach 3:1 on paper).
 - Typography: one clean sans in regular and medium weights, monospace for small labels, version numbers, build dates and code details. Modular type scale, large quiet headlines, generous line spacing.
-- Spacing and layout: one 8 px scale; a 12-column grid for the dashboard and flat overlays on the vault; large margins.
-- Motion: one easing curve and three durations. Camera moves are slow and eased. Elements enter in a fixed order: background, object, label. Nothing bounces.
-- Cursor and hover: a small custom cursor that grows over interactive objects; magnetic pull on buttons and pedestals; objects tilt slightly toward the pointer. Touch screens get tap ripples.
-- Sound: off by default with a visible mute toggle. Browsers block audio until interaction, so the intro is silent and sound starts only after the first tap or click on the toggle. Low ambient hum, soft interface ticks, a chime on opening a project room. Files are small and load after the intro.
+- Spacing and layout: one 8 px scale; a 12-column grid for pages and the dashboard; large margins.
+- Motion: one house easing curve. Headlines rise word by word out of masks, panels stack as you scroll, devices drift at three depths, the marquee follows scroll speed, pages change with a colour-band wipe, buttons lean toward the pointer. Smooth scrolling for mouse users only. All of it switches off for reduced motion and by the "Playful effects" switch, and the content is complete without it.
+- Cursor and hover: a dot with a lagging ring that swells over things you can act on and becomes a labelled bubble ("Open", "Meet") over cards; magnetic buttons; tap ripples on touch.
+- Sound: none. (Retired with the vault.)
 - Icons and imagery: one outline icon set at one stroke weight. Project imagery is real app screenshots in device frames, never stock photos.
-- States: designed loading, empty, error and offline states for every screen, including a branded 404 inside the vault.
-- Accessibility: full keyboard navigation of the vault, visible gold focus rings, text alternatives for 3D objects, a reduced-motion mode that replaces camera moves with fades, labels for any sound cues.
-- Performance targets (decided): under 3 MB downloaded before the corridor appears with other 3D assets streaming during the intro; 60 frames per second on a recent laptop; automatic lite mode if frame rate stays under 30 for two seconds or the device reports low power; compressed models and textures; each project room loaded only when visited.
+- States: designed loading, empty, error and offline states for every screen, including a playful branded 404.
+- Accessibility: full keyboard navigation, a visible 3 px ink focus ring, focus moved to the new page heading after each change and announced, a reduced-motion mode that removes every effect.
+- Performance targets (decided): under 3 MB downloaded before the page appears (this site holds itself to under 500 kB); 60 frames per second on a recent laptop; every effect off for reduced motion; fonts self-hosted.
 
-## 5. The site and the vault
+## 5. The site
 
-The default site is a set of real pages, each with its own address: the home page (hero, a marquee of the tech used, the work as large coloured panels with device mockups, the crew lineup, contact), a case study for each project, a profile for each crew member, and a playful 404. Everything is prerendered HTML first. The 3D vault below is the opt-in "Explore in 3D" mode, switched on by `?explore` on any address; its behaviour is unchanged.
-
-### Explore in 3D (the vault)
-
-One continuous space with no menu bar. The camera flies forward and back; every page of the site is a place in it.
-
-- Intro and loader: the alpha assembles in chrome, the gold flick draws through, and the doors open onto the corridor. It plays while assets load, can be skipped, and plays in full only on the first visit.
-- The journey, five beats in order: entrance (logo and studio statement); project hall (two lit pedestals); crew gallery (five busts on a curved roster platform); contact alcove (get in touch or join); keyhole door to the crew portal at the far end. Beats are spaced so the camera always has something to travel toward.
-- Moving: scroll, arrow keys, swipe or on-screen forward and back controls move the camera, easing to rest in front of each pedestal. Pointer movement shifts the view slightly. A small index shows position and lets visitors jump.
-- Project rooms: selecting a pedestal glides the camera through a doorway into that project's gallery room, with the app on floating iPhone, Mac or browser frames, a short story, the tech used, the team busts, live GitHub details, and buttons for the App Store, Play Store or GitHub. A back control returns to the same spot in the corridor.
-- Crew profiles: selecting a bust brings it forward under a spotlight with role, bio, project memberships and social links (GitHub, LinkedIn, YouTube, Snapchat, Instagram).
-- Shareable places and search: every pedestal, room and profile has its own address. Each address also serves ordinary HTML with text, links, page title and a share image, generated at build time from the content snapshot. Static hosting needs a fallback page or pre-built pages for these addresses.
-- Phones: the same corridor with fewer lights and reflections, lower-resolution 3D and touch-first controls; a simple vertical flow if the device cannot cope.
-- Reduced motion: camera flights become fades; the intro becomes a still logo.
+The site is a set of real pages, each with its own address and prerendered HTML: the home page (hero, a marquee of the tech used, the work as stacking coloured panels with device mockups, the crew lineup, contact), a case study for each project, a profile for each crew member, and a playful 404. Motion is layered on top: smooth scrolling, scroll-linked parallax, masked text reveals, page transitions, magnetic buttons and a refined cursor. Every effect switches off for reduced motion and by the "Playful effects" switch, and the content is complete without any of it.
 
 ## 6. Crew avatars
 
-Each member builds a head-and-shoulders 3D bust from a parts kit. No AI service.
+Each member builds a bold geometric character, drawn as animated SVG, from a parts kit. No AI service.
 
-- Builder: live 3D preview beside option panels: head and face shape, skin tone, eyes, brows, nose, mouth, hairstyle and colour, facial hair, glasses and frame colour, earrings and chains, outfit with hoodie, collar and colour. Styling: soft clay-like surfaces, rounded forms, warm lighting, clean studio background matching the vault.
+- Builder: live preview beside option panels: head and face shape, skin tone, eyes, brows, nose, mouth, hairstyle and colour, facial hair, glasses and frame colour, earrings and chains, outfit with hoodie, collar and colour. Styling: flat colour, ink outlines, a coloured disc backdrop that matches the site.
 - Photo as guide: the member may open their real photo beside the builder as a reference. It stays in the browser and is never uploaded or stored.
 - Stored data: only chosen options, as a small versioned record (for example avatar version 1, hair style 4, skin tone 7). The avatar is rebuilt from the values wherever it appears. The version keeps old avatars rendering after the kit changes and lets better parts or a full body be added later.
-- Animation: idle breathing, slow head turn, blink; a friendly reaction when selected; the bust follows the cursor on desktop.
-- Art production (Proposed): ship version 1 with procedural parts built in code from soft shapes and materials, then swap in modeled parts later through the same record. Alternatives: a licensed asset pack (licence must allow web use and modification) or a commissioned 3D artist.
+- Animation: idle breathing, blinking on each character's own beat, eyes and head that follow the cursor, brows and mouth that react on hover, a hop, and a wave when the profile character is tapped. Still when motion is reduced.
+- Art production (decided): the characters are drawn in code from the stored options, so every saved avatar keeps working; the options are frozen per kit version.
 
 ## 7. Portal and roles
 
@@ -109,7 +89,7 @@ A separate dashboard at its own address, same brand, calm and form-based. For cr
 
 | Action                                 | Visitor | Crew         | Admin        |
 | -------------------------------------- | ------- | ------------ | ------------ |
-| View vault, projects and profiles      | Yes     | Yes          | Yes          |
+| View site, projects and profiles       | Yes     | Yes          | Yes          |
 | Try projects via store or GitHub links | Yes     | Yes          | Yes          |
 | Edit own profile, bio and social links | No      | Yes          | Yes          |
 | Build or rebuild own avatar            | No      | Yes          | Yes          |
@@ -132,13 +112,13 @@ Admin account and safeguards: exactly one admin, created once during setup direc
 
 Review policy (Proposed): crew edits go live immediately and are audited; the admin can revert with one click. A review queue can be added for project details only if the user prefers.
 
-Dashboard screens: Home (activity, drafts, anything awaiting the admin); My profile (bio, links, avatar builder); Projects (list and editor: name, summary, status, platforms, screenshots, tech used, store and GitHub links, optional demo link, team); Crew (admin: members, invite codes, access); Site settings (admin: studio text, intro, sound default, featured project).
+Dashboard screens: Home (activity, drafts, anything awaiting the admin); My profile (bio, links, avatar builder); Projects (list and editor: name, summary, status, platforms, screenshots, tech used, store and GitHub links, optional demo link, team); Crew (admin: members, invite codes, access); Site settings (admin: studio text, contact email, intro, featured project).
 
 ## 8. Architecture and data model
 
-The public vault reads a static content snapshot and never calls the backend, so it stays up when the free backend is asleep. Only the portal uses the backend. A publish job turns approved content into a fresh snapshot.
+The public site reads a static content snapshot and never calls the backend, so it stays up when the free backend is asleep. Only the portal uses the backend. A publish job turns approved content into a fresh snapshot.
 
-Flow: Visitors use the vault site, which reads the snapshot. Crew and admin use the portal, which reads and writes the backend. The backend holds login, database and images. GitHub supplies repo data and sign-in to the backend. The publish job (a GitHub Action) reads content from the backend, writes the snapshot, rebuilds the site, and pings the backend. It runs after each publish and daily; a scheduled run also heals a missed trigger.
+Flow: Visitors use the site, which reads the snapshot. Crew and admin use the portal, which reads and writes the backend. The backend holds login, database and images. GitHub supplies repo data and sign-in to the backend. The publish job (a GitHub Action) reads content from the backend, writes the snapshot, rebuilds the site, and pings the backend. It runs after each publish and daily; a scheduled run also heals a missed trigger.
 
 | Data               | Holds                                                                                                          | Who can write                                       |
 | ------------------ | -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
@@ -146,7 +126,7 @@ Flow: Visitors use the vault site, which reads the snapshot. Crew and admin use 
 | Projects           | Name, summary, status, platforms, screenshots, tech used, store links, repo, optional demo link, featured flag | Admin; a project's own members can edit its details |
 | Project membership | Which member is on which project                                                                               | The member for themselves; admin for all            |
 | Invites            | Hashed one-time codes, expiry, used flag                                                                       | Admin                                               |
-| Site settings      | Studio text, intro and sound defaults                                                                          | Admin                                               |
+| Site settings      | Studio text, contact email and intro default                                                                   | Admin                                               |
 | Repo cache         | Stars, languages, recent commits, contributors per repo                                                        | The publish job                                     |
 | Audit log          | Who changed what and when, with the previous value                                                             | The system only                                     |
 | Content snapshot   | A public JSON copy of members, projects, repo details and avatar records                                       | The publish job only                                |
@@ -158,6 +138,8 @@ Security: roles enforced by row-level security. Invite codes hashed, single-use,
 Free-tier facts (checked 2 November 2026 and again on 3 November 2026, unchanged; recheck before launch): Supabase pauses free projects with too little database activity over a week; a few requests a day usually keeps one awake and a paused project keeps its data; Supabase emails about a week before a pause; the page does not say how long a paused project stays restorable, so do not rely on a window (https://supabase.com/kb/faqs/platform/free-project-pausing). GitHub Pages sites may be no larger than 1 GB, with a soft bandwidth limit of 100 GB a month and a soft limit of 10 builds an hour that does not apply to custom GitHub Actions workflows (https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits).
 
 ## 9. Milestones
+
+Milestones 2 and 3 were built as a 3D vault and project rooms, then retired in the redesign of 3 November 2026 (see section 5). The rows below describe the original plan; the animated site replaced the vault and rooms, and sound was dropped.
 
 Each step ends with something the user can open and test. A step is finished only when its "Done when" is true. Briefs are in `docs/milestones/`.
 
@@ -172,15 +154,15 @@ Each step ends with something the user can open and test. A step is finished onl
 
 ## 10. Risks and mitigations
 
-| Risk                                                 | Mitigation                                                                                     |
-| ---------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| The free backend sleeps and the portal stops working | Public site reads a snapshot; daily ping; a paused project can be resumed with its data intact |
-| Avatar art falls short of the references             | Procedural parts first, then modeled parts through the versioned record                        |
-| 3D too heavy for some phones                         | Lite mode with automatic fallback, a download budget, a plain HTML layer                       |
-| The alpha mark conflicts with an existing trademark  | Search the register before launch; keep the arch mark as a fallback                            |
-| Scope keeps growing                                  | Fixed launch scope, a separate later list, steps that end in a testable result                 |
-| The admin account is lost                            | Recovery path recorded at setup; the backend owner can restore admin access                    |
-| Free plans change their limits                       | Recheck before launch; keep content as portable JSON                                           |
+| Risk                                                 | Mitigation                                                                                                    |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| The free backend sleeps and the portal stops working | Public site reads a snapshot; daily ping; a paused project can be resumed with its data intact                |
+| Avatar art falls short of the references             | Procedural parts first, then modeled parts through the versioned record                                       |
+| Motion too heavy or distracting for some visitors    | Every effect off for reduced motion and by a switch, a download budget enforced by a test, a plain HTML layer |
+| The alpha mark conflicts with an existing trademark  | Search the register before launch; keep the arch mark as a fallback                                           |
+| Scope keeps growing                                  | Fixed launch scope, a separate later list, steps that end in a testable result                                |
+| The admin account is lost                            | Recovery path recorded at setup; the backend owner can restore admin access                                   |
+| Free plans change their limits                       | Recheck before launch; keep content as portable JSON                                                          |
 
 ## 11. Open questions (ask the user before the step that needs them)
 
@@ -190,5 +172,4 @@ Each step ends with something the user can open and test. A step is finished onl
 - A free hosting address or a custom domain the user will buy? Needed before step 1.
 - Should web projects embed a live demo or only link out? Needed before step 3.
 - Who writes the studio statement, five bios and two project descriptions, and supplies screenshots? Use `content/CONTENT-TEMPLATE.md`. Needed before step 3.
-- Who sources or composes the ambient and interface sounds? Needed before step 6.
 - When will the trademark search be done? Needed before step 6.
