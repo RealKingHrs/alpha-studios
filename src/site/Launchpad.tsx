@@ -61,14 +61,14 @@ export function LaunchpadPage({ snap, link }: { snap: Snapshot; link: LinkFn }) 
   const pitch = link('/portal/app/#/pitch');
   return (
     <>
-      <section className="lp-hero theme-dark" aria-labelledby="pt">
+      <section className="lp-hero theme-dark aurora" data-spot aria-labelledby="pt">
         <div className="s-hero-lines" aria-hidden="true" />
         <div className="s-wrap lp-hero-grid">
           <div>
             <p className="s-eyebrow mono">Launchpad</p>
             <h1 id="pt" className="display lp-title">
               <SplitText text="Bring us your idea." />
-              <span className="lp-title-gold">
+              <span className="lp-title-gold foil">
                 <SplitText text="Keep your name on it." delay={0.35} />
               </span>
             </h1>

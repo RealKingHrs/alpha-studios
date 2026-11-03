@@ -22,6 +22,7 @@ export function Profile({ me }: { me: MemberRow }) {
   const [bio, setBio] = useState(me.bio);
   const [codename, setCodename] = useState(me.codename ?? '');
   const [popPick, setPopPick] = useState(me.pop_pick ?? '');
+  const [age, setAge] = useState(me.age == null ? '' : String(me.age));
   const [location, setLocation] = useState(me.location ?? '');
   const [openTo, setOpenTo] = useState(me.open_to ?? '');
   const [languages, setLanguages] = useState((me.languages ?? []).join(', '));
@@ -78,6 +79,7 @@ export function Profile({ me }: { me: MemberRow }) {
         codename,
         skills,
         pop_pick: popPick,
+        age: age.trim() ? Math.min(99, Math.max(13, Number.parseInt(age, 10) || 0)) || null : null,
         location,
         open_to: openTo,
         languages: toList(languages, 8),
@@ -199,6 +201,20 @@ export function Profile({ me }: { me: MemberRow }) {
         )}
       </div>
       <SkillsPicker value={skills} onChange={setSkills} />
+      <Field
+        label="Age"
+        hint="Optional. Shown on your public page, so leave it empty if you prefer."
+      >
+        {(id) => (
+          <input
+            id={id}
+            inputMode="numeric"
+            maxLength={2}
+            value={age}
+            onChange={(e) => setAge(e.target.value.replace(/\D/g, ''))}
+          />
+        )}
+      </Field>
       <Field label="Where you are based" hint="A city is plenty.">
         {(id) => (
           <input

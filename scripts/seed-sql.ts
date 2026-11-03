@@ -12,7 +12,7 @@ const lines = [
   `insert into public.site_settings (id, studio_statement, intro_enabled, contact_email) values (1, ${q(snap.settings.studioStatement)}, ${snap.settings.introEnabled}, ${snap.settings.contactEmail ? q(snap.settings.contactEmail) : 'null'}) on conflict (id) do nothing;`,
   ...snap.members.map(
     (m) =>
-      `insert into public.members (slug, name, role_title, bio, github_username, links, avatar, codename, tagline, skills, currently, fun_fact, pop_pick, location, open_to, languages, interests, experience, education) values (${q(m.slug)}, ${q(m.name)}, ${q(m.role)}, ${q(m.bio)}, ${m.githubUsername ? q(m.githubUsername) : 'null'}, ${j(m.links)}, ${j(m.avatar)}, ${q(m.codename)}, ${q(m.tagline)}, ${j(m.skills)}, ${q(m.currently)}, ${q(m.funFact)}, ${q(m.popPick)}, ${q(m.location)}, ${q(m.openTo)}, ${arr(m.languages)}, ${arr(m.interests)}, ${j(m.experience)}, ${j(m.education)}) on conflict (slug) do nothing;`,
+      `insert into public.members (slug, name, role_title, bio, github_username, links, avatar, codename, tagline, skills, currently, fun_fact, pop_pick, age, location, open_to, languages, interests, experience, education) values (${q(m.slug)}, ${q(m.name)}, ${q(m.role)}, ${q(m.bio)}, ${m.githubUsername ? q(m.githubUsername) : 'null'}, ${j(m.links)}, ${j(m.avatar)}, ${q(m.codename)}, ${q(m.tagline)}, ${j(m.skills)}, ${q(m.currently)}, ${q(m.funFact)}, ${q(m.popPick)}, ${m.age ?? 'null'}, ${q(m.location)}, ${q(m.openTo)}, ${arr(m.languages)}, ${arr(m.interests)}, ${j(m.experience)}, ${j(m.education)}) on conflict (slug) do nothing;`,
   ),
   ...snap.projects.map(
     (p) =>

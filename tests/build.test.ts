@@ -23,10 +23,10 @@ d('built site', () => {
     'launchpad/index.html',
     'about/index.html',
     'portal/index.html',
-    'projects/harbor/index.html',
-    'projects/lumen/index.html',
-    'crew/aarav-menon/index.html',
-    'crew/aarav-menon/certificates/c1/index.html',
+    'projects/bioscanner/index.html',
+    'projects/velocity/index.html',
+    'crew/hari-rudran-sunil/index.html',
+    'crew/hari-rudran-sunil/certificates/c1/index.html',
   ];
 
   it.each(routes)('%s serves readable HTML with title and share image', (r) => {

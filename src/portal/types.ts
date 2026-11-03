@@ -17,6 +17,7 @@ export interface MemberRow {
   currently: string;
   fun_fact: string;
   pop_pick: string;
+  age: number | null;
   location: string;
   open_to: string;
   languages: string[];

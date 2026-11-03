@@ -71,7 +71,8 @@ export function MemberPage({ snap, slug, link }: { snap: Snapshot; slug: string;
     <>
       <section
         ref={hero}
-        className="mp-hero theme-dark"
+        className="mp-hero theme-dark aurora"
+        data-spot
         aria-labelledby="pt"
         onPointerMove={onMove}
       >
@@ -91,8 +92,9 @@ export function MemberPage({ snap, slug, link }: { snap: Snapshot; slug: string;
             <SplitText text={m.name} />
           </h1>
           {m.codename && <p className="mp-call mono">{m.codename}</p>}
-          {(m.location || m.openTo) && (
+          {(m.location || m.openTo || m.age) && (
             <ul className="mp-meta" aria-label="Where and what for">
+              {m.age && <li>Age {m.age}</li>}
               {m.location && <li>{m.location}</li>}
               {m.openTo && <li>Open to: {m.openTo}</li>}
             </ul>
@@ -222,7 +224,7 @@ export function MemberPage({ snap, slug, link }: { snap: Snapshot; slug: string;
 
         {works.length > 0 && (
           <Reveal className="mp-tile mp-tile--works" delay={40}>
-            <h2 className="mp-h">Works</h2>
+            <h2 className="mp-h">Projects</h2>
             <ul className="mp-works">
               {works.map(({ p, role, accent: pa }, i) => (
                 <li key={p.slug} className={`a-${pa}`}>

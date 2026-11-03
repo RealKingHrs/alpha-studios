@@ -241,6 +241,24 @@ describe('member details and certificate fields', () => {
     expect(seen[0].experience).toHaveLength(1);
   });
 
+  it('keeps age optional, within 13 to 99, editable only by its owner and readable by visitors', async () => {
+    const ok = await must(
+      crew.from('members').update({ age: 20 }).eq('id', ids.crew).select('age'),
+    );
+    expect(ok[0].age).toBe(20);
+    expect((await crew.from('members').update({ age: 5 }).eq('id', ids.crew)).error).not.toBeNull();
+    expect(
+      (await crew.from('members').update({ age: 120 }).eq('id', ids.crew)).error,
+    ).not.toBeNull();
+    const theirs = await must(
+      crew.from('members').update({ age: 30 }).eq('id', ids.other).select('id'),
+    );
+    expect(theirs).toHaveLength(0);
+    const seen = await must(visitor.from('members').select('age').eq('id', ids.crew));
+    expect(seen[0].age).toBe(20);
+    await must(crew.from('members').update({ age: null }).eq('id', ids.crew).select('id'));
+  });
+
   it('rejects too many roles', async () => {
     const roles = Array.from({ length: 9 }, (_, i) => ({ title: `Role ${i}` }));
     const bad = await crew.from('members').update({ experience: roles }).eq('id', ids.crew);

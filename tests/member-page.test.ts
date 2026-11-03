@@ -13,13 +13,13 @@ const render = (snap: Snapshot, slug: string) =>
 describe('member page', () => {
   it('shows name, favourite, works, skills and a next member', () => {
     const snap = Snapshot.parse(raw);
-    const html = render(snap, 'aarav-menon');
-    expect(html).toContain('Aarav Menon');
-    expect(html).toContain('Into Breaking Bad');
-    expect(html).toContain('Harbor');
+    const html = render(snap, 'hari-rudran-sunil');
+    expect(html).toContain('Hari Rudran Sunil');
+    expect(html).toContain('Into Interstellar');
+    expect(html).toContain('Bioscanner');
     expect(html).toContain('Toolkit');
     expect(html).toContain('Next crew member');
-    expect(html).toContain('href="/alpha-studios/crew/zara-okafor/"');
+    expect(html).toContain('href="/alpha-studios/crew/riya-suresh/"');
   });
 
   it('still renders cleanly for someone with no skills, favourite, links or certificates', () => {

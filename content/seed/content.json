@@ -2,44 +2,23 @@
   "schemaVersion": 1,
   "generatedAt": "2026-11-03T00:00:00.000Z",
   "settings": {
-    "studioStatement": "Alpha Studios is a small crew of builders making native iOS and macOS apps, web apps and the backends behind them. We like calm interfaces, honest code and shipping things people actually use.",
+    "studioStatement": "Alpha Studios is a studio of young engineers building AI-powered tools, native apps and the backends behind them. We care about careful work, honest results and giving builders the credit they earn.",
     "introEnabled": true,
     "soundDefault": "off",
     "contactEmail": "hello@alphastudios.example"
   },
   "members": [
     {
-      "slug": "aarav-menon",
-      "name": "Aarav Menon",
-      "role": "Founder, backend engineering",
-      "bio": "Builds the quiet systems that keep everything else running, and makes the coffee.",
-      "githubUsername": "aarav-menon",
-      "codename": "Root Access",
-      "skills": [
-        {
-          "name": "Backend",
-          "level": 5
-        },
-        {
-          "name": "Postgres",
-          "level": 5
-        },
-        {
-          "name": "TypeScript",
-          "level": 4
-        },
-        {
-          "name": "DevOps",
-          "level": 3
-        }
-      ],
-      "popPick": "Breaking Bad",
-      "funFact": "",
-      "currently": "",
+      "slug": "hari-rudran-sunil",
+      "name": "Hari Rudran Sunil",
+      "age": 20,
+      "role": "Founder, AI and ML engineer",
+      "bio": "Builds intelligent software and the studio that ships it. Believes young builders deserve real backing.",
+      "githubUsername": "hari-rudran",
       "links": {
-        "github": "https://example.com/aarav/github",
-        "linkedin": "https://example.com/aarav/linkedin",
-        "instagram": "https://example.com/aarav/instagram"
+        "github": "https://example.com/hari-rudran-sunil/github",
+        "linkedin": "https://example.com/hari-rudran-sunil/linkedin",
+        "instagram": "https://example.com/hari-rudran-sunil/instagram"
       },
       "avatar": {
         "version": 1,
@@ -61,660 +40,652 @@
           "outfitColor": 2
         }
       },
+      "codename": "KINGHRS",
       "tagline": "",
-      "location": "Bengaluru, India",
-      "openTo": "Mentoring, backend side projects",
+      "skills": [
+        {
+          "name": "Machine learning",
+          "level": 5
+        },
+        {
+          "name": "Python",
+          "level": 5
+        },
+        {
+          "name": "System design",
+          "level": 4
+        },
+        {
+          "name": "Swift",
+          "level": 3
+        }
+      ],
+      "currently": "",
+      "funFact": "",
+      "popPick": "Interstellar",
+      "location": "Kerala, India",
+      "openTo": "Mentoring, research collaborations",
       "languages": [
         "English",
         "Malayalam",
         "Hindi"
       ],
       "interests": [
-        "Espresso",
         "Chess",
-        "Trail running"
+        "Astronomy",
+        "Late-night coding"
       ],
       "experience": [
         {
-          "title": "Founder and backend engineer",
+          "title": "Founder",
           "org": "Alpha Studios",
-          "from": "2024",
+          "from": "2025",
           "to": "Now",
-          "note": "Designs the sync and receipts services behind every app."
+          "note": "Leads the studio, the product direction and the AI work."
         },
         {
-          "title": "Backend engineer",
-          "org": "Northwind Labs",
-          "from": "2020",
-          "to": "2024",
-          "note": "Moved a monolith onto small services without downtime."
+          "title": "Machine learning intern",
+          "org": "Example Labs",
+          "from": "2024",
+          "to": "2025",
+          "note": "Trained and shipped a vision model into a mobile app."
         }
       ],
       "education": [
         {
           "school": "Example Institute of Technology",
-          "field": "Computer science",
-          "from": "2016",
-          "to": "2020"
+          "field": "B.Tech, AI and ML",
+          "from": "2023",
+          "to": "Now"
         }
       ]
     },
     {
-      "slug": "zara-okafor",
-      "name": "Zara Okafor",
-      "role": "Interface and motion",
-      "bio": "Sweats the easing curves so you never notice the interface at all.",
-      "githubUsername": "zara-okafor",
-      "codename": "Motion Maven",
-      "skills": [
-        {
-          "name": "React",
-          "level": 5
-        },
-        {
-          "name": "Motion",
-          "level": 5
-        },
-        {
-          "name": "Design",
-          "level": 4
-        },
-        {
-          "name": "Accessibility",
-          "level": 4
-        }
-      ],
-      "popPick": "Minecraft",
-      "funFact": "",
-      "currently": "",
+      "slug": "riya-suresh",
+      "name": "Riya Suresh",
+      "age": 20,
+      "role": "Bioinformatics",
+      "bio": "Turns biological data into answers, and keeps the science in our products honest.",
+      "githubUsername": "riya-suresh",
       "links": {
-        "github": "https://example.com/zara/github",
-        "linkedin": "https://example.com/zara/linkedin",
-        "instagram": "https://example.com/zara/instagram"
+        "github": "https://example.com/riya-suresh/github",
+        "linkedin": "https://example.com/riya-suresh/linkedin",
+        "instagram": "https://example.com/riya-suresh/instagram"
       },
       "avatar": {
         "version": 1,
         "options": {
-          "head": 2,
-          "skin": 6,
-          "eyes": 3,
+          "head": 0,
+          "skin": 2,
+          "eyes": 1,
           "brows": 1,
           "nose": 0,
           "mouth": 1,
-          "hair": 3,
-          "hairColor": 0,
+          "hair": 4,
+          "hairColor": 1,
           "facialHair": 0,
           "glasses": 1,
-          "glassesColor": 1,
-          "earrings": 2,
-          "chain": 1,
-          "outfit": 2,
+          "glassesColor": 0,
+          "earrings": 1,
+          "chain": 0,
+          "outfit": 1,
           "outfitColor": 7
         }
       },
+      "codename": "The brain",
       "tagline": "",
-      "location": "Lagos, Nigeria",
-      "openTo": "Design reviews, speaking",
+      "skills": [
+        {
+          "name": "Bioinformatics",
+          "level": 5
+        },
+        {
+          "name": "Python",
+          "level": 4
+        },
+        {
+          "name": "Statistics",
+          "level": 5
+        },
+        {
+          "name": "Data visualisation",
+          "level": 4
+        }
+      ],
+      "currently": "",
+      "funFact": "",
+      "popPick": "Breaking Bad",
+      "location": "Kochi, India",
+      "openTo": "Science reviews, study groups",
       "languages": [
         "English",
-        "Yoruba",
-        "French"
+        "Malayalam"
       ],
       "interests": [
-        "Illustration",
-        "Afrobeats",
-        "Board games"
+        "Genomics",
+        "Badminton",
+        "Documentaries"
       ],
       "experience": [
         {
-          "title": "Interface and motion lead",
-          "org": "Alpha Studios",
-          "from": "2024",
+          "title": "Research assistant",
+          "org": "Example Genomics Lab",
+          "from": "2025",
           "to": "Now",
-          "note": "Owns the motion language and the design system."
-        },
-        {
-          "title": "Product designer",
-          "org": "Brightpath",
-          "from": "2021",
-          "to": "2024",
-          "note": "Shipped an onboarding flow that cut drop-off by a third."
+          "note": "Cleans and analyses sequencing data for a student research group."
         }
       ],
       "education": [
         {
           "school": "Example University",
-          "field": "Industrial design",
-          "from": "2017",
-          "to": "2021"
+          "field": "B.Sc. Bioinformatics",
+          "from": "2023",
+          "to": "Now"
         }
       ]
     },
     {
-      "slug": "kenji-watanabe",
-      "name": "Kenji Watanabe",
-      "role": "iOS and macOS lead",
-      "bio": "Ships small, sharp native apps and plans three releases ahead.",
-      "githubUsername": "kenji-watanabe",
-      "codename": "The Professor",
-      "skills": [
-        {
-          "name": "Swift",
-          "level": 5
-        },
-        {
-          "name": "SwiftUI",
-          "level": 5
-        },
-        {
-          "name": "Testing",
-          "level": 4
-        },
-        {
-          "name": "CloudKit",
-          "level": 3
-        }
-      ],
-      "popPick": "Money Heist",
-      "funFact": "",
-      "currently": "",
+      "slug": "pooja-santhosh",
+      "name": "Pooja Santhosh",
+      "age": 20,
+      "role": "AI and ML engineer",
+      "bio": "Trains the models, tests them hard and explains them clearly to everyone else.",
+      "githubUsername": "pooja-santhosh",
       "links": {
-        "github": "https://example.com/kenji/github",
-        "linkedin": "https://example.com/kenji/linkedin",
-        "instagram": "https://example.com/kenji/instagram"
+        "github": "https://example.com/pooja-santhosh/github",
+        "linkedin": "https://example.com/pooja-santhosh/linkedin",
+        "instagram": "https://example.com/pooja-santhosh/instagram"
       },
       "avatar": {
         "version": 1,
         "options": {
-          "head": 1,
-          "skin": 1,
-          "eyes": 2,
-          "brows": 2,
+          "head": 2,
+          "skin": 4,
+          "eyes": 3,
+          "brows": 4,
           "nose": 2,
           "mouth": 0,
-          "hair": 6,
+          "hair": 5,
           "hairColor": 0,
           "facialHair": 0,
-          "glasses": 2,
-          "glassesColor": 4,
+          "glasses": 0,
+          "glassesColor": 0,
+          "earrings": 2,
+          "chain": 1,
+          "outfit": 2,
+          "outfitColor": 3
+        }
+      },
+      "codename": "Pretty lady",
+      "tagline": "",
+      "skills": [
+        {
+          "name": "Deep learning",
+          "level": 5
+        },
+        {
+          "name": "PyTorch",
+          "level": 5
+        },
+        {
+          "name": "Computer vision",
+          "level": 4
+        },
+        {
+          "name": "MLOps",
+          "level": 3
+        }
+      ],
+      "currently": "",
+      "funFact": "",
+      "popPick": "Minecraft",
+      "location": "Thrissur, India",
+      "openTo": "Model reviews, hackathons",
+      "languages": [
+        "English",
+        "Malayalam",
+        "Tamil"
+      ],
+      "interests": [
+        "Sketching",
+        "K-dramas",
+        "Hackathons"
+      ],
+      "experience": [
+        {
+          "title": "ML engineer",
+          "org": "Alpha Studios",
+          "from": "2025",
+          "to": "Now",
+          "note": "Builds and evaluates the recognition models behind Bioscanner."
+        }
+      ],
+      "education": [
+        {
+          "school": "Example Institute of Technology",
+          "field": "B.Tech, AI and ML",
+          "from": "2023",
+          "to": "Now"
+        }
+      ]
+    },
+    {
+      "slug": "eldho-gibi",
+      "name": "Eldho Gibi",
+      "age": 20,
+      "role": "AI and ML engineer",
+      "bio": "Connects the models to the real world with fast, dependable data pipelines and backends.",
+      "githubUsername": "eldho-gibi",
+      "links": {
+        "github": "https://example.com/eldho-gibi/github",
+        "linkedin": "https://example.com/eldho-gibi/linkedin",
+        "instagram": "https://example.com/eldho-gibi/instagram"
+      },
+      "avatar": {
+        "version": 1,
+        "options": {
+          "head": 4,
+          "skin": 3,
+          "eyes": 2,
+          "brows": 0,
+          "nose": 3,
+          "mouth": 4,
+          "hair": 3,
+          "hairColor": 0,
+          "facialHair": 1,
+          "glasses": 0,
+          "glassesColor": 0,
           "earrings": 0,
           "chain": 0,
           "outfit": 0,
           "outfitColor": 4
         }
       },
+      "codename": "Babu",
       "tagline": "",
-      "location": "Osaka, Japan",
-      "openTo": "Code reviews, mentoring juniors",
-      "languages": [
-        "Japanese",
-        "English"
-      ],
-      "interests": [
-        "Film cameras",
-        "Ramen hunting",
-        "Go"
-      ],
-      "experience": [
-        {
-          "title": "iOS and macOS lead",
-          "org": "Alpha Studios",
-          "from": "2024",
-          "to": "Now",
-          "note": "Leads the native apps and their release plans."
-        },
-        {
-          "title": "iOS developer",
-          "org": "Tidewater Apps",
-          "from": "2019",
-          "to": "2024",
-          "note": "Five apps shipped, two with over a million downloads."
-        }
-      ],
-      "education": [
-        {
-          "school": "Example Polytechnic",
-          "field": "Information engineering",
-          "from": "2015",
-          "to": "2019"
-        }
-      ]
-    },
-    {
-      "slug": "priya-nair",
-      "name": "Priya Nair",
-      "role": "Android and platform",
-      "bio": "Keeps builds green, phones happy and her best ideas for after midnight.",
-      "githubUsername": "priya-nair",
-      "codename": "Night Owl",
       "skills": [
         {
-          "name": "Kotlin",
+          "name": "Backend",
           "level": 5
         },
         {
-          "name": "Compose",
+          "name": "FastAPI",
+          "level": 5
+        },
+        {
+          "name": "Data pipelines",
           "level": 4
         },
         {
-          "name": "CI",
+          "name": "Swift",
           "level": 4
-        },
-        {
-          "name": "Firebase",
-          "level": 3
         }
       ],
-      "popPick": "Interstellar",
-      "funFact": "",
       "currently": "",
-      "links": {
-        "github": "https://example.com/priya/github",
-        "linkedin": "https://example.com/priya/linkedin",
-        "instagram": "https://example.com/priya/instagram"
-      },
-      "avatar": {
-        "version": 1,
-        "options": {
-          "head": 0,
-          "skin": 4,
-          "eyes": 1,
-          "brows": 4,
-          "nose": 3,
-          "mouth": 4,
-          "hair": 4,
-          "hairColor": 1,
-          "facialHair": 0,
-          "glasses": 0,
-          "glassesColor": 0,
-          "earrings": 1,
-          "chain": 0,
-          "outfit": 1,
-          "outfitColor": 5
-        }
-      },
-      "tagline": "",
-      "location": "Pune, India",
-      "openTo": "Android talks, pair programming",
+      "funFact": "",
+      "popPick": "GTA VI",
+      "location": "Ernakulam, India",
+      "openTo": "Pair programming, open source",
       "languages": [
         "English",
-        "Malayalam",
-        "Marathi"
+        "Malayalam"
       ],
       "interests": [
-        "Astronomy",
-        "Night photography",
-        "Baking"
+        "Cricket",
+        "Open source",
+        "Street food"
       ],
       "experience": [
         {
-          "title": "Android and platform engineer",
+          "title": "Backend and ML engineer",
           "org": "Alpha Studios",
           "from": "2025",
           "to": "Now",
-          "note": "Builds the Android apps and keeps the pipelines green."
-        },
-        {
-          "title": "Android developer",
-          "org": "Orbit Mobile",
-          "from": "2021",
-          "to": "2025",
-          "note": "Rewrote a legacy app in Compose."
+          "note": "Owns the services that serve the models and the Velocity engine."
         }
       ],
       "education": [
         {
-          "school": "Example College of Engineering",
-          "field": "Electronics",
-          "from": "2017",
-          "to": "2021"
+          "school": "Example Institute of Technology",
+          "field": "B.Tech, AI and ML",
+          "from": "2023",
+          "to": "Now"
         }
       ]
     },
     {
-      "slug": "mateo-alvarez",
-      "name": "Mateo Alvarez",
-      "role": "Product and quality",
-      "bio": "Finds the bug before you do, then buys everyone lunch to say sorry.",
-      "githubUsername": "mateo-alvarez",
-      "codename": "Wildcard",
-      "skills": [
-        {
-          "name": "Product",
-          "level": 5
-        },
-        {
-          "name": "Testing",
-          "level": 5
-        },
-        {
-          "name": "Research",
-          "level": 4
-        },
-        {
-          "name": "Docs",
-          "level": 4
-        }
-      ],
-      "popPick": "GTA VI",
-      "funFact": "",
-      "currently": "",
+      "slug": "rohan",
+      "name": "Rohan",
+      "age": 20,
+      "role": "Chartered Accountancy",
+      "bio": "Keeps the studio's numbers, contracts and licences in order so the builders can build.",
+      "githubUsername": "rohan-ca",
       "links": {
-        "github": "https://example.com/mateo/github",
-        "linkedin": "https://example.com/mateo/linkedin",
-        "instagram": "https://example.com/mateo/instagram"
+        "github": "https://example.com/rohan/github",
+        "linkedin": "https://example.com/rohan/linkedin",
+        "instagram": "https://example.com/rohan/instagram"
       },
       "avatar": {
         "version": 1,
         "options": {
-          "head": 4,
-          "skin": 2,
-          "eyes": 4,
-          "brows": 0,
-          "nose": 0,
-          "mouth": 3,
-          "hair": 5,
-          "hairColor": 3,
-          "facialHair": 1,
-          "glasses": 3,
-          "glassesColor": 2,
+          "head": 1,
+          "skin": 1,
+          "eyes": 0,
+          "brows": 2,
+          "nose": 1,
+          "mouth": 2,
+          "hair": 1,
+          "hairColor": 0,
+          "facialHair": 0,
+          "glasses": 2,
+          "glassesColor": 4,
           "earrings": 0,
-          "chain": 2,
-          "outfit": 2,
-          "outfitColor": 3
+          "chain": 0,
+          "outfit": 1,
+          "outfitColor": 1
         }
       },
+      "codename": "The brain",
       "tagline": "",
-      "location": "Mexico City, Mexico",
-      "openTo": "User research, testing workshops",
+      "skills": [
+        {
+          "name": "Accounting",
+          "level": 5
+        },
+        {
+          "name": "Financial planning",
+          "level": 4
+        },
+        {
+          "name": "Licensing",
+          "level": 4
+        },
+        {
+          "name": "Spreadsheets",
+          "level": 5
+        }
+      ],
+      "currently": "",
+      "funFact": "",
+      "popPick": "Money Heist",
+      "location": "Kerala, India",
+      "openTo": "Finance guidance for student founders",
       "languages": [
-        "Spanish",
-        "English"
+        "English",
+        "Malayalam",
+        "Hindi"
       ],
       "interests": [
-        "Street food",
-        "Retro games",
-        "Football"
+        "Markets",
+        "Football",
+        "Strategy games"
       ],
       "experience": [
         {
-          "title": "Product and quality lead",
+          "title": "Finance and operations",
           "org": "Alpha Studios",
-          "from": "2024",
+          "from": "2025",
           "to": "Now",
-          "note": "Turns rough ideas into clear plans and tests them hard."
-        },
-        {
-          "title": "QA analyst",
-          "org": "Pixel Forge",
-          "from": "2020",
-          "to": "2024",
-          "note": "Built the test plan for a game used by half a million players."
+          "note": "Handles budgets, licensing and the books."
         }
       ],
       "education": [
         {
-          "school": "Example Autonomous University",
-          "field": "Communication",
-          "from": "2015",
-          "to": "2019"
+          "school": "Institute of Chartered Accountants (example)",
+          "field": "CA Intermediate",
+          "from": "2023",
+          "to": "Now"
         }
       ]
     }
   ],
   "projects": [
     {
-      "slug": "harbor",
-      "name": "Harbor",
-      "summary": "A calm money app for freelancers: track invoices, set money aside for taxes and see what you can safely spend.",
-      "status": "live",
+      "slug": "bioscanner",
+      "name": "Bioscanner",
+      "summary": "Point your camera at a plant, insect or sample and get an identification with a clear confidence score.",
+      "status": "beta",
       "platforms": [
         "ios",
+        "android",
+        "web"
+      ],
+      "tech": [
+        "Python",
+        "PyTorch",
+        "FastAPI",
+        "Swift",
+        "React"
+      ],
+      "links": {
+        "demo": "https://example.com/bioscanner/demo",
+        "github": "https://example.com/alpha-studios/bioscanner"
+      },
+      "repo": "alpha-studios-demo/bioscanner",
+      "featured": true,
+      "origin": "studio",
+      "founderName": "",
+      "story": "Bioscanner began in a biology lab where students spent hours matching specimens to reference books. It identifies plants, insects and microscope samples from a single photo, shows how sure it is, and explains what it saw so a person can check the answer. The recognition models run on our own servers behind a FastAPI service, with an iPhone app, an Android app and a web version for the lab bench. It is in open beta while we gather more labelled images from classrooms and field trips.",
+      "screenshots": [
+        {
+          "src": "screens/bioscanner-iphone-1.png",
+          "alt": "Bioscanner result screen with a confidence score",
+          "device": "iphone"
+        },
+        {
+          "src": "screens/bioscanner-browser-1.png",
+          "alt": "Bioscanner web upload and results",
+          "device": "browser"
+        },
+        {
+          "src": "screens/bioscanner-android-1.png",
+          "alt": "Bioscanner history on Android",
+          "device": "android"
+        }
+      ]
+    },
+    {
+      "slug": "velocity",
+      "name": "Velocity",
+      "summary": "A native macOS download manager that splits files into parallel streams, resumes broken downloads and stays quietly in the menu bar.",
+      "status": "live",
+      "platforms": [
         "macos"
       ],
       "tech": [
         "Swift",
         "SwiftUI",
-        "CloudKit",
-        "StoreKit"
+        "Network framework",
+        "Core Data"
       ],
       "links": {
-        "appStore": "https://example.com/harbor/app-store",
-        "github": "https://example.com/alpha-studios/harbor"
+        "appStore": "https://example.com/velocity/app-store",
+        "github": "https://example.com/alpha-studios/velocity"
       },
-      "repo": "alpha-studios-demo/harbor",
+      "repo": "alpha-studios-demo/velocity",
       "featured": true,
-      "story": "Freelancers told us the hardest part of money was not earning it but knowing what was theirs to spend. Harbor sets tax aside the moment an invoice is paid, shows a single safe-to-spend number, and syncs quietly between iPhone and Mac with no accounts to create. We built it native in SwiftUI so it opens instantly and feels at home on both devices. Kenji led the app, Aarav built the sync and receipts service, Zara shaped the interface and Mateo kept it honest in testing.",
+      "origin": "studio",
+      "founderName": "",
+      "story": "Large downloads on a Mac should not be a gamble. Velocity breaks every file into parallel streams, checks each piece as it arrives and resumes exactly where a connection dropped, even after a restart. It is written natively in Swift and SwiftUI, so it opens instantly, sips battery and looks at home in the menu bar. A clean queue, bandwidth limits and a scheduler keep big transfers out of the way of your work. Hari designed the architecture, Eldho built the transfer engine and Rohan set up licensing.",
       "screenshots": [
         {
-          "src": "screens/harbor-iphone-1.png",
-          "alt": "Harbor home screen showing the safe-to-spend number",
-          "device": "iphone"
-        },
-        {
-          "src": "screens/harbor-mac-1.png",
-          "alt": "Harbor on Mac with the invoice list open",
+          "src": "screens/velocity-mac-1.png",
+          "alt": "Velocity download queue on Mac",
           "device": "mac"
         },
         {
-          "src": "screens/harbor-iphone-2.png",
-          "alt": "Harbor tax pot screen on iPhone",
-          "device": "iphone"
-        }
-      ],
-      "origin": "studio",
-      "founderName": ""
-    },
-    {
-      "slug": "lumen",
-      "name": "Lumen",
-      "summary": "A study planner that turns deadlines into small, doable evenings and cheers you on when you finish one.",
-      "status": "beta",
-      "platforms": [
-        "web",
-        "android"
-      ],
-      "tech": [
-        "React",
-        "TypeScript",
-        "Postgres",
-        "Kotlin"
-      ],
-      "links": {
-        "demo": "https://example.com/lumen/demo",
-        "github": "https://example.com/alpha-studios/lumen"
-      },
-      "repo": "alpha-studios-demo/lumen",
-      "featured": true,
-      "story": "Lumen began as a late-night fix for a friend with four deadlines and no plan. You add what is due, and it breaks the work into short evening sessions you can actually finish, then celebrates each one with a small burst of light. The web app runs on React and Postgres, with an Android companion in Kotlin for reminders. It is in open beta while we listen to students about what to add next. Zara led the web interface, Priya built the Android app, Aarav the backend and Mateo the research.",
-      "screenshots": [
-        {
-          "src": "screens/lumen-browser-1.png",
-          "alt": "Lumen weekly plan in the browser",
-          "device": "browser"
+          "src": "screens/velocity-mac-2.png",
+          "alt": "Velocity transfer details",
+          "device": "mac"
         },
         {
-          "src": "screens/lumen-android-1.png",
-          "alt": "Lumen evening session on Android",
-          "device": "android"
-        },
-        {
-          "src": "screens/lumen-browser-2.png",
-          "alt": "Lumen progress view in the browser",
-          "device": "browser"
+          "src": "screens/velocity-mac-3.png",
+          "alt": "Velocity scheduler settings",
+          "device": "mac"
         }
-      ],
-      "origin": "studio",
-      "founderName": ""
+      ]
     }
   ],
   "memberships": [
     {
-      "projectSlug": "harbor",
-      "memberSlug": "aarav-menon",
-      "role": "Backend lead"
+      "projectSlug": "bioscanner",
+      "memberSlug": "hari-rudran-sunil",
+      "role": "AI lead"
     },
     {
-      "projectSlug": "harbor",
-      "memberSlug": "zara-okafor",
-      "role": "Interface design"
+      "projectSlug": "bioscanner",
+      "memberSlug": "riya-suresh",
+      "role": "Science and data"
     },
     {
-      "projectSlug": "harbor",
-      "memberSlug": "kenji-watanabe",
-      "role": "iOS lead"
+      "projectSlug": "bioscanner",
+      "memberSlug": "pooja-santhosh",
+      "role": "Models"
     },
     {
-      "projectSlug": "harbor",
-      "memberSlug": "mateo-alvarez",
-      "role": "Product and QA"
+      "projectSlug": "bioscanner",
+      "memberSlug": "eldho-gibi",
+      "role": "Data and backend"
     },
     {
-      "projectSlug": "lumen",
-      "memberSlug": "aarav-menon",
-      "role": "Backend"
+      "projectSlug": "velocity",
+      "memberSlug": "hari-rudran-sunil",
+      "role": "Architecture"
     },
     {
-      "projectSlug": "lumen",
-      "memberSlug": "zara-okafor",
-      "role": "Web lead"
+      "projectSlug": "velocity",
+      "memberSlug": "eldho-gibi",
+      "role": "Transfer engine"
     },
     {
-      "projectSlug": "lumen",
-      "memberSlug": "priya-nair",
-      "role": "Android lead"
-    },
-    {
-      "projectSlug": "lumen",
-      "memberSlug": "mateo-alvarez",
-      "role": "Product lead"
+      "projectSlug": "velocity",
+      "memberSlug": "rohan",
+      "role": "Licensing and finance"
     }
   ],
   "certifications": [
     {
       "id": "c1",
-      "memberSlug": "aarav-menon",
-      "title": "PostgreSQL Associate",
+      "memberSlug": "hari-rudran-sunil",
+      "title": "Machine Learning Specialisation",
       "issuer": "Example Academy",
-      "issuedOn": "2026-03-01",
+      "issuedOn": "2025-08-12",
       "expiresOn": null,
-      "description": "Covers indexing, query plans and day-to-day database care.",
-      "credentialId": "PG-ASSOC-2026-0142",
-      "url": "https://example.com/verify/pg-assoc"
+      "url": "https://example.com/verify/ml-spec",
+      "credentialId": "ML-SPEC-2025-3318",
+      "description": "Supervised learning, neural networks and model evaluation."
     },
     {
       "id": "c2",
-      "memberSlug": "aarav-menon",
-      "title": "Cloud Practitioner",
+      "memberSlug": "riya-suresh",
+      "title": "Bioinformatics Fundamentals",
       "issuer": "Example Academy",
-      "issuedOn": "2025-11-12",
+      "issuedOn": "2025-05-20",
       "expiresOn": null,
-      "description": "The cloud basics: compute, storage, networking and costs.",
-      "credentialId": "CP-2025-88213",
-      "url": "https://example.com/verify/cloud-practitioner"
+      "url": "https://example.com/verify/bioinfo",
+      "credentialId": "BIO-FUND-2025-0912",
+      "description": "Sequence analysis, databases and reproducible workflows."
     },
     {
       "id": "c3",
-      "memberSlug": "zara-okafor",
-      "title": "Web Accessibility Specialist",
+      "memberSlug": "pooja-santhosh",
+      "title": "Deep Learning with PyTorch",
       "issuer": "Example Academy",
-      "issuedOn": "2026-05-20",
+      "issuedOn": "2025-09-03",
       "expiresOn": null,
-      "description": "Building websites people of every ability can use.",
-      "credentialId": "WAS-2026-3071",
-      "url": "https://example.com/verify/accessibility"
+      "url": "https://example.com/verify/pytorch",
+      "credentialId": "DLPT-2025-6120",
+      "description": "Building and training neural networks in PyTorch."
     },
     {
       "id": "c4",
-      "memberSlug": "kenji-watanabe",
-      "title": "Swift Developer",
+      "memberSlug": "eldho-gibi",
+      "title": "Backend Engineering with Python",
       "issuer": "Example Academy",
-      "issuedOn": "2026-02-10",
+      "issuedOn": "2025-07-18",
       "expiresOn": null,
-      "description": "Writing, testing and shipping apps in Swift.",
-      "credentialId": "SW-DEV-2026-5520",
-      "url": "https://example.com/verify/swift-developer"
+      "url": "https://example.com/verify/backend",
+      "credentialId": "BEP-2025-4471",
+      "description": "APIs, databases and deployment for production services."
     },
     {
       "id": "c5",
-      "memberSlug": "priya-nair",
-      "title": "Associate Android Developer",
-      "issuer": "Example Academy",
-      "issuedOn": "2026-06-02",
+      "memberSlug": "rohan",
+      "title": "CA Foundation",
+      "issuer": "Example Institute",
+      "issuedOn": "2023-12-15",
       "expiresOn": null,
-      "description": "Building modern Android apps with Kotlin and Compose.",
-      "credentialId": "AAD-2026-7714",
-      "url": "https://example.com/verify/android-developer"
+      "url": "https://example.com/verify/ca-foundation",
+      "credentialId": "CAF-2023-7702",
+      "description": "Accounting, law, economics and mathematics foundations."
     }
   ],
   "repos": {
-    "alpha-studios-demo/harbor": {
-      "stars": 412,
+    "alpha-studios-demo/bioscanner": {
+      "stars": 264,
       "languages": {
-        "Swift": 61230,
-        "Shell": 1840,
-        "Ruby": 920
+        "Python": 72110,
+        "TypeScript": 24300,
+        "Swift": 18840
       },
       "recentCommits": [
         {
-          "sha": "a0e4f21",
-          "message": "Round safe-to-spend to the nearest dollar",
-          "date": "2026-10-20T10:20:00Z",
-          "author": "kenji-watanabe"
+          "sha": "a0c7d90",
+          "message": "Add confidence calibration to the classifier",
+          "date": "2026-10-20T10:15:00Z",
+          "author": "pooja-santhosh"
         },
         {
-          "sha": "a1e4f21",
-          "message": "Fix invoice sync after airplane mode",
-          "date": "2026-10-21T11:20:00Z",
-          "author": "aarav-menon"
+          "sha": "a1c7d90",
+          "message": "Cache reference images on device",
+          "date": "2026-10-21T11:15:00Z",
+          "author": "eldho-gibi"
         },
         {
-          "sha": "a2e4f21",
-          "message": "Add tax pot history chart",
-          "date": "2026-10-22T12:20:00Z",
-          "author": "zara-okafor"
+          "sha": "a2c7d90",
+          "message": "Handle low-light photos better",
+          "date": "2026-10-22T12:15:00Z",
+          "author": "hari-rudran"
         }
       ],
       "contributors": [
-        "kenji-watanabe",
-        "aarav-menon",
-        "zara-okafor",
-        "mateo-alvarez"
+        "hari-rudran",
+        "riya-suresh",
+        "pooja-santhosh",
+        "eldho-gibi"
       ],
       "fetchedAt": "2026-11-03T00:00:00Z"
     },
-    "alpha-studios-demo/lumen": {
-      "stars": 187,
+    "alpha-studios-demo/velocity": {
+      "stars": 531,
       "languages": {
-        "TypeScript": 48210,
-        "Kotlin": 21440,
-        "CSS": 6300
+        "Swift": 58920,
+        "Shell": 1420
       },
       "recentCommits": [
         {
-          "sha": "b0e4f21",
-          "message": "Celebrate finished sessions with a light burst",
-          "date": "2026-10-20T10:20:00Z",
-          "author": "zara-okafor"
+          "sha": "b0c7d90",
+          "message": "Resume interrupted transfers after restart",
+          "date": "2026-10-20T10:15:00Z",
+          "author": "eldho-gibi"
         },
         {
-          "sha": "b1e4f21",
-          "message": "Add weekly view to the planner",
-          "date": "2026-10-21T11:20:00Z",
-          "author": "priya-nair"
+          "sha": "b1c7d90",
+          "message": "Verify each segment with a checksum",
+          "date": "2026-10-21T11:15:00Z",
+          "author": "hari-rudran"
         },
         {
-          "sha": "b2e4f21",
-          "message": "Android reminders respect quiet hours",
-          "date": "2026-10-22T12:20:00Z",
-          "author": "aarav-menon"
+          "sha": "b2c7d90",
+          "message": "Add a menu bar speed readout",
+          "date": "2026-10-22T12:15:00Z",
+          "author": "eldho-gibi"
         }
       ],
       "contributors": [
-        "zara-okafor",
-        "priya-nair",
-        "aarav-menon",
-        "mateo-alvarez"
+        "hari-rudran",
+        "eldho-gibi",
+        "rohan-ca"
       ],
       "fetchedAt": "2026-11-03T00:00:00Z"
     }

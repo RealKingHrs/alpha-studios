@@ -21,7 +21,7 @@ interface PageProps {
 }
 
 /** The titles of the home page's sections, in order, for the running index. */
-export const HOME_SECTIONS = ['Work', 'Crew', 'Contact'];
+export const HOME_SECTIONS = ['Projects', 'Crew', 'Contact'];
 
 function Hello({ snap, link, page = false }: { snap: Snapshot; link: LinkFn; page?: boolean }) {
   const mail = snap.settings.contactEmail;
@@ -30,7 +30,8 @@ function Hello({ snap, link, page = false }: { snap: Snapshot; link: LinkFn; pag
     <section
       id="contact"
       data-section
-      className={`s-hello theme-dark ${page ? 's-hello--page' : ''}`}
+      className={`s-hello theme-dark aurora ${page ? 's-hello--page' : ''}`}
+      data-spot
       aria-labelledby="hello-title"
     >
       <div className="s-wrap">
@@ -80,7 +81,7 @@ export function Home({ snap, link, asset }: PageProps) {
       <Vision link={link} />
       <section id="work" data-section className="s-section" aria-labelledby="work-title">
         <div className="s-wrap">
-          <SectionHead num="01" eyebrow="Work" title="Selected work" id="work-title" />
+          <SectionHead num="01" eyebrow="Projects" title="Projects" id="work-title" />
         </div>
         <div className="s-wrap s-wrap--wide">
           <WorkList snap={snap} link={link} asset={asset} />
@@ -135,8 +136,8 @@ export function WorkPage({ snap, link, asset }: PageProps) {
     <>
       <PageHead
         accent="sand"
-        eyebrow="Work"
-        title="Selected work"
+        eyebrow="Projects"
+        title="Projects"
         lede="Each project has its own case study: the story, the people, the code and where to try it."
       />
       <section className="s-section" aria-labelledby="all-work">
@@ -194,7 +195,7 @@ export function CaseStudy({ snap, slug, link, asset }: PageProps & { slug: strin
         <div className="s-wrap s-case-grid">
           <div>
             <p className="s-eyebrow mono">
-              <a href={link('/projects/')}>Work</a> / Case study{' '}
+              <a href={link('/projects/')}>Projects</a> / Case study{' '}
               {String(index + 1).padStart(2, '0')}
             </p>
             <h1 id="pt" className="display">
@@ -425,7 +426,7 @@ export function PortalDoor({ link }: { link: LinkFn }) {
 
 export function NotFoundPage({ link }: { link: LinkFn }) {
   return (
-    <section className="s-hello theme-dark s-lost" aria-labelledby="pt">
+    <section className="s-hello theme-dark aurora s-lost" aria-labelledby="pt">
       <div className="s-wrap">
         <p className="s-lost-code display" aria-hidden="true">
           404
@@ -445,7 +446,7 @@ export function NotFoundPage({ link }: { link: LinkFn }) {
           </Magnetic>
           <Magnetic>
             <a className="s-btn s-btn--line" href={link('/projects/')}>
-              See our work
+              See our projects
             </a>
           </Magnetic>
         </p>

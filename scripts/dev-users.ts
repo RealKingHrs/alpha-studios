@@ -32,20 +32,21 @@ const crewId = await user(crew);
 
 await db.from('members').update({ role: 'crew' }).eq('role', 'admin');
 await db.from('members').delete().eq('slug', 'studio-admin');
-const a = await db.from('members').insert({
-  slug: 'studio-admin',
-  name: 'Studio admin',
-  role_title: 'Admin',
-  role: 'admin',
-  user_id: adminId,
-  access_status: 'active',
-  consented_at: new Date().toISOString(),
-});
+// The founder, Hari, is the studio admin; the crew login belongs to Riya.
+const a = await db
+  .from('members')
+  .update({
+    role: 'admin',
+    user_id: adminId,
+    access_status: 'active',
+    consented_at: new Date().toISOString(),
+  })
+  .eq('slug', 'hari-rudran-sunil');
 if (a.error) throw a.error;
 const c = await db
   .from('members')
   .update({ user_id: crewId, access_status: 'active', consented_at: new Date().toISOString() })
-  .eq('slug', 'aarav-menon');
+  .eq('slug', 'riya-suresh');
 if (c.error) throw c.error;
 
 writeFileSync('.env.local', `VITE_SUPABASE_URL=${url}\nVITE_SUPABASE_ANON_KEY=${env.ANON_KEY}\n`);

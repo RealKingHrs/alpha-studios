@@ -14,7 +14,7 @@ await writeFile('public/icon-512.png', await png(512));
 
 // Share image, 1200 x 630: mark centred on midnight.
 const mark = await png(360);
-await sharp({ create: { width: 1200, height: 630, channels: 3, background: '#0E1A2B' } })
+await sharp({ create: { width: 1200, height: 630, channels: 3, background: '#0A1430' } })
   .composite([{ input: mark, left: 420, top: 135 }])
   .png()
   .toFile('public/og.png');

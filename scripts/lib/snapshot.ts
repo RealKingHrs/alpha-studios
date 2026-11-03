@@ -39,6 +39,7 @@ export function buildSnapshot(rows: Rows, now = new Date()): Snapshot {
       currently: m.currently ?? '',
       funFact: m.fun_fact ?? '',
       popPick: m.pop_pick ?? '',
+      age: m.age ?? undefined,
       location: m.location ?? '',
       openTo: m.open_to ?? '',
       languages: m.languages ?? [],

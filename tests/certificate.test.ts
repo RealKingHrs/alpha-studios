@@ -21,7 +21,7 @@ describe('certificate pages', () => {
       name: 'certificate',
       id: c.id,
     });
-    expect(matchRoute(`${base}crew/zara-okafor/certificates/${c.id}/`, base, snap).name).toBe(
+    expect(matchRoute(`${base}crew/riya-suresh/certificates/${c.id}/`, base, snap).name).toBe(
       'not-found',
     );
     expect(matchRoute(`${base}crew/${c.memberSlug}/certificates/nope/`, base, snap).name).toBe(

@@ -17,7 +17,7 @@ import { WorkStage } from './WorkStage';
 export type LinkFn = (path: string) => string;
 
 const NAV = [
-  ['/projects/', 'Work'],
+  ['/projects/', 'Projects'],
   ['/crew/', 'Crew'],
   ['/launchpad/', 'Launchpad'],
   ['/about/', 'About'],
@@ -184,7 +184,7 @@ export function Footer({ link }: { link: LinkFn }) {
     [
       'Studio',
       [
-        ['/projects/', 'Work'],
+        ['/projects/', 'Projects'],
         ['/crew/', 'Crew'],
         ['/about/', 'About'],
       ],
@@ -198,7 +198,7 @@ export function Footer({ link }: { link: LinkFn }) {
     ],
   ] as const;
   return (
-    <footer className="s-footer theme-dark">
+    <footer className="s-footer theme-dark aurora">
       <div className="s-wrap s-footer-grid">
         <div className="s-footer-brand">
           <a className="s-footer-logo" href={link('/')} aria-label="Alpha Studios, home">
@@ -270,7 +270,7 @@ export function Hero({ snap, link }: { snap: Snapshot; link: LinkFn }) {
   ] as const;
 
   return (
-    <section ref={ref} className="s-hero theme-dark" aria-labelledby="hero-title">
+    <section ref={ref} className="s-hero theme-dark aurora" data-spot aria-labelledby="hero-title">
       <motion.div
         className="s-hero-lines"
         aria-hidden="true"
@@ -288,7 +288,7 @@ export function Hero({ snap, link }: { snap: Snapshot; link: LinkFn }) {
               <span className="s-hero-line">
                 <SplitText text={HEADLINE[0]} delay={0.2} step={0.1} />
               </span>
-              <span className="s-hero-line s-hero-gold">
+              <span className="s-hero-line s-hero-gold foil">
                 <SplitText text={HEADLINE[1]} delay={0.55} step={0.1} />
               </span>
             </span>
@@ -297,7 +297,7 @@ export function Hero({ snap, link }: { snap: Snapshot; link: LinkFn }) {
           <p className="s-actions">
             <Magnetic>
               <a className="s-btn s-btn--gold" href="#work">
-                See our work
+                See our projects
               </a>
             </Magnetic>
             <Magnetic>

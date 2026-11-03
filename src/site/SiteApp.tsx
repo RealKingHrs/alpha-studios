@@ -23,6 +23,8 @@ import {
   WorkPage,
 } from './pages';
 import { AboutPage } from './AboutPage';
+import { Cryptex, useCryptexTriggers } from './Cryptex';
+import { useSpotlight } from './Spotlight';
 import { CertificatePage } from './CertificatePage';
 import { LaunchpadPage } from './Launchpad';
 import { Footer, Header, SectionIndex } from './parts';
@@ -64,7 +66,11 @@ export function SiteApp({
     document.documentElement.classList.add('ready');
   }, [base, snap, firstVisit]);
 
+  const [cryptex, setCryptex] = useState(false);
+  const openCryptex = useCallback(() => setCryptex(true), []);
+  useCryptexTriggers(openCryptex);
   const enabled = allowed;
+  useSpotlight(enabled && fine);
   useEffect(() => {
     document.documentElement.classList.toggle('fx', enabled && fine);
     return () => document.documentElement.classList.remove('fx');
@@ -168,6 +174,7 @@ export function SiteApp({
         <SmoothScroll enabled={enabled} />
         {enabled && fine && <Cursor />}
         <PageWipe phase={phase} />
+        {cryptex && <Cryptex link={link} onClose={() => setCryptex(false)} />}
         <div className="visually-hidden" role="status" aria-live="polite">
           {announce}
         </div>

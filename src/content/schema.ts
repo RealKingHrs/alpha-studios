@@ -32,6 +32,7 @@ export const Member = z.object({
   currently: z.string().default(''),
   funFact: z.string().default(''),
   popPick: z.string().default(''),
+  age: z.number().int().min(13).max(99).optional(),
   location: z.string().default(''),
   openTo: z.string().default(''),
   languages: z.array(z.string()).default([]),

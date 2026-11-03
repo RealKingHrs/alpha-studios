@@ -70,7 +70,7 @@
   width: min(44vw, 480px);
   translate: calc(var(--px) * 12px) calc(var(--py) * 6px);
   transition: translate var(--dur-base) var(--ease);
-  filter: drop-shadow(0 12px 14px rgb(14 26 43 / 0.22));
+  filter: drop-shadow(0 12px 14px rgb(10 20 48 / 0.22));
 }
 .mp-sticker {
   position: absolute;
@@ -569,7 +569,7 @@ html.reduce-motion .mp-next-peek {
   padding: 0.25rem 0.8rem;
   border: 1px solid var(--rule);
   border-radius: 99px;
-  background: rgb(247 244 236 / 0.06);
+  background: rgb(251 248 241 / 0.06);
   font-size: 0.82rem;
 }
 .mp-h--small {

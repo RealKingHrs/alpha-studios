@@ -1,3 +1,4 @@
+import { CraftIcon, CreditIcon, PeopleIcon } from './Icons';
 import { Reveal } from './Reveal';
 import { SplitText } from './motion/SplitText';
 import type { LinkFn } from './parts';
@@ -5,14 +6,17 @@ import type { LinkFn } from './parts';
 /** What the studio stands for. Short, direct and written to be edited: these are the studio's words, not decoration. */
 export const PRINCIPLES = [
   {
+    icon: CraftIcon,
     title: 'Craft over speed',
     text: 'We take the time to get the details right, so what we ship keeps working long after launch day.',
   },
   {
+    icon: PeopleIcon,
     title: 'People over metrics',
     text: 'Every product starts with a person who needs something done. We design for them, not for a dashboard.',
   },
   {
+    icon: CreditIcon,
     title: 'Credit where it is due',
     text: 'The people who make things are named, and stay named. That is why Launchpad founders keep their credit for good.',
   },
@@ -35,6 +39,9 @@ export function Vision({ link }: { link: LinkFn }) {
           {PRINCIPLES.map((p, i) => (
             <li key={p.title}>
               <Reveal delay={i * 80}>
+                <span className="s-principle-icon">
+                  <p.icon />
+                </span>
                 <span className="s-principle-n mono" aria-hidden="true">
                   {String(i + 1).padStart(2, '0')}
                 </span>

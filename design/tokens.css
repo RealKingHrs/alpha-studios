@@ -4,27 +4,40 @@
 
 :root {
   /* Midnight and ivory */
-  --ink: #0E1A2B;
-  --ink-soft: #475365;      /* secondary text on ivory (7.4:1) */
-  --paper: #F7F4EC;
-  --paper-2: #EEE9DC;
-  --rule: #DAD3C2;          /* hairlines on ivory */
-  --midnight-2: #16273C;    /* a lifted midnight for panels on midnight */
+  --ink: #0A1430;
+  --ink-soft: #46506B;      /* secondary text on ivory (7.6:1) */
+  --paper: #FBF8F1;
+  --paper-2: #F3EEE2;
+  --rule: #DED6C4;          /* hairlines on ivory */
+  --midnight-2: #12224A;    /* a lifted midnight for panels on midnight */
   /* Fixed values that never swap in a dark section (for buttons and seals). */
-  --midnight: #0E1A2B;
-  --ivory: #F7F4EC;
+  --midnight: #0A1430;
+  --ivory: #FBF8F1;
 
   /* Signature gold. Fills and rules; for text on ivory use --gold-deep. */
-  --gold: #C8A24B;
-  --gold-deep: #765C1B;
-  --gold-soft: #E3C984;     /* gold text and rules on midnight */
+  --gold: #D4AF5A;
+  --gold-deep: #6F5516;
+  --gold-soft: #EBD08A;     /* gold text and rules on midnight */
 
   /* Quiet tints for cards, with midnight text */
-  --sand: #E6DCC4;
-  --teal: #BFDCD6;
-  --slate: #BCCDE0;
-  --sage: #C9D9C6;
-  --teal-deep: #276B65;     /* success and links on ivory */
+  --sand: #F2DFAE;
+  --teal: #A5E6D8;
+  --slate: #BAC8FF;
+  --sage: #CFEBC0;
+  --teal-deep: #0E7A5E;     /* success and links on ivory */
+
+  /* Light and accent colours for glows, gradients and small marks (never body text) */
+  --sapphire: #3B5BFF;
+  --indigo: #6A55FF;
+  --emerald: #1FBF8F;
+  /* The gold foil */
+  --foil: linear-gradient(110deg, #a97c25 0%, #f3dc98 30%, #d4af5a 50%, #f3dc98 68%, #8a6a1f 100%);
+  /* A midnight ground with a soft sapphire, indigo and emerald light */
+  --aurora:
+    radial-gradient(60% 55% at 84% 8%, rgb(59 91 255 / 0.36), transparent 70%),
+    radial-gradient(50% 50% at 8% 92%, rgb(106 85 255 / 0.3), transparent 70%),
+    radial-gradient(40% 40% at 58% 72%, rgb(31 191 143 / 0.16), transparent 70%),
+    linear-gradient(180deg, #0a1430, #0c1a40);
 
   /* Mark colours */
   --mark-edge: var(--ink-soft);
@@ -100,11 +113,11 @@
 
 /* A dark section: midnight ground, ivory text. Every component reads --ink and --paper, so swapping them inverts it all. */
 .theme-dark {
-  --ink: #F7F4EC;
+  --ink: #FBF8F1;
   --ink-soft: #B7C0CC;
-  --paper: #0E1A2B;
-  --paper-2: #16273C;
-  --rule: #2B3C54;
+  --paper: #0A1430;
+  --paper-2: #12224A;
+  --rule: #2A3C72;
   --focus-color: var(--gold-soft);
   background: var(--paper);
   color: var(--ink);

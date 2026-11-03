@@ -44,10 +44,10 @@ describe('the headline', () => {
 describe('the marquee', () => {
   it('lists each platform and technology once, in order of appearance', () => {
     const items = marqueeItems(snap);
-    expect(items.slice(0, 3)).toEqual(['iOS', 'macOS', 'Web']);
+    expect(items.slice(0, 4)).toEqual(['iOS', 'Android', 'Web', 'macOS']);
     expect(new Set(items.map((x) => x.toLowerCase())).size).toBe(items.length);
     expect(items).toContain('SwiftUI');
-    expect(items).toContain('TypeScript');
+    expect(items).toContain('PyTorch');
   });
 
   it('is empty, not broken, when there is nothing to show', () => {
@@ -95,9 +95,9 @@ describe('the site', () => {
     const html = renderToStaticMarkup(createElement(App, { snap, pathname: base, base }));
     expect(html).toContain('class="site"');
     expect(html).toContain('We build software people rely on.');
-    expect(html).toContain('href="/alpha-studios/projects/harbor/"');
-    expect(html).toContain('href="/alpha-studios/projects/lumen/"');
-    expect(html).toContain('Aarav Menon');
+    expect(html).toContain('href="/alpha-studios/projects/bioscanner/"');
+    expect(html).toContain('href="/alpha-studios/projects/velocity/"');
+    expect(html).toContain('Hari Rudran Sunil');
     expect(html).not.toMatch(/explore|vault|webgl/i);
   });
 
@@ -105,9 +105,9 @@ describe('the site', () => {
     const paths = [
       '',
       'projects/',
-      'projects/harbor/',
+      'projects/bioscanner/',
       'crew/',
-      'crew/zara-okafor/',
+      'crew/riya-suresh/',
       'contact/',
       'launchpad/',
       'about/',
