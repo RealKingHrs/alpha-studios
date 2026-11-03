@@ -2,9 +2,9 @@
 
 This puts the public site on the internet for free (GitHub Pages) and switches on the crew portal (a free Supabase project). Allow about 45 minutes. You type passwords and keys only into the GitHub, Google and Supabase websites, never into this repo, a chat or a file.
 
-- Your GitHub account: **THEK1NGHRS**
-- The public site will live at: **https://thek1nghrs.github.io/alpha-studios/**
-- The crew portal will live at: **https://thek1nghrs.github.io/alpha-studios/portal/app/**
+- Your GitHub account: **RealKingHrs**
+- The public site will live at: **https://realkinghrs.github.io/alpha-studios/**
+- The crew portal will live at: **https://realkinghrs.github.io/alpha-studios/portal/app/**
 - The admin email: **dustmail20@gmail.com**
 
 ## How people get into the portal
@@ -29,7 +29,7 @@ The admin (you) adds each person with their email, presses **Issue PIN** and sen
 
 ## Part 1: the public site (GitHub)
 
-1. Sign in to GitHub as THEK1NGHRS. Click **+** at the top right, **New repository**. Name it exactly `alpha-studios`, choose **Public**, leave every box unticked (no README), click **Create repository**.
+1. Sign in to GitHub as RealKingHrs. Click **+** at the top right, **New repository**. Name it exactly `alpha-studios`, choose **Public**, leave every box unticked (no README), click **Create repository**.
 2. In the project folder run these. The first command checks everything is ready; the remote is already set to your account.
 
    ```bash
@@ -40,7 +40,7 @@ The admin (you) adds each person with their email, presses **Issue PIN** and sen
    Git asks you to sign in once. Use your GitHub username and a **personal access token** as the password (GitHub, Settings, Developer settings, Personal access tokens, tick `repo`), or the browser sign-in if your Mac offers it.
 
 3. On GitHub open the repository, **Settings, Pages**, under **Source** choose **GitHub Actions**.
-4. Open the **Actions** tab. The workflow **publish** starts by itself. When it is green (about three minutes) open `https://thek1nghrs.github.io/alpha-studios/`. The site is live.
+4. Open the **Actions** tab. The workflow **publish** starts by itself. When it is green (about three minutes) open `https://realkinghrs.github.io/alpha-studios/`. The site is live.
 
 The site reads only a snapshot file, so it keeps working even if the portal's database sleeps.
 
@@ -75,7 +75,7 @@ The site reads only a snapshot file, so it keeps working even if the portal's da
 
 1. In the project folder run `npm run admin:sql`. It prints **your PIN once** (write it down) and one block of SQL.
 2. Supabase, **SQL Editor**, paste that SQL and run it. It makes the Hari Rudran Sunil profile the single admin, registered to dustmail20@gmail.com, with your PIN.
-3. Open `https://thek1nghrs.github.io/alpha-studios/`, type `cryptex`, set your PIN on the wheels, press Continue. A code arrives at dustmail20@gmail.com; enter it. You are in as admin.
+3. Open `https://realkinghrs.github.io/alpha-studios/`, type `cryptex`, set your PIN on the wheels, press Continue. A code arrives at dustmail20@gmail.com; enter it. You are in as admin.
 
 ## Run the crew
 
@@ -89,10 +89,10 @@ The site reads only a snapshot file, so it keeps working even if the portal's da
 
 The site is built with a sitemap, a robots file, page titles, descriptions, share images and structured data about the studio, so search engines can understand it. Two things only you can do:
 
-1. **Google**: open search.google.com/search-console, **Add property**, choose **URL prefix**, enter `https://thek1nghrs.github.io/alpha-studios/`. Verify with the **HTML tag** method: copy the `<meta name="google-site-verification" ...>` line, add it to the `<head>` of `index.html`, push, and press Verify. Then **Sitemaps**, add `sitemap.xml`. Do the same at bing.com/webmasters (it can import from Search Console).
+1. **Google**: open search.google.com/search-console, **Add property**, choose **URL prefix**, enter `https://realkinghrs.github.io/alpha-studios/`. Verify with the **HTML tag** method: copy the `<meta name="google-site-verification" ...>` line, add it to the `<head>` of `index.html`, push, and press Verify. Then **Sitemaps**, add `sitemap.xml`. Do the same at bing.com/webmasters (it can import from Search Console).
 2. **Links**: put the address on your GitHub profile and repository description, LinkedIn, and anywhere you are listed. Links from real places are what lift a new site.
 
-Honest expectations: Google usually takes days to weeks to show a new site. "Alpha Studios" is a common name, so the site will not be first for those two words by itself. Searches for "Alpha Studios THEK1NGHRS" or the address come first. A custom domain (about 10 to 15 USD a year, not free) such as `alphastudios.dev` helps most: buy it, add it under repository Settings, Pages, Custom domain, and ask me to switch the workflow's base address to `/` (a one-line change) before you re-run it.
+Honest expectations: Google usually takes days to weeks to show a new site. "Alpha Studios" is a common name, so the site will not be first for those two words by itself. Searches for "Alpha Studios RealKingHrs" or the address come first. A custom domain (about 10 to 15 USD a year, not free) such as `alphastudios.dev` helps most: buy it, add it under repository Settings, Pages, Custom domain, and ask me to switch the workflow's base address to `/` (a one-line change) before you re-run it.
 
 ## Before real visitors
 
