@@ -3,6 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>
+      try{if(localStorage.getItem('alpha:theme')==='light')document.documentElement.dataset.theme='light'}catch(e){}
+    </script>
     <!--head-->
     <script>
       // Hide the page only until the opening is ready, and never for more than 3 s if scripts fail.
