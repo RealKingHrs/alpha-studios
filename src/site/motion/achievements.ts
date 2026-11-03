@@ -20,6 +20,15 @@ export const ACHIEVEMENTS: Achievement[] = [
     hint: 'Poke around the Elements of our stack.',
     xp: 100,
   },
+  { id: 'first-contact', title: 'First contact', hint: 'Open the contact page.', xp: 100 },
+  { id: 'behind-the-door', title: 'Behind the door', hint: 'Knock on the crew login.', xp: 100 },
+  { id: 'scorekeeper', title: 'Scorekeeper', hint: 'Open the XP list in the footer.', xp: 50 },
+  {
+    id: 'pitch-ready',
+    title: 'Pitch ready',
+    hint: 'Press the pitch button on the Launchpad.',
+    xp: 200,
+  },
   { id: 'the-case', title: 'The Case', hint: 'Find the golden briefcase.', xp: 250 },
   {
     id: 'build-mode',

@@ -51,7 +51,7 @@ for (const m of snap.members) {
   };
   const file = join(tmp, `${m.slug}.json`);
   writeFileSync(file, JSON.stringify(job));
-  for (const expr of ['a', 'b']) {
+  for (const expr of ['a', 'b', 'c']) {
     const png = join(tmp, `${m.slug}-${expr}.png`);
     blender(['blender/character.py', '--', file, png, expr]);
     await toWebp(png, join(out, 'crew', `${m.slug}-${expr}.webp`), 480);
@@ -59,7 +59,8 @@ for (const m of snap.members) {
   console.log(`rendered ${m.slug}`);
 }
 
-for (const kind of ['alpha', 'trophy']) {
+const PROPS = ['alpha', 'trophy', 'briefcase', 'phone', 'laptop', 'browser'] as const;
+for (const kind of PROPS) {
   const png = join(tmp, `${kind}.png`);
   blender(['blender/props.py', '--', kind, png]);
   await toWebp(png, join(out, `${kind}.webp`), kind === 'alpha' ? 720 : 360);
@@ -68,8 +69,7 @@ for (const kind of ['alpha', 'trophy']) {
 
 writeFileSync(
   'src/site/renders.json',
-  JSON.stringify({ crew: snap.members.map((m) => m.slug), alpha: true, trophy: true }, null, 2) +
-    '\n',
+  JSON.stringify({ crew: snap.members.map((m) => m.slug), props: PROPS }, null, 2) + '\n',
 );
 rmSync(tmp, { recursive: true, force: true });
 console.log('wrote src/site/renders.json');

@@ -1,4 +1,6 @@
 import type { Snapshot } from '../content/schema';
+import { propRender } from './renders';
+import { earn } from './achievementStore';
 import { Sticker } from './Mark';
 import { Magnetic } from './motion/Magnetic';
 import { SplitText } from './motion/SplitText';
@@ -55,12 +57,26 @@ export function LaunchpadPage({ snap, link }: { snap: Snapshot; link: LinkFn }) 
             and solo developers: pitch what you are making, and if the team believes in it, we adopt
             it, back it with resources and credit you as its founder, for good.
           </p>
+          <p className="lp-props" aria-hidden="true">
+            {(['phone', 'laptop', 'browser'] as const).map((k) => (
+              <img
+                key={k}
+                src={propRender(link, k)}
+                alt=""
+                width="120"
+                height="120"
+                loading="lazy"
+                decoding="async"
+              />
+            ))}
+          </p>
           <p className="s-actions">
             <Magnetic>
               <a
                 className="s-btn s-btn--ink"
                 href={link('/portal/app/#/pitch')}
                 data-cursor="Pitch"
+                onClick={() => earn('pitch-ready')}
               >
                 Pitch your project
               </a>

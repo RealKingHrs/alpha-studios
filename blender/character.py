@@ -2,7 +2,7 @@
 
 Run headless:  blender -b -P blender/character.py -- job.json out.png a|b
 job.json is written by scripts/render-3d.ts from a member's saved avatar record (kit version 1).
-Expression a is the calm smile; expression b is the grin with raised brows and squinting eyes.
+Expression a is the calm smile; b is the grin with raised brows and squinting eyes; c is a wave, with a raised arm.
 """
 import bpy, bmesh, json, math, sys
 from mathutils import Vector
@@ -146,7 +146,7 @@ for sx in (-1, 1):
 # brows
 b = job['brows']
 bey = face_y(0, ez + hh * 0.35) + 0.02
-lift = hh * (0.09 if expr == 'b' else 0.0)
+lift = hh * (0.09 if expr in ('b', 'c') else 0.0)
 for sx in (-1, 1):
     bw = b['w'] * S * 1.3
     tilt = b['tilt'] * sx
@@ -156,11 +156,11 @@ for sx in (-1, 1):
 
 # mouth
 m = job['mouth']
-mw = m['w'] * S * 1.5 * (1.35 if expr == 'b' else 1.0)
+mw = m['w'] * S * 1.5 * (1.35 if expr in ('b', 'c') else 1.0)
 mz = -hh * 0.42
 my = face_y(0, mz) + 0.06
 kind = m['kind']
-if expr == 'b' or kind == 'open':
+if expr in ('b', 'c') or kind == 'open':
     sphere((0, my, mz), (mw * 0.8, hd * 0.06, mw * 0.5), dark)
     sphere((0, my - 0.02, mz - mw * 0.2), (mw * 0.5, hd * 0.05, mw * 0.22), mat('tongue', '#e0675a', 0.4, 0.3))
 else:
@@ -238,6 +238,16 @@ if ch != 'none':
     torus((0, -hd * 0.12, -hh * 1.12), hw * 0.62, 0.05 if ch == 'thin' else 0.1, jm, scale=(1, 0.8, 0.7))
 
 # ground shadow catcher is skipped on purpose: the background is transparent.
+
+# wave: a raised arm on the viewer's right
+if expr == 'c':
+    shoulder = Vector((hw * 1.05, 0.0, -hh * 1.35))
+    hand = Vector((hw * 1.55, -hd * 0.25, -hh * 0.35))
+    mid = (shoulder + hand) / 2
+    sleeve = cyl(tuple(mid), hw * 0.2, (hand - shoulder).length, outfit_m)
+    sleeve.rotation_euler = (hand - shoulder).to_track_quat('Z', 'Y').to_euler()
+    sphere(tuple(shoulder), (hw * 0.24,) * 3, outfit_m)
+    sphere(tuple(hand + (hand - shoulder).normalized() * hw * 0.12), (hw * 0.22,) * 3, skin)
 
 # ---------------------------------------------------------------- light and camera
 def area(name, loc, energy, color=(1, 1, 1), size=6):

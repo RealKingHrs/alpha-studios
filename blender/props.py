@@ -69,7 +69,7 @@ if kind == 'alpha':
     tube(stroke[:8], 0.22, ink, 'alpha')
     tube(stroke[7:], 0.22, gold, 'flick')
     target = Vector((0.2, 0, 0))
-else:
+elif kind == 'trophy':
     def cyl(loc, r1, r2, d, m):
         bpy.ops.mesh.primitive_cone_add(vertices=64, radius1=r1, radius2=r2, depth=d, location=loc)
         o = bpy.context.object
@@ -91,6 +91,56 @@ else:
     b.data.materials.append(gold)
     smooth(b)
     target = Vector((0, 0, 1.35))
+
+
+
+else:
+    def box(loc, size, m, bevel=0.06):
+        bpy.ops.mesh.primitive_cube_add(location=loc)
+        o = bpy.context.object
+        o.scale = (size[0] / 2, size[1] / 2, size[2] / 2)
+        bpy.ops.object.transform_apply(scale=True)
+        mod = o.modifiers.new('b', 'BEVEL')
+        mod.width = bevel
+        mod.segments = 5
+        o.data.materials.append(m)
+        smooth(o)
+        return o
+
+    screen = mat('screen', (0.35, 0.65, 0.95), 0.15, 0.0, 0.8)
+    paper = mat('paper', (0.96, 0.94, 0.9), 0.4, 0.0, 0.2)
+    if kind == 'briefcase':
+        box((0, 0, 0.9), (3.2, 1.2, 2.0), gold, 0.18)
+        bpy.ops.mesh.primitive_torus_add(location=(0, 0, 2.0), rotation=(math.radians(90), 0, 0),
+                                         major_radius=0.55, minor_radius=0.09, major_segments=48, minor_segments=16)
+        h = bpy.context.object
+        h.scale = (1, 1, 0.7)
+        h.data.materials.append(gold)
+        smooth(h)
+        box((-0.8, -0.62, 1.1), (0.28, 0.1, 0.4), ink, 0.03)
+        box((0.8, -0.62, 1.1), (0.28, 0.1, 0.4), ink, 0.03)
+        target = Vector((0, 0, 1.0))
+    elif kind == 'phone':
+        box((0, 0, 1.6), (1.5, 0.22, 3.1), ink, 0.2)
+        box((0, -0.12, 1.6), (1.28, 0.04, 2.8), screen, 0.08)
+        target = Vector((0, 0, 1.6))
+    elif kind == 'laptop':
+        box((0, 0, 0.1), (3.6, 2.4, 0.18), ink, 0.07)
+        s2 = box((0, 1.15, 1.35), (3.6, 0.16, 2.4), ink, 0.07)
+        s2.rotation_euler = (math.radians(-12), 0, 0)
+        sc = box((0, 1.0, 1.35), (3.25, 0.04, 2.1), screen, 0.04)
+        sc.rotation_euler = (math.radians(-12), 0, 0)
+        target = Vector((0, 0.4, 1.0))
+    else:  # browser window
+        box((0, 0, 1.3), (4.0, 0.2, 2.8), paper, 0.12)
+        box((0, -0.12, 2.4), (3.8, 0.05, 0.4), ink, 0.04)
+        for i, c in enumerate(((0.95, 0.42, 0.29), (0.98, 0.78, 0.25), (0.45, 0.8, 0.6))):
+            bpy.ops.mesh.primitive_uv_sphere_add(location=(-1.6 + i * 0.4, -0.16, 2.4), radius=0.1)
+            d = bpy.context.object
+            d.data.materials.append(mat(f'dot{i}', c, 0.3, 0.0, 0.5))
+            smooth(d)
+        box((0, -0.12, 1.1), (3.4, 0.05, 1.6), screen, 0.05)
+        target = Vector((0, 0, 1.3))
 
 
 def area(name, loc, energy, size=6):

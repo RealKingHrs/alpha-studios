@@ -22,11 +22,11 @@ export function Projects({ me }: { me: MemberRow }) {
   const { data, error, loading, reload } = useAsync(async () => {
     const [projects, mine] = await Promise.all([
       must<ProjectRow[]>(db.from('projects').select('*').order('created_at')),
-      must<Array<{ project_id: string }>>(
-        db.from('project_members').select('project_id').eq('member_id', me.id),
+      must<Array<{ project_id: string; role: string }>>(
+        db.from('project_members').select('project_id, role').eq('member_id', me.id),
       ),
     ]);
-    return { projects, mine: new Set(mine.map((m) => m.project_id)) };
+    return { projects, mine: new Map(mine.map((m) => [m.project_id, m.role])) };
   }, 'projects');
 
   async function act(fn: () => PromiseLike<{ error: { message: string } | null }>, ok?: string) {
@@ -111,6 +111,24 @@ export function Projects({ me }: { me: MemberRow }) {
                   />
                 )}
               </div>
+              {member && (
+                <RoleField
+                  key={`${p.id}-${data.mine.get(p.id) ?? ''}`}
+                  project={p.name}
+                  initial={data.mine.get(p.id) ?? ''}
+                  onSave={(role) =>
+                    act(
+                      () =>
+                        db
+                          .from('project_members')
+                          .update({ role })
+                          .eq('project_id', p.id)
+                          .eq('member_id', me.id),
+                      `Your role on ${p.name} is saved.`,
+                    )
+                  }
+                />
+              )}
               {editing === p.id && (
                 <ProjectEditor
                   key={p.id}
@@ -413,5 +431,31 @@ function ProjectEditor({
         </p>
       )}
     </form>
+  );
+}
+
+/** Your own role on a project, shown on your card and the case study team list. */
+function RoleField({
+  project,
+  initial,
+  onSave,
+}: {
+  project: string;
+  initial: string;
+  onSave: (role: string) => void;
+}) {
+  const [role, setRole] = useState(initial);
+  return (
+    <div className="field">
+      <label htmlFor={`role-${project}`}>Your role on {project}</label>
+      <input
+        id={`role-${project}`}
+        maxLength={60}
+        value={role}
+        onChange={(e) => setRole(e.target.value)}
+        onBlur={() => role !== initial && onSave(role.trim())}
+      />
+      <span className="hint">Saved when you leave the box. Example: Backend lead.</span>
+    </div>
   );
 }

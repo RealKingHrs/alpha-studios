@@ -6,6 +6,7 @@ import { Portrait } from '../avatar/Portrait';
 import { accentFor } from './data';
 import { useMotionOn } from './motion/context';
 import type { LinkFn } from './parts';
+import { Shelf, Skills, Works } from './Dossier';
 import { crewRender, hasRender } from './renders';
 
 /**
@@ -69,6 +70,17 @@ export function CrewLineup({
                 </span>
               </a>
             )}
+            {!profile && snap && (
+              <details className="quick">
+                <summary>Quick look at {m.name}</summary>
+                <Skills skills={m.skills} />
+                <Works snap={snap} slug={m.slug} link={link} />
+                <Shelf
+                  link={link}
+                  certs={snap.certifications.filter((c) => c.memberSlug === m.slug)}
+                />
+              </details>
+            )}
           </motion.li>
         ))}
       </ul>
@@ -93,7 +105,7 @@ function Waver({ member, index, link }: { member: Member; index: number; link: L
       </span>
       <span className="crew-disc">
         <span key={waves} className={waves ? 'is-wave' : ''}>
-          <Figure member={member} link={link} flip={waves > 0} />
+          <Figure member={member} link={link} wave={waves > 0} />
         </span>
       </span>
     </button>
@@ -101,10 +113,10 @@ function Waver({ member, index, link }: { member: Member; index: number; link: L
 }
 
 /** The Blender render of a member, with a second expression on hover. Without a render, the live SVG character. */
-function Figure({ member, link, flip = false }: { member: Member; link: LinkFn; flip?: boolean }) {
+function Figure({ member, link, wave = false }: { member: Member; link: LinkFn; wave?: boolean }) {
   if (!hasRender(member.slug)) return <Portrait record={member.avatar} />;
   return (
-    <span className={`figure ${flip ? 'is-b' : ''}`}>
+    <span className={`figure ${wave ? 'is-c' : ''}`}>
       <img
         className="figure-a"
         src={crewRender(link, member.slug, 'a')}
@@ -117,6 +129,15 @@ function Figure({ member, link, flip = false }: { member: Member; link: LinkFn; 
       <img
         className="figure-b"
         src={crewRender(link, member.slug, 'b')}
+        alt=""
+        width="480"
+        height="480"
+        loading="lazy"
+        decoding="async"
+      />
+      <img
+        className="figure-c"
+        src={crewRender(link, member.slug, 'c')}
         alt=""
         width="480"
         height="480"

@@ -26,6 +26,12 @@ describe('achievements', () => {
     expect(levelOf(300)).toBe(2);
   });
 
+  it('has unique ids and every one awards XP', () => {
+    const ids = ACHIEVEMENTS.map((a) => a.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(ACHIEVEMENTS.every((a) => a.xp > 0)).toBe(true);
+  });
+
   it('reads damaged storage as empty and drops unknown ids', () => {
     expect(parseEarned('{oops')).toEqual([]);
     expect(parseEarned('"text"')).toEqual([]);

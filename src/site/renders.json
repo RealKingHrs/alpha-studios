@@ -1,5 +1,4 @@
 {
   "crew": ["member-one", "member-two", "member-three", "member-four", "member-five"],
-  "alpha": true,
-  "trophy": true
+  "props": ["alpha", "trophy", "briefcase", "phone", "laptop", "browser"]
 }

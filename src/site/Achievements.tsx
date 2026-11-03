@@ -10,6 +10,8 @@ const ROUTE_AWARD: Partial<Record<Route['name'], string>> = {
   crew: 'meet-crew',
   member: 'meet-crew',
   launchpad: 'open-door',
+  contact: 'first-contact',
+  portal: 'behind-the-door',
 };
 
 /** Awards the achievements that come from simply visiting a page. */
@@ -63,7 +65,7 @@ export function XpPanel() {
   const earned = useEarned();
   const xp = xpOf(earned);
   return (
-    <details className="xp">
+    <details className="xp" onToggle={(e) => e.currentTarget.open && earn('scorekeeper')}>
       <summary>
         <span className="mono">
           Level {levelOf(xp)} · {xp}/{TOTAL_XP} XP

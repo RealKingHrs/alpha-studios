@@ -234,8 +234,12 @@ a.s-chip:hover {
     min-height: 64px;
   }
   .s-nav ul {
-    gap: 14px;
-    font-size: 0.95rem;
+    gap: 10px;
+    font-size: 0.9rem;
+  }
+  /* Four links and the pill do not fit a phone: the pill already goes to Contact, so the plain link steps aside. */
+  .s-nav li:nth-last-child(2) {
+    display: none;
   }
   .pill-long {
     display: none;
@@ -1977,17 +1981,18 @@ html.fx .s-hero-3d {
   object-fit: contain;
   transition: opacity 0.25s var(--ease);
 }
-.figure-b {
+.figure-b,
+.figure-c {
   opacity: 0;
 }
 .crew-card:hover .figure-b,
 .crew-card:focus-visible .figure-b,
-.figure.is-b .figure-b {
+.figure.is-c .figure-c {
   opacity: 1;
 }
 .crew-card:hover .figure-a,
 .crew-card:focus-visible .figure-a,
-.figure.is-b .figure-a {
+.figure.is-c .figure-a {
   opacity: 0;
 }
 .trophy img {
@@ -2153,4 +2158,53 @@ html.build body {
 html.reduce-motion .toast,
 html.reduce-motion .case {
   animation: none;
+}
+
+/* ---------------------------------------------------------------- quick look */
+.quick {
+  margin-top: 0.8rem;
+  font-size: 0.9rem;
+}
+.quick summary {
+  cursor: pointer;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.quick .dossier-skills {
+  grid-template-columns: 1fr;
+}
+.quick .shelf {
+  grid-template-columns: 1fr 1fr;
+}
+.lp-props {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1.4rem 0 0;
+}
+.lp-props img {
+  width: clamp(72px, 12vw, 120px);
+  height: auto;
+}
+.crew-card .figure.is-c .figure-b {
+  opacity: 0;
+}
+
+@media (max-width: 380px) {
+  /* On the narrowest phones the pill steps aside instead, and the plain Contact link returns. */
+  .s-nav li:last-child {
+    display: none;
+  }
+  .s-nav li:nth-last-child(2) {
+    display: list-item;
+  }
+  .s-nav ul {
+    gap: 8px;
+  }
+}
+@media (max-width: 340px) {
+  .s-nav ul {
+    gap: 6px;
+    font-size: 0.8rem;
+  }
 }

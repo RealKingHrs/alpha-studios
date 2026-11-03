@@ -141,25 +141,14 @@ export function Footer({
             data-cursor="Open"
             onClick={() => earn('the-case')}
           >
-            <svg viewBox="0 0 48 40" width="30" height="25" aria-hidden="true">
-              <rect
-                x="3"
-                y="12"
-                width="42"
-                height="25"
-                rx="4"
-                fill="var(--gold)"
-                stroke="#fff"
-                strokeWidth="2"
-              />
-              <path
-                d="M17 12V8a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v4"
-                fill="none"
-                stroke="#fff"
-                strokeWidth="2.5"
-              />
-              <rect x="21" y="21" width="6" height="6" rx="1" fill="var(--ink)" />
-            </svg>
+            <img
+              src={propRender(link, 'briefcase')}
+              alt=""
+              width="44"
+              height="44"
+              loading="lazy"
+              decoding="async"
+            />
           </a>
           <p className="nods">
             The nods to shows and games we love are affectionate and unaffiliated. No logos,
