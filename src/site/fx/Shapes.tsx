@@ -7,16 +7,8 @@ import { useMotionOn } from '../motion/context';
  */
 export function Shapes({ progress }: { progress: MotionValue<number> }) {
   const on = useMotionOn();
-  const a = useTransform(progress, [0, 1], ['0%', '-40%']);
   const b = useTransform(progress, [0, 1], ['0%', '-18%']);
-  const c = useTransform(progress, [0, 1], ['0%', '-62%']);
-  const d = useTransform(progress, [0, 1], ['0%', '-28%']);
-  const slots: Array<[string, MotionValue<string>]> = [
-    ['circle a-sun', a],
-    ['square a-mint', b],
-    ['pill a-sky', c],
-    ['ring a-lilac', d],
-  ];
+  const slots: Array<[string, MotionValue<string>]> = [['square a-mint', b]];
   return (
     <div className="fx-shapes" aria-hidden="true">
       {slots.map(([cls, y]) => (

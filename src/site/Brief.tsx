@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Magnetic } from './motion/Magnetic';
 import { CopyButton } from './fx/CopyButton';
+import { Note } from './fx/Doodles';
 
 const PLATFORMS = ['iOS', 'macOS', 'Web', 'AI and ML', 'APIs', 'Not sure yet'] as const;
 const RANGES = ['Under 2k', '2k to 10k', '10k to 30k', '30k and up', 'Let us talk'] as const;
@@ -66,6 +67,7 @@ export function Brief({ to }: { to?: string }) {
           <h2 id="brief-title" className="display">
             Tell us what you are building.
           </h2>
+          <Note className="s-brief-note">start here</Note>
           <p className="s-lede">
             Fill this in and it opens as an email to the crew. It stays on your device until you
             press send.

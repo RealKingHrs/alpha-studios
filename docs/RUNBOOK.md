@@ -27,6 +27,8 @@ Local test keys come from `npx supabase status` at run time and belong to a thro
 
 ## First-time setup
 
+The short, click-by-click version for a first launch is `docs/GO-LIVE.md`. The list below is the reference.
+
 1. Create the public GitHub repo, push, then Settings, Pages, Source: GitHub Actions.
 2. Create the Supabase project. Link it: `npx supabase link --project-ref <ref>`, then `npx supabase db push`.
 3. Seed placeholder content once: run `supabase/seed.sql` in the Supabase SQL editor.

@@ -1,5 +1,6 @@
 import type { Snapshot } from '../content/schema';
 import { GlobeIcon, LaptopIcon, PhoneIcon, PlugIcon, SparkIcon } from './Icons';
+import { Note } from './fx/Doodles';
 import { Reveal } from './Reveal';
 import { SplitText } from './motion/SplitText';
 import type { LinkFn } from './parts';
@@ -63,6 +64,7 @@ export function Services({ snap, link }: { snap: Snapshot; link: LinkFn }) {
         <h2 id="make-title" className="display s-make-title">
           <SplitText text="Five things we do well." />
         </h2>
+        <Note className="s-make-note">the five</Note>
         <ul className="s-make-grid">
           {SERVICES.map((s, i) => {
             const used = snap.projects.filter(s.uses);

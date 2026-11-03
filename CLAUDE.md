@@ -46,6 +46,10 @@ Read `docs/SPEC.md` before any work. It is the source of truth. If this file and
 - Founder credit is locked in the database and cannot be changed from the app; never add app code that tries.
 - Pop-culture nods use wording and mechanics only. No logos, artwork, characters or quotations.
 
+## Version 1
+
+The site is Version 1: bold editorial design, light only, crew portal invite-only. To publish it, follow `docs/GO-LIVE.md`; check readiness with `npm run go-live:check`. Never ask for or store a user's passwords or keys; they are entered only on GitHub and Supabase.
+
 ## Commands
 
 Run from the repo root. Node 22.

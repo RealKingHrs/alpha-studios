@@ -1,5 +1,10 @@
 # Full audit, 3 November 2026 (updated after the batch 23 editorial redesign)
 
+## Batch 25 re-check (Version 1)
+
+- Cover circle and ring removed; cursor no longer inverts the page; stamp, doodles, starburst, tickets, barcode added. Portal GitHub button hidden unless `VITE_PORTAL_GITHUB=1`.
+- `docs/GO-LIVE.md` and `npm run go-live:check` added. The preflight reads only local files and git.
+
 ## Batch 24 re-check (light only, richer home)
 
 - Dark mode removed (toggle, theme code, tokens, head script, tests). 120 unit tests pass, including new tests for the catchphrase, the new sections, the brief email and the FAQ markup.

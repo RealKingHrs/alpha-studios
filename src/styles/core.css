@@ -366,13 +366,13 @@ html.reveal-on .reveal.is-waiting {
   }
 }
 
-/* ------------------------------------------------------------ cursor: a small ink dot and ring */
+/* ------------------------------------------------------------ cursor: a solid ink dot and ring with a paper halo.
+   No blend modes, so it never inverts what is under it; the halo keeps it visible on ink and on every colour. */
 .cursor {
   position: fixed;
   inset: 0;
   z-index: 180;
   pointer-events: none;
-  mix-blend-mode: difference;
 }
 .cursor.is-gone {
   opacity: 0;
@@ -384,47 +384,47 @@ html.reveal-on .reveal.is-waiting {
   left: 0;
 }
 .cursor-ring {
-  width: 32px;
-  height: 32px;
-  margin: -16px 0 0 -16px;
-  border: 1.5px solid #fff;
+  width: 30px;
+  height: 30px;
+  margin: -15px 0 0 -15px;
+  border: 1.5px solid var(--ink-fixed);
   border-radius: 50%;
+  box-shadow: 0 0 0 1.5px var(--paper-fixed);
   transition:
     width var(--dur-base) var(--ease),
     height var(--dur-base) var(--ease),
     margin var(--dur-base) var(--ease),
     border-radius var(--dur-base) var(--ease),
-    scale var(--dur-fast) var(--ease),
-    background-color var(--dur-fast) var(--ease);
+    scale var(--dur-fast) var(--ease);
 }
 .cursor-ring.is-hot {
-  width: 56px;
-  height: 56px;
-  margin: -28px 0 0 -28px;
-  background: #fff;
+  width: 48px;
+  height: 48px;
+  margin: -24px 0 0 -24px;
 }
 .cursor-ring.is-text {
-  width: 2px;
-  height: 24px;
-  margin: -12px 0 0 -1px;
-  border-radius: 1px;
-  background: #fff;
+  width: 3px;
+  height: 26px;
+  margin: -13px 0 0 -1.5px;
+  border-radius: 2px;
+  background: var(--ink-fixed);
 }
 .cursor-ring.is-down {
   scale: 0.82;
 }
 .cursor-dot {
-  width: 6px;
-  height: 6px;
-  margin: -3px 0 0 -3px;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
   border-radius: 50%;
-  background: #fff;
+  background: var(--ink-fixed);
+  box-shadow: 0 0 0 1.5px var(--paper-fixed);
   transition:
     scale var(--dur-fast) var(--ease),
     opacity var(--dur-fast) var(--ease);
 }
 .cursor-dot.is-hot {
-  scale: 0;
+  scale: 0.6;
 }
 .cursor-dot.is-text {
   opacity: 0;

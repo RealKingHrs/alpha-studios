@@ -11,6 +11,7 @@ import { Magnetic } from './motion/Magnetic';
 import { SplitText } from './motion/SplitText';
 import { Brief } from './Brief';
 import { CopyButton } from './fx/CopyButton';
+import { Note } from './fx/Doodles';
 import { Faq } from './Faq';
 import { Process } from './Process';
 import { Services } from './Services';
@@ -121,6 +122,7 @@ export function Home({ snap, link, asset }: PageProps) {
             title="The people behind it"
             id="crew-title"
           />
+          <Note className="s-crew-note">say hi to the five</Note>
           <CrewLineup link={link} snap={snap} />
         </div>
       </section>

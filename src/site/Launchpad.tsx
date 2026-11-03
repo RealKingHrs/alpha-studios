@@ -1,5 +1,6 @@
 import type { Snapshot } from '../content/schema';
 import { Marquee } from './Marquee';
+import { DoodleCircle } from './fx/Doodles';
 import { Magnetic } from './motion/Magnetic';
 import { SplitText } from './motion/SplitText';
 import type { LinkFn } from './parts';
@@ -73,6 +74,7 @@ export function LaunchpadPage({ snap, link }: { snap: Snapshot; link: LinkFn }) 
               <SplitText text="Bring us your idea." />
               <span className="lp-title-accent">
                 <SplitText text="Keep your name on it." delay={0.35} />
+                <DoodleCircle />
               </span>
             </h1>
             <Reveal delay={150}>

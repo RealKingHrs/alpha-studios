@@ -5,6 +5,7 @@ import { describe, expect, it } from 'vitest';
 import { App } from '../src/App';
 import { Snapshot } from '../src/content/schema';
 import { briefText } from '../src/site/Brief';
+import { Barcode } from '../src/site/fx/Barcode';
 import { FAQ } from '../src/site/Faq';
 import { HEADLINE, HEADLINE_LOOP } from '../src/site/data';
 
@@ -85,5 +86,43 @@ describe('the project brief', () => {
   it('builds a mailto link to the studio address, with the text encoded', () => {
     const page = html('contact/');
     expect(page).toContain('mailto:hello@alphastudios.example?subject=Project%20brief');
+  });
+});
+
+describe('version 1 touches', () => {
+  it('has the rubber stamp, the new sticker and the barcode on the home page', () => {
+    const home = html();
+    expect(home).toContain('fx-stamp');
+    expect(home).toContain('fx-burst');
+    expect(home).toContain('fx-barcode');
+  });
+
+  it('no longer draws the outlined ring or the yellow circle behind the cover', () => {
+    const home = html();
+    expect(home).not.toContain('fx-shape--ring');
+    expect(home).not.toContain('fx-shape--circle');
+  });
+
+  it('keeps the cursor solid: no blend mode that inverts the page underneath it', () => {
+    const css = readFileSync('src/styles/core.css', 'utf8');
+    const cursor = css.slice(css.indexOf('.cursor {'), css.indexOf('changing page'));
+    expect(cursor).not.toMatch(/mix-blend-mode/);
+  });
+
+  it('draws the same barcode every time for the same word', () => {
+    const a = renderToStaticMarkup(createElement(Barcode, { code: 'ALPHA' }));
+    const b = renderToStaticMarkup(createElement(Barcode, { code: 'ALPHA' }));
+    expect(a).toBe(b);
+    expect(a).toContain('<rect');
+  });
+
+  it('hides the portal GitHub button unless it is switched on', () => {
+    expect(html('portal/')).not.toMatch(/Continue with GitHub/);
+    expect(readFileSync('src/portal/screens/Login.tsx', 'utf8')).toContain('VITE_PORTAL_GITHUB');
+  });
+
+  it('has a go-live guide and a preflight script', () => {
+    expect(readFileSync('docs/GO-LIVE.md', 'utf8')).toContain('portal/app/');
+    expect(readFileSync('package.json', 'utf8')).toContain('go-live:check');
   });
 });

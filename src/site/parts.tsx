@@ -8,7 +8,10 @@ import { Portrait } from '../avatar/Portrait';
 import { Count } from './Counters';
 import { Wordmark } from '../brand/Wordmark';
 import { ACCENTS, HEADLINE, HEADLINE_LOOP, accentFor, headlineText, stackOrder } from './data';
+import { Barcode } from './fx/Barcode';
+import { DoodleArrow, DoodleWave, Starburst } from './fx/Doodles';
 import { Shapes } from './fx/Shapes';
+import { Stamp } from './fx/Stamp';
 import { WordLoop } from './fx/WordLoop';
 import { useMotionOn, useWide } from './motion/context';
 import { coverAmount, coverProgress, currentSection } from './motion/helpers';
@@ -239,11 +242,15 @@ export function Footer({ link }: { link: LinkFn }) {
           ))}
         </nav>
       </div>
+      <Stamp className="s-footer-stamp" />
       <a className="s-footer-logo" href={link('/')} aria-label="Alpha Studios, home">
         <Wordmark className="wm--mega" />
       </a>
       <div className="s-wrap s-footer-meta">
-        <span className="mono">© 2026 Alpha Studios · Issue 01</span>
+        <span className="mono s-footer-issue">
+          © 2026 Alpha Studios · Issue 01 · Version 1
+          <Barcode />
+        </span>
         <span className="mono s-footer-credit">
           Post-credit scene: you scrolled all the way down. Go build something.
         </span>
@@ -305,7 +312,11 @@ export function Hero({ snap, link }: { snap: Snapshot; link: LinkFn }) {
       <div className="s-wrap s-hero-body">
         <div className="s-hero-lede-wrap">
           <p className="s-lede s-hero-lede">{snap.settings.studioStatement}</p>
-          <p className="s-tagline display">Built at twenty. Engineered for real.</p>
+          <p className="s-tagline display">
+            Built at twenty. Engineered for real.
+            <DoodleWave />
+          </p>
+          <DoodleArrow className="s-hero-arrow" />
         </div>
         <ul className="s-coverlines" aria-label="In this issue">
           <li>
@@ -339,6 +350,7 @@ export function Hero({ snap, link }: { snap: Snapshot; link: LinkFn }) {
             </span>
           ))}
         </a>
+        <Stamp className="s-hero-stamp" />
         <ul className="s-hero-proof" aria-label="The studio in numbers">
           {proof.map(([n, label]) => (
             <li key={label}>
@@ -407,11 +419,13 @@ export function WorkPanel({
   index,
   link,
   assetBase,
+  latest = false,
 }: {
   project: Project;
   index: number;
   link: LinkFn;
   assetBase: LinkFn;
+  latest?: boolean;
 }) {
   const accent = accentFor(index);
   const buttons = projectLinks(project);
@@ -422,6 +436,10 @@ export function WorkPanel({
       data-spot
       style={{ '--i': index } as React.CSSProperties}
     >
+      <span className="s-work-stamp mono" aria-hidden="true">
+        {statusLabel[project.status]}
+      </span>
+      {latest && <Starburst className="s-work-burst">New</Starburst>}
       <div className="s-work-copy">
         <span className="s-work-num mono" aria-hidden="true">
           Drop {String(index + 1).padStart(2, '0')}
@@ -511,7 +529,14 @@ export function WorkList({ snap, link, asset }: { snap: Snapshot; link: LinkFn; 
   return (
     <div className="s-work-list" ref={ref} data-stack={stack ? 'on' : 'off'}>
       {snap.projects.map((p, i) => (
-        <WorkPanel key={p.slug} project={p} index={i} link={link} assetBase={asset} />
+        <WorkPanel
+          key={p.slug}
+          project={p}
+          index={i}
+          link={link}
+          assetBase={asset}
+          latest={i === snap.projects.length - 1}
+        />
       ))}
     </div>
   );

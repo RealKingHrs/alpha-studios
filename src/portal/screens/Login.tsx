@@ -2,7 +2,10 @@ import { useState } from 'react';
 import { Field } from '../ui';
 import { supabase } from '../supabase';
 
-/** GitHub sign-in, or email and password. Either way a login only gets access once an invite is redeemed. */
+/** Email and password, plus GitHub sign-in when the project has it switched on (VITE_PORTAL_GITHUB=1). Either way a login only gets access once an invite is redeemed. */
+/** GitHub sign-in needs an OAuth app set up in Supabase, so the button only shows once that is switched on. */
+const GITHUB = import.meta.env.VITE_PORTAL_GITHUB === '1';
+
 export function Login() {
   const [mode, setMode] = useState<'in' | 'up'>('in');
   const [email, setEmail] = useState('');
@@ -33,19 +36,23 @@ export function Login() {
           For crew and the admin. New here? Create a login, then enter the invite code you were
           sent.
         </p>
-        <button
-          type="button"
-          className="primary wide"
-          onClick={() =>
-            supabase?.auth.signInWithOAuth({
-              provider: 'github',
-              options: { redirectTo: location.href.split('#')[0] },
-            })
-          }
-        >
-          Continue with GitHub
-        </button>
-        <p className="divider">or</p>
+        {GITHUB && (
+          <>
+            <button
+              type="button"
+              className="primary wide"
+              onClick={() =>
+                supabase?.auth.signInWithOAuth({
+                  provider: 'github',
+                  options: { redirectTo: location.href.split('#')[0] },
+                })
+              }
+            >
+              Continue with GitHub
+            </button>
+            <p className="divider">or</p>
+          </>
+        )}
         <form onSubmit={submit}>
           <Field label="Email">
             {(id) => (
