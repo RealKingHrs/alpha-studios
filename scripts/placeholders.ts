@@ -13,14 +13,23 @@ const sizes = {
 const snap = Snapshot.parse(JSON.parse(readFileSync('content/seed/content.json', 'utf8')));
 await mkdir('public/screens', { recursive: true });
 
-for (const p of snap.projects) {
-  for (const s of p.screenshots) {
+const tokens = readFileSync('design/tokens.css', 'utf8');
+const hex = (name: string) => new RegExp(`--${name}:\\s*(#[0-9a-fA-F]{6})`).exec(tokens)![1];
+const ACCENTS = ['tomato', 'sun', 'mint', 'sky', 'lilac'].map(hex);
+
+for (const [pi, p] of snap.projects.entries()) {
+  for (const [si, s] of p.screenshots.entries()) {
     const [w, h] = sizes[s.device];
+    const a = ACCENTS[(pi + si + 1) % ACCENTS.length];
+    const b = ACCENTS[(pi + si + 3) % ACCENTS.length];
+    const big = w > 500;
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
-<rect width="${w}" height="${h}" fill="#16181B"/>
-<rect x="24" y="24" width="${w - 48}" height="${h - 48}" rx="16" fill="none" stroke="#26292D" stroke-width="2"/>
-<text x="${w / 2}" y="${h / 2 - 16}" fill="#E9ECEF" font-family="Helvetica, Arial, sans-serif" font-size="${w > 500 ? 36 : 26}" text-anchor="middle">${p.name}</text>
-<text x="${w / 2}" y="${h / 2 + 28}" fill="#A9AFB6" font-family="Helvetica, Arial, sans-serif" font-size="${w > 500 ? 22 : 18}" text-anchor="middle">Placeholder ${s.device} screenshot</text>
+<rect width="${w}" height="${h}" fill="${hex('paper')}"/>
+<circle cx="${w * 0.78}" cy="${h * 0.24}" r="${Math.min(w, h) * 0.22}" fill="${a}" stroke="${hex('ink')}" stroke-width="3"/>
+<rect x="${w * 0.08}" y="${h * 0.66}" width="${w * 0.5}" height="${h * 0.14}" rx="${h * 0.07}" fill="${b}" stroke="${hex('ink')}" stroke-width="3"/>
+<rect x="${w * 0.08}" y="${h * 0.12}" width="${w * 0.34}" height="${h * 0.045}" rx="${h * 0.02}" fill="${hex('ink')}"/>
+<text x="${w * 0.08}" y="${h * 0.5}" fill="${hex('ink')}" font-family="Georgia, serif" font-weight="bold" font-size="${big ? 54 : 40}">${p.name}</text>
+<text x="${w * 0.08}" y="${h * 0.58}" fill="${hex('ink-soft')}" font-family="Helvetica, Arial, sans-serif" font-size="${big ? 22 : 17}">Placeholder ${s.device} screenshot</text>
 </svg>`;
     await sharp(Buffer.from(svg)).png({ compressionLevel: 9 }).toFile(`public/${s.src}`);
   }

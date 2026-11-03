@@ -14,6 +14,8 @@ const slowMs = () =>
   parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--dur-slow')) || 720;
 
 interface Props {
+  /** 'vault' is the dark doors; 'site' is paper with coloured bands. */
+  variant: 'vault' | 'site';
   /** True once the scene can show its first frame. The intro doubles as the loader. */
   ready: boolean;
   reduceMotion: boolean;
@@ -25,7 +27,7 @@ interface Props {
  * The silent opening: the alpha draws as one stroke, fills with chrome, the gold spreads along the
  * flick, then the doors part. Reduced motion shows a still logo that fades.
  */
-export function Intro({ ready, reduceMotion, firstVisit, onDone }: Props) {
+export function Intro({ variant, ready, reduceMotion, firstVisit, onDone }: Props) {
   const [t] = useState(() => {
     const unit = slowMs() * (firstVisit ? 1 : REPEAT_SCALE);
     return { draw: FULL.draw * unit, fill: FULL.fill * unit, open: FULL.open * unit };
@@ -94,7 +96,7 @@ export function Intro({ ready, reduceMotion, firstVisit, onDone }: Props) {
   const filled = phase !== 'draw';
   return (
     <div
-      className={`intro intro--${phase}`}
+      className={`intro intro--${phase} intro--${variant}`}
       role="img"
       aria-label="Alpha Studios"
       style={
@@ -105,8 +107,20 @@ export function Intro({ ready, reduceMotion, firstVisit, onDone }: Props) {
         } as React.CSSProperties
       }
     >
-      <div className="intro-door intro-door--left" />
-      <div className="intro-door intro-door--right" />
+      {variant === 'vault' ? (
+        <>
+          <div className="intro-door intro-door--left" />
+          <div className="intro-door intro-door--right" />
+        </>
+      ) : (
+        ['tomato', 'sun', 'mint', 'sky', 'lilac'].map((c, i) => (
+          <div
+            key={c}
+            className="intro-band"
+            style={{ '--i': i, background: `var(--${c})` } as React.CSSProperties}
+          />
+        ))
+      )}
       <svg className="intro-mark" viewBox={MARK_VIEWBOX} aria-hidden="true">
         <defs>
           <linearGradient
@@ -117,9 +131,9 @@ export function Intro({ ready, reduceMotion, firstVisit, onDone }: Props) {
             x2="170"
             y2="165"
           >
-            <stop offset="0" style={{ stopColor: 'var(--silver)' }} />
-            <stop offset="0.45" style={{ stopColor: 'var(--chrome)' }} />
-            <stop offset="1" style={{ stopColor: 'var(--silver)' }} />
+            <stop offset="0" style={{ stopColor: 'var(--mark-edge)' }} />
+            <stop offset="0.45" style={{ stopColor: 'var(--mark-core)' }} />
+            <stop offset="1" style={{ stopColor: 'var(--mark-edge)' }} />
           </linearGradient>
           <linearGradient
             id="intro-gold"

@@ -10,27 +10,28 @@ Measured on 3 November 2026 on the development machine (Apple silicon laptop) wi
 
 ## Targets from the spec, and where we stand
 
-| Target                                                             | Result                                                                                                             | Verdict                                         |
-| ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------- |
-| Under 3 MB downloaded before the corridor appears                  | About **459 kB** gzip (`npm run sizes`), checked by a test                                                         | Met, with a wide margin                         |
-| 60 fps on a recent laptop                                          | 65 to 96 fps reported at every stop in both modes                                                                  | Met on this machine; unproven on other hardware |
-| Lite mode when frame rate stays under 30 fps for 2 s, or low power | Logic covered by unit tests (`tests/vault.test.ts`); battery, memory, cores and save-data signals feed the choice  | Not exercised on a real slow device             |
-| Compressed models and textures                                     | No model or texture files exist: everything is drawn in code; screenshots are small PNGs loaded only inside a room | Met                                             |
-| Each project room loaded only when visited                         | Room chunk (2.3 kB) and its screenshots are fetched on entry; a fresh load of the hall requests neither            | Met                                             |
+The site is now two things: the bright site everyone sees first, and Explore in 3D (`?explore`) for those who ask. They are measured separately.
 
-## First visit, before the corridor (gzip)
+| Target                                                             | Result                                                                                                                                        | Verdict                                         |
+| ------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| Under 3 MB downloaded before the page appears                      | Bright site: **about 253 kB** gzip. Explore adds about 282 kB more when opened (`npm run sizes`, enforced by `tests/budget.test.ts`)          | Met, with a wide margin                         |
+| No 3D code on the bright site's first visit                        | A test fails if any first-visit file contains the WebGL renderer                                                                              | Met                                             |
+| 60 fps on a recent laptop                                          | Explore: 65 to 96 fps reported at every stop in both modes. The bright site has no continuous 3D, apart from the avatars row once scrolled to | Met on this machine; unproven on other hardware |
+| Lite mode when frame rate stays under 30 fps for 2 s, or low power | Explore only. Logic covered by unit tests; battery, memory, cores and save-data signals feed the choice                                       | Not exercised on a real slow device             |
+| Each project room loaded only when visited                         | Explore: the room chunk and its screenshots load on entry                                                                                     | Met                                             |
 
-| Part                                                           | Size         |
-| -------------------------------------------------------------- | ------------ |
-| HTML and snapshot                                              | 2.6 kB       |
-| App code and styles                                            | 112.5 kB     |
-| 3D chunk (three.js, scene, avatars)                            | 276.4 kB     |
-| Fonts used (Inter 400 and 500 Latin, JetBrains Mono 400 Latin) | 67.5 kB      |
-| **Total**                                                      | **458.9 kB** |
+## First visit to the bright site (gzip)
 
-On demand, not part of the first visit: project room 2.3 kB, sound engine 0.5 kB, dev panel 0.5 kB, the portal (its own page, 64 kB gzip) and per-room screenshots.
+| Part                                                                | Size         |
+| ------------------------------------------------------------------- | ------------ |
+| HTML and snapshot                                                   | 4.6 kB       |
+| App code and styles                                                 | 119.5 kB     |
+| Fonts used (Fraunces, Inter 400 and 500, JetBrains Mono 400, Latin) | 128.5 kB     |
+| **Total**                                                           | **252.5 kB** |
 
-## Scene cost per stop
+On demand, not part of the first visit: the 3D crew avatars (loaded only when the crew row scrolls into view, and skipped on low-memory, save-data or no-WebGL devices, which keep the initials badges), Explore in 3D (about 282 kB), project rooms, and the sound engine (0.5 kB).
+
+## Scene cost per stop (Explore in 3D)
 
 | Stop          | Full mode: draw calls, triangles   | Lite mode: draw calls, triangles |
 | ------------- | ---------------------------------- | -------------------------------- |

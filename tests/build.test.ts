@@ -31,7 +31,9 @@ d('built site', () => {
     const html = readFileSync(join('dist', r), 'utf8');
     expect(html).toMatch(/<title>[^<]+<\/title>/);
     expect(html).toContain('og:image');
-    expect(html).toMatch(/<h1>[^<]+<\/h1>/);
+    expect(html).toMatch(/<h1[^>]*>[\s\S]*?[A-Za-z][\s\S]*?<\/h1>/);
+    expect(html).toContain('<main id="main"');
+    expect(html).toContain('class="skip-link"');
   });
 
   it('public pages can never load the backend client', () => {
@@ -100,9 +102,9 @@ d('built site', () => {
   it('has a manifest whose colours match the design tokens', () => {
     const manifest = JSON.parse(readFileSync('dist/manifest.webmanifest', 'utf8'));
     const tokens = readFileSync('design/tokens.css', 'utf8');
-    const obsidian = /--obsidian:\s*(#[0-9a-fA-F]{6})/.exec(tokens)![1].toLowerCase();
-    expect(manifest.background_color.toLowerCase()).toBe(obsidian);
-    expect(manifest.theme_color.toLowerCase()).toBe(obsidian);
+    const paper = /--paper:\s*(#[0-9a-fA-F]{6})/.exec(tokens)![1].toLowerCase();
+    expect(manifest.background_color.toLowerCase()).toBe(paper);
+    expect(manifest.theme_color.toLowerCase()).toBe(paper);
     for (const icon of manifest.icons) expect(existsSync(join('dist', icon.src))).toBe(true);
   });
 });

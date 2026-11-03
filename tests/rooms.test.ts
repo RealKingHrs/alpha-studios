@@ -4,7 +4,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import { Snapshot } from '../src/content/schema';
 import { stepLinks } from '../src/nav';
-import { RoomPage } from '../src/pages/pages';
+import { CaseStudy } from '../src/site/pages';
 import { matchRoute } from '../src/routes';
 import { contributorsWithCrew, projectLinks } from '../src/rooms';
 import { HALL_Z, ROOM, buildStops, roomPoses, roomSide, roomToWorld } from '../src/vault/layout';
@@ -25,11 +25,15 @@ describe('store buttons', () => {
   });
 
   it('renders no App Store button for a project without that link', () => {
-    const html = renderToStaticMarkup(createElement(RoomPage, { snap, slug: 'project-two', link }));
+    const html = renderToStaticMarkup(
+      createElement(CaseStudy, { snap, slug: 'project-two', link, asset: link, exploreHref: '' }),
+    );
     expect(html).not.toContain('App Store');
     expect(html).not.toContain('Play Store');
     expect(html).toContain('GitHub');
-    const one = renderToStaticMarkup(createElement(RoomPage, { snap, slug: 'project-one', link }));
+    const one = renderToStaticMarkup(
+      createElement(CaseStudy, { snap, slug: 'project-one', link, asset: link, exploreHref: '' }),
+    );
     expect(one).toContain('App Store');
   });
 });
@@ -45,8 +49,10 @@ describe('repo details and contributors', () => {
   });
 
   it('shows stars, languages, commits and contributors in the room HTML', () => {
-    const html = renderToStaticMarkup(createElement(RoomPage, { snap, slug: 'project-one', link }));
-    expect(html).toContain('0 stars');
+    const html = renderToStaticMarkup(
+      createElement(CaseStudy, { snap, slug: 'project-one', link, asset: link, exploreHref: '' }),
+    );
+    expect(html).toMatch(/<strong[^>]*>0<\/strong><span[^>]*>stars<\/span>/);
     expect(html).toContain('Swift');
     expect(html).toContain('Placeholder commit 1');
     expect(html).toContain('/alpha-studios/crew/member-one/');

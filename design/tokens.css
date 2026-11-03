@@ -1,5 +1,6 @@
 /* Alpha Studios design tokens. Source of truth for colour, type, space and motion.
-   Proposed values: confirm in the refine stage. Do not hardcode these values elsewhere. */
+   Two palettes: the bright site (paper, ink and accents) and the dark vault used by Explore in 3D.
+   Do not hardcode these values elsewhere. */
 
 :root {
   /* Colour roles. Every pairing below clears 4.5:1 text contrast on Obsidian. */
@@ -12,6 +13,29 @@
   --emerald: #1F9D6B;       /* interactive controls, live status (5.7:1) */
   --emerald-glow: #3DDC97;  /* small green text, hover glow (11.1:1) */
 
+  /* The bright site. Accents are fills with ink text, never text on paper. */
+  --paper: #F6F1E7;
+  --paper-2: #EDE6D6;
+  --ink: #14110F;
+  --ink-soft: #4A443D;      /* secondary text on paper (8.5:1) */
+  --rule: #D9D0BD;          /* hairlines on paper */
+  --tomato: #FF6B4A;
+  --sun: #FFC83D;
+  --mint: #4FD6A0;
+  --sky: #7FB2FF;
+  --lilac: #C4B0FF;
+
+  /* Mark colours: the ink mark on paper, chrome on the dark vault */
+  --mark-edge: var(--ink-soft);
+  --mark-core: var(--ink);
+
+  /* Theme roles. The site is light by default; html.explore flips them to the dark vault. */
+  --bg: var(--paper);
+  --fg: var(--ink);
+  --fg-soft: var(--ink-soft);
+  --focus-color: var(--ink);
+  --cursor-color: var(--ink);
+
   /* Gold budget: at most one gold element per view, except admin-only controls in the portal.
      Gold and emerald never share an element. */
 
@@ -20,6 +44,7 @@
   --grad-gold: linear-gradient(135deg, #E8CE86 0%, #C9A24B 55%, #9C7727 100%);
 
   /* Typography: self-host open-licence fonts. Regular (400) and medium (500) weights only. */
+  --font-display: "Fraunces Variable", Georgia, "Times New Roman", serif;
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
   --step--1: 0.8rem;
@@ -29,6 +54,10 @@
   --step-3: 1.953rem;
   --step-4: 2.441rem;
   --step-5: 3.052rem;
+  /* Display sizes for the bright site, fluid between phone and desktop */
+  --display-xl: clamp(3.25rem, 10.5vw, 9.5rem);
+  --display-l: clamp(2.5rem, 7vw, 6rem);
+  --display-m: clamp(1.9rem, 4vw, 3.25rem);
   --leading-body: 1.6;
   --leading-tight: 1.15;
 
@@ -56,7 +85,7 @@
   --dur-fade: 320ms;
 
   /* Focus */
-  --focus-ring: 2px solid var(--gold);
+  --focus-ring: 3px solid var(--focus-color);
   --focus-offset: 3px;
 }
 
@@ -69,13 +98,24 @@
 }
 
 html {
-  background: var(--obsidian);
-  color: var(--silver);
+  background: var(--bg);
+  color: var(--fg);
   font-family: var(--font-sans);
   line-height: var(--leading-body);
 }
 
+/* Explore in 3D is the dark vault. */
+html.explore {
+  --bg: var(--obsidian);
+  --fg: var(--silver);
+  --fg-soft: var(--silver);
+  --focus-color: var(--gold);
+  --cursor-color: var(--chrome);
+  --mark-edge: var(--silver);
+  --mark-core: var(--chrome);
+}
+
 :focus-visible {
-  outline: var(--focus-ring);
+  outline: 3px solid var(--focus-color);
   outline-offset: var(--focus-offset);
 }

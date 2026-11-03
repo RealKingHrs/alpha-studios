@@ -4,11 +4,11 @@ Status: ready for implementation. Items marked **Proposed** are recommendations 
 
 ## 1. Vision
 
-Alpha Studios gets a portfolio that behaves like a place, not a page: a quiet, dark vault that visitors move through to meet the studio's projects and its crew. Alpha Studios builds native iOS and macOS apps, web apps and more. At launch the vault holds two projects and five crew members, and visitors can try each project through the App Store, Play Store or GitHub.
+Alpha Studios gets a portfolio that leads with the work: a bright, confident, playful studio site where visitors see two projects and five people straight away, with an optional explorable 3D vault ("Explore in 3D") for those who want to wander. Alpha Studios builds native iOS and macOS apps, web apps and more. At launch the vault holds two projects and five crew members, and visitors can try each project through the App Store, Play Store or GitHub.
 
 Principles:
 
-- Restraint first. Matte black, generous empty space, slow deliberate motion, gold used sparingly.
+- Formal structure, playful details. A strict grid, numbered sections and a restrained type scale carry the formality; colour, motion and small surprises carry the play.
 - Nothing generic. No purple gradients, frosted-glass card grids, stock copy or emoji icons. One easing curve, one spacing scale, one icon style.
 - Open to everyone. Visitors see and try everything without logging in.
 - Owned by the people in it. Crew manage their own profiles; the admin owns the studio.
@@ -64,7 +64,8 @@ Tokens live in `design/tokens.css`. Colour roles:
 | Emerald      | #1F9D6B | 5.7:1                | Interactive controls and live status           |
 | Emerald glow | #3DDC97 | 11.1:1               | Small green text and glow on hover             |
 
-- Gold budget: at most one gold element in any view, except in the admin portal where gold marks admin-only controls. Emerald means something you can act on or something live. They never share an element.
+- Colour rules (site): accent colours are fills with ink text, never text on paper. Gold appears only as the flick of the logo, plus admin-only controls in the portal. In Explore (dark), the earlier rules apply: at most one gold element per view, emerald for things you can act on.
+- Focus: a 3 px ink ring on paper (gold does not reach 3:1 on paper); gold in Explore.
 - Typography: one clean sans in regular and medium weights, monospace for small labels, version numbers, build dates and code details. Modular type scale, large quiet headlines, generous line spacing.
 - Spacing and layout: one 8 px scale; a 12-column grid for the dashboard and flat overlays on the vault; large margins.
 - Motion: one easing curve and three durations. Camera moves are slow and eased. Elements enter in a fixed order: background, object, label. Nothing bounces.
@@ -75,7 +76,11 @@ Tokens live in `design/tokens.css`. Colour roles:
 - Accessibility: full keyboard navigation of the vault, visible gold focus rings, text alternatives for 3D objects, a reduced-motion mode that replaces camera moves with fades, labels for any sound cues.
 - Performance targets (decided): under 3 MB downloaded before the corridor appears with other 3D assets streaming during the intro; 60 frames per second on a recent laptop; automatic lite mode if frame rate stays under 30 for two seconds or the device reports low power; compressed models and textures; each project room loaded only when visited.
 
-## 5. The vault
+## 5. The site and the vault
+
+The default site is a set of real pages, each with its own address: the home page (hero, a marquee of the tech used, the work as large coloured panels with device mockups, the crew lineup, contact), a case study for each project, a profile for each crew member, and a playful 404. Everything is prerendered HTML first. The 3D vault below is the opt-in "Explore in 3D" mode, switched on by `?explore` on any address; its behaviour is unchanged.
+
+### Explore in 3D (the vault)
 
 One continuous space with no menu bar. The camera flies forward and back; every page of the site is a place in it.
 

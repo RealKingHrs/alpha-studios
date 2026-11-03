@@ -1,0 +1,135 @@
+@import '../../design/tokens.css';
+@import '../../design/avatar-swatches.css';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource-variable/fraunces/soft.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+}
+img {
+  max-width: 100%;
+  display: block;
+}
+.mono {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+}
+
+html.reduce-motion {
+  --dur-fast: 1ms;
+  --dur-base: 1ms;
+  --dur-slow: 1ms;
+}
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.skip-link {
+  position: fixed;
+  left: var(--space-2);
+  top: -100px;
+  z-index: 80;
+  padding: var(--space-1) var(--space-2);
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: var(--radius-s);
+}
+.skip-link:focus {
+  top: var(--space-2);
+}
+html.explore .skip-link {
+  background: var(--graphite);
+  color: var(--chrome);
+}
+
+/* Cursor and tap ripples, shared by the site and Explore */
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 90;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  display: none;
+}
+.cursor::before {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 50%;
+  background: var(--cursor-color);
+  transition:
+    width var(--dur-fast) var(--ease),
+    height var(--dur-fast) var(--ease),
+    margin var(--dur-fast) var(--ease),
+    background var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease);
+}
+.cursor.is-hot::before {
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  background: transparent;
+  border: 2px solid var(--cursor-color);
+}
+@media (pointer: fine) {
+  html.fx .cursor {
+    display: block;
+  }
+  html.fx,
+  html.fx body,
+  html.fx a,
+  html.fx button,
+  html.fx .vault-layer canvas {
+    cursor: none !important;
+  }
+  html.fx input,
+  html.fx textarea,
+  html.fx select {
+    cursor: text;
+  }
+}
+.control,
+.button,
+.toggle,
+.intro-skip,
+.s-btn {
+  will-change: transform;
+}
+.ripple {
+  position: fixed;
+  z-index: 90;
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  border: 2px solid var(--cursor-color);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: ripple var(--dur-slow) var(--ease) forwards;
+}
+@keyframes ripple {
+  from {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(9);
+    opacity: 0;
+  }
+}

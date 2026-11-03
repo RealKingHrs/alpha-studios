@@ -21,8 +21,20 @@ export function usePathname(initial: string): string {
   );
 }
 
+/** The query string, e.g. "?explore". Empty on the server unless one is passed in. */
+export function useSearch(initial = ''): string {
+  return useSyncExternalStore(
+    subscribe,
+    () => location.search,
+    () => initial,
+  );
+}
+
+/** True when Explore in 3D is switched on for this address. */
+export const isExplore = (search: string) => new URLSearchParams(search).has('explore');
+
 export function navigate(path: string, opts: { replace?: boolean } = {}) {
-  if (path === location.pathname) return;
+  if (path === location.pathname + location.search) return;
   history[opts.replace ? 'replaceState' : 'pushState'](null, '', path);
   window.dispatchEvent(new Event(EVENT));
 }
@@ -34,6 +46,10 @@ export function interceptLinks(): () => void {
       return;
     const a = (e.target as Element | null)?.closest?.('a[href]') as HTMLAnchorElement | null;
     if (!a || a.target || a.hasAttribute('download') || a.origin !== location.origin) return;
+    // A link to a spot on the same page is the browser's job.
+    if (a.hash && a.pathname === location.pathname && a.search === location.search) return;
+    // The portal is a separate app with its own page.
+    if (/\/portal\/app\//.test(a.pathname)) return;
     e.preventDefault();
     navigate(a.pathname + a.search);
   };

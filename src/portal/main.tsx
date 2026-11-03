@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import '../styles/app.css';
+import '../styles/base.css';
 import '../styles/portal.css';
 import { AuthProvider, useAuth } from './auth';
 import { Login } from './screens/Login';

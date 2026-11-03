@@ -1,11 +1,5 @@
-@import '../../design/tokens.css';
-@import '../../design/avatar-swatches.css';
-@import '@fontsource/inter/400.css';
-@import '@fontsource/inter/500.css';
-@import '@fontsource/jetbrains-mono/400.css';
-
-body {
-  margin: 0;
+/* Explore in 3D: the dark vault. Everything here is scoped to Explore's own markup. */
+html.explore body {
   background: var(--obsidian);
 }
 .page {
@@ -13,20 +7,20 @@ body {
   margin: 0 auto;
   padding: var(--space-6) var(--space-3);
 }
-h1,
-h2 {
+.explore-root h1,
+.explore-root h2 {
   color: var(--chrome);
   font-weight: 500;
   line-height: var(--leading-tight);
 }
-h1 {
+.explore-root h1 {
   font-size: var(--step-4);
 }
-h2 {
+.explore-root h2 {
   font-size: var(--step-1);
   margin-top: var(--space-5);
 }
-a {
+.explore-root a {
   color: var(--emerald-glow);
   transition: color var(--dur-fast) var(--ease);
 }
@@ -37,44 +31,15 @@ a {
   text-transform: uppercase;
   font-size: var(--step--1);
 }
-.mono {
-  font-family: var(--font-mono);
-  font-size: var(--step--1);
-}
 
 /* ---------------------------------------------------------------- shell */
 html.js:not(.ready) .page {
   visibility: hidden;
 }
-html.reduce-motion {
-  --dur-fast: 1ms;
-  --dur-base: 1ms;
-  --dur-slow: 1ms;
-}
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-.skip-link {
-  position: fixed;
-  left: var(--space-2);
-  top: -100px;
-  z-index: 40;
-  padding: var(--space-1) var(--space-2);
-  background: var(--graphite);
-  color: var(--chrome);
-}
-.skip-link:focus {
-  top: var(--space-2);
-}
-ul {
+.explore-root ul {
   padding-left: var(--space-3);
 }
-footer {
+.explore-root footer {
   margin-top: var(--space-5);
 }
 .quiet {
@@ -261,7 +226,7 @@ html.vault .page footer {
 .intro {
   position: fixed;
   inset: 0;
-  z-index: 20;
+  z-index: 100;
   display: grid;
   place-items: center;
 }
@@ -473,79 +438,34 @@ html.vault .shots {
     left: var(--space-2);
   }
 }
-.cursor {
+
+.leave-explore {
   position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 60;
-  width: 0;
-  height: 0;
-  pointer-events: none;
-  display: none;
+  left: var(--space-3);
+  bottom: var(--space-3);
+  z-index: 5;
+  padding: var(--space-half) var(--space-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+  background: var(--obsidian);
+  color: var(--emerald-glow);
+  font-size: var(--step--1);
+  text-decoration: none;
 }
-.cursor::before {
-  content: '';
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  margin: -5px 0 0 -5px;
-  border-radius: 50%;
-  background: var(--chrome);
-  transition:
-    width var(--dur-fast) var(--ease),
-    height var(--dur-fast) var(--ease),
-    margin var(--dur-fast) var(--ease),
-    background var(--dur-fast) var(--ease),
-    border-color var(--dur-fast) var(--ease);
+html.vault .leave-explore {
+  bottom: var(--space-3);
 }
-.cursor.is-hot::before {
-  width: 36px;
-  height: 36px;
-  margin: -18px 0 0 -18px;
+@media (max-width: 767px) {
+  .leave-explore {
+    bottom: auto;
+    top: calc(var(--space-2) + 44px);
+    left: var(--space-2);
+  }
+}
+.intro--vault {
   background: transparent;
-  border: 1px solid var(--chrome);
 }
-@media (pointer: fine) {
-  html.fx .cursor {
-    display: block;
-  }
-  html.fx,
-  html.fx body,
-  html.fx a,
-  html.fx button,
-  html.fx .vault-layer canvas {
-    cursor: none !important;
-  }
-  html.fx input,
-  html.fx textarea,
-  html.fx select {
-    cursor: text;
-  }
-}
-.control,
-.button,
-.toggle,
-.intro-skip {
-  will-change: transform;
-}
-.ripple {
-  position: fixed;
-  z-index: 60;
-  width: 8px;
-  height: 8px;
-  margin: -4px 0 0 -4px;
-  border: 1px solid var(--chrome);
-  border-radius: 50%;
-  pointer-events: none;
-  animation: ripple var(--dur-slow) var(--ease) forwards;
-}
-@keyframes ripple {
-  from {
-    transform: scale(1);
-    opacity: 0.8;
-  }
-  to {
-    transform: scale(9);
-    opacity: 0;
-  }
+.intro--vault {
+  --mark-edge: var(--silver);
+  --mark-core: var(--chrome);
 }

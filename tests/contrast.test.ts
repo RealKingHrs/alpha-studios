@@ -52,4 +52,37 @@ describe('colour contrast of the design tokens', () => {
       expect(ratio(hex(name), hex('obsidian')), name).toBeCloseTo(want, 0);
     }
   });
+
+  describe('the bright site', () => {
+    const accents = ['tomato', 'sun', 'mint', 'sky', 'lilac'];
+
+    it('ink text on paper and on the paper tint reaches 7:1', () => {
+      for (const bg of ['paper', 'paper-2'])
+        expect(ratio(hex('ink'), hex(bg))).toBeGreaterThanOrEqual(7);
+    });
+
+    it('secondary text on paper reaches 4.5:1 on both paper colours', () => {
+      for (const bg of ['paper', 'paper-2'])
+        expect(ratio(hex('ink-soft'), hex(bg))).toBeGreaterThanOrEqual(4.5);
+    });
+
+    it('ink text on every accent colour reaches 4.5:1', () => {
+      for (const a of accents) expect(ratio(hex('ink'), hex(a)), a).toBeGreaterThanOrEqual(4.5);
+    });
+
+    it('paper text on ink, used in the footer, reaches 7:1, and sun on ink for links reaches 4.5:1', () => {
+      expect(ratio(hex('paper'), hex('ink'))).toBeGreaterThanOrEqual(7);
+      expect(ratio(hex('sun'), hex('ink'))).toBeGreaterThanOrEqual(4.5);
+      expect(ratio(hex('paper-2'), hex('ink'))).toBeGreaterThanOrEqual(4.5);
+    });
+
+    it('the ink focus ring reaches 3:1 on paper, on the tint and on every accent', () => {
+      for (const bg of ['paper', 'paper-2', ...accents])
+        expect(ratio(hex('ink'), hex(bg)), bg).toBeGreaterThanOrEqual(3);
+    });
+
+    it('the sun focus ring on the ink footer reaches 3:1', () => {
+      expect(ratio(hex('sun'), hex('ink'))).toBeGreaterThanOrEqual(3);
+    });
+  });
 });
