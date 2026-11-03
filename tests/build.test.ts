@@ -22,9 +22,9 @@ d('built site', () => {
     'contact/index.html',
     'launchpad/index.html',
     'portal/index.html',
-    'projects/project-one/index.html',
-    'projects/project-two/index.html',
-    'crew/member-one/index.html',
+    'projects/harbor/index.html',
+    'projects/lumen/index.html',
+    'crew/aarav-menon/index.html',
   ];
 
   it.each(routes)('%s serves readable HTML with title and share image', (r) => {

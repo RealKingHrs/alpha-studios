@@ -2085,218 +2085,6 @@ html.reduce-motion .lp-flame {
   animation: none;
 }
 
-/* ---------------------------------------------------------------- member cards */
-.crew:not(.crew--profile) {
-  padding-top: 44px;
-  margin-top: -28px;
-}
-.crew:not(.crew--profile) .crew-grid {
-  --col: clamp(210px, 17.5vw, 270px);
-  gap: clamp(0.9rem, 1.6vw, 1.5rem);
-}
-.crew-progress {
-  display: none;
-  height: 4px;
-  margin-top: 0.4rem;
-  border-radius: 99px;
-  background: rgb(20 17 15 / 0.12);
-  overflow: hidden;
-}
-.crew-progress i {
-  --p: 0;
-  display: block;
-  width: 36%;
-  height: 100%;
-  border-radius: inherit;
-  background: var(--ink);
-  transform: translateX(calc(var(--p) * 178%));
-}
-@media (max-width: 1200px) {
-  .crew-progress {
-    display: block;
-  }
-}
-.mcard {
-  --rx: 0deg;
-  --ry: 0deg;
-  --gx: 50%;
-  --gy: 30%;
-  position: relative;
-  display: block;
-  aspect-ratio: 3 / 4.2;
-  color: var(--ink);
-  text-decoration: none;
-  scroll-snap-align: start;
-  transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));
-  transition: transform 0.4s var(--ease);
-}
-.mcard-bg {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  border: var(--line-w, 2px) solid var(--ink);
-  border-radius: 28px;
-  background: var(--accent);
-  box-shadow: 6px 8px 0 var(--ink);
-  transition:
-    box-shadow 0.4s var(--ease),
-    translate 0.4s var(--ease);
-}
-.mcard:hover .mcard-bg,
-.mcard:focus-visible .mcard-bg {
-  translate: -2px -4px;
-  box-shadow: 10px 14px 0 var(--ink);
-}
-.mcard-word {
-  position: absolute;
-  left: 50%;
-  top: 6%;
-  translate: -50% 0;
-  font-size: clamp(4rem, 9.5vw, 7.2rem);
-  line-height: 1;
-  white-space: nowrap;
-  color: transparent;
-  -webkit-text-stroke: 2px var(--ink);
-  opacity: 0.55;
-  transition:
-    translate 0.5s var(--ease),
-    opacity 0.4s var(--ease);
-}
-.mcard:hover .mcard-word {
-  translate: -50% 10px;
-  opacity: 0.9;
-}
-.mcard-glare {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  background: radial-gradient(
-    circle at var(--gx) var(--gy),
-    rgb(255 255 255 / 0.45),
-    transparent 50%
-  );
-  transition: opacity 0.3s var(--ease);
-}
-.mcard:hover .mcard-glare {
-  opacity: 1;
-}
-.mcard-index {
-  position: absolute;
-  top: 14px;
-  left: 16px;
-  z-index: 2;
-  font-size: 0.8rem;
-}
-.mcard-sticker {
-  position: absolute;
-  top: -22px;
-  right: -14px;
-  z-index: 3;
-  width: 84px;
-  height: 84px;
-  transition: rotate 0.6s var(--ease);
-}
-.mcard:hover .mcard-sticker {
-  rotate: 40deg;
-}
-.mcard-art {
-  position: absolute;
-  left: 7%;
-  right: 7%;
-  bottom: 84px;
-  z-index: 1;
-  transition:
-    translate 0.5s var(--ease),
-    scale 0.5s var(--ease);
-  transform-origin: 50% 100%;
-}
-.mcard:hover .mcard-art,
-.mcard:focus-visible .mcard-art {
-  translate: 0 -16px;
-  scale: 1.07;
-}
-.mcard-art .portrait {
-  filter: drop-shadow(0 10px 0 rgb(20 17 15 / 0.16));
-}
-.mcard-panel {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 2;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.8rem 0.9rem 0.9rem 1.1rem;
-  border: var(--line-w, 2px) solid var(--ink);
-  border-radius: 0 0 28px 28px;
-  background: var(--paper);
-  transition: translate 0.4s var(--ease);
-}
-.mcard-name strong {
-  display: block;
-  font-family: var(--font-display);
-  font-size: 1.2rem;
-  line-height: 1.15;
-}
-.mcard-name .mono {
-  font-size: 0.74rem;
-}
-.mcard-arrow {
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  border: 2px solid var(--ink);
-  border-radius: 50%;
-  font-size: 1.1rem;
-  transition:
-    background 0.3s var(--ease),
-    color 0.3s var(--ease),
-    translate 0.3s var(--ease);
-}
-.mcard:hover .mcard-arrow,
-.mcard:focus-visible .mcard-arrow {
-  background: var(--ink);
-  color: var(--paper);
-  translate: 4px 0;
-}
-.mcard-chips {
-  grid-column: 1 / -1;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
-  transition:
-    max-height 0.4s var(--ease),
-    opacity 0.3s var(--ease);
-}
-.mcard-chips i {
-  padding: 0.1rem 0.6rem;
-  border: 1.5px solid var(--ink);
-  border-radius: 99px;
-  font-style: normal;
-  font-size: 0.72rem;
-}
-.mcard:hover .mcard-chips,
-.mcard:focus-visible .mcard-chips {
-  max-height: 3rem;
-  opacity: 1;
-}
-@media (hover: none) {
-  .mcard-chips {
-    max-height: 3rem;
-    opacity: 1;
-  }
-}
-html.reduce-motion .mcard,
-html.reduce-motion .mcard * {
-  transition: none !important;
-}
-
 /* ================================================================ premium polish layer */
 :where(h1, h2, h3, .display) {
   text-wrap: balance;
@@ -2599,4 +2387,515 @@ html.reduce-motion .skill-bar i {
 }
 .lp-card:hover {
   box-shadow: var(--shadow-2);
+}
+/* scenes */
+.sc-bob {
+  animation: sc-bob 4s ease-in-out infinite;
+}
+.sc-bob--late {
+  animation-delay: -2s;
+}
+@keyframes sc-bob {
+  50% {
+    transform: translateY(-8px);
+  }
+}
+.sc-bubble {
+  animation: sc-rise 4s ease-in infinite;
+}
+@keyframes sc-rise {
+  from {
+    transform: translateY(40px);
+    opacity: 0.9;
+  }
+  to {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+}
+.sc-thread {
+  animation: sc-dash 2.5s linear infinite;
+}
+@keyframes sc-dash {
+  to {
+    stroke-dashoffset: -22;
+  }
+}
+.sc-drift {
+  animation: sc-drift 6s ease-in-out infinite;
+}
+@keyframes sc-drift {
+  50% {
+    transform: translate(6px, -16px);
+  }
+}
+.sc-sun {
+  animation: sc-pulse 4s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+@keyframes sc-pulse {
+  50% {
+    transform: scale(1.06);
+  }
+}
+.sc-sway {
+  animation: sc-swing 3.6s ease-in-out infinite;
+}
+@keyframes sc-swing {
+  50% {
+    transform: rotate(6deg);
+  }
+}
+.sc-twinkle {
+  animation: sc-twinkle 2.6s ease-in-out infinite;
+}
+@keyframes sc-twinkle {
+  50% {
+    transform: scale(0.6) rotate(20deg);
+  }
+}
+
+html.reduce-motion [class^='sc-'],
+html.reduce-motion .sc-bubble {
+  animation: none !important;
+}
+
+/* ---------------------------------------------------------------- the waving avatar */
+.waving {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.waving-arm {
+  transform-box: view-box;
+  transform-origin: 172px 214px;
+  animation: wave-arm 3.4s ease-in-out infinite;
+}
+.waving-hand {
+  transform-box: view-box;
+  transform-origin: 236px 128px;
+  animation: wave-hand 1.5s ease-in-out infinite;
+}
+@keyframes wave-arm {
+  50% {
+    transform: rotate(-4deg);
+  }
+}
+@keyframes wave-hand {
+  0%,
+  100% {
+    transform: rotate(-12deg);
+  }
+  50% {
+    transform: rotate(14deg);
+  }
+}
+.mcard:hover .waving-hand,
+.mcard:focus-visible .waving-hand,
+.profile-avatar:hover .waving-hand {
+  animation-duration: 0.6s;
+}
+html.reduce-motion .waving-arm,
+html.reduce-motion .waving-hand {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .waving-arm,
+  .waving-hand {
+    animation: none;
+  }
+}
+
+/* ---------------------------------------------------------------- member cards */
+.mgrid {
+  list-style: none;
+  padding: 1.6rem 0 0.4rem;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: clamp(1.2rem, 2.4vw, 2rem);
+}
+.mgrid > li {
+  display: flex;
+}
+.mcard {
+  --rx: 0deg;
+  --ry: 0deg;
+  --px: 0;
+  --py: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background: var(--paper);
+  color: var(--ink);
+  border: var(--line-w, 2px) solid var(--ink);
+  border-radius: var(--radius-xl, 28px);
+  box-shadow: var(--shadow-2);
+  transform: perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry));
+  transition:
+    transform 0.4s var(--ease),
+    box-shadow 0.4s var(--ease),
+    translate 0.4s var(--ease);
+}
+.mcard:hover,
+.mcard:focus-within {
+  translate: -2px -6px;
+  box-shadow: var(--shadow-3);
+}
+.mcard-scene {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: calc(var(--radius-xl, 28px) - 2px) calc(var(--radius-xl, 28px) - 2px) 0 0;
+  border-bottom: var(--line-w, 2px) solid var(--ink);
+  background: var(--accent);
+}
+.mcard-scene .scene {
+  position: absolute;
+  inset: -6%;
+  width: 112%;
+  height: 112%;
+  translate: calc(var(--px) * -7px) calc(var(--py) * -4px);
+  transition: translate 0.25s var(--ease);
+}
+.mcard-avatar {
+  position: absolute;
+  left: 50%;
+  bottom: -3%;
+  width: 82%;
+  translate: calc(-50% + var(--px) * 9px) calc(var(--py) * 4px);
+  transition:
+    translate 0.25s var(--ease),
+    scale 0.5s var(--ease);
+  filter: drop-shadow(0 8px 0 rgb(20 17 15 / 0.16));
+}
+.mcard:hover .mcard-avatar {
+  scale: 1.05;
+}
+.mcard-index {
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  z-index: 2;
+  font-size: 0.78rem;
+}
+.mcard-sticker {
+  position: absolute;
+  top: -16px;
+  right: -12px;
+  z-index: 3;
+  width: 78px;
+  height: 78px;
+  transition: rotate 0.7s var(--ease);
+}
+.mcard:hover .mcard-sticker {
+  rotate: 60deg;
+}
+.mcard-into {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  z-index: 2;
+  max-width: calc(100% - 24px);
+  padding: 0.25rem 0.7rem;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: 99px;
+  font-size: 0.68rem;
+  rotate: -3deg;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mcard-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 1.1rem 1.2rem 1.2rem;
+}
+.mcard-name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  line-height: 1.1;
+}
+.mcard-link {
+  color: inherit;
+  text-decoration: none;
+}
+.mcard-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+}
+.mcard-role {
+  margin: 0;
+  font-size: 0.74rem;
+  color: var(--ink-soft);
+}
+.mcard-bio {
+  margin: 0.2rem 0 0.3rem;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+.mcard-skills {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.45rem;
+}
+.mcard-skills li {
+  display: grid;
+  grid-template-columns: 6.2rem 1fr auto;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.82rem;
+}
+.mcard-skills .skill-bar {
+  max-width: none;
+  height: 9px;
+}
+.mcard-skills b {
+  font-weight: 400;
+  font-size: 0.7rem;
+}
+.mcard:hover .skill-bar i {
+  animation: bar-grow 0.9s var(--ease) both;
+}
+.mcard-foot {
+  margin-top: auto;
+  display: grid;
+  gap: 0.7rem;
+  padding-top: 0.7rem;
+}
+.mcard-chips {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.mcard-chips li {
+  padding: 0.12rem 0.7rem;
+  border: 1.5px solid var(--ink);
+  border-radius: 99px;
+  font-size: 0.74rem;
+  background: var(--accent);
+}
+.mcard-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  font-size: 0.72rem;
+}
+.mcard-socials {
+  display: inline-flex;
+  gap: 0.35rem;
+  position: relative;
+  z-index: 2;
+}
+.mcard-socials a {
+  display: grid;
+  place-items: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 0.4rem;
+  border: 1.5px solid var(--ink);
+  border-radius: 99px;
+  color: var(--ink);
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    background 0.3s var(--ease),
+    color 0.3s var(--ease),
+    translate 0.3s var(--ease);
+}
+.mcard-socials a:hover {
+  background: var(--ink);
+  color: var(--paper);
+  translate: 0 -2px;
+}
+.mcard-go {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.7rem;
+  border-top: 1.5px dashed var(--ink);
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+.mcard-go i {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  font-style: normal;
+  transition:
+    background 0.3s var(--ease),
+    color 0.3s var(--ease),
+    translate 0.3s var(--ease);
+}
+.mcard:hover .mcard-go i,
+.mcard:focus-within .mcard-go i {
+  background: var(--ink);
+  color: var(--paper);
+  translate: 4px 0;
+}
+html.reduce-motion .mcard,
+html.reduce-motion .mcard * {
+  transition: none !important;
+}
+
+/* the profile avatar */
+.profile-avatar {
+  position: relative;
+  display: block;
+  width: min(86vw, 460px);
+  aspect-ratio: 4 / 3.4;
+  padding: 0;
+  overflow: hidden;
+  border: var(--line-w, 2px) solid var(--ink);
+  border-radius: var(--radius-xl, 28px);
+  background: var(--accent);
+  box-shadow: var(--shadow-2);
+  cursor: pointer;
+}
+.profile-avatar .scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.profile-avatar-fig {
+  position: absolute;
+  left: 50%;
+  bottom: -2%;
+  width: 84%;
+  translate: -50% 0;
+  filter: drop-shadow(0 10px 0 rgb(20 17 15 / 0.16));
+}
+.profile-avatar-fig.is-hop {
+  animation: avatar-hop 0.6s var(--ease);
+}
+@keyframes avatar-hop {
+  40% {
+    transform: translateY(-22px) rotate(-2deg);
+  }
+}
+.profile-avatar-tag {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  padding: 0.25rem 0.8rem;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: 99px;
+  font-size: 0.74rem;
+  rotate: -3deg;
+}
+
+/* ---------------------------------------------------------------- finishing touches */
+.s-counters {
+  border-block: var(--line-w) solid var(--ink);
+  background: var(--paper);
+}
+.s-counters dl {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  margin-block: 0;
+}
+.s-counters dl > div {
+  padding: clamp(1.2rem, 3vw, 2rem) 1.2rem;
+  border-right: 1.5px solid var(--ink);
+}
+.s-counters dl > div:last-child {
+  border-right: 0;
+}
+.s-counters dt {
+  order: 2;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+}
+.s-counters dd {
+  margin: 0 0 0.2rem;
+  font-size: clamp(2.8rem, 6vw, 4.6rem);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.s-counters dl > div {
+  display: flex;
+  flex-direction: column;
+}
+.s-next {
+  background: var(--accent);
+  color: var(--ink);
+  border-top: var(--line-w) solid var(--ink);
+  padding-block: clamp(64px, 10vw, 140px);
+}
+.s-next .s-eyebrow {
+  color: var(--ink);
+}
+.s-next-link {
+  font-size: clamp(3rem, 10vw, 8rem);
+  line-height: 1;
+  -webkit-text-stroke: 0;
+  transition: letter-spacing var(--dur-slow) var(--ease);
+}
+.s-next-link:hover {
+  letter-spacing: 0.01em;
+}
+.s-next-sum {
+  max-width: 34rem;
+  margin: 1rem 0 0;
+  font-size: 1.1rem;
+}
+.s-work-list,
+.s-section {
+  position: relative;
+}
+.s-section--tint {
+  border-radius: clamp(24px, 4vw, 56px) clamp(24px, 4vw, 56px) 0 0;
+  margin-top: calc(clamp(24px, 4vw, 56px) * -0.5);
+  box-shadow: 0 -18px 30px -24px rgb(20 17 15 / 0.35);
+}
+.s-envelope {
+  position: absolute;
+  right: clamp(24px, 8vw, 120px);
+  bottom: clamp(24px, 6vw, 80px);
+  width: clamp(110px, 16vw, 200px);
+  animation: lp-bob 5s ease-in-out infinite;
+  filter: drop-shadow(6px 8px 0 rgb(20 17 15 / 0.2));
+}
+.s-envelope-flap {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+  animation: flap 3.6s ease-in-out infinite;
+}
+@keyframes flap {
+  45%,
+  60% {
+    transform: scaleY(-0.9);
+  }
+}
+html.reduce-motion .s-envelope,
+html.reduce-motion .s-envelope-flap {
+  animation: none;
+}
+.s-lost {
+  position: relative;
+  overflow: hidden;
 }

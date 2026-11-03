@@ -1,4 +1,6 @@
+import { motion, useScroll, useTransform } from 'motion/react';
 import type { Snapshot } from '../content/schema';
+import { useMotionOn } from './motion/context';
 import { Marquee } from './Marquee';
 import { Sticker } from './Mark';
 import { Magnetic } from './motion/Magnetic';
@@ -64,6 +66,9 @@ const SHAPES = ['circle', 'square', 'pill', 'ring', 'dot'] as const;
 
 /** Where newcomers pitch an idea. Warm, bright and encouraging. It says nothing of how the studio decides. */
 export function LaunchpadPage({ snap, link }: { snap: Snapshot; link: LinkFn }) {
+  const on = useMotionOn();
+  const { scrollY } = useScroll();
+  const lift = useTransform(scrollY, [0, 600], [0, -90]);
   const adopted = snap.projects.filter((p) => p.origin === 'launchpad');
   const pitch = link('/portal/app/#/pitch');
   return (
@@ -99,7 +104,7 @@ export function LaunchpadPage({ snap, link }: { snap: Snapshot; link: LinkFn }) 
           </div>
           <div className="lp-hero-art" aria-hidden="true">
             <Sticker text="START SOMETHING" className="lp-sticker" />
-            <span className="lp-rocket">
+            <motion.span className="lp-rocket" style={on ? { y: lift } : undefined}>
               <svg viewBox="0 0 120 160" width="100%" height="100%">
                 <path
                   d="M60 8c24 20 32 52 26 86H34C28 60 36 28 60 8z"
@@ -131,7 +136,7 @@ export function LaunchpadPage({ snap, link }: { snap: Snapshot; link: LinkFn }) 
                   strokeLinejoin="round"
                 />
               </svg>
-            </span>
+            </motion.span>
           </div>
         </div>
       </section>

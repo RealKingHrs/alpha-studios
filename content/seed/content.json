@@ -2,41 +2,19 @@
   "schemaVersion": 1,
   "generatedAt": "2026-11-03T00:00:00.000Z",
   "settings": {
-    "studioStatement": "Alpha Studios builds native iOS and macOS apps, web apps and more.",
+    "studioStatement": "Alpha Studios is a small crew of builders making native iOS and macOS apps, web apps and the backends behind them. We like calm interfaces, honest code and shipping things people actually use.",
     "introEnabled": true,
     "soundDefault": "off",
-    "contactEmail": "hello@example.test"
+    "contactEmail": "hello@alphastudios.example"
   },
   "members": [
     {
-      "slug": "member-one",
-      "name": "Member one",
-      "role": "Founder and engineering",
-      "bio": "Placeholder bio. Replace with real content before launch.",
-      "links": {},
-      "avatar": {
-        "version": 1,
-        "options": {
-          "head": 0,
-          "skin": 1,
-          "eyes": 0,
-          "brows": 0,
-          "nose": 0,
-          "mouth": 0,
-          "hair": 1,
-          "hairColor": 1,
-          "facialHair": 0,
-          "glasses": 0,
-          "glassesColor": 0,
-          "earrings": 0,
-          "chain": 0,
-          "outfit": 0,
-          "outfitColor": 0
-        }
-      },
-      "githubUsername": "placeholder-member-one",
-      "codename": "The Architect",
-      "tagline": "Builds the backbone nobody sees but everybody feels.",
+      "slug": "aarav-menon",
+      "name": "Aarav Menon",
+      "role": "Founder, backend engineering",
+      "bio": "Builds the quiet systems that keep everything else running, and makes the coffee.",
+      "githubUsername": "aarav-menon",
+      "codename": "Root Access",
       "skills": [
         {
           "name": "Backend",
@@ -44,46 +22,54 @@
         },
         {
           "name": "Postgres",
-          "level": 4
+          "level": 5
         },
         {
           "name": "TypeScript",
           "level": 4
+        },
+        {
+          "name": "DevOps",
+          "level": 3
         }
       ],
-      "currently": "Wiring up a payments sandbox",
-      "funFact": "Once debugged a bug by sleeping on it. It worked.",
-      "popPick": "Breaking Bad"
-    },
-    {
-      "slug": "member-two",
-      "name": "Member two",
-      "role": "Design",
-      "bio": "Placeholder bio. Replace with real content before launch.",
-      "links": {},
+      "popPick": "Breaking Bad",
+      "funFact": "",
+      "currently": "",
+      "links": {
+        "github": "https://example.com/aarav/github",
+        "linkedin": "https://example.com/aarav/linkedin",
+        "instagram": "https://example.com/aarav/instagram"
+      },
       "avatar": {
         "version": 1,
         "options": {
-          "head": 1,
-          "skin": 5,
-          "eyes": 1,
-          "brows": 1,
+          "head": 3,
+          "skin": 3,
+          "eyes": 0,
+          "brows": 3,
           "nose": 1,
           "mouth": 1,
-          "hair": 3,
-          "hairColor": 0,
-          "facialHair": 2,
-          "glasses": 1,
-          "glassesColor": 1,
-          "earrings": 1,
-          "chain": 1,
+          "hair": 7,
+          "hairColor": 1,
+          "facialHair": 3,
+          "glasses": 0,
+          "glassesColor": 0,
+          "earrings": 0,
+          "chain": 0,
           "outfit": 1,
           "outfitColor": 2
         }
       },
-      "githubUsername": "placeholder-member-two",
-      "codename": "Pixel Pusher",
-      "tagline": "Makes buttons you want to press twice.",
+      "tagline": ""
+    },
+    {
+      "slug": "zara-okafor",
+      "name": "Zara Okafor",
+      "role": "Interface and motion",
+      "bio": "Sweats the easing curves so you never notice the interface at all.",
+      "githubUsername": "zara-okafor",
+      "codename": "Motion Maven",
       "skills": [
         {
           "name": "React",
@@ -91,147 +77,175 @@
         },
         {
           "name": "Motion",
-          "level": 4
+          "level": 5
         },
         {
           "name": "Design",
           "level": 4
+        },
+        {
+          "name": "Accessibility",
+          "level": 4
         }
       ],
-      "currently": "Polishing a hero animation",
-      "funFact": "Has opinions about easing curves at dinner.",
-      "popPick": "Minecraft"
-    },
-    {
-      "slug": "member-three",
-      "name": "Member three",
-      "role": "iOS engineering",
-      "bio": "Placeholder bio. Replace with real content before launch.",
-      "links": {},
+      "popPick": "Minecraft",
+      "funFact": "",
+      "currently": "",
+      "links": {
+        "github": "https://example.com/zara/github",
+        "linkedin": "https://example.com/zara/linkedin",
+        "instagram": "https://example.com/zara/instagram"
+      },
       "avatar": {
         "version": 1,
         "options": {
           "head": 2,
-          "skin": 3,
+          "skin": 6,
           "eyes": 3,
-          "brows": 3,
-          "nose": 2,
-          "mouth": 4,
-          "hair": 4,
-          "hairColor": 5,
+          "brows": 1,
+          "nose": 0,
+          "mouth": 1,
+          "hair": 3,
+          "hairColor": 0,
           "facialHair": 0,
-          "glasses": 0,
-          "glassesColor": 0,
+          "glasses": 1,
+          "glassesColor": 1,
           "earrings": 2,
-          "chain": 2,
+          "chain": 1,
           "outfit": 2,
-          "outfitColor": 3
+          "outfitColor": 7
         }
       },
-      "githubUsername": "placeholder-member-three",
+      "tagline": ""
+    },
+    {
+      "slug": "kenji-watanabe",
+      "name": "Kenji Watanabe",
+      "role": "iOS and macOS lead",
+      "bio": "Ships small, sharp native apps and plans three releases ahead.",
+      "githubUsername": "kenji-watanabe",
       "codename": "The Professor",
-      "tagline": "Plans three sprints ahead, then adjusts.",
       "skills": [
         {
           "name": "Swift",
           "level": 5
         },
         {
-          "name": "Apps",
-          "level": 4
+          "name": "SwiftUI",
+          "level": 5
         },
         {
           "name": "Testing",
+          "level": 4
+        },
+        {
+          "name": "CloudKit",
           "level": 3
         }
       ],
-      "currently": "Shipping an iOS beta",
-      "funFact": "Keeps a whiteboard in the car.",
-      "popPick": "Money Heist"
-    },
-    {
-      "slug": "member-four",
-      "name": "Member four",
-      "role": "Web engineering",
-      "bio": "Placeholder bio. Replace with real content before launch.",
-      "links": {},
+      "popPick": "Money Heist",
+      "funFact": "",
+      "currently": "",
+      "links": {
+        "github": "https://example.com/kenji/github",
+        "linkedin": "https://example.com/kenji/linkedin",
+        "instagram": "https://example.com/kenji/instagram"
+      },
       "avatar": {
         "version": 1,
         "options": {
-          "head": 3,
-          "skin": 0,
+          "head": 1,
+          "skin": 1,
           "eyes": 2,
           "brows": 2,
-          "nose": 3,
-          "mouth": 2,
+          "nose": 2,
+          "mouth": 0,
           "hair": 6,
-          "hairColor": 4,
-          "facialHair": 3,
+          "hairColor": 0,
+          "facialHair": 0,
           "glasses": 2,
-          "glassesColor": 3,
+          "glassesColor": 4,
           "earrings": 0,
           "chain": 0,
           "outfit": 0,
           "outfitColor": 4
         }
       },
-      "githubUsername": "placeholder-member-four",
+      "tagline": ""
+    },
+    {
+      "slug": "priya-nair",
+      "name": "Priya Nair",
+      "role": "Android and platform",
+      "bio": "Keeps builds green, phones happy and her best ideas for after midnight.",
+      "githubUsername": "priya-nair",
       "codename": "Night Owl",
-      "tagline": "Ships best after midnight.",
       "skills": [
         {
-          "name": "Android",
-          "level": 4
+          "name": "Kotlin",
+          "level": 5
         },
         {
-          "name": "Kotlin",
+          "name": "Compose",
           "level": 4
         },
         {
           "name": "CI",
+          "level": 4
+        },
+        {
+          "name": "Firebase",
           "level": 3
         }
       ],
-      "currently": "Squashing a Play Store review note",
-      "funFact": "Never owned an alarm clock.",
-      "popPick": "Pulp Fiction"
-    },
-    {
-      "slug": "member-five",
-      "name": "Member five",
-      "role": "Engineering",
-      "bio": "Placeholder bio. Replace with real content before launch.",
-      "links": {},
+      "popPick": "Interstellar",
+      "funFact": "",
+      "currently": "",
+      "links": {
+        "github": "https://example.com/priya/github",
+        "linkedin": "https://example.com/priya/linkedin",
+        "instagram": "https://example.com/priya/instagram"
+      },
       "avatar": {
         "version": 1,
         "options": {
-          "head": 4,
-          "skin": 6,
-          "eyes": 4,
+          "head": 0,
+          "skin": 4,
+          "eyes": 1,
           "brows": 4,
-          "nose": 0,
-          "mouth": 3,
-          "hair": 5,
-          "hairColor": 2,
-          "facialHair": 1,
-          "glasses": 3,
-          "glassesColor": 4,
+          "nose": 3,
+          "mouth": 4,
+          "hair": 4,
+          "hairColor": 1,
+          "facialHair": 0,
+          "glasses": 0,
+          "glassesColor": 0,
           "earrings": 1,
-          "chain": 1,
+          "chain": 0,
           "outfit": 1,
-          "outfitColor": 7
+          "outfitColor": 5
         }
       },
-      "githubUsername": "placeholder-member-five",
+      "tagline": ""
+    },
+    {
+      "slug": "mateo-alvarez",
+      "name": "Mateo Alvarez",
+      "role": "Product and quality",
+      "bio": "Finds the bug before you do, then buys everyone lunch to say sorry.",
+      "githubUsername": "mateo-alvarez",
       "codename": "Wildcard",
-      "tagline": "Learns the thing the week it is needed.",
       "skills": [
         {
-          "name": "Rust",
-          "level": 3
+          "name": "Product",
+          "level": 5
         },
         {
-          "name": "DevOps",
+          "name": "Testing",
+          "level": 5
+        },
+        {
+          "name": "Research",
           "level": 4
         },
         {
@@ -239,16 +253,42 @@
           "level": 4
         }
       ],
-      "currently": "Taming the build pipeline",
-      "funFact": "Can solve a cube blindfolded.",
-      "popPick": "GTA VI"
+      "popPick": "GTA VI",
+      "funFact": "",
+      "currently": "",
+      "links": {
+        "github": "https://example.com/mateo/github",
+        "linkedin": "https://example.com/mateo/linkedin",
+        "instagram": "https://example.com/mateo/instagram"
+      },
+      "avatar": {
+        "version": 1,
+        "options": {
+          "head": 4,
+          "skin": 2,
+          "eyes": 4,
+          "brows": 0,
+          "nose": 0,
+          "mouth": 3,
+          "hair": 5,
+          "hairColor": 3,
+          "facialHair": 1,
+          "glasses": 3,
+          "glassesColor": 2,
+          "earrings": 0,
+          "chain": 2,
+          "outfit": 2,
+          "outfitColor": 3
+        }
+      },
+      "tagline": ""
     }
   ],
   "projects": [
     {
-      "slug": "project-one",
-      "name": "Project one",
-      "summary": "Placeholder summary. Replace with real content before launch.",
+      "slug": "harbor",
+      "name": "Harbor",
+      "summary": "A calm money app for freelancers: track invoices, set money aside for taxes and see what you can safely spend.",
       "status": "live",
       "platforms": [
         "ios",
@@ -257,199 +297,233 @@
       "tech": [
         "Swift",
         "SwiftUI",
-        "CloudKit"
+        "CloudKit",
+        "StoreKit"
       ],
       "links": {
-        "appStore": "https://apps.apple.com/app/placeholder",
-        "github": "https://github.com/alpha-studios-placeholder/project-one"
+        "appStore": "https://example.com/harbor/app-store",
+        "github": "https://example.com/alpha-studios/harbor"
       },
-      "repo": "alpha-studios-placeholder/project-one",
+      "repo": "alpha-studios-demo/harbor",
       "featured": true,
+      "story": "Freelancers told us the hardest part of money was not earning it but knowing what was theirs to spend. Harbor sets tax aside the moment an invoice is paid, shows a single safe-to-spend number, and syncs quietly between iPhone and Mac with no accounts to create. We built it native in SwiftUI so it opens instantly and feels at home on both devices. Kenji led the app, Aarav built the sync and receipts service, Zara shaped the interface and Mateo kept it honest in testing.",
       "screenshots": [
         {
-          "src": "screens/project-one-iphone-1.png",
-          "alt": "Placeholder iPhone screenshot, first screen of Project one",
+          "src": "screens/harbor-iphone-1.png",
+          "alt": "Harbor home screen showing the safe-to-spend number",
           "device": "iphone"
         },
         {
-          "src": "screens/project-one-mac-1.png",
-          "alt": "Placeholder Mac screenshot of Project one",
+          "src": "screens/harbor-mac-1.png",
+          "alt": "Harbor on Mac with the invoice list open",
           "device": "mac"
         },
         {
-          "src": "screens/project-one-iphone-2.png",
-          "alt": "Placeholder iPhone screenshot, second screen of Project one",
+          "src": "screens/harbor-iphone-2.png",
+          "alt": "Harbor tax pot screen on iPhone",
           "device": "iphone"
         }
       ],
-      "story": "Placeholder story. This room shows how a project is presented: what it is, who it is for, and how it was built. Replace this text with the real story, between eighty and one hundred and twenty words, before launch. Screenshots on the walls are generated placeholders and are labelled as such."
+      "origin": "studio",
+      "founderName": ""
     },
     {
-      "slug": "project-two",
-      "name": "Project two",
-      "summary": "Placeholder summary. Replace with real content before launch.",
+      "slug": "lumen",
+      "name": "Lumen",
+      "summary": "A study planner that turns deadlines into small, doable evenings and cheers you on when you finish one.",
       "status": "beta",
       "platforms": [
-        "web"
+        "web",
+        "android"
       ],
       "tech": [
-        "TypeScript",
         "React",
-        "Postgres"
+        "TypeScript",
+        "Postgres",
+        "Kotlin"
       ],
       "links": {
-        "github": "https://github.com/alpha-studios-placeholder/project-two",
-        "demo": "https://example.com/placeholder-demo"
+        "demo": "https://example.com/lumen/demo",
+        "github": "https://example.com/alpha-studios/lumen"
       },
-      "repo": "alpha-studios-placeholder/project-two",
-      "featured": false,
+      "repo": "alpha-studios-demo/lumen",
+      "featured": true,
+      "story": "Lumen began as a late-night fix for a friend with four deadlines and no plan. You add what is due, and it breaks the work into short evening sessions you can actually finish, then celebrates each one with a small burst of light. The web app runs on React and Postgres, with an Android companion in Kotlin for reminders. It is in open beta while we listen to students about what to add next. Zara led the web interface, Priya built the Android app, Aarav the backend and Mateo the research.",
       "screenshots": [
         {
-          "src": "screens/project-two-browser-1.png",
-          "alt": "Placeholder browser screenshot, first page of Project two",
+          "src": "screens/lumen-browser-1.png",
+          "alt": "Lumen weekly plan in the browser",
           "device": "browser"
         },
         {
-          "src": "screens/project-two-browser-2.png",
-          "alt": "Placeholder browser screenshot, second page of Project two",
-          "device": "browser"
+          "src": "screens/lumen-android-1.png",
+          "alt": "Lumen evening session on Android",
+          "device": "android"
         },
         {
-          "src": "screens/project-two-iphone-1.png",
-          "alt": "Placeholder iPhone screenshot of Project two",
-          "device": "iphone"
+          "src": "screens/lumen-browser-2.png",
+          "alt": "Lumen progress view in the browser",
+          "device": "browser"
         }
       ],
-      "story": "Placeholder story. This room shows how a project is presented: what it is, who it is for, and how it was built. Replace this text with the real story, between eighty and one hundred and twenty words, before launch. Screenshots on the walls are generated placeholders and are labelled as such."
+      "origin": "studio",
+      "founderName": ""
     }
   ],
   "memberships": [
     {
-      "projectSlug": "project-one",
-      "memberSlug": "member-one",
+      "projectSlug": "harbor",
+      "memberSlug": "aarav-menon",
       "role": "Backend lead"
     },
     {
-      "projectSlug": "project-one",
-      "memberSlug": "member-two",
-      "role": "Interface"
+      "projectSlug": "harbor",
+      "memberSlug": "zara-okafor",
+      "role": "Interface design"
     },
     {
-      "projectSlug": "project-one",
-      "memberSlug": "member-three",
+      "projectSlug": "harbor",
+      "memberSlug": "kenji-watanabe",
+      "role": "iOS lead"
+    },
+    {
+      "projectSlug": "harbor",
+      "memberSlug": "mateo-alvarez",
+      "role": "Product and QA"
+    },
+    {
+      "projectSlug": "lumen",
+      "memberSlug": "aarav-menon",
+      "role": "Backend"
+    },
+    {
+      "projectSlug": "lumen",
+      "memberSlug": "zara-okafor",
+      "role": "Web lead"
+    },
+    {
+      "projectSlug": "lumen",
+      "memberSlug": "priya-nair",
+      "role": "Android lead"
+    },
+    {
+      "projectSlug": "lumen",
+      "memberSlug": "mateo-alvarez",
       "role": "Product lead"
-    },
-    {
-      "projectSlug": "project-two",
-      "memberSlug": "member-three",
-      "role": "Product lead"
-    },
-    {
-      "projectSlug": "project-one",
-      "memberSlug": "member-four",
-      "role": "Mobile"
-    },
-    {
-      "projectSlug": "project-two",
-      "memberSlug": "member-four",
-      "role": "Mobile"
-    },
-    {
-      "projectSlug": "project-one",
-      "memberSlug": "member-five",
-      "role": "Tooling"
-    },
-    {
-      "projectSlug": "project-two",
-      "memberSlug": "member-five",
-      "role": "Tooling"
     }
   ],
-  "repos": {
-    "alpha-studios-placeholder/project-one": {
-      "stars": 0,
-      "languages": {
-        "Swift": 48210,
-        "Shell": 1200
-      },
-      "recentCommits": [
-        {
-          "sha": "a1b2c0d",
-          "message": "Placeholder commit 1",
-          "date": "2026-10-20T10:00:00Z",
-          "author": "placeholder-member-one"
-        },
-        {
-          "sha": "a1b2c1d",
-          "message": "Placeholder commit 2",
-          "date": "2026-10-21T10:00:00Z",
-          "author": "placeholder-member-three"
-        },
-        {
-          "sha": "a1b2c2d",
-          "message": "Placeholder commit 3",
-          "date": "2026-10-22T10:00:00Z",
-          "author": "placeholder-member-five"
-        }
-      ],
-      "contributors": [
-        "placeholder-member-one",
-        "placeholder-member-three",
-        "placeholder-member-five",
-        "outside-contributor"
-      ],
-      "fetchedAt": "2026-11-03T00:00:00.000Z"
-    },
-    "alpha-studios-placeholder/project-two": {
-      "stars": 0,
-      "languages": {
-        "TypeScript": 31200,
-        "CSS": 4100
-      },
-      "recentCommits": [
-        {
-          "sha": "a1b2c0d",
-          "message": "Placeholder commit 1",
-          "date": "2026-10-20T10:00:00Z",
-          "author": "placeholder-member-two"
-        },
-        {
-          "sha": "a1b2c1d",
-          "message": "Placeholder commit 2",
-          "date": "2026-10-21T10:00:00Z",
-          "author": "placeholder-member-four"
-        },
-        {
-          "sha": "a1b2c2d",
-          "message": "Placeholder commit 3",
-          "date": "2026-10-22T10:00:00Z",
-          "author": "placeholder-member-two"
-        }
-      ],
-      "contributors": [
-        "placeholder-member-two",
-        "placeholder-member-four",
-        "outside-contributor"
-      ],
-      "fetchedAt": "2026-11-03T00:00:00.000Z"
-    }
-  },
   "certifications": [
     {
-      "id": "cert-1",
-      "memberSlug": "member-one",
-      "title": "Placeholder: Cloud Practitioner",
+      "id": "c1",
+      "memberSlug": "aarav-menon",
+      "title": "PostgreSQL Associate",
       "issuer": "Example Academy",
       "issuedOn": "2026-03-01",
       "expiresOn": null
     },
     {
-      "id": "cert-2",
-      "memberSlug": "member-three",
-      "title": "Placeholder: Swift Developer",
+      "id": "c2",
+      "memberSlug": "aarav-menon",
+      "title": "Cloud Practitioner",
       "issuer": "Example Academy",
-      "issuedOn": "2026-05-12",
+      "issuedOn": "2025-11-12",
+      "expiresOn": null
+    },
+    {
+      "id": "c3",
+      "memberSlug": "zara-okafor",
+      "title": "Web Accessibility Specialist",
+      "issuer": "Example Academy",
+      "issuedOn": "2026-05-20",
+      "expiresOn": null
+    },
+    {
+      "id": "c4",
+      "memberSlug": "kenji-watanabe",
+      "title": "Swift Developer",
+      "issuer": "Example Academy",
+      "issuedOn": "2026-02-10",
+      "expiresOn": null
+    },
+    {
+      "id": "c5",
+      "memberSlug": "priya-nair",
+      "title": "Associate Android Developer",
+      "issuer": "Example Academy",
+      "issuedOn": "2026-06-02",
       "expiresOn": null
     }
-  ]
+  ],
+  "repos": {
+    "alpha-studios-demo/harbor": {
+      "stars": 412,
+      "languages": {
+        "Swift": 61230,
+        "Shell": 1840,
+        "Ruby": 920
+      },
+      "recentCommits": [
+        {
+          "sha": "a0e4f21",
+          "message": "Round safe-to-spend to the nearest dollar",
+          "date": "2026-10-20T10:20:00Z",
+          "author": "kenji-watanabe"
+        },
+        {
+          "sha": "a1e4f21",
+          "message": "Fix invoice sync after airplane mode",
+          "date": "2026-10-21T11:20:00Z",
+          "author": "aarav-menon"
+        },
+        {
+          "sha": "a2e4f21",
+          "message": "Add tax pot history chart",
+          "date": "2026-10-22T12:20:00Z",
+          "author": "zara-okafor"
+        }
+      ],
+      "contributors": [
+        "kenji-watanabe",
+        "aarav-menon",
+        "zara-okafor",
+        "mateo-alvarez"
+      ],
+      "fetchedAt": "2026-11-03T00:00:00Z"
+    },
+    "alpha-studios-demo/lumen": {
+      "stars": 187,
+      "languages": {
+        "TypeScript": 48210,
+        "Kotlin": 21440,
+        "CSS": 6300
+      },
+      "recentCommits": [
+        {
+          "sha": "b0e4f21",
+          "message": "Celebrate finished sessions with a light burst",
+          "date": "2026-10-20T10:20:00Z",
+          "author": "zara-okafor"
+        },
+        {
+          "sha": "b1e4f21",
+          "message": "Add weekly view to the planner",
+          "date": "2026-10-21T11:20:00Z",
+          "author": "priya-nair"
+        },
+        {
+          "sha": "b2e4f21",
+          "message": "Android reminders respect quiet hours",
+          "date": "2026-10-22T12:20:00Z",
+          "author": "aarav-menon"
+        }
+      ],
+      "contributors": [
+        "zara-okafor",
+        "priya-nair",
+        "aarav-menon",
+        "mateo-alvarez"
+      ],
+      "fetchedAt": "2026-11-03T00:00:00Z"
+    }
+  }
 }

@@ -14,6 +14,7 @@ export function Profile({ me }: { me: MemberRow }) {
   const [role, setRole] = useState(me.role_title);
   const [bio, setBio] = useState(me.bio);
   const [codename, setCodename] = useState(me.codename ?? '');
+  const [popPick, setPopPick] = useState(me.pop_pick ?? '');
   const [skills, setSkills] = useState<Skill[]>(me.skills ?? []);
   const [interests, setInterests] = useState('');
   const [ideas, setIdeas] = useState<string[]>([]);
@@ -63,6 +64,7 @@ export function Profile({ me }: { me: MemberRow }) {
         links: clean,
         codename,
         skills,
+        pop_pick: popPick,
       })
       .eq('id', me.id)
       .select('id');
@@ -107,6 +109,19 @@ export function Profile({ me }: { me: MemberRow }) {
             maxLength={40}
             value={codename}
             onChange={(e) => setCodename(e.target.value)}
+          />
+        )}
+      </Field>
+      <Field
+        label="Favourite show, film or game"
+        hint="Your card gets a backdrop that nods to it. Leave empty for a surprise."
+      >
+        {(id) => (
+          <input
+            id={id}
+            maxLength={80}
+            value={popPick}
+            onChange={(e) => setPopPick(e.target.value)}
           />
         )}
       </Field>

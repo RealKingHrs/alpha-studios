@@ -135,7 +135,7 @@ Tick each line with the date and who checked it. Nothing here is done until a pe
 **Blocked on you**
 
 - [ ] Trademark search for "Alpha Studios" and for lowercase-alpha marks in software and app classes (spec section 3). Record the result and date here: ________. If it conflicts, switch to the fallback mark before launch.
-- [ ] Real content in `content/seed/content.json` or through the portal: studio statement, contact email, five bios, two projects with stories, real screenshots in `public/screens/`, store and GitHub links, GitHub repositories for stars and commits. Every "Placeholder" string is gone: `git grep -n -i placeholder -- content public src` finds nothing.
+- [ ] Real content in `content/seed/content.json` or through the portal: studio statement, contact email, five bios, two projects with stories, real screenshots in `public/screens/`, store and GitHub links, GitHub repositories for stars and commits. The fictional sample people, projects and example links are gone: `npm run content:check` reports nothing.
 - [ ] Each crew member has agreed in the portal that name, role, bio and links are public (their consent date shows on their profile).
 - [ ] Domain decision recorded (free GitHub Pages address or a custom domain).
 

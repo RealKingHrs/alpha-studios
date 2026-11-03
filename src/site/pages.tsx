@@ -1,6 +1,7 @@
 import type { Snapshot } from '../content/schema';
 import { Portrait } from '../avatar/Portrait';
 import { contributorsWithCrew, platformLabel, projectLinks, statusLabel } from '../rooms';
+import { Counters } from './Counters';
 import { Elements } from './Elements';
 import { Shelf, Skills, Works } from './Dossier';
 import { CrewLineup } from './CrewLineup';
@@ -45,6 +46,34 @@ function Hello({
     >
       <div className="s-wrap">
         <Sticker text="SAY HELLO" className="s-hello-sticker" />
+        {page && (
+          <svg className="s-envelope" viewBox="0 0 120 90" aria-hidden="true">
+            <rect
+              x="6"
+              y="14"
+              width="108"
+              height="70"
+              rx="8"
+              fill="var(--paper)"
+              stroke="var(--ink)"
+              strokeWidth="4"
+            />
+            <path
+              className="s-envelope-flap"
+              d="M 8 18 L 60 56 L 112 18"
+              fill="var(--sun)"
+              stroke="var(--ink)"
+              strokeWidth="4"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M 8 82 L 46 48 M 112 82 L 74 48"
+              stroke="var(--ink)"
+              strokeWidth="3"
+              fill="none"
+            />
+          </svg>
+        )}
         <Reveal>
           <p className="s-eyebrow mono">
             {page ? (
@@ -82,6 +111,7 @@ export function Home({ snap, link, asset }: PageProps) {
     <>
       <Hero snap={snap} />
       <Marquee items={marqueeItems(snap)} accent="tomato" label="Platforms and technologies used" />
+      <Counters snap={snap} />
       <section id="work" data-section className="s-section" aria-labelledby="work-title">
         <div className="s-wrap">
           <SectionHead num="01" eyebrow="Work" title="Selected work" id="work-title" />
@@ -298,7 +328,11 @@ export function CaseStudy({ snap, slug, link, asset }: PageProps & { slug: strin
                     </span>
                     <span>
                       {m.name}
-                      <small className="mono">{m.role}</small>
+                      <small className="mono">
+                        {snap.memberships.find(
+                          (x) => x.projectSlug === slug && x.memberSlug === m.slug,
+                        )?.role || m.role}
+                      </small>
                     </span>
                   </a>
                 </li>
@@ -380,12 +414,16 @@ export function CaseStudy({ snap, slug, link, asset }: PageProps & { slug: strin
         </section>
       )}
 
-      <section className="s-next" aria-label="Next case study">
+      <section
+        className={`s-next a-${accentFor((index + 1) % snap.projects.length)}`}
+        aria-label="Next case study"
+      >
         <div className="s-wrap">
-          <p className="s-eyebrow mono">Next</p>
+          <p className="s-eyebrow mono">Up next</p>
           <a className="display s-next-link" href={link(`/projects/${next.slug}/`)}>
             {next.name} <span aria-hidden="true">→</span>
           </a>
+          <p className="s-next-sum">{next.summary}</p>
         </div>
       </section>
     </>
@@ -463,6 +501,14 @@ export function NotFoundPage({ link }: { link: LinkFn }) {
   return (
     <section className="s-hello s-hello--page a-tomato s-lost" aria-labelledby="pt">
       <div className="s-wrap">
+        <div className="lp-floats" aria-hidden="true">
+          {(['circle', 'square', 'pill', 'ring', 'dot'] as const).map((k, i) => (
+            <span
+              key={k}
+              className={`lp-float lp-float--${k} a-${['sun', 'sky', 'mint', 'lilac', 'sun'][i]}`}
+            />
+          ))}
+        </div>
         <Sticker text="404 · LOST · 404 · LOST" className="s-lost-sticker" />
         <h1 id="pt" className="display s-hello-title">
           <SplitText text="This page wandered off." />

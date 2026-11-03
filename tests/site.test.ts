@@ -97,9 +97,9 @@ describe('the site', () => {
     const html = renderToStaticMarkup(createElement(App, { snap, pathname: base, base }));
     expect(html).toContain('class="site"');
     expect(html).toContain('Apps for iPhone, Mac and the web.');
-    expect(html).toContain('href="/alpha-studios/projects/project-one/"');
-    expect(html).toContain('href="/alpha-studios/projects/project-two/"');
-    expect(html).toContain('Member one');
+    expect(html).toContain('href="/alpha-studios/projects/harbor/"');
+    expect(html).toContain('href="/alpha-studios/projects/lumen/"');
+    expect(html).toContain('Aarav Menon');
     expect(html).not.toMatch(/explore|vault|webgl/i);
   });
 
@@ -107,9 +107,9 @@ describe('the site', () => {
     const paths = [
       '',
       'projects/',
-      'projects/project-one/',
+      'projects/harbor/',
       'crew/',
-      'crew/member-two/',
+      'crew/zara-okafor/',
       'contact/',
       'launchpad/',
       'portal/',

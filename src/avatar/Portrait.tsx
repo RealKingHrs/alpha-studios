@@ -76,6 +76,7 @@ function Eye({
     <g>
       <circle cx={x} cy={y} r={r * big} fill="#fff" stroke={INK} strokeWidth={3} />
       <circle className="portrait-pupil" cx={x} cy={y} r={r * big * 0.5} fill={INK} />
+      <circle cx={x + r * big * 0.18} cy={y - r * big * 0.2} r={r * big * 0.16} fill="#fff" />
     </g>
   );
 }
@@ -204,6 +205,23 @@ export function Portrait({
             <path d="M 100 168 L 130 152 L 116 184 Z" />
           </g>
         )}
+        {s.outfit.style === 'collar' && (
+          <g fill="var(--paper)" stroke={INK} strokeWidth={2}>
+            <circle cx={100} cy={192} r={3.2} />
+            <circle cx={100} cy={208} r={3.2} />
+            <path d="M 126 186 h 22 v 20 h -22 z" fill="none" strokeLinejoin="round" />
+          </g>
+        )}
+        {s.outfit.style === 'tee' && (
+          <path
+            d="M 86 196 Q 100 206 114 196"
+            fill="none"
+            stroke="var(--paper)"
+            strokeWidth={3}
+            strokeLinecap="round"
+            opacity={0.7}
+          />
+        )}
         {s.chain !== 'none' && (
           <g fill="none" strokeLinecap="round">
             <path
@@ -267,6 +285,19 @@ export function Portrait({
                 strokeLinejoin="round"
               />
             )}
+
+            {/* cheeks */}
+            {[-1, 1].map((k) => (
+              <ellipse
+                key={`b${k}`}
+                cx={CX + k * (s.eyes.gap + 14)}
+                cy={eyeY + 22}
+                rx={9}
+                ry={5.5}
+                fill="var(--tomato)"
+                opacity={0.22}
+              />
+            ))}
 
             {/* brows and eyes */}
             <g className="portrait-brows">

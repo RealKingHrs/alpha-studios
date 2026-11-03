@@ -12,7 +12,7 @@ if (!parsed.success) {
 }
 
 const PLACEHOLDER =
-  /placeholder|member (one|two|three|four|five)|project (one|two)|example\.(test|com)|lorem/i;
+  /placeholder|member (one|two|three|four|five)|project (one|two)|example\.(test|com)|\.example\b|lorem/i;
 
 /** Every string in the snapshot with where it lives, so leftovers can be pointed to. */
 function leftovers(value: unknown, path = ''): string[] {

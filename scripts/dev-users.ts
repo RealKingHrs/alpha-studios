@@ -45,7 +45,7 @@ if (a.error) throw a.error;
 const c = await db
   .from('members')
   .update({ user_id: crewId, access_status: 'active', consented_at: new Date().toISOString() })
-  .eq('slug', 'member-one');
+  .eq('slug', 'aarav-menon');
 if (c.error) throw c.error;
 
 writeFileSync('.env.local', `VITE_SUPABASE_URL=${url}\nVITE_SUPABASE_ANON_KEY=${env.ANON_KEY}\n`);

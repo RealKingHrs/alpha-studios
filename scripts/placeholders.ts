@@ -29,7 +29,7 @@ for (const [pi, p] of snap.projects.entries()) {
 <rect x="${w * 0.08}" y="${h * 0.66}" width="${w * 0.5}" height="${h * 0.14}" rx="${h * 0.07}" fill="${b}" stroke="${hex('ink')}" stroke-width="3"/>
 <rect x="${w * 0.08}" y="${h * 0.12}" width="${w * 0.34}" height="${h * 0.045}" rx="${h * 0.02}" fill="${hex('ink')}"/>
 <text x="${w * 0.08}" y="${h * 0.5}" fill="${hex('ink')}" font-family="Georgia, serif" font-weight="bold" font-size="${big ? 54 : 40}">${p.name}</text>
-<text x="${w * 0.08}" y="${h * 0.58}" fill="${hex('ink-soft')}" font-family="Helvetica, Arial, sans-serif" font-size="${big ? 22 : 17}">Placeholder ${s.device} screenshot</text>
+<text x="${w * 0.08}" y="${h * 0.58}" fill="${hex('ink-soft')}" font-family="Helvetica, Arial, sans-serif" font-size="${big ? 22 : 17}">Sample ${s.device} screen</text>
 </svg>`;
     await sharp(Buffer.from(svg)).png({ compressionLevel: 9 }).toFile(`public/${s.src}`);
   }

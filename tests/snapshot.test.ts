@@ -12,7 +12,7 @@ describe('snapshot contract', () => {
   });
 
   it('rejects a membership that points at an unknown member', () => {
-    const bad = { ...raw, memberships: [{ projectSlug: 'project-one', memberSlug: 'nobody' }] };
+    const bad = { ...raw, memberships: [{ projectSlug: 'harbor', memberSlug: 'nobody' }] };
     expect(Snapshot.safeParse(bad).success).toBe(false);
   });
 
