@@ -1,12 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import {
-  BOWL_PATH,
-  BOWL_TRANSFORM,
-  FLICK_PATH,
-  FLICK_REVEAL,
-  MARK_VIEWBOX,
-  STEM_PATH,
-} from '../brand/mark';
+import { MARK_GRADIENT, MARK_PATH, MARK_VIEWBOX, MARK_WIDTH } from '../brand/mark';
 
 type Phase = 'draw' | 'fill' | 'hold' | 'open' | 'fade' | 'gone';
 
@@ -98,7 +91,6 @@ export function Intro({ ready, reduceMotion, firstVisit, onDone }: Props) {
   });
 
   if (phase === 'gone') return null;
-  const filled = phase !== 'draw';
   return (
     <div
       className={`intro intro--${phase} intro--site`}
@@ -122,49 +114,18 @@ export function Intro({ ready, reduceMotion, firstVisit, onDone }: Props) {
       <svg className="intro-mark" viewBox={MARK_VIEWBOX} aria-hidden="true">
         <defs>
           <linearGradient
-            id="intro-chrome"
+            id="intro-stroke"
             gradientUnits="userSpaceOnUse"
-            x1="17"
-            y1="30"
-            x2="100"
-            y2="100"
+            x1={MARK_GRADIENT.x1}
+            y1={MARK_GRADIENT.y1}
+            x2={MARK_GRADIENT.x2}
+            y2={MARK_GRADIENT.y2}
           >
-            <stop offset="0" style={{ stopColor: 'var(--mark-edge)' }} />
-            <stop offset="0.45" style={{ stopColor: 'var(--mark-core)' }} />
-            <stop offset="1" style={{ stopColor: 'var(--mark-edge)' }} />
+            <stop offset={MARK_GRADIENT.at} style={{ stopColor: 'var(--ink)' }} />
+            <stop offset={MARK_GRADIENT.at} style={{ stopColor: 'var(--gold)' }} />
           </linearGradient>
-          <linearGradient
-            id="intro-gold"
-            gradientUnits="userSpaceOnUse"
-            x1="130"
-            y1="156"
-            x2="196"
-            y2="118"
-          >
-            <stop offset="0" style={{ stopColor: 'var(--gold)' }} />
-            <stop offset="1" style={{ stopColor: 'var(--gold)' }} />
-          </linearGradient>
-          <clipPath id="intro-flick-clip">
-            <polygon
-              className={`intro-flick-reveal${filled ? ' is-on' : ''}`}
-              points={FLICK_REVEAL}
-            />
-          </clipPath>
         </defs>
-        <g transform={BOWL_TRANSFORM}>
-          <path
-            className={`intro-stroke${filled ? ' is-filled' : ''}`}
-            d={BOWL_PATH}
-            fillRule="evenodd"
-            pathLength={1}
-          />
-        </g>
-        <path
-          className={`intro-stroke${filled ? ' is-filled' : ''}`}
-          d={STEM_PATH}
-          pathLength={1}
-        />
-        <path className="intro-gold" d={FLICK_PATH} clipPath="url(#intro-flick-clip)" />
+        <path className="intro-stroke" d={MARK_PATH} strokeWidth={MARK_WIDTH} pathLength={1} />
       </svg>
       {phase !== 'fade' && (
         <button type="button" className="intro-skip" onClick={skip}>

@@ -4,7 +4,7 @@ import type { Project, Snapshot } from '../content/schema';
 import { platformLabel, projectLinks, statusLabel } from '../rooms';
 import type { Route } from '../routes';
 import { ACCENTS, HEADLINE, accentFor, headlineText, stackOrder } from './data';
-import { Mark } from './Mark';
+import { Mark, Sticker } from './Mark';
 import { useMotionOn, useWide } from './motion/context';
 import { coverAmount, coverProgress, currentSection } from './motion/helpers';
 import { STACK_STEP, canStack, stickyTopFor } from './motion/viewport';
@@ -327,6 +327,21 @@ export function Hero({ snap, link }: { snap: Snapshot; link: LinkFn }) {
             ))}
           </ul>
         </motion.div>
+        <div className="s-play" aria-hidden="true">
+          <span className="play-seal">
+            <Sticker text="ALPHA STUDIOS" className="play-sticker" />
+          </span>
+          <span className="play-chip play-chip--1 a-sun">Native iOS</span>
+          <span className="play-chip play-chip--2 a-mint">macOS</span>
+          <span className="play-chip play-chip--3 a-sky">AI and ML</span>
+          <span className="play-chip play-chip--4 a-lilac">Web apps</span>
+          <svg className="play-star" viewBox="0 0 100 100">
+            <path d="M50 4 L61 34 L92 28 L70 52 L90 78 L58 70 L50 96 L42 70 L10 78 L30 52 L8 28 L39 34 Z" />
+          </svg>
+          <svg className="play-squig" viewBox="0 0 160 30">
+            <path d="M4 15 Q24 -2 44 15 T84 15 T124 15 T156 15" />
+          </svg>
+        </div>
         <a className="s-scroll-cue mono" href="#work">
           <span>Scroll</span>
           <i aria-hidden="true" />

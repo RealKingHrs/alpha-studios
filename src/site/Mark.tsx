@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { BOWL_PATH, BOWL_TRANSFORM, FLICK_PATH, MARK_VIEWBOX, STEM_PATH } from '../brand/mark';
+import { MARK_GRADIENT, MARK_PATH, MARK_VIEWBOX, MARK_WIDTH } from '../brand/mark';
 import { useMotionOn } from './motion/context';
 
 /** The alpha mark in ink with the gold flick, as inline SVG. With motion on, it draws itself, then fills. */
@@ -13,16 +13,12 @@ export function Mark({
   draw?: boolean;
 }) {
   const on = useMotionOn() && draw;
-  const common = on
+  const id = `m-${className.replace(/\W+/g, '') || 'x'}`;
+  const motionProps = on
     ? {
-        initial: { pathLength: 0, fillOpacity: 0 },
-        animate: { pathLength: 1, fillOpacity: 1 },
-        transition: {
-          pathLength: { duration: 1.5, ease: [0.65, 0, 0.35, 1] as const, delay: 0.25 },
-          fillOpacity: { duration: 0.7, delay: 1.35 },
-        },
-        stroke: 'var(--ink)',
-        strokeWidth: 2.2,
+        initial: { pathLength: 0 },
+        animate: { pathLength: 1 },
+        transition: { duration: 1.6, ease: [0.65, 0, 0.35, 1] as const, delay: 0.25 },
       }
     : {};
   return (
@@ -33,20 +29,27 @@ export function Mark({
       aria-label={title}
       aria-hidden={title ? undefined : true}
     >
-      <g transform={BOWL_TRANSFORM}>
-        <motion.path d={BOWL_PATH} fillRule="evenodd" className="mark-ink" {...common} />
-      </g>
-      <motion.path d={STEM_PATH} className="mark-ink" {...common} />
+      <defs>
+        <linearGradient
+          id={id}
+          gradientUnits="userSpaceOnUse"
+          x1={MARK_GRADIENT.x1}
+          y1={MARK_GRADIENT.y1}
+          x2={MARK_GRADIENT.x2}
+          y2={MARK_GRADIENT.y2}
+        >
+          <stop offset={MARK_GRADIENT.at} className="mark-stop-ink" />
+          <stop offset={MARK_GRADIENT.at} className="mark-stop-gold" />
+        </linearGradient>
+      </defs>
       <motion.path
-        d={FLICK_PATH}
-        className="mark-gold"
-        {...(on
-          ? {
-              initial: { opacity: 0 },
-              animate: { opacity: 1 },
-              transition: { delay: 1.8, duration: 0.6 },
-            }
-          : {})}
+        d={MARK_PATH}
+        fill="none"
+        stroke={`url(#${id})`}
+        strokeWidth={MARK_WIDTH}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        {...motionProps}
       />
     </svg>
   );
