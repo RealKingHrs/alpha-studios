@@ -6,7 +6,6 @@ import { WavingPortrait } from '../avatar/WavingPortrait';
 import { Count } from './Counters';
 import { accentFor } from './data';
 import { Shelf } from './Dossier';
-import { Sticker } from './Mark';
 import { Marquee } from './Marquee';
 import { Magnetic } from './motion/Magnetic';
 import { useMotionOn } from './motion/context';
@@ -72,7 +71,7 @@ export function MemberPage({ snap, slug, link }: { snap: Snapshot; slug: string;
     <>
       <section
         ref={hero}
-        className={`mp-hero a-${accent}`}
+        className="mp-hero theme-dark"
         aria-labelledby="pt"
         onPointerMove={onMove}
       >
@@ -101,7 +100,6 @@ export function MemberPage({ snap, slug, link }: { snap: Snapshot; slug: string;
           <motion.div className="mp-avatar" style={on ? { y: avatarY } : undefined}>
             <WavingPortrait record={m.avatar} />
           </motion.div>
-          {m.codename && <Sticker text={m.codename.toUpperCase()} className="mp-sticker" />}
           <span className="mp-into mono">{m.popPick ? `Into ${m.popPick}` : theme.caption}</span>
         </div>
         <a className="s-scroll-cue mono" href="#about">
@@ -110,7 +108,7 @@ export function MemberPage({ snap, slug, link }: { snap: Snapshot; slug: string;
         </a>
       </section>
 
-      <Marquee items={ticker} accent="tomato" label={`${m.name} at a glance`} />
+      <Marquee items={ticker} accent="gold" label={`${m.name} at a glance`} />
 
       {m.bio && (
         <section id="about" className="mp-about" aria-labelledby="about-title">

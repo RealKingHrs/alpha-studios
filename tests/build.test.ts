@@ -21,6 +21,7 @@ d('built site', () => {
     'crew/index.html',
     'contact/index.html',
     'launchpad/index.html',
+    'about/index.html',
     'portal/index.html',
     'projects/harbor/index.html',
     'projects/lumen/index.html',
@@ -103,7 +104,7 @@ d('built site', () => {
   it('has a manifest whose colours match the design tokens', () => {
     const manifest = JSON.parse(readFileSync('dist/manifest.webmanifest', 'utf8'));
     const tokens = readFileSync('design/tokens.css', 'utf8');
-    const paper = /--paper:\s*(#[0-9a-fA-F]{6})/.exec(tokens)![1].toLowerCase();
+    const paper = /--ink:\s*(#[0-9a-fA-F]{6})/.exec(tokens)![1].toLowerCase();
     expect(manifest.background_color.toLowerCase()).toBe(paper);
     expect(manifest.theme_color.toLowerCase()).toBe(paper);
     for (const icon of manifest.icons) expect(existsSync(join('dist', icon.src))).toBe(true);

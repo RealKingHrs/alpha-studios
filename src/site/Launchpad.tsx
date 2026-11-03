@@ -1,8 +1,5 @@
-import { motion, useScroll, useTransform } from 'motion/react';
 import type { Snapshot } from '../content/schema';
-import { useMotionOn } from './motion/context';
 import { Marquee } from './Marquee';
-import { Sticker } from './Mark';
 import { Magnetic } from './motion/Magnetic';
 import { SplitText } from './motion/SplitText';
 import type { LinkFn } from './parts';
@@ -19,17 +16,17 @@ const BRING = [
 
 const WHO = [
   [
-    'a-sun',
+    'a-sand',
     'Still studying',
     'You build on weekends and between classes. Your idea does not need to wait for a job title.',
   ],
   [
-    'a-mint',
+    'a-teal',
     'Building solo',
     'You have been carrying a project alone. It is more fun with a crew behind you.',
   ],
   [
-    'a-lilac',
+    'a-sage',
     'Just starting out',
     'You have an idea and no idea where to begin. That is a perfectly good place to be.',
   ],
@@ -37,16 +34,12 @@ const WHO = [
 
 const GET = [
   [
-    'a-sky',
+    'a-slate',
     'People in your corner',
     'A crew that has built things and wants to see yours come alive.',
   ],
-  [
-    'a-tomato',
-    'Someone to learn from',
-    'Honest feedback and a bit of mentoring when you get stuck.',
-  ],
-  ['a-sun', 'A real launch', 'Help getting your work in front of the people it was made for.'],
+  ['a-gold', 'Someone to learn from', 'Honest feedback and a bit of mentoring when you get stuck.'],
+  ['a-sand', 'A real launch', 'Help getting your work in front of the people it was made for.'],
 ] as const;
 
 const FAQ = [
@@ -62,86 +55,64 @@ const FAQ = [
   ['Will it still be mine?', 'Your name stays on it as its founder, always.'],
 ] as const;
 
-const SHAPES = ['circle', 'square', 'pill', 'ring', 'dot'] as const;
-
 /** Where newcomers pitch an idea. Warm, bright and encouraging. It says nothing of how the studio decides. */
 export function LaunchpadPage({ snap, link }: { snap: Snapshot; link: LinkFn }) {
-  const on = useMotionOn();
-  const { scrollY } = useScroll();
-  const lift = useTransform(scrollY, [0, 600], [0, -90]);
   const adopted = snap.projects.filter((p) => p.origin === 'launchpad');
   const pitch = link('/portal/app/#/pitch');
   return (
     <>
-      <section className="lp-hero a-mint" aria-labelledby="pt">
-        <div className="lp-floats" aria-hidden="true">
-          {SHAPES.map((s, i) => (
-            <span
-              key={s}
-              className={`lp-float lp-float--${s} a-${['tomato', 'sun', 'sky', 'lilac', 'tomato'][i]}`}
-            />
-          ))}
-        </div>
+      <section className="lp-hero theme-dark" aria-labelledby="pt">
+        <div className="s-hero-lines" aria-hidden="true" />
         <div className="s-wrap lp-hero-grid">
           <div>
             <p className="s-eyebrow mono">Launchpad</p>
             <h1 id="pt" className="display lp-title">
-              <SplitText text="Your idea belongs here." />
+              <SplitText text="Bring us your idea." />
+              <span className="lp-title-gold">
+                <SplitText text="Keep your name on it." delay={0.35} />
+              </span>
             </h1>
             <Reveal delay={150}>
               <p className="s-lede">
-                Got something you have always wanted to build? Tell us about it. We love meeting
-                people who make things, and we would love to meet you.
+                Launchpad is how young builders get real support. Pitch what you are making, and if
+                the crew believes in it, Alpha Studios adopts it, backs it, and credits you as its
+                founder for good.
               </p>
               <p className="s-actions">
                 <Magnetic>
-                  <a className="s-btn s-btn--ink" href={pitch}>
+                  <a className="s-btn s-btn--gold" href={pitch}>
                     Pitch your idea
+                  </a>
+                </Magnetic>
+                <Magnetic>
+                  <a className="s-btn s-btn--line" href={link('/about/')}>
+                    Why we do this
                   </a>
                 </Magnetic>
               </p>
             </Reveal>
           </div>
           <div className="lp-hero-art" aria-hidden="true">
-            <Sticker text="START SOMETHING" className="lp-sticker" />
-            <motion.span className="lp-rocket" style={on ? { y: lift } : undefined}>
-              <svg viewBox="0 0 120 160" width="100%" height="100%">
-                <path
-                  d="M60 8c24 20 32 52 26 86H34C28 60 36 28 60 8z"
-                  fill="var(--paper)"
-                  stroke="var(--ink)"
-                  strokeWidth="5"
-                />
-                <circle
-                  cx="60"
-                  cy="52"
-                  r="12"
-                  fill="var(--sky)"
-                  stroke="var(--ink)"
-                  strokeWidth="5"
-                />
-                <path
-                  d="M34 94 14 120l22-6zM86 94l20 26-22-6z"
-                  fill="var(--tomato)"
-                  stroke="var(--ink)"
-                  strokeWidth="5"
-                  strokeLinejoin="round"
-                />
-                <path
-                  className="lp-flame"
-                  d="M48 100c0 22 12 40 12 40s12-18 12-40z"
-                  fill="var(--sun)"
-                  stroke="var(--ink)"
-                  strokeWidth="5"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </motion.span>
+            <div className="lp-credit">
+              <p className="mono lp-credit-k">Project</p>
+              <p className="display lp-credit-t">Your idea</p>
+              <ul>
+                <li>
+                  <span className="mono">Founded by</span>
+                  <strong>You</strong>
+                </li>
+                <li>
+                  <span className="mono">Backed by</span>
+                  <strong>Alpha Studios</strong>
+                </li>
+              </ul>
+              <span className="lp-credit-seal mono">Credit kept for good</span>
+            </div>
           </div>
         </div>
       </section>
 
-      <Marquee items={BRING} accent="tomato" label="Things people bring to Launchpad" />
+      <Marquee items={BRING} accent="gold" label="Things people bring to Launchpad" />
 
       <section className="lp-section" aria-labelledby="who-title">
         <div className="s-wrap">
@@ -236,7 +207,7 @@ export function LaunchpadPage({ snap, link }: { snap: Snapshot; link: LinkFn }) 
         </div>
       </section>
 
-      <section className="lp-final a-sun" aria-labelledby="final-title">
+      <section className="lp-final a-sand" aria-labelledby="final-title">
         <div className="s-wrap">
           <h2 id="final-title" className="display">
             <SplitText text="Ready when you are." />

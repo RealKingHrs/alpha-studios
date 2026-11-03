@@ -1,17 +1,10 @@
-import {
-  AnimatePresence,
-  motion,
-  useMotionValueEvent,
-  useScroll,
-  useSpring,
-  useTransform,
-} from 'motion/react';
+import { motion, useMotionValueEvent, useScroll, useSpring, useTransform } from 'motion/react';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import type { Project, Snapshot } from '../content/schema';
 import { platformLabel, projectLinks, statusLabel } from '../rooms';
 import type { Route } from '../routes';
-import { ACCENTS, HEADLINE, ROTATING_WORDS, accentFor, headlineText, stackOrder } from './data';
-import { Mark, Sticker } from './Mark';
+import { ACCENTS, HEADLINE, accentFor, headlineText, stackOrder } from './data';
+import { Mark } from './Mark';
 import { useMotionOn, useWide } from './motion/context';
 import { coverAmount, coverProgress, currentSection } from './motion/helpers';
 import { STACK_STEP, canStack, stickyTopFor } from './motion/viewport';
@@ -27,6 +20,7 @@ const NAV = [
   ['/projects/', 'Work'],
   ['/crew/', 'Crew'],
   ['/launchpad/', 'Launchpad'],
+  ['/about/', 'About'],
   ['/contact/', 'Contact'],
 ] as const;
 
@@ -37,9 +31,11 @@ const section = (route: Route) =>
       ? '/crew/'
       : route.name === 'launchpad'
         ? '/launchpad/'
-        : route.name === 'contact'
-          ? '/contact/'
-          : null;
+        : route.name === 'about'
+          ? '/about/'
+          : route.name === 'contact'
+            ? '/contact/'
+            : null;
 
 /** The header tucks away as you scroll down and returns the moment you scroll up. */
 export function Header({ route, link }: { route: Route; link: LinkFn }) {
@@ -156,7 +152,7 @@ function MenuButton({ link, here }: { link: LinkFn; here: string | null }) {
         <div
           id="s-menu"
           ref={panel}
-          className="s-menu"
+          className="s-menu theme-dark"
           role="dialog"
           aria-modal="true"
           aria-label="Menu"
@@ -184,27 +180,48 @@ function MenuButton({ link, here }: { link: LinkFn; here: string | null }) {
 }
 
 export function Footer({ link }: { link: LinkFn }) {
+  const cols = [
+    [
+      'Studio',
+      [
+        ['/projects/', 'Work'],
+        ['/crew/', 'Crew'],
+        ['/about/', 'About'],
+      ],
+    ],
+    [
+      'Build with us',
+      [
+        ['/launchpad/', 'Launchpad'],
+        ['/contact/', 'Contact'],
+      ],
+    ],
+  ] as const;
   return (
-    <footer className="s-footer">
+    <footer className="s-footer theme-dark">
       <div className="s-wrap s-footer-grid">
-        <p className="s-footer-big display" aria-hidden="true">
-          Alpha Studios
-        </p>
-        <nav aria-label="Footer">
-          <ul>
-            <li>
-              <a href={link('/projects/')}>Work</a>
-            </li>
-            <li>
-              <a href={link('/crew/')}>Crew</a>
-            </li>
-            <li>
-              <a href={link('/launchpad/')}>Launchpad</a>
-            </li>
-            <li>
-              <a href={link('/contact/')}>Contact</a>
-            </li>
-          </ul>
+        <div className="s-footer-brand">
+          <a className="s-footer-logo" href={link('/')} aria-label="Alpha Studios, home">
+            <Mark className="s-footer-mark" />
+            <span className="display">Alpha Studios</span>
+          </a>
+          <p className="s-footer-line">
+            Software people rely on, and a home for young builders with something worth finishing.
+          </p>
+        </div>
+        <nav aria-label="Footer" className="s-footer-nav">
+          {cols.map(([title, items]) => (
+            <div key={title}>
+              <p className="mono">{title}</p>
+              <ul>
+                {items.map(([path, label]) => (
+                  <li key={path}>
+                    <a href={link(path)}>{label}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </nav>
         <div className="s-footer-meta">
           <span className="mono">© 2026 Alpha Studios</span>
@@ -222,65 +239,17 @@ export function Footer({ link }: { link: LinkFn }) {
   );
 }
 
-const WORD_BG = ['var(--tomato)', 'var(--sky)', 'var(--mint)'];
-
-/** The word that changes. With motion it slides through a mask; without, three words fade by CSS. */
-function Rotor() {
-  const on = useMotionOn();
-  const [i, setI] = useState(0);
-  useEffect(() => {
-    if (!on) return;
-    const id = setInterval(() => setI((v) => (v + 1) % ROTATING_WORDS.length), 2700);
-    return () => clearInterval(id);
-  }, [on]);
-  if (!on) {
-    return (
-      <span className="rotor">
-        {ROTATING_WORDS.map((w, n) => (
-          <span key={w} className="rotor-word" style={{ '--n': n } as React.CSSProperties}>
-            {w}
-            {n === ROTATING_WORDS.length - 1 ? '.' : ''}
-          </span>
-        ))}
-      </span>
-    );
-  }
-  return (
-    <span className="rotor rotor--js">
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.span
-          key={i}
-          className="rotor-word"
-          style={{ background: WORD_BG[i] }}
-          initial={{ y: '70%', opacity: 0, rotate: -5, scale: 0.96 }}
-          animate={{ y: '0%', opacity: 1, rotate: -2, scale: 1 }}
-          exit={{ y: '-70%', opacity: 0, rotate: 3, scale: 0.96 }}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-        >
-          {ROTATING_WORDS[i]}
-          {i === ROTATING_WORDS.length - 1 ? '.' : ''}
-        </motion.span>
-      </AnimatePresence>
-    </span>
-  );
-}
-
-/** The hero: the headline rises word by word, the mark draws itself, and everything drifts apart as you scroll. */
-export function Hero({ snap }: { snap: Snapshot }) {
+/** The hero: a midnight ground, direct words, a calm monogram that draws itself once, and layers that part slowly as you scroll. */
+export function Hero({ snap, link }: { snap: Snapshot; link: LinkFn }) {
   const ref = useRef<HTMLElement>(null);
   const on = useMotionOn();
   const { scrollYProgress: p } = useScroll({ target: ref, offset: ['start start', 'end start'] });
-  const markRotate = useTransform(p, [0, 1], [-6, 26]);
-  const markY = useTransform(p, [0, 1], ['0%', '14%']);
-  const copyY = useTransform(p, [0, 1], ['0%', '-8%']);
-  const copyOpacity = useTransform(p, [0, 0.85], [1, 0.1]);
-  const s1 = useTransform(p, [0, 1], ['0%', '-22%']);
-  const s2 = useTransform(p, [0, 1], ['0%', '-11%']);
-  const s3 = useTransform(p, [0, 1], ['0%', '-30%']);
-  const s4 = useTransform(p, [0, 1], ['0%', '-6%']);
-  const s5 = useTransform(p, [0, 1], ['0%', '-16%']);
+  const gridY = useTransform(p, [0, 1], ['0%', '12%']);
+  const markY = useTransform(p, [0, 1], ['0%', '10%']);
+  const copyY = useTransform(p, [0, 1], ['0%', '-6%']);
+  const copyOpacity = useTransform(p, [0, 0.85], [1, 0.15]);
 
-  // Shapes lean toward the pointer a little. Skipped without motion.
+  // The layers shift a few pixels with the pointer. Skipped without motion.
   useEffect(() => {
     const el = ref.current;
     if (!on || !el) return;
@@ -293,62 +262,67 @@ export function Hero({ snap }: { snap: Snapshot }) {
     return () => window.removeEventListener('pointermove', onMove);
   }, [on]);
 
-  const shape = (cls: string, y: typeof s1) => (
-    <motion.span className="shape-slot" style={on ? { y } : undefined}>
-      <span className={`shape ${cls}`} />
-    </motion.span>
-  );
+  const platforms = new Set(snap.projects.flatMap((x) => x.platforms)).size;
+  const proof = [
+    [snap.projects.length, snap.projects.length === 1 ? 'project shipped' : 'projects shipped'],
+    [snap.members.length, 'people on the crew'],
+    [platforms, platforms === 1 ? 'platform' : 'platforms'],
+  ] as const;
 
   return (
-    <section ref={ref} className="s-hero" aria-labelledby="hero-title">
-      <div className="s-shapes" aria-hidden="true">
-        {shape('shape--circle a-tomato', s1)}
-        {shape('shape--square a-sun', s2)}
-        {shape('shape--pill a-mint', s3)}
-        {shape('shape--ring a-sky', s4)}
-        {shape('shape--dot a-lilac', s5)}
-      </div>
+    <section ref={ref} className="s-hero theme-dark" aria-labelledby="hero-title">
+      <motion.div
+        className="s-hero-lines"
+        aria-hidden="true"
+        style={on ? { y: gridY } : undefined}
+      />
       <div className="s-wrap s-hero-grid">
         <motion.div
           className="s-hero-copy"
           style={on ? { y: copyY, opacity: copyOpacity } : undefined}
         >
-          <p className="s-eyebrow mono">Studio for native and web apps</p>
+          <p className="s-eyebrow mono">Native apps · Web platforms · Backends</p>
           <h1 id="hero-title" className="display s-hero-title">
             <span className="visually-hidden">{headlineText()}</span>
             <span aria-hidden="true">
               <span className="s-hero-line">
-                <SplitText text={HEADLINE} delay={0.25} step={0.12} />
+                <SplitText text={HEADLINE[0]} delay={0.2} step={0.1} />
               </span>
-              <Rotor />
+              <span className="s-hero-line s-hero-gold">
+                <SplitText text={HEADLINE[1]} delay={0.55} step={0.1} />
+              </span>
             </span>
           </h1>
           <p className="s-lede">{snap.settings.studioStatement}</p>
           <p className="s-actions">
             <Magnetic>
-              <a className="s-btn s-btn--ink" href="#work">
-                See the work
+              <a className="s-btn s-btn--gold" href="#work">
+                See our work
               </a>
             </Magnetic>
             <Magnetic>
-              <a className="s-btn s-btn--line" href="#crew">
-                Meet the crew
+              <a className="s-btn s-btn--line" href={link('/launchpad/')}>
+                Back a project
               </a>
             </Magnetic>
           </p>
+          <ul className="s-hero-proof" aria-label="The studio in numbers">
+            {proof.map(([n, label]) => (
+              <li key={label}>
+                <b className="display">{n}</b>
+                <span className="mono">{label}</span>
+              </li>
+            ))}
+          </ul>
         </motion.div>
         <a className="s-scroll-cue mono" href="#work">
           <span>Scroll</span>
           <i aria-hidden="true" />
         </a>
         <div className="s-hero-art" aria-hidden="true">
-          <motion.div
-            className="s-hero-mark-wrap"
-            style={on ? { rotate: markRotate, y: markY } : undefined}
-          >
+          <motion.div className="s-hero-mark-wrap" style={on ? { y: markY } : undefined}>
             <Mark className="s-hero-mark" draw />
           </motion.div>
-          <Sticker text="ALPHA STUDIOS" className="s-hero-sticker" />
         </div>
       </div>
     </section>

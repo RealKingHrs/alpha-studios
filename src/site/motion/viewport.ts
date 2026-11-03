@@ -26,7 +26,7 @@ export function canStack(
 
 /** Marquee speed follows the screen's width, so it feels the same on a phone and on an ultrawide. */
 export const marqueeBase = (viewportWidth: number) =>
-  Math.round(70 * clamp(viewportWidth / 1440, 0.6, 1.6));
+  Math.round(46 * clamp(viewportWidth / 1440, 0.6, 1.6));
 
 /** How far, in percent of its own height, a layer drifts across the scroll of its stage. Bigger factor, more drift. */
 export const driftPercent = (factor: number) => `${(factor * 9).toFixed(1)}%`;

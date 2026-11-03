@@ -32,7 +32,7 @@ const fill = (swatch: string) => `var(--${swatch})`;
 const SILVER = '#E9ECEF';
 const STROKE = {
   stroke: INK,
-  strokeWidth: 3,
+  strokeWidth: 2.6,
   strokeLinejoin: 'round',
   strokeLinecap: 'round',
 } as const;
@@ -294,8 +294,8 @@ export function Portrait({
                 cy={eyeY + 22}
                 rx={9}
                 ry={5.5}
-                fill="var(--tomato)"
-                opacity={0.22}
+                fill="var(--gold)"
+                opacity={0.12}
               />
             ))}
 
@@ -361,7 +361,7 @@ export function Portrait({
               {s.mouth.kind === 'open' && (
                 <g>
                   <ellipse cx={CX} cy={134} rx={12} ry={10} fill={INK} />
-                  <ellipse cx={CX} cy={139} rx={7} ry={4} fill="var(--tomato)" />
+                  <ellipse cx={CX} cy={139} rx={7} ry={4} fill="var(--gold)" />
                 </g>
               )}
             </g>

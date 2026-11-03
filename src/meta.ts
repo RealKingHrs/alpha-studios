@@ -41,6 +41,12 @@ export function pageMeta(
         description:
           'Pitch your project to Alpha Studios. If the team approves, we adopt it and credit you as founder for good.',
       };
+    case 'about':
+      return {
+        title: `About | ${STUDIO}`,
+        description:
+          'Why Alpha Studios exists, what we believe about building software, and what we are working towards.',
+      };
     case 'contact':
       return { title: `Contact | ${STUDIO}`, description: 'Get in touch with Alpha Studios.' };
     case 'portal':

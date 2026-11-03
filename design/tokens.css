@@ -1,22 +1,30 @@
 /* Alpha Studios design tokens. Source of truth for colour, type, space and motion.
-   Paper, ink and five accents; gold only for the logo flick and admin marks.
+   Midnight and ivory carry the page; brushed gold is the one signature accent; quiet tints fill cards.
    Do not hardcode these values elsewhere. */
 
 :root {
-  /* Gold appears only as the flick of the logo, and on admin-only controls in the portal. */
-  --gold: #C9A24B;
+  /* Midnight and ivory */
+  --ink: #0E1A2B;
+  --ink-soft: #475365;      /* secondary text on ivory (7.4:1) */
+  --paper: #F7F4EC;
+  --paper-2: #EEE9DC;
+  --rule: #DAD3C2;          /* hairlines on ivory */
+  --midnight-2: #16273C;    /* a lifted midnight for panels on midnight */
+  /* Fixed values that never swap in a dark section (for buttons and seals). */
+  --midnight: #0E1A2B;
+  --ivory: #F7F4EC;
 
-  /* The bright site. Accents are fills with ink text, never text on paper. */
-  --paper: #F6F1E7;
-  --paper-2: #EDE6D6;
-  --ink: #14110F;
-  --ink-soft: #4A443D;      /* secondary text on paper (8.5:1) */
-  --rule: #D9D0BD;          /* hairlines on paper */
-  --tomato: #FF6B4A;
-  --sun: #FFC83D;
-  --mint: #4FD6A0;
-  --sky: #7FB2FF;
-  --lilac: #C4B0FF;
+  /* Signature gold. Fills and rules; for text on ivory use --gold-deep. */
+  --gold: #C8A24B;
+  --gold-deep: #765C1B;
+  --gold-soft: #E3C984;     /* gold text and rules on midnight */
+
+  /* Quiet tints for cards, with midnight text */
+  --sand: #E6DCC4;
+  --teal: #BFDCD6;
+  --slate: #BCCDE0;
+  --sage: #C9D9C6;
+  --teal-deep: #276B65;     /* success and links on ivory */
 
   /* Mark colours */
   --mark-edge: var(--ink-soft);
@@ -58,24 +66,24 @@
   --space-7: 96px;
 
   /* Shape */
-  --radius-s: 8px;
-  --radius-m: 12px;
-  --radius-l: 16px;
-  --radius-xl: 28px;
-  /* One elevation scale: a soft resting shadow for large surfaces, a hard ink offset for things you can press. */
-  --shadow-1: 0 18px 40px -22px rgb(20 17 15 / 0.35);
-  --shadow-2: 6px 8px 0 var(--ink);
-  --shadow-3: 10px 14px 0 var(--ink);
-  --reveal-distance: 24px;
-  --reveal-step: 80ms;
+  --radius-s: 10px;
+  --radius-m: 14px;
+  --radius-l: 18px;
+  --radius-xl: 24px;
+  /* One elevation scale: layered soft shadows. Nothing has a hard offset. */
+  --shadow-1: 0 1px 2px rgb(14 26 43 / 0.06), 0 14px 32px -18px rgb(14 26 43 / 0.28);
+  --shadow-2: 0 2px 4px rgb(14 26 43 / 0.08), 0 22px 44px -18px rgb(14 26 43 / 0.38);
+  --shadow-3: 0 4px 8px rgb(14 26 43 / 0.1), 0 32px 60px -20px rgb(14 26 43 / 0.45);
+  --reveal-distance: 20px;
+  --reveal-step: 70ms;
 
-  /* Motion: one curve, three durations. Nothing bounces. */
-  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  /* Motion: one curve, three durations. Precise and quick; nothing bounces. */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --dur-fast: 160ms;
-  --dur-base: 320ms;
-  --dur-slow: 720ms;
+  --dur-base: 240ms;
+  --dur-slow: 480ms;
   /* Reduced motion keeps this short fade; everything else is switched off. */
-  --dur-fade: 320ms;
+  --dur-fade: 240ms;
 
   /* Focus */
   --focus-ring: 3px solid var(--focus-color);
@@ -88,6 +96,18 @@
     --dur-base: 1ms;
     --dur-slow: 1ms;
   }
+}
+
+/* A dark section: midnight ground, ivory text. Every component reads --ink and --paper, so swapping them inverts it all. */
+.theme-dark {
+  --ink: #F7F4EC;
+  --ink-soft: #B7C0CC;
+  --paper: #0E1A2B;
+  --paper-2: #16273C;
+  --rule: #2B3C54;
+  --focus-color: var(--gold-soft);
+  background: var(--paper);
+  color: var(--ink);
 }
 
 html {

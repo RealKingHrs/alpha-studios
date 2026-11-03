@@ -105,7 +105,7 @@ export function Intro({ ready, reduceMotion, firstVisit, onDone }: Props) {
         } as React.CSSProperties
       }
     >
-      {['tomato', 'sun', 'mint', 'sky', 'lilac'].map((c, i) => (
+      {['midnight', 'midnight-2', 'midnight', 'midnight-2', 'midnight'].map((c, i) => (
         <div
           key={c}
           className="intro-band"

@@ -1,6 +1,6 @@
 # Alpha Studios site
 
-A bright, playful, formal portfolio for Alpha Studios, a studio that builds native iOS and macOS apps, web apps and more. Visitors see two projects and five crew members straight away. The site is richly animated and has no 3D. Crew and one admin manage content through a separate portal.
+A premium, serious and welcoming portfolio for Alpha Studios, a studio that builds native iOS and macOS apps, web apps and more. Visitors see two projects and five crew members straight away. The site is richly animated and has no 3D. Crew and one admin manage content through a separate portal.
 
 Read `docs/SPEC.md` before any work. It is the source of truth. If this file and the spec disagree, the spec wins; tell the user and fix the one that is wrong.
 
@@ -22,7 +22,7 @@ Read `docs/SPEC.md` before any work. It is the source of truth. If this file and
 5. Respect reduced motion everywhere: every animation, smooth scroll and cursor effect switches off, and content is complete without them.
 6. Real photos of members are never uploaded or stored. Avatars are saved as small versioned records of chosen options.
 7. Use the tokens in `design/tokens.css`. Do not hardcode colours, spacing or durations.
-8. Colour: accents are fills with ink text, never text on paper; gold is only the logo flick (and admin-only controls in the portal).
+8. Colour: midnight and ivory carry the page; gold is the one signature accent (buttons, rules, key numbers) and never body text on ivory (use deep gold); quiet tints are card fills with midnight text; dark sections use the `.theme-dark` token swap.
 9. There is no sound.
 10. Copy is sentence case, plain and specific. No emoji, no filler, no exclamation marks in system text.
 
@@ -37,7 +37,7 @@ Read `docs/SPEC.md` before any work. It is the source of truth. If this file and
 
 - `docs/SPEC.md`: the full spec.
 - `docs/milestones/`: six build steps, each with tasks, "Done when", and a kickoff prompt.
-- `design/tokens.css`: colour, type, spacing and motion tokens.
+- `design/tokens.css`: colour, type, spacing and motion tokens (midnight, ivory, gold, tints).
 - `assets/logo/`: the Alpha mark, ink version, lockup and brand board.
 - `content/CONTENT-TEMPLATE.md`: the words and images the user must supply.
 

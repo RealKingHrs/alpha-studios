@@ -45,7 +45,7 @@ export function SkillRadar({ skills }: { skills: Skills }) {
         <polygon
           className="radar-shape"
           points={poly}
-          fill="var(--accent, var(--sun))"
+          fill="var(--accent, var(--sand))"
           fillOpacity="0.55"
           stroke="var(--ink)"
           strokeWidth="3"

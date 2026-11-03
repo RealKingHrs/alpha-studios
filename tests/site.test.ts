@@ -6,7 +6,6 @@ import { Snapshot } from '../src/content/schema';
 import { App } from '../src/App';
 import {
   ACCENTS,
-  ROTATING_WORDS,
   accentFor,
   headlineText,
   initials,
@@ -20,10 +19,10 @@ const base = '/alpha-studios/';
 
 describe('accents and initials', () => {
   it('gives the same colour to the same position, wrapping round the five accents', () => {
-    expect(accentFor(0)).toBe('tomato');
-    expect(accentFor(4)).toBe('lilac');
-    expect(accentFor(5)).toBe('tomato');
-    expect(accentFor(-1)).toBe('lilac');
+    expect(accentFor(0)).toBe('slate');
+    expect(accentFor(4)).toBe('gold');
+    expect(accentFor(5)).toBe('slate');
+    expect(accentFor(-1)).toBe('gold');
     expect(ACCENTS).toHaveLength(5);
   });
 
@@ -36,10 +35,9 @@ describe('accents and initials', () => {
 });
 
 describe('the headline', () => {
-  it('reads as one true sentence, with every rotating word in it', () => {
+  it('reads as one direct sentence', () => {
     const text = headlineText();
-    expect(text).toBe('Apps for iPhone, Mac and the web.');
-    for (const w of ROTATING_WORDS) expect(text).toContain(w);
+    expect(text).toBe('We build software people rely on.');
   });
 });
 
@@ -96,7 +94,7 @@ describe('the site', () => {
   it('renders complete, real HTML without any script', () => {
     const html = renderToStaticMarkup(createElement(App, { snap, pathname: base, base }));
     expect(html).toContain('class="site"');
-    expect(html).toContain('Apps for iPhone, Mac and the web.');
+    expect(html).toContain('We build software people rely on.');
     expect(html).toContain('href="/alpha-studios/projects/harbor/"');
     expect(html).toContain('href="/alpha-studios/projects/lumen/"');
     expect(html).toContain('Aarav Menon');
@@ -112,6 +110,7 @@ describe('the site', () => {
       'crew/zara-okafor/',
       'contact/',
       'launchpad/',
+      'about/',
       'portal/',
       'nowhere/',
     ];

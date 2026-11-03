@@ -1,12 +1,12 @@
 {
   "name": "Alpha Studios",
   "short_name": "Alpha",
-  "description": "Alpha Studios builds native iOS and macOS apps, web apps and more.",
+  "description": "Alpha Studios builds native apps, web platforms and the backends behind them, and backs young builders through Launchpad.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#F6F1E7",
-  "theme_color": "#F6F1E7",
+  "background_color": "#0E1A2B",
+  "theme_color": "#0E1A2B",
   "icons": [
     {
       "src": "icon-192.png",

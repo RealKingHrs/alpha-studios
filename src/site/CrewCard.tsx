@@ -2,7 +2,6 @@ import { useRef } from 'react';
 import type { Member, Snapshot } from '../content/schema';
 import { Portrait } from '../avatar/Portrait';
 import { accentFor } from './data';
-import { Sticker } from './Mark';
 import { useMotionOn } from './motion/context';
 import { tiltFor } from './motion/helpers';
 import type { LinkFn } from './parts';
@@ -65,9 +64,6 @@ export function CrewCard({
       <span className="mcard-index mono" aria-hidden="true">
         {String(index + 1).padStart(2, '0')}
       </span>
-      {member.codename && (
-        <Sticker text={member.codename.toUpperCase()} className="mcard-sticker" />
-      )}
       <span className="mcard-art" aria-hidden="true">
         <Portrait record={member.avatar} />
       </span>

@@ -6,8 +6,9 @@
   isolation: isolate;
   overflow: hidden;
   min-height: min(72vh, 640px);
-  background: var(--accent);
-  border-bottom: var(--line-w, 2px) solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
+  border-bottom: 3px solid var(--gold);
 }
 .mp-hero > .scene {
   position: absolute;
@@ -16,14 +17,15 @@
   width: 108%;
   height: 108%;
   translate: calc(var(--px) * -14px) calc(var(--py) * -8px);
-  transition: translate 0.3s var(--ease);
+  transition: translate var(--dur-base) var(--ease);
 }
 .mp-hero > .scene {
   max-width: 108%;
 }
 @media (min-width: 900px) {
   .mp-hero > .scene {
-    width: 64%;
+    width: 50%;
+    opacity: 0.85;
   }
 }
 .mp-giant {
@@ -36,8 +38,8 @@
   line-height: 0.9;
   white-space: nowrap;
   color: transparent;
-  -webkit-text-stroke: 2px var(--ink);
-  opacity: 0.22;
+  -webkit-text-stroke: 1px var(--ink);
+  opacity: 0.16;
   user-select: none;
 }
 .mp-hero-in {
@@ -55,11 +57,11 @@
   display: inline-block;
   margin: 1rem 0 0;
   padding: 0.3rem 0.9rem;
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--gold);
+  color: var(--midnight);
   border-radius: 99px;
-  font-size: 0.85rem;
-  rotate: -2deg;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
 }
 .mp-avatar {
   position: absolute;
@@ -67,8 +69,8 @@
   bottom: 0;
   width: min(44vw, 480px);
   translate: calc(var(--px) * 12px) calc(var(--py) * 6px);
-  transition: translate 0.3s var(--ease);
-  filter: drop-shadow(0 14px 0 rgb(20 17 15 / 0.18));
+  transition: translate var(--dur-base) var(--ease);
+  filter: drop-shadow(0 12px 14px rgb(14 26 43 / 0.22));
 }
 .mp-sticker {
   position: absolute;
@@ -82,11 +84,10 @@
   left: 0;
   bottom: clamp(16px, 3vw, 32px);
   padding: 0.2rem 0.7rem;
-  background: rgb(246 241 231 / 0.7);
-  border: 1px solid var(--ink);
+  border: 1px solid var(--rule);
   border-radius: 99px;
   font-size: 0.68rem;
-  color: var(--ink);
+  color: var(--ink-soft);
 }
 .mp-hero .s-scroll-cue {
   z-index: 3;
@@ -116,8 +117,8 @@
   border-radius: var(--radius-xl, 28px);
   box-shadow: var(--shadow-1);
   transition:
-    translate 0.4s var(--ease),
-    box-shadow 0.4s var(--ease);
+    translate var(--dur-slow) var(--ease),
+    box-shadow var(--dur-slow) var(--ease);
 }
 .mp-tile:hover {
   translate: -2px -5px;
@@ -229,8 +230,8 @@
   border-radius: 22px;
   text-decoration: none;
   transition:
-    translate 0.4s var(--ease),
-    box-shadow 0.4s var(--ease);
+    translate var(--dur-slow) var(--ease),
+    box-shadow var(--dur-slow) var(--ease);
 }
 .mp-works a:hover,
 .mp-works a:focus-visible {
@@ -268,9 +269,9 @@
   border-radius: 50%;
   font-size: 1.3rem;
   transition:
-    background 0.3s var(--ease),
-    color 0.3s var(--ease),
-    translate 0.3s var(--ease);
+    background var(--dur-base) var(--ease),
+    color var(--dur-base) var(--ease),
+    translate var(--dur-base) var(--ease);
 }
 .mp-works a:hover .mp-work-go,
 .mp-works a:focus-visible .mp-work-go {
@@ -298,11 +299,11 @@
   font-weight: 500;
   text-decoration: none;
   transition:
-    background 0.3s var(--ease),
-    color 0.3s var(--ease);
+    background var(--dur-base) var(--ease),
+    color var(--dur-base) var(--ease);
 }
 .mp-socials a span {
-  transition: translate 0.3s var(--ease);
+  transition: translate var(--dur-base) var(--ease);
 }
 .mp-socials a:hover {
   background: var(--ink);
@@ -347,7 +348,7 @@
   width: min(70%, 320px);
   margin-inline: auto;
   margin-bottom: -4px;
-  transition: translate 0.5s var(--ease);
+  transition: translate var(--dur-slow) var(--ease);
 }
 .mp-next:hover .mp-next-peek {
   translate: 0 -12px;
@@ -520,7 +521,7 @@ html.reduce-motion .mp-next-peek {
   font-size: 0.72rem;
 }
 .cert-status--current {
-  background: var(--mint);
+  background: var(--teal);
 }
 .cert-status--expired {
   background: var(--paper-2);
@@ -566,9 +567,9 @@ html.reduce-motion .mp-next-peek {
 }
 .mp-meta li {
   padding: 0.25rem 0.8rem;
-  border: 1.5px solid var(--ink);
+  border: 1px solid var(--rule);
   border-radius: 99px;
-  background: rgb(246 241 231 / 0.65);
+  background: rgb(247 244 236 / 0.06);
   font-size: 0.82rem;
 }
 .mp-h--small {
@@ -642,7 +643,7 @@ html.reduce-motion .mp-next-peek {
   height: 12px;
   border: 2px solid var(--ink);
   border-radius: 50%;
-  background: var(--accent, var(--sun));
+  background: var(--accent, var(--sand));
 }
 .mp-j-when {
   font-size: 0.74rem;
@@ -672,7 +673,7 @@ html.reduce-motion .mp-next-peek {
   color: inherit;
   text-decoration: none;
   background: linear-gradient(currentColor, currentColor) 0 100% / 0 2px no-repeat;
-  transition: background-size 0.3s var(--ease);
+  transition: background-size var(--dur-base) var(--ease);
 }
 .trophy-link:hover,
 .trophy-link:focus-visible {

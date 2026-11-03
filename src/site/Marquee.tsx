@@ -17,7 +17,7 @@ import { marqueeBase } from './motion/viewport';
  */
 export function Marquee({
   items,
-  accent = 'sun',
+  accent = 'sand',
   label,
 }: {
   items: string[];

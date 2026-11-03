@@ -22,6 +22,7 @@ import {
   PortalDoor,
   WorkPage,
 } from './pages';
+import { AboutPage } from './AboutPage';
 import { CertificatePage } from './CertificatePage';
 import { LaunchpadPage } from './Launchpad';
 import { Footer, Header, SectionIndex } from './parts';
@@ -137,6 +138,9 @@ export function SiteApp({
       break;
     case 'certificate':
       page = <CertificatePage snap={snap} slug={route.slug} id={route.id} link={link} />;
+      break;
+    case 'about':
+      page = <AboutPage snap={snap} link={link} />;
       break;
     case 'contact':
       page = <ContactPage {...props} />;

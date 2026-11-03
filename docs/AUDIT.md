@@ -1,4 +1,4 @@
-# Full audit, 3 November 2026
+# Full audit, 3 November 2026 (updated after the batch 17 visual identity)
 
 Everything below was run against the local build and the local backend. Nothing is deployed.
 
@@ -36,3 +36,11 @@ Everything below was run against the local build and the local backend. Nothing 
 - Run axe on every address after design changes (the staged script is `dist/_axe.js`, audit use only).
 - Check the free-tier limits in `docs/RUNBOOK.md` each quarter; keep the daily publish run so the backend stays active.
 - Review the audit log and Launchpad submissions weekly.
+
+## Batch 17 re-check (visual identity)
+
+- Contrast test rewritten for the midnight, ivory, gold and tint pairings (text, secondary text, buttons, focus rings, dark sections).
+- axe: 0 findings on every public address (home, work, case studies, crew, members, certificates, Launchpad, About, contact, 404) and all 8 portal screens.
+- No sideways overflow at 10 sizes on 9 page types. First visit 272 kB.
+- Share images, icons and the manifest regenerated in midnight and gold.
+- The vision, principles and About text are first drafts and need the studio's approval.

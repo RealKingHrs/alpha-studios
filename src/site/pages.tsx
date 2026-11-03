@@ -1,12 +1,11 @@
 import type { Snapshot } from '../content/schema';
 import { Portrait } from '../avatar/Portrait';
 import { contributorsWithCrew, platformLabel, projectLinks, statusLabel } from '../rooms';
-import { Counters } from './Counters';
+import { Vision } from './Vision';
 import { MemberPage } from './MemberPage';
 import { Elements } from './Elements';
 import { CrewLineup } from './CrewLineup';
 import { accentFor, languageShares, marqueeItems, memberAccent, stackOrder } from './data';
-import { Mark, Sticker } from './Mark';
 import { Marquee } from './Marquee';
 import { Magnetic } from './motion/Magnetic';
 import { SplitText } from './motion/SplitText';
@@ -24,72 +23,37 @@ interface PageProps {
 /** The titles of the home page's sections, in order, for the running index. */
 export const HOME_SECTIONS = ['Work', 'Crew', 'Contact'];
 
-function Hello({
-  snap,
-  link,
-  page = false,
-  accent,
-}: {
-  snap: Snapshot;
-  link: LinkFn;
-  page?: boolean;
-  accent?: string;
-}) {
+function Hello({ snap, link, page = false }: { snap: Snapshot; link: LinkFn; page?: boolean }) {
   const mail = snap.settings.contactEmail;
   const Title = page ? 'h1' : 'h2';
   return (
     <section
       id="contact"
       data-section
-      className={`s-hello ${page ? `s-hello--page a-${accent}` : 's-hello--dark'}`}
+      className={`s-hello theme-dark ${page ? 's-hello--page' : ''}`}
       aria-labelledby="hello-title"
     >
       <div className="s-wrap">
-        <Sticker text="SAY HELLO" className="s-hello-sticker" />
-        {page && (
-          <svg className="s-envelope" viewBox="0 0 120 90" aria-hidden="true">
-            <rect
-              x="6"
-              y="14"
-              width="108"
-              height="70"
-              rx="8"
-              fill="var(--paper)"
-              stroke="var(--ink)"
-              strokeWidth="4"
-            />
-            <path
-              className="s-envelope-flap"
-              d="M 8 18 L 60 56 L 112 18"
-              fill="var(--sun)"
-              stroke="var(--ink)"
-              strokeWidth="4"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M 8 82 L 46 48 M 112 82 L 74 48"
-              stroke="var(--ink)"
-              strokeWidth="3"
-              fill="none"
-            />
-          </svg>
-        )}
         <Reveal>
           <p className="s-eyebrow mono">
             {page ? (
               'Contact'
             ) : (
               <>
-                <span>03</span> Contact
+                <span className="s-num">04</span> Contact
               </>
             )}
           </p>
         </Reveal>
         <Title id="hello-title" className="display s-hello-title">
-          <SplitText text="Say hello." />
+          <SplitText text="Start a conversation." />
         </Title>
+        <p className="s-lede">
+          A new project, a partnership or a question about the studio: write to us and a person will
+          read it.
+        </p>
         {mail ? (
-          <Magnetic strength={0.5}>
+          <Magnetic strength={0.4}>
             <a className="s-hello-mail display" href={`mailto:${mail}`}>
               {mail}
             </a>
@@ -97,9 +61,11 @@ function Hello({
         ) : (
           <p className="s-lede">Contact details are added with the real content.</p>
         )}
-        <p className="s-lede">
-          To join the crew, ask the admin for an invite code, then use the{' '}
-          <a href={link('/portal/')}>crew login</a>.
+        <p className="s-hello-alt">
+          Have an idea of your own?{' '}
+          <a className="s-link" href={link('/launchpad/')}>
+            Bring it to Launchpad <span aria-hidden="true">→</span>
+          </a>
         </p>
       </div>
     </section>
@@ -109,9 +75,9 @@ function Hello({
 export function Home({ snap, link, asset }: PageProps) {
   return (
     <>
-      <Hero snap={snap} />
-      <Marquee items={marqueeItems(snap)} accent="tomato" label="Platforms and technologies used" />
-      <Counters snap={snap} />
+      <Hero snap={snap} link={link} />
+      <Marquee items={marqueeItems(snap)} accent="gold" label="Platforms and technologies used" />
+      <Vision link={link} />
       <section id="work" data-section className="s-section" aria-labelledby="work-title">
         <div className="s-wrap">
           <SectionHead num="01" eyebrow="Work" title="Selected work" id="work-title" />
@@ -168,7 +134,7 @@ export function WorkPage({ snap, link, asset }: PageProps) {
   return (
     <>
       <PageHead
-        accent="sun"
+        accent="sand"
         eyebrow="Work"
         title="Selected work"
         lede="Each project has its own case study: the story, the people, the code and where to try it."
@@ -190,7 +156,7 @@ export function CrewPage({ snap, link }: PageProps) {
   return (
     <>
       <PageHead
-        accent="mint"
+        accent="teal"
         eyebrow="Crew"
         title="The people behind it"
         lede="The people who build at Alpha Studios. Select a card for their story and projects."
@@ -205,7 +171,7 @@ export function CrewPage({ snap, link }: PageProps) {
 }
 
 export function ContactPage({ snap, link }: PageProps) {
-  return <Hello snap={snap} link={link} page accent="lilac" />;
+  return <Hello snap={snap} link={link} page />;
 }
 
 export function CaseStudy({ snap, slug, link, asset }: PageProps & { slug: string }) {
@@ -350,15 +316,15 @@ export function CaseStudy({ snap, slug, link, asset }: PageProps & { slug: strin
               <SplitText text="On GitHub" />
             </h2>
             <div className="s-stats">
-              <Reveal className="s-stat a-sun">
+              <Reveal className="s-stat a-sand">
                 <strong className="display">{repo.stars}</strong>
                 <span className="mono">stars</span>
               </Reveal>
-              <Reveal className="s-stat a-sky" delay={80}>
+              <Reveal className="s-stat a-slate" delay={80}>
                 <strong className="display">{repo.recentCommits.length}</strong>
                 <span className="mono">recent commits</span>
               </Reveal>
-              <Reveal className="s-stat a-mint" delay={160}>
+              <Reveal className="s-stat a-teal" delay={160}>
                 <strong className="display">{repo.contributors.length}</strong>
                 <span className="mono">contributors</span>
               </Reveal>
@@ -436,7 +402,7 @@ export function CrewProfile({ snap, slug, link }: PageProps & { slug: string }) 
 
 export function PortalDoor({ link }: { link: LinkFn }) {
   return (
-    <section className="s-hello s-hello--page a-sky" aria-labelledby="pt">
+    <section className="s-hello s-hello--page a-slate" aria-labelledby="pt">
       <div className="s-wrap">
         <p className="s-eyebrow mono">Crew only</p>
         <h1 id="pt" className="display s-hello-title">
@@ -459,19 +425,13 @@ export function PortalDoor({ link }: { link: LinkFn }) {
 
 export function NotFoundPage({ link }: { link: LinkFn }) {
   return (
-    <section className="s-hello s-hello--page a-tomato s-lost" aria-labelledby="pt">
+    <section className="s-hello theme-dark s-lost" aria-labelledby="pt">
       <div className="s-wrap">
-        <div className="lp-floats" aria-hidden="true">
-          {(['circle', 'square', 'pill', 'ring', 'dot'] as const).map((k, i) => (
-            <span
-              key={k}
-              className={`lp-float lp-float--${k} a-${['sun', 'sky', 'mint', 'lilac', 'sun'][i]}`}
-            />
-          ))}
-        </div>
-        <Sticker text="404 · LOST · 404 · LOST" className="s-lost-sticker" />
+        <p className="s-lost-code display" aria-hidden="true">
+          404
+        </p>
         <h1 id="pt" className="display s-hello-title">
-          <SplitText text="This page wandered off." />
+          <SplitText text="This page is not here." />
         </h1>
         <p className="s-lede">
           This address does not lead anywhere on the site. It may have moved, or the link may have a
@@ -479,17 +439,16 @@ export function NotFoundPage({ link }: { link: LinkFn }) {
         </p>
         <p className="s-actions">
           <Magnetic>
-            <a className="s-btn s-btn--ink" href={link('/')}>
+            <a className="s-btn s-btn--gold" href={link('/')}>
               Back to the start
             </a>
           </Magnetic>
           <Magnetic>
             <a className="s-btn s-btn--line" href={link('/projects/')}>
-              See the work
+              See our work
             </a>
           </Magnetic>
         </p>
-        <Mark className="s-lost-mark" />
       </div>
     </section>
   );

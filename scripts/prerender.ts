@@ -42,7 +42,6 @@ const ogKey = (path: string) =>
 /** Colours come from the design tokens, so a share image always matches the site. */
 const tokens = await readFile('design/tokens.css', 'utf8');
 const hex = (name: string) => new RegExp(`--${name}:\\s*(#[0-9a-fA-F]{6})`).exec(tokens)![1];
-const ACCENT_NAMES = ['tomato', 'sun', 'mint', 'sky', 'lilac'] as const;
 
 const markSvg = (
   size: number,
@@ -53,25 +52,22 @@ const markSvg = (
 <g transform="${BOWL_TRANSFORM}"><path d="${BOWL_PATH}" fill-rule="evenodd" fill="${ink}"/></g>
 <path d="${STEM_PATH}" fill="${ink}"/><path d="${STEM_PATH}" fill="${gold}" clip-path="url(#f)"/></svg>`;
 
-let ogIndex = 0;
-
 /** A 1200 by 630 share image for one address: an accent panel with the mark, then the title and description on paper. */
 async function shareImage(path: string, title: string, description: string) {
   const [head] = title.split(' | ');
-  const accent = hex(ACCENT_NAMES[ogIndex++ % ACCENT_NAMES.length]);
   const ink = hex('ink');
   const paper = hex('paper');
   const lines = wrap(description, 38, 3);
-  const titleLines = wrap(head, 22, 2);
+  const titleLines = wrap(head, 19, 3);
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
 <rect width="1200" height="630" fill="${paper}"/>
-<rect x="0" y="0" width="440" height="630" fill="${accent}"/>
-<rect x="440" y="0" width="4" height="630" fill="${ink}"/>
-${titleLines.map((l, i) => `<text x="500" y="${215 + i * 74}" fill="${ink}" font-family="Georgia, 'Times New Roman', serif" font-weight="bold" font-size="66">${xml(l)}</text>`).join('\n')}
-${lines.map((l, i) => `<text x="500" y="${215 + titleLines.length * 74 + 24 + i * 40}" fill="${hex('ink-soft')}" font-family="Helvetica, Arial, sans-serif" font-size="29">${xml(l)}</text>`).join('\n')}
+<rect x="0" y="0" width="440" height="630" fill="${ink}"/>
+<rect x="440" y="0" width="6" height="630" fill="${hex('gold')}"/>
+${titleLines.map((l, i) => `<text x="500" y="${170 + i * 66}" fill="${ink}" font-family="Georgia, 'Times New Roman', serif" font-weight="bold" font-size="56">${xml(l)}</text>`).join('\n')}
+${lines.map((l, i) => `<text x="500" y="${170 + titleLines.length * 66 + 20 + i * 38}" fill="${hex('ink-soft')}" font-family="Helvetica, Arial, sans-serif" font-size="29">${xml(l)}</text>`).join('\n')}
 <text x="500" y="570" fill="${ink}" font-family="Helvetica, Arial, sans-serif" font-size="22" letter-spacing="6">ALPHA STUDIOS</text>
 </svg>`;
-  const mark = await sharp(Buffer.from(markSvg(300, ink, hex('gold'))))
+  const mark = await sharp(Buffer.from(markSvg(300, paper, hex('gold'))))
     .png()
     .toBuffer();
   await mkdir(join(dist, 'og'), { recursive: true });
@@ -87,7 +83,7 @@ function page(path: string): string {
   const head = [
     `<title>${esc(title)}</title>`,
     `<meta name="description" content="${esc(description)}" />`,
-    `<meta name="theme-color" content="${hex('paper')}" />`,
+    `<meta name="theme-color" content="${hex('ink')}" />`,
     `<meta property="og:title" content="${esc(title)}" />`,
     `<meta property="og:description" content="${esc(description)}" />`,
     `<meta property="og:image" content="${esc(image)}" />`,

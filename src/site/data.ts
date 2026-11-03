@@ -1,19 +1,17 @@
 import type { Member, Project, Snapshot } from '../content/schema';
 import { platformLabel } from '../rooms';
 
-export const ACCENTS = ['tomato', 'sun', 'mint', 'sky', 'lilac'] as const;
+export const ACCENTS = ['slate', 'sand', 'teal', 'sage', 'gold'] as const;
 export type Accent = (typeof ACCENTS)[number];
 
 /** Each project, and each person, keeps the same accent colour wherever it appears. */
 export const accentFor = (index: number): Accent =>
   ACCENTS[((index % ACCENTS.length) + ACCENTS.length) % ACCENTS.length];
 
-/** The words that take turns in the headline. All three are true of what the studio builds. */
-export const ROTATING_WORDS = ['iPhone', 'Mac', 'the web'] as const;
-export const HEADLINE = 'Apps for';
+/** The headline. Direct, and true of what the studio does. The second part is set in gold. */
+export const HEADLINE = ['We build software', 'people rely on.'] as const;
 
-export const headlineText = () =>
-  `${HEADLINE} ${ROTATING_WORDS[0]}, ${ROTATING_WORDS[1]} and ${ROTATING_WORDS[2]}.`;
+export const headlineText = () => HEADLINE.join(' ');
 
 /** Up to two capital letters for a name: "Ada Lovelace" is AL, "Member three" is MT. */
 export function initials(name: string): string {

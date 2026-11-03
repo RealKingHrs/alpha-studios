@@ -1,15 +1,15 @@
 import { motion } from 'motion/react';
-import { ACCENTS } from './data';
+const BANDS = ['midnight', 'midnight-2', 'midnight', 'midnight-2', 'midnight'] as const;
 
 export type WipePhase = 'idle' | 'cover' | 'reveal';
 
-/** Five coloured bands that sweep up over the old page and away from the new one. */
+/** Five midnight bands that sweep up over the old page and away from the new one. */
 export function PageWipe({ phase }: { phase: WipePhase }) {
   return (
     <div className="wipe" aria-hidden="true">
-      {ACCENTS.map((c, i) => (
+      {BANDS.map((c, i) => (
         <motion.div
-          key={c}
+          key={i}
           className="wipe-band"
           style={{ left: `${i * 20}%`, background: `var(--${c})` }}
           initial={false}
@@ -17,7 +17,7 @@ export function PageWipe({ phase }: { phase: WipePhase }) {
           transition={
             phase === 'idle'
               ? { duration: 0 }
-              : { duration: 0.5, ease: [0.76, 0, 0.24, 1], delay: i * 0.045 }
+              : { duration: 0.42, ease: [0.76, 0, 0.24, 1], delay: i * 0.035 }
           }
         />
       ))}
