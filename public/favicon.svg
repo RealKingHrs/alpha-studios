@@ -1,9 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-12 -20 240 240" role="img" aria-label="Alpha Studios mark"><defs>
-<clipPath id="flick"><path d="M120 126 L240 90 L240 230 L120 230 Z"/></clipPath>
-</defs><rect x="-12" y="-20" width="240" height="240" rx="52" fill="#0B0C0D"/>
-<g transform="translate(108 100) scale(.84) translate(-108 -100)">
-<path d="M22 100 A64 52 0 1 0 150 100 A64 52 0 1 0 22 100 Z M56 100 A32 28 0 1 0 120 100 A32 28 0 1 0 56 100 Z" fill-rule="evenodd" fill="#E9ECEF" transform="rotate(-12 86 100)"/>
-<path id="stem" d="M146 32 L178 42 C174 74 162 104 152 126 C158 136 172 134 202 114 C190 152 162 170 134 160 C110 152 104 132 112 108 C120 80 134 56 146 32 Z"/>
-<use href="#stem" style="fill:#E9ECEF"/>
-<use href="#stem" style="fill:#C9A24B" clip-path="url(#flick)"/>
-</g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Alpha Studios mark"><rect width="120" height="120" rx="28" fill="#F6F1E7"/><g transform="translate(4 8)"><path d="M46 36 A35 28 0 1 0 46 92 A35 28 0 1 0 46 36 Z M46 52 A23 16 0 1 1 46 76 A23 16 0 1 1 46 52 Z" fill-rule="evenodd" fill="#14110F" transform="rotate(-14 46 64)"/><path d="M84 24 L99 29 C97 52 92 70 85 84 C80 93 72 100 79 103 C66 98 65 85 69 72 C73 55 79 40 84 24 Z" fill="#14110F"/><path d="M85 84 C89 94 101 92 114 80 C108 100 92 108 79 103 C84 100 86 92 85 84 Z" fill="#C9A24B"/></g></svg>

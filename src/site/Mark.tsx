@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { BOWL_PATH, BOWL_TRANSFORM, MARK_VIEWBOX, STEM_PATH } from '../brand/mark';
+import { BOWL_PATH, BOWL_TRANSFORM, FLICK_PATH, MARK_VIEWBOX, STEM_PATH } from '../brand/mark';
 import { useMotionOn } from './motion/context';
 
 /** The alpha mark in ink with the gold flick, as inline SVG. With motion on, it draws itself, then fills. */
@@ -13,7 +13,6 @@ export function Mark({
   draw?: boolean;
 }) {
   const on = useMotionOn() && draw;
-  const id = `m-${className.replace(/\W+/g, '') || 'x'}`;
   const common = on
     ? {
         initial: { pathLength: 0, fillOpacity: 0 },
@@ -34,19 +33,13 @@ export function Mark({
       aria-label={title}
       aria-hidden={title ? undefined : true}
     >
-      <defs>
-        <clipPath id={`${id}-flick`}>
-          <polygon points="140,160 205,108 218,108 218,185 140,185" />
-        </clipPath>
-      </defs>
       <g transform={BOWL_TRANSFORM}>
         <motion.path d={BOWL_PATH} fillRule="evenodd" className="mark-ink" {...common} />
       </g>
       <motion.path d={STEM_PATH} className="mark-ink" {...common} />
       <motion.path
-        d={STEM_PATH}
+        d={FLICK_PATH}
         className="mark-gold"
-        clipPath={`url(#${id}-flick)`}
         {...(on
           ? {
               initial: { opacity: 0 },

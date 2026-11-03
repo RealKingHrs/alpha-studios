@@ -6,7 +6,7 @@ import { createElement } from 'react';
 import { renderToString } from 'react-dom/server';
 import { App } from '../src/App';
 import { Snapshot } from '../src/content/schema';
-import { BOWL_PATH, BOWL_TRANSFORM, MARK_VIEWBOX, STEM_PATH } from '../src/brand/mark';
+import { BOWL_PATH, BOWL_TRANSFORM, FLICK_PATH, MARK_VIEWBOX, STEM_PATH } from '../src/brand/mark';
 import { pageMeta } from '../src/meta';
 import { allPaths } from '../src/routes';
 
@@ -49,10 +49,9 @@ const markSvg = (
   size: number,
   ink: string,
   gold: string,
-) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${MARK_VIEWBOX}" width="${size}" height="${Math.round((size * 156) / 208)}">
-<defs><clipPath id="f"><polygon points="140,160 205,108 218,108 218,185 140,185"/></clipPath></defs>
+) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${MARK_VIEWBOX}" width="${size}" height="${Math.round((size * 104) / 116)}">
 <g transform="${BOWL_TRANSFORM}"><path d="${BOWL_PATH}" fill-rule="evenodd" fill="${ink}"/></g>
-<path d="${STEM_PATH}" fill="${ink}"/><path d="${STEM_PATH}" fill="${gold}" clip-path="url(#f)"/></svg>`;
+<path d="${STEM_PATH}" fill="${ink}"/><path d="${FLICK_PATH}" fill="${gold}"/></svg>`;
 
 /** A 1200 by 630 share image for one address: an accent panel with the mark, then the title and description on paper. */
 async function shareImage(path: string, title: string, description: string) {

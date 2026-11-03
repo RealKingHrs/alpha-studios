@@ -1,5 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
-import { BOWL_PATH, BOWL_TRANSFORM, MARK_VIEWBOX, STEM_PATH } from '../brand/mark';
+import {
+  BOWL_PATH,
+  BOWL_TRANSFORM,
+  FLICK_PATH,
+  FLICK_REVEAL,
+  MARK_VIEWBOX,
+  STEM_PATH,
+} from '../brand/mark';
 
 type Phase = 'draw' | 'fill' | 'hold' | 'open' | 'fade' | 'gone';
 
@@ -117,10 +124,10 @@ export function Intro({ ready, reduceMotion, firstVisit, onDone }: Props) {
           <linearGradient
             id="intro-chrome"
             gradientUnits="userSpaceOnUse"
-            x1="20"
-            y1="40"
-            x2="170"
-            y2="165"
+            x1="17"
+            y1="30"
+            x2="100"
+            y2="100"
           >
             <stop offset="0" style={{ stopColor: 'var(--mark-edge)' }} />
             <stop offset="0.45" style={{ stopColor: 'var(--mark-core)' }} />
@@ -140,7 +147,7 @@ export function Intro({ ready, reduceMotion, firstVisit, onDone }: Props) {
           <clipPath id="intro-flick-clip">
             <polygon
               className={`intro-flick-reveal${filled ? ' is-on' : ''}`}
-              points="140,160 205,108 218,108 218,185 140,185"
+              points={FLICK_REVEAL}
             />
           </clipPath>
         </defs>
@@ -157,7 +164,7 @@ export function Intro({ ready, reduceMotion, firstVisit, onDone }: Props) {
           d={STEM_PATH}
           pathLength={1}
         />
-        <path className="intro-gold" d={STEM_PATH} clipPath="url(#intro-flick-clip)" />
+        <path className="intro-gold" d={FLICK_PATH} clipPath="url(#intro-flick-clip)" />
       </svg>
       {phase !== 'fade' && (
         <button type="button" className="intro-skip" onClick={skip}>

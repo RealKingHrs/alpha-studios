@@ -1,7 +1,11 @@
-/** The alpha mark's outlines, from assets/logo/alpha-mark.svg. Shared by the intro (SVG) and the scene (3D). */
-export const MARK_VIEWBOX = '4 22 208 156';
+/** The alpha mark's outlines (refined original, batch 19). Shared by the site mark, the intro, share images and icons. */
+export const MARK_VIEWBOX = '8 14 116 104';
 export const BOWL_PATH =
-  'M22 100 A64 52 0 1 0 150 100 A64 52 0 1 0 22 100 Z M48 100 A42 40 0 1 0 132 100 A42 40 0 1 0 48 100 Z';
-export const BOWL_TRANSFORM = 'rotate(-12 86 100)';
+  'M46 36 A35 28 0 1 0 46 92 A35 28 0 1 0 46 36 Z M46 52 A23 16 0 1 1 46 76 A23 16 0 1 1 46 52 Z';
+export const BOWL_TRANSFORM = 'rotate(-14 46 64)';
 export const STEM_PATH =
-  'M150 36 L171 43 C168 72 157 104 146 128 C151 140 168 139 195 120 C185 150 161 165 136 157 C116 151 110 134 116 112 C124 84 138 58 150 36 Z';
+  'M84 24 L99 29 C97 52 92 70 85 84 C80 93 72 100 79 103 C66 98 65 85 69 72 C73 55 79 40 84 24 Z';
+export const FLICK_PATH =
+  'M85 84 C89 94 101 92 114 80 C108 100 92 108 79 103 C84 100 86 92 85 84 Z';
+/** Covers the flick; the intro scales it open from the left to spread the gold. */
+export const FLICK_REVEAL = '66,70 118,70 118,112 66,112';
