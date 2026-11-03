@@ -1,0 +1,410 @@
+/* ---------------------------------------------------------------- member page */
+.mp-hero {
+  --px: 0;
+  --py: 0;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: min(92vh, 860px);
+  background: var(--accent);
+  border-bottom: var(--line-w, 2px) solid var(--ink);
+}
+.mp-hero > .scene {
+  position: absolute;
+  inset: -4% -4% -4% auto;
+  z-index: -2;
+  width: 108%;
+  height: 108%;
+  translate: calc(var(--px) * -14px) calc(var(--py) * -8px);
+  transition: translate 0.3s var(--ease);
+}
+.mp-hero > .scene {
+  max-width: 108%;
+}
+@media (min-width: 900px) {
+  .mp-hero > .scene {
+    width: 64%;
+  }
+}
+.mp-giant {
+  position: absolute;
+  left: 50%;
+  bottom: -0.16em;
+  z-index: -1;
+  translate: -50% 0;
+  font-size: clamp(9rem, 30vw, 30rem);
+  line-height: 0.9;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--ink);
+  opacity: 0.38;
+  user-select: none;
+}
+.mp-hero-in {
+  position: relative;
+  min-height: inherit;
+  padding-block: clamp(40px, 6vw, 88px) 0;
+}
+.mp-name {
+  max-width: 11ch;
+  margin: 0.4rem 0 0;
+  font-size: clamp(3.4rem, 10vw, 9rem);
+  line-height: 0.92;
+}
+.mp-call {
+  display: inline-block;
+  margin: 1rem 0 0;
+  padding: 0.3rem 0.9rem;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 99px;
+  font-size: 0.85rem;
+  rotate: -2deg;
+}
+.mp-avatar {
+  position: absolute;
+  right: clamp(-3rem, 2vw, 2rem);
+  bottom: 0;
+  width: min(66vw, 720px);
+  translate: calc(var(--px) * 16px) calc(var(--py) * 6px);
+  transition: translate 0.3s var(--ease);
+  filter: drop-shadow(0 14px 0 rgb(20 17 15 / 0.18));
+}
+.mp-sticker {
+  position: absolute;
+  right: clamp(8px, 4vw, 64px);
+  top: clamp(24px, 6vw, 70px);
+  width: clamp(96px, 12vw, 150px);
+  height: clamp(96px, 12vw, 150px);
+}
+.mp-into {
+  position: absolute;
+  left: 0;
+  bottom: clamp(20px, 4vw, 48px);
+  padding: 0.4rem 1rem;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: 99px;
+  font-size: 0.82rem;
+  rotate: -3deg;
+}
+.mp-hero .s-scroll-cue {
+  z-index: 3;
+  left: auto;
+  right: clamp(20px, 4vw, 48px);
+}
+.mp-about {
+  padding: clamp(56px, 9vw, 130px) 0;
+}
+.mp-quote {
+  max-width: 24ch;
+  margin: 1.2rem 0 0;
+  font-size: clamp(2.2rem, 6vw, 5rem);
+  line-height: 1.05;
+}
+.mp-bento {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: clamp(1rem, 2vw, 1.6rem);
+  padding-bottom: clamp(56px, 9vw, 120px);
+}
+.mp-tile {
+  grid-column: span 12;
+  padding: clamp(1.2rem, 2.4vw, 2rem);
+  background: var(--paper);
+  border: var(--line-w, 2px) solid var(--ink);
+  border-radius: var(--radius-xl, 28px);
+  box-shadow: var(--shadow-1);
+  transition:
+    translate 0.4s var(--ease),
+    box-shadow 0.4s var(--ease);
+}
+.mp-tile:hover {
+  translate: -2px -5px;
+  box-shadow: var(--shadow-2);
+}
+.mp-tile--fav {
+  background: var(--accent);
+}
+@media (min-width: 900px) {
+  .mp-tile--toolkit {
+    grid-column: span 7;
+  }
+  .mp-tile--fav {
+    grid-column: span 5;
+  }
+  .mp-tile--ach {
+    grid-column: span 7;
+  }
+  .mp-tile--connect {
+    grid-column: span 5;
+  }
+}
+.mp-h {
+  margin: 0 0 1rem;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+}
+.mp-toolkit {
+  display: grid;
+  gap: 1.2rem;
+  align-items: center;
+}
+@media (min-width: 620px) {
+  .mp-toolkit {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.mp-levels {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.7rem;
+}
+.mp-levels li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.2rem 0.8rem;
+  align-items: baseline;
+}
+.mp-levels b {
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.mp-levels small {
+  font-size: 0.8rem;
+}
+.mp-levels .skill-bar {
+  grid-column: 1 / -1;
+  max-width: none;
+}
+.mp-fav {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 2px solid var(--ink);
+  border-radius: 20px;
+  background: var(--paper);
+}
+.mp-fav .scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.mp-fav-title {
+  margin: 1rem 0 0;
+  font-size: 2rem;
+  line-height: 1.05;
+}
+.mp-fav-cap {
+  margin: 0.3rem 0 0;
+  font-size: 0.8rem;
+}
+.mp-works {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 1rem;
+}
+@media (min-width: 900px) {
+  .mp-works {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.mp-works a {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  height: 100%;
+  padding: 1.2rem 1.4rem;
+  background: var(--accent);
+  color: var(--ink);
+  border: var(--line-w, 2px) solid var(--ink);
+  border-radius: 22px;
+  text-decoration: none;
+  transition:
+    translate 0.4s var(--ease),
+    box-shadow 0.4s var(--ease);
+}
+.mp-works a:hover,
+.mp-works a:focus-visible {
+  translate: -2px -4px;
+  box-shadow: var(--shadow-2);
+}
+.mp-work-n {
+  font-size: clamp(2.6rem, 6vw, 4.4rem);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--ink);
+}
+.mp-work-body {
+  display: grid;
+  gap: 0.15rem;
+}
+.mp-work-body strong {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 400;
+  line-height: 1.05;
+}
+.mp-work-body .mono {
+  font-size: 0.78rem;
+}
+.mp-work-sum {
+  margin-top: 0.3rem;
+  font-size: 0.92rem;
+}
+.mp-work-go {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  font-size: 1.3rem;
+  transition:
+    background 0.3s var(--ease),
+    color 0.3s var(--ease),
+    translate 0.3s var(--ease);
+}
+.mp-works a:hover .mp-work-go,
+.mp-works a:focus-visible .mp-work-go {
+  background: var(--ink);
+  color: var(--paper);
+  translate: 5px 0;
+}
+.mp-socials {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+.mp-socials a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 52px;
+  padding: 0 1.3rem;
+  border: var(--line-w, 2px) solid var(--ink);
+  border-radius: 99px;
+  color: var(--ink);
+  font-weight: 500;
+  text-decoration: none;
+  transition:
+    background 0.3s var(--ease),
+    color 0.3s var(--ease);
+}
+.mp-socials a span {
+  transition: translate 0.3s var(--ease);
+}
+.mp-socials a:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+.mp-socials a:hover span {
+  translate: 5px 0;
+}
+.mp-tile .shelf {
+  margin-top: 0;
+}
+.mp-next {
+  position: relative;
+  overflow: hidden;
+  background: var(--accent);
+  border-top: var(--line-w, 2px) solid var(--ink);
+  padding-block: clamp(56px, 9vw, 120px) 0;
+}
+.mp-next-in {
+  display: grid;
+  gap: 1rem;
+  align-items: end;
+}
+@media (min-width: 800px) {
+  .mp-next-in {
+    grid-template-columns: 1.4fr 1fr;
+  }
+}
+.mp-next-link {
+  display: inline-block;
+  color: var(--ink);
+  font-size: clamp(2.6rem, 8vw, 6.4rem);
+  line-height: 1;
+  text-decoration: none;
+}
+.mp-next-sub {
+  margin: 0.6rem 0 1.2rem;
+  font-size: 1.1rem;
+}
+.mp-next-peek {
+  display: block;
+  width: min(70%, 320px);
+  margin-inline: auto;
+  margin-bottom: -4px;
+  transition: translate 0.5s var(--ease);
+}
+.mp-next:hover .mp-next-peek {
+  translate: 0 -12px;
+}
+.radar {
+  margin: 0;
+  max-width: 340px;
+}
+.radar-shape {
+  animation: radar-in 1.2s var(--ease) both;
+  transform-origin: 100px 100px;
+}
+@keyframes radar-in {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+.radar-dot {
+  animation: sc-twinkle 3s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+html.reduce-motion .radar-shape,
+html.reduce-motion .radar-dot {
+  animation: none;
+}
+html.reduce-motion .mp-hero > .scene,
+html.reduce-motion .mp-avatar,
+html.reduce-motion .mp-tile,
+html.reduce-motion .mp-works a,
+html.reduce-motion .mp-next-peek {
+  transition: none;
+}
+.mp-hero .s-eyebrow,
+.mp-hero .s-eyebrow a,
+.mp-next .s-eyebrow,
+.mp-next-sub {
+  color: var(--ink);
+}
+@media (max-width: 700px) {
+  .mp-hero {
+    min-height: min(80vh, 680px);
+  }
+  .mp-hero > .scene {
+    inset: 38% -4% -4% -4%;
+    width: 108%;
+    height: 66%;
+  }
+  .mp-sticker {
+    display: none;
+  }
+  .mp-avatar {
+    width: min(94vw, 460px);
+    right: 0;
+  }
+  .mp-name {
+    max-width: none;
+  }
+}

@@ -2,8 +2,8 @@ import type { Snapshot } from '../content/schema';
 import { Portrait } from '../avatar/Portrait';
 import { contributorsWithCrew, platformLabel, projectLinks, statusLabel } from '../rooms';
 import { Counters } from './Counters';
+import { MemberPage } from './MemberPage';
 import { Elements } from './Elements';
-import { Shelf, Skills, Works } from './Dossier';
 import { CrewLineup } from './CrewLineup';
 import { accentFor, languageShares, marqueeItems, memberAccent, stackOrder } from './data';
 import { Mark, Sticker } from './Mark';
@@ -431,47 +431,7 @@ export function CaseStudy({ snap, slug, link, asset }: PageProps & { slug: strin
 }
 
 export function CrewProfile({ snap, slug, link }: PageProps & { slug: string }) {
-  const index = snap.members.findIndex((m) => m.slug === slug);
-  const m = snap.members[index];
-  return (
-    <section className={`s-profile a-${accentFor(index)}`} aria-labelledby="pt">
-      <div className="s-wrap s-profile-grid">
-        <div className="s-profile-art">
-          <CrewLineup members={[m]} link={link} profile />
-        </div>
-        <div>
-          <p className="s-eyebrow mono">
-            <a href={link('/crew/')}>Crew</a> / {m.role}
-          </p>
-          <h1 id="pt" className="display">
-            <SplitText text={m.name} />
-          </h1>
-          {m.codename && <p className="dossier-code mono">{m.codename}</p>}
-          <Reveal delay={120}>
-            <p className="s-lede">{m.bio}</p>
-            <Skills skills={m.skills} />
-            {Object.keys(m.links).length > 0 && (
-              <ul className="s-links" aria-label="Links">
-                {Object.entries(m.links).map(([k, v]) => (
-                  <li key={k}>
-                    <Magnetic>
-                      <a className="s-btn s-btn--line" href={v} rel="noopener noreferrer">
-                        {k[0].toUpperCase() + k.slice(1)}
-                      </a>
-                    </Magnetic>
-                  </li>
-                ))}
-              </ul>
-            )}
-            <p className="s-eyebrow mono s-space">Works</p>
-            <Works snap={snap} slug={slug} link={link} />
-            <p className="s-eyebrow mono s-space">Achievements</p>
-            <Shelf certs={snap.certifications.filter((c) => c.memberSlug === slug)} />
-          </Reveal>
-        </div>
-      </div>
-    </section>
-  );
+  return <MemberPage snap={snap} slug={slug} link={link} />;
 }
 
 export function PortalDoor({ link }: { link: LinkFn }) {

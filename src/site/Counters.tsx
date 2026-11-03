@@ -4,7 +4,7 @@ import type { Snapshot } from '../content/schema';
 import { useMotionOn } from './motion/context';
 
 /** A number that counts up once when it scrolls into view. Without motion, it simply shows the final value. */
-function Count({ to }: { to: number }) {
+export function Count({ to }: { to: number }) {
   const ref = useRef<HTMLSpanElement>(null);
   const seen = useInView(ref, { once: true, margin: '0px 0px -10% 0px' });
   const on = useMotionOn();

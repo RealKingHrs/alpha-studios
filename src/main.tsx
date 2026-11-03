@@ -5,6 +5,7 @@ import 'lenis/dist/lenis.css';
 import { interceptLinks } from './router';
 import './styles/base.css';
 import './styles/site.css';
+import './styles/member-page.css';
 
 // Public pages read only content.json; they never call the backend.
 const base = import.meta.env.BASE_URL;
