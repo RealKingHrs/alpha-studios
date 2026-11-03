@@ -1,26 +1,7 @@
-import type { Certification, Member, Snapshot } from '../content/schema';
+import type { Certification, Snapshot } from '../content/schema';
 import type { LinkFn } from './parts';
 
 const SLOTS = 4;
-
-/** Skill bars: five pips per skill, filled to the member's level. */
-export function Skills({ skills }: { skills: Member['skills'] }) {
-  if (skills.length === 0) return null;
-  return (
-    <ul className="dossier-skills" aria-label="Skills">
-      {skills.map((s) => (
-        <li key={s.name}>
-          <span>{s.name}</span>
-          <span className="pips" role="img" aria-label={`${s.level} out of 5`}>
-            {[1, 2, 3, 4, 5].map((n) => (
-              <i key={n} className={n <= s.level ? 'on' : ''} />
-            ))}
-          </span>
-        </li>
-      ))}
-    </ul>
-  );
-}
 
 /** Projects a member works on, each with their role on it. */
 export function Works({ snap, slug, link }: { snap: Snapshot; slug: string; link: LinkFn }) {

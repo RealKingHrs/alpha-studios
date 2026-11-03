@@ -2,7 +2,8 @@ import type { Snapshot } from '../content/schema';
 import { Portrait } from '../avatar/Portrait';
 import { contributorsWithCrew, platformLabel, projectLinks, statusLabel } from '../rooms';
 import { Elements } from './Elements';
-import { Shelf, Skills, Works } from './Dossier';
+import { Shelf, Works } from './Dossier';
+import { SkillGauges, SkillRadar } from './SkillGauge';
 import { CrewLineup } from './CrewLineup';
 import { accentFor, languageShares, marqueeItems, memberAccent, stackOrder } from './data';
 import { Mark, Sticker } from './Mark';
@@ -98,7 +99,7 @@ export function Home({ snap, link, asset }: PageProps) {
       >
         <div className="s-wrap">
           <SectionHead num="02" eyebrow="Crew" title="The people behind it" id="crew-title" />
-          <CrewLineup members={snap.members} link={link} />
+          <CrewLineup members={snap.members} link={link} snap={snap} />
         </div>
       </section>
       <Hello snap={snap} link={link} />
@@ -167,7 +168,7 @@ export function CrewPage({ snap, link }: PageProps) {
       />
       <section className="s-section">
         <div className="s-wrap">
-          <CrewLineup members={snap.members} link={link} />
+          <CrewLineup members={snap.members} link={link} snap={snap} />
         </div>
       </section>
     </>
@@ -390,7 +391,8 @@ export function CrewProfile({ snap, slug, link }: PageProps & { slug: string }) 
           {m.codename && <p className="dossier-code mono">{m.codename}</p>}
           <Reveal delay={120}>
             <p className="s-lede">{m.bio}</p>
-            <Skills skills={m.skills} />
+            <SkillGauges skills={m.skills} />
+            <SkillRadar skills={m.skills} />
             {Object.keys(m.links).length > 0 && (
               <ul className="s-links" aria-label="Links">
                 {Object.entries(m.links).map(([k, v]) => (

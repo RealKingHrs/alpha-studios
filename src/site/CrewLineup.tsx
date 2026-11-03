@@ -1,11 +1,14 @@
 import { motion } from 'motion/react';
 import { useRef, useState } from 'react';
-import type { Member } from '../content/schema';
+import type { Member, Snapshot } from '../content/schema';
 import { usePortraitLook } from '../avatar/look';
-import { Portrait } from '../avatar/Portrait';
+import { FullBody } from '../avatar/FullBody';
 import { accentFor } from './data';
 import { useMotionOn } from './motion/context';
 import type { LinkFn } from './parts';
+import { CrewCard } from './CrewCard';
+import { PopScene } from './PopScene';
+import { popTheme } from './popTheme';
 
 /**
  * The crew as a row of geometric characters on coloured discs. They look toward the cursor, lift their brows
@@ -15,10 +18,12 @@ export function CrewLineup({
   members,
   link,
   profile = false,
+  snap,
 }: {
   members: Member[];
   link: LinkFn;
   profile?: boolean;
+  snap?: Snapshot;
 }) {
   const box = useRef<HTMLDivElement>(null);
   const on = useMotionOn();
@@ -37,21 +42,9 @@ export function CrewLineup({
           >
             {profile ? (
               <Waver member={m} index={i} />
-            ) : (
-              <a
-                className={`crew-card a-${accentFor(i)}`}
-                href={link(`/crew/${m.slug}/`)}
-                data-cursor="Meet"
-              >
-                <span className="crew-disc">
-                  <Portrait record={m.avatar} />
-                </span>
-                <span className="crew-tag">
-                  <strong>{m.name}</strong>
-                  <span className="mono">{m.codename || m.role}</span>
-                </span>
-              </a>
-            )}
+            ) : snap ? (
+              <CrewCard member={m} index={i} link={link} snap={snap} />
+            ) : null}
           </motion.li>
         ))}
       </ul>
@@ -65,19 +58,18 @@ function Waver({ member, index }: { member: Member; index: number }) {
   return (
     <button
       type="button"
-      className={`crew-card crew-card--profile a-${accentFor(index)}`}
+      className={`crew-card crew-card--profile pcard a-${accentFor(index)}`}
       onClick={() => setWaves((n) => n + 1)}
       aria-label={`${member.name}. Select to make them wave.`}
     >
+      <PopScene scene={popTheme(member.popPick).scene} />
       <span className="orbit" aria-hidden="true">
         <i />
         <i />
         <i />
       </span>
-      <span className="crew-disc">
-        <span key={waves} className={waves ? 'is-wave' : ''}>
-          <Portrait record={member.avatar} />
-        </span>
+      <span key={waves} className={`wave-wrap ${waves ? 'is-wave' : ''}`}>
+        <FullBody record={member.avatar} />
       </span>
     </button>
   );
