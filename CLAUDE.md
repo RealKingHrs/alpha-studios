@@ -22,7 +22,7 @@ Read `docs/SPEC.md` before any work. It is the source of truth. If this file and
 5. Respect reduced motion everywhere: every animation, smooth scroll and cursor effect switches off, and content is complete without them.
 6. Real photos of members are never uploaded or stored. Avatars are saved as small versioned records of chosen options.
 7. Use the tokens in `design/tokens.css`. Do not hardcode colours, spacing or durations.
-8. Colour: light paper is the default and dark is `data-theme="dark"` on `<html>`; the five accents are flat colour blocks with `--on-accent` ink text, never body text on paper; gold is only the wordmark's full stop, trophies, the hidden cryptex and admin-only portal controls.
+8. Colour: one light paper theme (there is no dark mode); the five accents are flat colour blocks with `--on-accent` ink text, never body text on paper; gold is only the wordmark's full stop, trophies, the hidden cryptex and admin-only portal controls.
 9. There is no sound.
 10. Copy is sentence case, plain and specific. No emoji, no filler, no exclamation marks in system text.
 
@@ -37,7 +37,7 @@ Read `docs/SPEC.md` before any work. It is the source of truth. If this file and
 
 - `docs/SPEC.md`: the full spec.
 - `docs/milestones/`: six build steps, each with tasks, "Done when", and a kickoff prompt.
-- `design/tokens.css`: colour, type, spacing and motion tokens (two themes, golden-ratio type, Fibonacci space, five accents, gold).
+- `design/tokens.css`: colour, type, spacing and motion tokens (golden-ratio type, Fibonacci space, five accents, gold).
 - `assets/logo/`: the wordmark lockup, the "a." icon cut (`alpha-a-icon.png`) and the favicon.
 - `content/CONTENT-TEMPLATE.md`: the words and images the user must supply.
 

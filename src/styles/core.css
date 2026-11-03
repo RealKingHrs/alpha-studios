@@ -323,49 +323,6 @@ html.reveal-on .reveal.is-waiting {
   will-change: transform;
 }
 
-/* ------------------------------------------------------------ theme toggle */
-.fx-theme {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  border: var(--rule-w) solid var(--text);
-  border-radius: 50%;
-  background: transparent;
-  color: var(--text);
-  cursor: pointer;
-  transition: background-color var(--dur-fast) var(--ease);
-}
-.fx-theme:hover {
-  background: var(--sun);
-  color: var(--on-accent);
-}
-.fx-theme svg {
-  width: 20px;
-  height: 20px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-}
-.fx-theme-sun,
-.fx-theme-rays,
-.fx-theme-moon {
-  transform-origin: 12px 12px;
-  transition:
-    transform var(--dur-base) var(--ease),
-    opacity var(--dur-base) var(--ease);
-}
-.fx-theme[data-theme-now='dark'] .fx-theme-sun,
-.fx-theme[data-theme-now='dark'] .fx-theme-rays {
-  opacity: 0;
-  transform: scale(0.4) rotate(-90deg);
-}
-.fx-theme[data-theme-now='light'] .fx-theme-moon {
-  opacity: 0;
-  transform: scale(0.4) rotate(90deg);
-}
-
 /* ------------------------------------------------------------ achievement toast */
 .fx-toast {
   position: fixed;

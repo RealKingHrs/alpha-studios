@@ -1,5 +1,12 @@
 # Full audit, 3 November 2026 (updated after the batch 23 editorial redesign)
 
+## Batch 24 re-check (light only, richer home)
+
+- Dark mode removed (toggle, theme code, tokens, head script, tests). 120 unit tests pass, including new tests for the catchphrase, the new sections, the brief email and the FAQ markup.
+- axe (WCAG 2.1 AA): no violations on the 10 public addresses and the portal sign-in; no horizontal overflow at 375 px.
+- Checked by hand: the brief writes the right mailto text; the FAQ opens and closes by keyboard (one open at a time).
+- Not verified here: animation smoothness (the preview throttles frames), real devices, signed-in portal screens.
+
 ## Batch 23 re-check (bold editorial pop, wordmark logo)
 
 - Lint, format, typecheck, build (19 pages plus 404) and unit tests pass; contrast and theme tests now treat light as the default.

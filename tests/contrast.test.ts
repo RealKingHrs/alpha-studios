@@ -8,12 +8,11 @@ const block = (selector: string) => {
   return css.slice(start, css.indexOf('\n}', start));
 };
 const light = block(':root');
-const dark = block(":root[data-theme='dark']");
 
-/** A token's hex value in a theme, falling back to the light root for tokens the dark theme leaves alone. */
+/** A token's hex value in the one theme. */
 const hex = (theme: string, name: string) => {
   const re = new RegExp(`--${name}:\\s*(#[0-9a-fA-F]{6})`);
-  const m = re.exec(theme) ?? re.exec(light);
+  const m = re.exec(theme);
   if (!m) throw new Error(`token --${name} not found`);
   return m[1];
 };
@@ -33,10 +32,7 @@ const ratio = (a: string, b: string) => {
 const accents = ['tomato', 'sun', 'mint', 'sky', 'lilac'];
 const surfaces = ['bg', 'surface-1', 'surface-2', 'surface-3'];
 
-describe.each([
-  ['dark', dark],
-  ['light', light],
-])('colour contrast in the %s theme', (_name, theme) => {
+describe.each([['light', light]])('colour contrast in the %s theme', (_name, theme) => {
   it('body text reaches 7:1 on the ground and every surface', () => {
     for (const s of surfaces)
       expect(ratio(hex(theme, 'text'), hex(theme, s)), s).toBeGreaterThanOrEqual(7);
@@ -62,10 +58,5 @@ describe('the accents', () => {
   it('carry their on-accent text at 4.5:1 or better', () => {
     for (const a of accents)
       expect(ratio(hex(light, 'on-accent'), hex(light, a)), a).toBeGreaterThanOrEqual(4.5);
-  });
-
-  it('read as text on the dark ground at 4.5:1 or better', () => {
-    for (const a of accents)
-      expect(ratio(hex(dark, a), hex(dark, 'bg')), a).toBeGreaterThanOrEqual(4.5);
   });
 });

@@ -1,5 +1,5 @@
 /* Alpha Studios design tokens (batch 22). Source of truth for colour, type, space, shape and motion.
-   Two themes: light paper is the default (:root), dark is [data-theme='dark'] on <html>.
+   One theme: warm paper and ink.
    Every value comes from one rule, written next to it. Do not hardcode these values elsewhere. */
 
 :root {
@@ -7,7 +7,7 @@
 
   /* ---------------------------------------------------------------- colour
      Neutrals step evenly in OKLCH lightness: paper sits at L 0.96 and each tint steps 0.04 darker;
-     the dark theme mirrors it from L 0.16 upward. Hex values are those OKLCH points, kept as hex for tooling. */
+     the footer is the one ink block. Hex values are those OKLCH points, kept as hex for tooling. */
   --bg: #f6f3ec; /* L 0.96 */
   --surface-1: #ffffff; /* raised surfaces get lighter */
   --surface-2: #ece7dd; /* L 0.92 */
@@ -135,31 +135,6 @@
   --focus-offset: 3px;
 }
 
-:root[data-theme='dark'] {
-  color-scheme: dark;
-  --bg: #0e0d0c;
-  --surface-1: #171513;
-  --surface-2: #211f1c;
-  --surface-3: #2c2925;
-  --text: #f4f1ea;
-  --text-soft: #b8b1a5;
-  --text-faint: #8c857a;
-  --line: rgb(244 241 234 / 0.09);
-  --line-strong: rgb(244 241 234 / 0.18);
-  --glass: rgb(23 21 19 / 0.62);
-  --glow-strength: 0.55;
-  --grad-text: linear-gradient(100deg, var(--sun), var(--tomato) 38%, var(--lilac) 70%, var(--sky));
-  --ink: #f4f1ea;
-  --ink-soft: #b8b1a5;
-  --paper: #0e0d0c;
-  --paper-2: #211f1c;
-  --rule: #2c2925;
-  --focus-color: #ffc83d;
-  --shadow-1: 0 1px 1px rgb(0 0 0 / 0.25), 0 8px 24px -12px rgb(0 0 0 / 0.5);
-  --shadow-2: 0 2px 4px rgb(0 0 0 / 0.25), 0 20px 48px -20px rgb(0 0 0 / 0.65);
-  --shadow-3: 0 4px 8px rgb(0 0 0 / 0.3), 0 40px 80px -28px rgb(0 0 0 / 0.75);
-  --inset-hi: inset 0 1px 0 rgb(255 255 255 / 0.06);
-}
 
 @media (prefers-reduced-motion: reduce) {
   :root {

@@ -53,6 +53,7 @@ export function CrewCard({
     <a
       ref={ref}
       className={`mcard a-${accentFor(index)}`}
+      data-spot
       href={link(`/crew/${member.slug}/`)}
       onPointerMove={onMove}
       onPointerLeave={onLeave}

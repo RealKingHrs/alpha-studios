@@ -19,13 +19,18 @@ export function elementsOf(snap: Snapshot) {
     });
 }
 
-export function Elements({ snap }: { snap: Snapshot }) {
+export function Elements({ snap, num }: { snap: Snapshot; num?: string }) {
   const tiles = elementsOf(snap);
   if (tiles.length === 0) return null;
   return (
-    <section className="s-section elements" aria-labelledby="elements-title">
+    <section
+      id="stack"
+      data-section={num ? true : undefined}
+      className="s-section elements"
+      aria-labelledby="elements-title"
+    >
       <div className="s-wrap">
-        <p className="s-eyebrow mono">The stack</p>
+        <p className="s-eyebrow mono">{num && <span className="s-num">{num}</span>} The stack</p>
         <h2 id="elements-title" className="display">
           The Elements
         </h2>

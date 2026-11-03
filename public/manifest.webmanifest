@@ -1,7 +1,7 @@
 {
   "name": "Alpha Studios",
   "short_name": "Alpha",
-  "description": "Alpha Studios builds native apps, web platforms and the backends behind them, and backs young builders through Launchpad.",
+  "description": "Alpha Studios builds native apps, web platforms and the APIs behind them, and backs young builders through Launchpad.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

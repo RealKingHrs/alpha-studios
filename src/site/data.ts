@@ -11,6 +11,14 @@ export const accentFor = (index: number): Accent =>
 /** The headline. Direct, and true of what the studio does. The second part sits on an orange block. */
 export const HEADLINE = ['We build software', 'people rely on.'] as const;
 
+/** The cover's second line cycles through these. The first is the real one: it is what the page says without motion. */
+export const HEADLINE_LOOP = [
+  'people rely on.',
+  'that scales.',
+  'built to last.',
+  'your users trust.',
+] as const;
+
 export const headlineText = () => HEADLINE.join(' ');
 
 /** Up to two capital letters for a name: "Ada Lovelace" is AL, "Member three" is MT. */

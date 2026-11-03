@@ -9,7 +9,11 @@ import { accentFor, languageShares, marqueeItems, memberAccent, stackOrder } fro
 import { Marquee } from './Marquee';
 import { Magnetic } from './motion/Magnetic';
 import { SplitText } from './motion/SplitText';
+import { Brief } from './Brief';
 import { CopyButton } from './fx/CopyButton';
+import { Faq } from './Faq';
+import { Process } from './Process';
+import { Services } from './Services';
 import { Contents, Hero, SectionHead, WorkList, type LinkFn } from './parts';
 import { Reveal } from './Reveal';
 import { WorkStage } from './WorkStage';
@@ -22,7 +26,17 @@ interface PageProps {
 }
 
 /** The titles of the home page's sections, in order, for the running index. */
-export const HOME_SECTIONS = ['Projects', 'Crew', 'Contact'];
+export const HOME_SECTIONS = [
+  'Manifesto',
+  'What we make',
+  'The drops',
+  'How we build',
+  'The stack',
+  'Cover stars',
+  'Questions',
+  'Brief',
+  'Say hello',
+];
 
 function Hello({ snap, link, page = false }: { snap: Snapshot; link: LinkFn; page?: boolean }) {
   const mail = snap.settings.contactEmail;
@@ -31,7 +45,7 @@ function Hello({ snap, link, page = false }: { snap: Snapshot; link: LinkFn; pag
     <section
       id="contact"
       data-section
-      className={`s-hello ${page ? 's-hello--page a-lilac' : 'a-sun'}`}
+      className={`s-hello ${page ? 's-hello--page a-lilac' : 'a-lilac'}`}
       aria-labelledby="hello-title"
     >
       <div className="s-wrap">
@@ -41,7 +55,7 @@ function Hello({ snap, link, page = false }: { snap: Snapshot; link: LinkFn; pag
               'Contact'
             ) : (
               <>
-                <span className="s-num">05</span> Say hello
+                <span className="s-num">09</span> Say hello
               </>
             )}
           </p>
@@ -80,17 +94,20 @@ export function Home({ snap, link, asset }: PageProps) {
   return (
     <>
       <Hero snap={snap} link={link} />
-      <Contents link={link} />
+      <Contents />
       <Marquee items={marqueeItems(snap)} accent="sun" label="Platforms and technologies used" />
       <Vision link={link} />
+      <Services snap={snap} link={link} />
       <section id="work" data-section className="s-section" aria-labelledby="work-title">
         <div className="s-wrap">
-          <SectionHead num="02" eyebrow="The drops" title="Projects" id="work-title" />
+          <SectionHead num="03" eyebrow="The drops" title="Projects" id="work-title" />
         </div>
         <div className="s-wrap s-wrap--wide">
           <WorkList snap={snap} link={link} asset={asset} />
         </div>
       </section>
+      <Process />
+      <Elements snap={snap} num="05" />
       <section
         id="crew"
         data-section
@@ -99,7 +116,7 @@ export function Home({ snap, link, asset }: PageProps) {
       >
         <div className="s-wrap">
           <SectionHead
-            num="03"
+            num="06"
             eyebrow="Cover stars"
             title="The people behind it"
             id="crew-title"
@@ -107,6 +124,8 @@ export function Home({ snap, link, asset }: PageProps) {
           <CrewLineup link={link} snap={snap} />
         </div>
       </section>
+      <Faq />
+      <Brief to={snap.settings.contactEmail} />
       <Hello snap={snap} link={link} />
     </>
   );
@@ -181,7 +200,13 @@ export function CrewPage({ snap, link }: PageProps) {
 }
 
 export function ContactPage({ snap, link }: PageProps) {
-  return <Hello snap={snap} link={link} page />;
+  return (
+    <>
+      <Hello snap={snap} link={link} page />
+      <Brief to={snap.settings.contactEmail} />
+      <Faq />
+    </>
+  );
 }
 
 export function CaseStudy({ snap, slug, link, asset }: PageProps & { slug: string }) {

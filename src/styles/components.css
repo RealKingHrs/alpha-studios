@@ -959,13 +959,15 @@
   color: var(--on-accent);
   border: var(--rule-w) solid var(--on-accent);
   text-decoration: none;
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
   transition:
     transform var(--dur-fast) var(--ease),
+    translate var(--dur-fast) var(--ease),
     box-shadow var(--dur-fast) var(--ease);
 }
 .mcard:hover,
 .mcard:focus-visible {
-  transform: translate(-4px, -4px);
+  translate: -4px -4px;
   box-shadow: 8px 8px 0 var(--text);
 }
 .mcard-bg {
@@ -1449,5 +1451,216 @@ html.reduce-motion .wv-hand,
 html.reduce-motion .marquee-track,
 html.reduce-motion .s-menu li,
 html.reduce-motion .intro-word > span {
+  animation: none !important;
+}
+
+/* ------------------------------------------------------------ the cycling ending and the cover's drifting shapes */
+.fx-loop {
+  display: inline-grid;
+  vertical-align: top;
+}
+.fx-loop-ghost {
+  grid-area: 1 / 1;
+  visibility: hidden;
+  white-space: nowrap;
+}
+.fx-loop-word {
+  grid-area: 1 / 1;
+  display: inline-block;
+  white-space: nowrap;
+}
+.s-hero {
+  isolation: isolate;
+}
+.s-hero-lede-wrap {
+  display: grid;
+  gap: var(--space-3);
+}
+.s-tagline {
+  font-size: var(--phi-1);
+  font-style: italic;
+  letter-spacing: var(--track-head);
+  line-height: 1.1;
+}
+.s-tagline::before {
+  content: '';
+  display: inline-block;
+  width: 36px;
+  height: 3px;
+  margin-right: var(--space-2);
+  vertical-align: middle;
+  background: var(--tomato);
+}
+.fx-shapes {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.fx-shape-slot {
+  position: absolute;
+  inset: 0;
+}
+.fx-shape {
+  position: absolute;
+  display: block;
+  background: var(--accent);
+  border: var(--rule-w) solid var(--text);
+  animation: shape-drift var(--loop, 13s) var(--ease-in-out) infinite alternate;
+}
+.fx-shape--circle {
+  --loop: 13s;
+  top: 3%;
+  left: 36%;
+  width: clamp(34px, 4vw, 62px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+.fx-shape--square {
+  --loop: 21s;
+  top: 63%;
+  right: 2%;
+  width: clamp(36px, 4.5vw, 72px);
+  aspect-ratio: 1;
+  rotate: 12deg;
+}
+.fx-shape--pill {
+  --loop: 34s;
+  top: 84%;
+  right: 30%;
+  width: clamp(84px, 11vw, 170px);
+  aspect-ratio: 2.4;
+  border-radius: 999px;
+}
+.fx-shape--ring {
+  --loop: 18s;
+  top: 12%;
+  left: 52%;
+  width: clamp(34px, 4vw, 60px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: transparent;
+}
+@keyframes shape-drift {
+  to {
+    transform: translate(14px, -22px) rotate(10deg);
+  }
+}
+@media (max-width: 700px) {
+  .fx-shape--square,
+  .fx-shape--ring {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fx-shape {
+    animation: none;
+  }
+}
+html.reduce-motion .fx-shape {
+  animation: none;
+}
+
+/* ------------------------------------------------------------ motion: light under the pointer, floating devices, scroll-drawn rules */
+[data-spot] {
+  --mx: -400px;
+  --my: -400px;
+  position: relative;
+}
+[data-spot]::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: radial-gradient(
+    180px circle at var(--mx) var(--my),
+    rgb(255 255 255 / 0.5),
+    transparent 70%
+  );
+  mix-blend-mode: soft-light;
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease);
+  pointer-events: none;
+}
+[data-spot]:hover::before {
+  opacity: 1;
+}
+@keyframes float-y {
+  50% {
+    translate: 0 -10px;
+  }
+}
+.d0 .device {
+  animation: float-y 6s var(--ease-in-out) infinite;
+}
+.d1 .device {
+  animation: float-y 7.5s var(--ease-in-out) -2s infinite;
+}
+.d2 .device {
+  animation: float-y 9s var(--ease-in-out) -4s infinite;
+}
+@supports (animation-timeline: view()) {
+  .s-rule,
+  .s-hero-top,
+  .s-contents ol {
+    transform-origin: 0 50%;
+    animation: rule-draw linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 90%;
+  }
+  .s-rule {
+    animation-name: rule-draw;
+  }
+  .s-hero-top,
+  .s-contents ol {
+    animation: none;
+  }
+  .s-work-stage {
+    animation: stage-rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
+  }
+  .s-make-card,
+  .s-process li {
+    animation: card-rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 70%;
+  }
+}
+@keyframes rule-draw {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes stage-rise {
+  from {
+    translate: 0 48px;
+    opacity: 0.2;
+  }
+}
+@keyframes card-rise {
+  from {
+    translate: 0 36px;
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .d0 .device,
+  .d1 .device,
+  .d2 .device,
+  .s-rule,
+  .s-work-stage,
+  .s-make-card,
+  .s-process li {
+    animation: none !important;
+  }
+}
+html.reduce-motion .d0 .device,
+html.reduce-motion .d1 .device,
+html.reduce-motion .d2 .device,
+html.reduce-motion .s-rule,
+html.reduce-motion .s-work-stage,
+html.reduce-motion .s-make-card,
+html.reduce-motion .s-process li {
   animation: none !important;
 }

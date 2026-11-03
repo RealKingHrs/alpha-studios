@@ -8,7 +8,7 @@ import { Reveal } from './Reveal';
 const BRING = [
   'An app idea',
   'A game',
-  'A backend',
+  'An API',
   'A website',
   'A half-finished project',
   'A big dream',

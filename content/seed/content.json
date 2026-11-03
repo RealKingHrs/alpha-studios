@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "generatedAt": "2026-11-03T00:00:00.000Z",
   "settings": {
-    "studioStatement": "Alpha Studios is a studio of young engineers building AI-powered tools, native apps and the backends behind them. We care about careful work, honest results and giving builders the credit they earn.",
+    "studioStatement": "Alpha Studios is a studio of young engineers building AI-powered tools, native apps and the APIs behind them. We care about careful work, honest results and giving builders the credit they earn.",
     "introEnabled": true,
     "soundDefault": "off",
     "contactEmail": "hello@alphastudios.example"
@@ -274,7 +274,7 @@
       "name": "Eldho Gibi",
       "age": 20,
       "role": "AI and ML engineer",
-      "bio": "Connects the models to the real world with fast, dependable data pipelines and backends.",
+      "bio": "Connects the models to the real world with fast, dependable data pipelines and APIs.",
       "githubUsername": "eldho-gibi",
       "links": {
         "github": "https://example.com/eldho-gibi/github",

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 /** Copies a short text, then says so for two seconds. Hidden where the clipboard is not available. */
-export function CopyButton({ text }: { text: string }) {
+export function CopyButton({ text, label = 'Copy address' }: { text: string; label?: string }) {
   const [done, setDone] = useState(false);
   return (
     <button
@@ -17,7 +17,7 @@ export function CopyButton({ text }: { text: string }) {
         }
       }}
     >
-      <span aria-live="polite">{done ? 'Copied' : 'Copy address'}</span>
+      <span aria-live="polite">{done ? 'Copied' : label}</span>
     </button>
   );
 }

@@ -24,6 +24,7 @@ import {
 } from './pages';
 import { AboutPage } from './AboutPage';
 import { Cryptex, useCryptexTriggers } from './Cryptex';
+import { useSpotlight } from './Spotlight';
 import { FoundToast } from './fx/FoundToast';
 import { CertificatePage } from './CertificatePage';
 import { LaunchpadPage } from './Launchpad';
@@ -83,6 +84,7 @@ export function SiteApp({
   const openCryptex = useCallback(() => setCryptex(true), []);
   useCryptexTriggers(openCryptex);
   const enabled = allowed;
+  useSpotlight(enabled && fine);
   useEffect(() => {
     document.documentElement.classList.toggle('fx', enabled && fine);
     return () => document.documentElement.classList.remove('fx');

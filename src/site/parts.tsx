@@ -7,8 +7,9 @@ import type { Route } from '../routes';
 import { Portrait } from '../avatar/Portrait';
 import { Count } from './Counters';
 import { Wordmark } from '../brand/Wordmark';
-import { ACCENTS, HEADLINE, accentFor, headlineText, stackOrder } from './data';
-import { ThemeToggle } from './fx/ThemeToggle';
+import { ACCENTS, HEADLINE, HEADLINE_LOOP, accentFor, headlineText, stackOrder } from './data';
+import { Shapes } from './fx/Shapes';
+import { WordLoop } from './fx/WordLoop';
 import { useMotionOn, useWide } from './motion/context';
 import { coverAmount, coverProgress, currentSection } from './motion/helpers';
 import { STACK_STEP, canStack, stickyTopFor } from './motion/viewport';
@@ -88,7 +89,6 @@ export function Header({ route, link }: { route: Route; link: LinkFn }) {
           </ul>
         </nav>
         <div className="s-dock-end">
-          <ThemeToggle />
           <MenuButton link={link} here={here} />
         </div>
       </div>
@@ -281,8 +281,9 @@ export function Hero({ snap, link }: { snap: Snapshot; link: LinkFn }) {
 
   return (
     <section ref={ref} className="s-hero" aria-labelledby="hero-title">
+      <Shapes progress={p} />
       <div className="s-wrap s-hero-top">
-        <p className="s-eyebrow mono">Native apps · Web platforms · Backends</p>
+        <p className="s-eyebrow mono">Native apps · Web platforms · APIs</p>
         {latest && (
           <a className="s-badge" href={link(`/projects/${latest.slug}/`)}>
             <span className="mono">New drop</span> {latest.name},{' '}
@@ -297,12 +298,15 @@ export function Hero({ snap, link }: { snap: Snapshot; link: LinkFn }) {
             <SplitText text={HEADLINE[0]} delay={0.1} step={0.06} />
           </motion.span>
           <motion.span className="s-hero-line s-hero-accent" style={on ? { x: lineB } : undefined}>
-            <SplitText text={HEADLINE[1]} delay={0.3} step={0.06} />
+            <WordLoop words={HEADLINE_LOOP} />
           </motion.span>
         </span>
       </h1>
       <div className="s-wrap s-hero-body">
-        <p className="s-lede s-hero-lede">{snap.settings.studioStatement}</p>
+        <div className="s-hero-lede-wrap">
+          <p className="s-lede s-hero-lede">{snap.settings.studioStatement}</p>
+          <p className="s-tagline display">Built at twenty. Engineered for real.</p>
+        </div>
         <ul className="s-coverlines" aria-label="In this issue">
           <li>
             <b className="mono">p. 02</b> Two drops, zero chill
@@ -354,13 +358,14 @@ export function Hero({ snap, link }: { snap: Snapshot; link: LinkFn }) {
 }
 
 /** The contents page, styled as a tracklist: where everything in this issue lives. */
-export function Contents({ link }: { link: LinkFn }) {
+export function Contents() {
   const items = [
     ['#vision', 'Manifesto', 'What we will not trade away'],
+    ['#make', 'What we make', 'iOS, macOS, web, AI and APIs'],
     ['#work', 'The drops', 'Bioscanner and Velocity'],
+    ['#process', 'How we build', 'Four steps, no surprises'],
     ['#crew', 'Cover stars', 'Five builders, all twenty'],
-    [link('/launchpad/'), 'Launchpad', 'Bring an idea, keep your name'],
-    ['#contact', 'Say hello', 'A person reads every message'],
+    ['#brief', 'Start a project', 'Tell us what you are building'],
   ] as const;
   return (
     <nav className="s-contents" aria-label="In this issue">
@@ -412,7 +417,11 @@ export function WorkPanel({
   const buttons = projectLinks(project);
   const shots = stackOrder(project.screenshots);
   return (
-    <article className={`s-work a-${accent}`} style={{ '--i': index } as React.CSSProperties}>
+    <article
+      className={`s-work a-${accent}`}
+      data-spot
+      style={{ '--i': index } as React.CSSProperties}
+    >
       <div className="s-work-copy">
         <span className="s-work-num mono" aria-hidden="true">
           Drop {String(index + 1).padStart(2, '0')}
