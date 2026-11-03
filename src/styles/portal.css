@@ -728,3 +728,48 @@ select {
 .editor {
   border-color: var(--line);
 }
+
+/* PIN sign-in: the wheels and the one-time code box. */
+.auth .cx-wheels {
+  margin: var(--space-4) 0;
+}
+.auth .cx-letter {
+  width: clamp(44px, 14vw, 62px);
+  height: clamp(62px, 18vw, 84px);
+  cursor: ns-resize;
+}
+.auth .cx-wheel button {
+  cursor: pointer;
+  color: var(--text);
+}
+.otp {
+  width: 100%;
+  margin-block: var(--space-3);
+  padding: var(--space-2);
+  border: var(--rule-w, 1.5px) solid var(--text);
+  background: #fff;
+  color: var(--ink-fixed);
+  font-family: var(--font-mono);
+  font-size: 2rem;
+  letter-spacing: 0.4em;
+  text-align: center;
+}
+.assign {
+  margin-top: var(--space-2);
+  padding: var(--space-2) 0 0;
+  border: 0;
+  border-top: var(--line-w) solid var(--line);
+}
+.assign-chips button {
+  min-height: 40px;
+  padding: 0 14px;
+  border: var(--line-w) solid var(--line-strong);
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+.assign-chips button[aria-pressed='true'] {
+  background: var(--text);
+  color: var(--bg);
+}

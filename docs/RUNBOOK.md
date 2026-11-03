@@ -49,11 +49,14 @@ Without them the portal builds but shows a "not connected" page.
 
 Local try-out, no hosted account needed: start the local stack (`npx supabase start`), run `npm run dev:users` (creates a throwaway admin and crew login, writes `.env.local` and `.dev-credentials`, both uncommitted; it refuses to run against anything but localhost), then `npm run build` and `npm run preview`, and open `/alpha-studios/portal/app/`.
 
-### Invites
+### Sign-in: PIN, then a code by email
 
-- The admin issues a code on the Crew screen. The code is shown once, only a bcrypt hash is stored, and it works once and expires after seven days. Reissuing expires the old code and unlinks the old login.
-- A person creates a login (GitHub or email and password), enters the code and agrees that their name, role, bio and links are public. Five wrong codes in 15 minutes lock that login out of trying for a while.
-- Honest limit: with GitHub or email sign-up, the login row exists before the code is checked. A login with no linked profile can do nothing (every rule needs an active member), and `app.sweep_orphan_logins()` removes such logins after a day. Hosted projects schedule it with pg_cron when the extension is on; otherwise run `select app.sweep_orphan_logins();` now and then from the SQL editor.
+- The admin adds a person with their email and issues a PIN on the **Crew** screen. The PIN is shown once and kept only as a bcrypt hash in `member_access`, a table only the admin can read (and never the hash). Reissuing replaces it; changing the email unlinks the old login.
+- The person sets the PIN on five wheels (the website's hidden door, or the portal itself). The `portal-pin` Edge Function checks it with rate limits (5 wrong tries per caller or 30 from anyone in 15 minutes lock PIN entry), emails a six-digit code to the registered address and, once the code is right, links the login to the member and returns a session. The member's email is never sent to the browser, only a masked hint.
+- Deploy it with `npx supabase functions deploy portal-pin --no-verify-jwt`. Turn off "Allow new users to sign up" in Supabase Authentication: the function creates logins itself.
+- Email delivery uses Supabase's custom SMTP (Gmail app password, see `docs/GO-LIVE.md`) because the built-in mail is capped at a few emails an hour. The email carries the code through the template in `supabase/templates/otp.html` (paste it into Authentication, Emails, Templates, Magic Link). Codes expire after 600 seconds; five wrong codes lock that member out for 15 minutes.
+- Lost PIN: the admin reissues it. Lost admin PIN or email: the Supabase project owner runs `npm run admin:sql` again and executes the printed SQL in the SQL editor.
+- Roles: the admin assigns people to projects; crew edit only projects assigned to them and can read Launchpad ideas. Ideas arrive by email from the public Launchpad form; the admin logs them under Launchpad ideas.
 
 ### Publishing from the portal
 
@@ -77,18 +80,7 @@ The portal's Suggest button calls the `suggest-tagline` Edge Function, which nee
 
 ## Creating the single admin
 
-Exactly one admin exists, created once, directly in the backend.
-
-1. Turn on two-factor authentication on the admin's GitHub account first.
-2. The admin signs in once with GitHub. That creates their row in Authentication, Users. Copy their user id.
-3. In the SQL editor:
-
-```sql
-insert into public.members (user_id, slug, name, role_title, role, access_status)
-values ('<user id>', '<slug>', '<Name>', '<Title>', 'admin', 'active');
-```
-
-A unique index allows only one admin row; a second insert fails.
+Exactly one admin exists, created once, directly in the backend. Run `npm run admin:sql` on your own machine: it prints a PIN once and one block of SQL for the SQL editor, which makes the chosen profile the admin with your email and a hashed PIN. A unique index allows only one admin row.
 
 ## Recovery
 
@@ -98,7 +90,7 @@ A unique index allows only one admin row; a second insert fails.
 update public.members set user_id = '<new user id>', access_status = 'active' where role = 'admin';
 ```
 
-- **Crew member lost access**: the admin reissues an invite code in the portal (milestone 5).
+- **Crew member lost access**: the admin reissues their PIN (and checks their email) on the Crew screen.
 - **Bad crew edit**: the audit log holds the previous value of every change (`select * from public.audit_log order by id desc`). One-click revert arrives in milestone 5.
 - **Backend owner account lost**: Supabase account recovery is the only path. Keep the owner login in a password manager with a recovery code stored offline.
 

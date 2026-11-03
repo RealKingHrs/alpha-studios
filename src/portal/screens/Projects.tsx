@@ -20,13 +20,20 @@ export function Projects({ me }: { me: MemberRow }) {
   const [note, setNote] = useState<string | null>(null);
 
   const { data, error, loading, reload } = useAsync(async () => {
-    const [projects, mine] = await Promise.all([
+    const [projects, all, people] = await Promise.all([
       must<ProjectRow[]>(db.from('projects').select('*').order('created_at')),
-      must<Array<{ project_id: string; role: string }>>(
-        db.from('project_members').select('project_id, role').eq('member_id', me.id),
+      must<Array<{ project_id: string; member_id: string; role: string }>>(
+        db.from('project_members').select('project_id, member_id, role'),
+      ),
+      must<Array<{ id: string; name: string }>>(
+        db.from('members').select('id, name').order('name'),
       ),
     ]);
-    return { projects, mine: new Map(mine.map((m) => [m.project_id, m.role])) };
+    const mine = all.filter((m) => m.member_id === me.id);
+    const onProject = new Map<string, Set<string>>();
+    for (const a of all)
+      onProject.set(a.project_id, (onProject.get(a.project_id) ?? new Set()).add(a.member_id));
+    return { projects, people, onProject, mine: new Map(mine.map((m) => [m.project_id, m.role])) };
   }, 'projects');
 
   async function act(fn: () => PromiseLike<{ error: { message: string } | null }>, ok?: string) {
@@ -66,27 +73,7 @@ export function Projects({ me }: { me: MemberRow }) {
                 <strong>{p.name}</strong>
                 <span className="mono hint">{p.status}</span>
                 <span className="grow" />
-                <button
-                  type="button"
-                  className="secondary"
-                  onClick={() =>
-                    act(
-                      () =>
-                        member
-                          ? db
-                              .from('project_members')
-                              .delete()
-                              .eq('project_id', p.id)
-                              .eq('member_id', me.id)
-                          : db
-                              .from('project_members')
-                              .insert({ project_id: p.id, member_id: me.id }),
-                      member ? `You left ${p.name}.` : `You joined ${p.name}.`,
-                    )
-                  }
-                >
-                  {member ? 'Leave project' : 'Join project'}
-                </button>
+                {member && !admin && <span className="badge">Assigned to you</span>}
                 {canEdit && (
                   <button
                     type="button"
@@ -111,6 +98,46 @@ export function Projects({ me }: { me: MemberRow }) {
                   />
                 )}
               </div>
+              {admin && (
+                <fieldset className="assign">
+                  <legend>Who is on {p.name}</legend>
+                  <p className="hint">
+                    Only the people you pick can edit this project. Crew cannot add themselves.
+                  </p>
+                  <div className="s-brief-chips assign-chips">
+                    {data.people.map((m) => {
+                      const on = data.onProject.get(p.id)?.has(m.id) ?? false;
+                      return (
+                        <button
+                          key={m.id}
+                          type="button"
+                          className="chip"
+                          aria-pressed={on}
+                          onClick={() =>
+                            act(
+                              () =>
+                                on
+                                  ? db
+                                      .from('project_members')
+                                      .delete()
+                                      .eq('project_id', p.id)
+                                      .eq('member_id', m.id)
+                                  : db
+                                      .from('project_members')
+                                      .insert({ project_id: p.id, member_id: m.id }),
+                              on
+                                ? `${m.name} was removed from ${p.name}.`
+                                : `${m.name} was added to ${p.name}.`,
+                            )
+                          }
+                        >
+                          {m.name}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </fieldset>
+              )}
               {member && (
                 <RoleField
                   key={`${p.id}-${data.mine.get(p.id) ?? ''}`}

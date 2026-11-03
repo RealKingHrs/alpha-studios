@@ -1,76 +1,90 @@
 import { useState } from 'react';
-import { Magnetic } from './motion/Magnetic';
 import { CopyButton } from './fx/CopyButton';
 import { Note } from './fx/Doodles';
+import { Magnetic } from './motion/Magnetic';
 
-const PLATFORMS = ['iOS', 'macOS', 'Web', 'AI and ML', 'APIs', 'Not sure yet'] as const;
-const RANGES = ['Under 2k', '2k to 10k', '10k to 30k', '30k and up', 'Let us talk'] as const;
-const WHEN = ['This month', 'In 1 to 3 months', 'Later this year', 'Just exploring'] as const;
+const HELP = ['Funding', 'An API', 'Front end', 'Design', 'Launch help', 'Mentoring'] as const;
+const PLATFORMS = ['iOS', 'macOS', 'Android', 'Web', 'AI and ML', 'Not sure yet'] as const;
+const STAGE = [
+  'Just an idea',
+  'Sketches or a prototype',
+  'Half built',
+  'Live, needs a boost',
+] as const;
 
-/** The text of the email a visitor sends. Pure, so it can be tested without a browser. */
-export function briefText(f: {
+export interface Pitch {
   name: string;
   email: string;
+  idea: string;
   about: string;
+  help: string[];
   platforms: string[];
-  range: string;
-  when: string;
-}) {
+  stage: string;
+  links: string;
+}
+
+/** The text of the email a visitor sends. Pure, so it can be tested without a browser. */
+export function pitchText(f: Pitch) {
   return [
     `Hello Alpha Studios,`,
     ``,
-    `I would like to talk about a project.`,
+    `I would like to pitch an idea to Launchpad.`,
     ``,
-    `What I am building: ${f.about || '(not filled in)'}`,
+    `Idea name: ${f.idea || '(not filled in)'}`,
+    `What it is: ${f.about || '(not filled in)'}`,
+    `Stage: ${f.stage || 'Just an idea'}`,
     `Platforms: ${f.platforms.join(', ') || 'Not sure yet'}`,
-    `Budget range: ${f.range || 'Let us talk'}`,
-    `Timing: ${f.when || 'Just exploring'}`,
+    `Help I would like: ${f.help.join(', ') || 'Not sure yet'}`,
+    `Links: ${f.links || 'None yet'}`,
     ``,
     `${f.name || 'Me'}`,
     `${f.email || ''}`,
   ].join('\n');
 }
 
-/** A small brief builder. It writes an email in the visitor's own mail app; nothing is sent to any server. */
-export function Brief({ to }: { to?: string }) {
-  const [f, setF] = useState({
+/**
+ * The Launchpad pitch form. It writes an email in the visitor's own mail app, so the public site never talks to a
+ * server and nobody is asked to sign in. The crew reads the idea in the portal once the admin logs it.
+ */
+export function PitchBrief({ to }: { to?: string }) {
+  const [f, setF] = useState<Pitch>({
     name: '',
     email: '',
+    idea: '',
     about: '',
-    platforms: [] as string[],
-    range: '',
-    when: '',
+    help: [],
+    platforms: [],
+    stage: '',
+    links: '',
   });
-  const text = briefText(f);
+  const text = pitchText(f);
   const href = to
-    ? `mailto:${to}?subject=${encodeURIComponent('Project brief' + (f.name ? ` from ${f.name}` : ''))}&body=${encodeURIComponent(text)}`
+    ? `mailto:${to}?subject=${encodeURIComponent('Launchpad pitch' + (f.idea ? `: ${f.idea}` : ''))}&body=${encodeURIComponent(text)}`
     : undefined;
-  const toggle = (p: string) =>
+  const toggle = (key: 'help' | 'platforms', v: string) =>
     setF((s) => ({
       ...s,
-      platforms: s.platforms.includes(p) ? s.platforms.filter((x) => x !== p) : [...s.platforms, p],
+      [key]: s[key].includes(v) ? s[key].filter((x) => x !== v) : [...s[key], v],
     }));
-  const pick = (key: 'range' | 'when', v: string) =>
-    setF((s) => ({ ...s, [key]: s[key] === v ? '' : v }));
   return (
     <section
-      id="brief"
+      id="pitch"
       data-section
       className="s-section s-brief a-sun"
-      aria-labelledby="brief-title"
+      aria-labelledby="pitch-title"
     >
       <div className="s-wrap s-brief-grid">
         <div>
           <p className="s-eyebrow mono">
-            <span className="s-num">08</span> Project brief
+            <span className="s-num">04</span> Pitch your idea
           </p>
-          <h2 id="brief-title" className="display">
+          <h2 id="pitch-title" className="display">
             Tell us what you are building.
           </h2>
           <Note className="s-brief-note">start here</Note>
           <p className="s-lede">
             Fill this in and it opens as an email to the crew. It stays on your device until you
-            press send.
+            press send, and you do not need to sign in.
           </p>
         </div>
         <form className="s-brief-form" onSubmit={(e) => e.preventDefault()}>
@@ -92,7 +106,11 @@ export function Brief({ to }: { to?: string }) {
             />
           </label>
           <label className="s-brief-wide">
-            <span className="mono">What are you building?</span>
+            <span className="mono">What is your idea called?</span>
+            <input value={f.idea} onChange={(e) => setF({ ...f, idea: e.target.value })} />
+          </label>
+          <label className="s-brief-wide">
+            <span className="mono">What is it, and who is it for?</span>
             <textarea
               rows={4}
               value={f.about}
@@ -107,43 +125,47 @@ export function Brief({ to }: { to?: string }) {
                   key={p}
                   type="button"
                   aria-pressed={f.platforms.includes(p)}
-                  onClick={() => toggle(p)}
+                  onClick={() => toggle('platforms', p)}
                 >
                   {p}
                 </button>
               ))}
             </div>
           </fieldset>
-          <fieldset>
-            <legend className="mono">Budget range</legend>
+          <fieldset className="s-brief-wide">
+            <legend className="mono">Help you would like</legend>
             <div className="s-brief-chips">
-              {RANGES.map((p) => (
+              {HELP.map((p) => (
                 <button
                   key={p}
                   type="button"
-                  aria-pressed={f.range === p}
-                  onClick={() => pick('range', p)}
+                  aria-pressed={f.help.includes(p)}
+                  onClick={() => toggle('help', p)}
                 >
                   {p}
                 </button>
               ))}
             </div>
           </fieldset>
-          <fieldset>
-            <legend className="mono">When</legend>
+          <fieldset className="s-brief-wide">
+            <legend className="mono">How far along is it?</legend>
             <div className="s-brief-chips">
-              {WHEN.map((p) => (
+              {STAGE.map((p) => (
                 <button
                   key={p}
                   type="button"
-                  aria-pressed={f.when === p}
-                  onClick={() => pick('when', p)}
+                  aria-pressed={f.stage === p}
+                  onClick={() => setF((s) => ({ ...s, stage: s.stage === p ? '' : p }))}
                 >
                   {p}
                 </button>
               ))}
             </div>
           </fieldset>
+          <label className="s-brief-wide">
+            <span className="mono">Links (a repo, a design, a site)</span>
+            <input value={f.links} onChange={(e) => setF({ ...f, links: e.target.value })} />
+          </label>
           <p className="s-actions s-brief-wide">
             {href ? (
               <Magnetic>
@@ -154,7 +176,7 @@ export function Brief({ to }: { to?: string }) {
             ) : (
               <span className="s-lede">The studio address is added with the real content.</span>
             )}
-            <CopyButton text={text} label="Copy the brief" />
+            <CopyButton text={text} label="Copy the pitch" />
           </p>
         </form>
       </div>

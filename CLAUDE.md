@@ -48,7 +48,7 @@ Read `docs/SPEC.md` before any work. It is the source of truth. If this file and
 
 ## Version 1
 
-The site is Version 1: bold editorial design, light only, crew portal invite-only. To publish it, follow `docs/GO-LIVE.md`; check readiness with `npm run go-live:check`. Never ask for or store a user's passwords or keys; they are entered only on GitHub and Supabase.
+The site is Version 1: bold editorial design, light only, crew portal by PIN and emailed code only. Sign-in is a personal PIN on five wheels then an emailed code (`portal-pin` function); the admin is created with `npm run admin:sql`. To publish it, follow `docs/GO-LIVE.md`; check readiness with `npm run go-live:check`. Never ask for or store a user's passwords or keys; they are entered only on GitHub and Supabase.
 
 ## Commands
 

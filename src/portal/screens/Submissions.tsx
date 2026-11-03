@@ -3,7 +3,16 @@ import { supabase } from '../supabase';
 import type { SubmissionRow } from '../types';
 import { ConfirmButton, Empty, ErrorState, Field, Loading } from '../ui';
 import { must, useAsync } from '../useAsync';
-import { STATUS_LABEL } from './Pitch';
+
+export const STATUS_LABEL: Record<SubmissionRow['status'], string> = {
+  new: 'Sent',
+  reviewing: 'Being looked at',
+  approved: 'Approved',
+  declined: 'Not this time',
+};
+
+const HELP = ['funding', 'backend', 'frontend', 'design', 'launch', 'mentoring'] as const;
+const PLATFORMS = ['ios', 'macos', 'android', 'web'] as const;
 
 const slugify = (s: string) =>
   s
@@ -11,8 +20,11 @@ const slugify = (s: string) =>
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
 
-/** Admin: read every Launchpad pitch, leave notes, decline, or approve and adopt it. */
-export function Submissions() {
+/**
+ * Launchpad ideas. Everyone on the crew can read them. Only the admin can log an idea that arrived by email, leave
+ * notes, decline, or approve and adopt one.
+ */
+export function Submissions({ admin }: { admin: boolean }) {
   const list = useAsync<SubmissionRow[]>(
     async () =>
       supabase
@@ -46,7 +58,7 @@ export function Submissions() {
       return setMsg({ kind: 'error', text: error?.message ?? data?.error ?? 'Could not approve.' });
     setMsg({
       kind: 'ok',
-      text: `Approved. ${s.project_name} is now a project, and ${s.pitcher_name}'s founder credit is locked. Open Crew to issue ${s.pitcher_name} an invite so they can claim their profile.`,
+      text: `Approved. ${s.project_name} is now a project, and ${s.pitcher_name}'s founder credit is locked. Open Crew to add ${s.pitcher_name}'s email and issue a PIN so they can claim their profile.`,
     });
     list.reload();
   }
@@ -57,11 +69,13 @@ export function Submissions() {
 
   return (
     <>
-      <h1>Launchpad submissions</h1>
+      <h1>Launchpad ideas</h1>
       <p className="hint">
-        Approving creates the project with the founder&apos;s credit locked, and a profile for the
-        founder. Ownership and support terms are agreed in writing outside this tool.
+        {admin
+          ? "Ideas arrive by email from the Launchpad page. Log each one here so the crew can read it. Approving creates the project with the founder's credit locked, and a profile for the founder. Ownership and support terms are agreed in writing outside this tool."
+          : 'Ideas people have pitched to Launchpad. You can read them here; the admin decides what happens next.'}
       </p>
+      {admin && <LogIdea onLogged={list.reload} />}
       {msg && (
         <p
           role={msg.kind === 'error' ? 'alert' : 'status'}
@@ -73,11 +87,11 @@ export function Submissions() {
       {list.data?.length ? (
         <ul className="pitch-list" aria-label="Submissions">
           {list.data.map((s) => (
-            <SubmissionCard key={s.id} s={s} onUpdate={update} onApprove={approve} />
+            <SubmissionCard key={s.id} s={s} admin={admin} onUpdate={update} onApprove={approve} />
           ))}
         </ul>
       ) : (
-        <Empty>No pitches yet.</Empty>
+        <Empty>No ideas yet.</Empty>
       )}
     </>
   );
@@ -85,10 +99,12 @@ export function Submissions() {
 
 function SubmissionCard({
   s,
+  admin,
   onUpdate,
   onApprove,
 }: {
   s: SubmissionRow;
+  admin: boolean;
   onUpdate: (
     id: string,
     patch: Partial<Pick<SubmissionRow, 'status' | 'reviewer_notes'>>,
@@ -96,7 +112,7 @@ function SubmissionCard({
   onApprove: (s: SubmissionRow) => Promise<void>;
 }) {
   const [notes, setNotes] = useState(s.reviewer_notes);
-  const open = s.status === 'new' || s.status === 'reviewing';
+  const open = admin && (s.status === 'new' || s.status === 'reviewing');
   return (
     <li className="card">
       <h2>{s.project_name}</h2>
@@ -107,6 +123,9 @@ function SubmissionCard({
         {s.help_wanted.join(', ') || 'nothing specific'}
       </p>
       <p className="pitch-body">{s.pitch}</p>
+      {!admin && s.reviewer_notes && (
+        <p className="hint">Note from the admin: {s.reviewer_notes}</p>
+      )}
       {open && (
         <>
           <Field label={`Notes for ${s.project_name}`} hint="The pitcher can read these.">
@@ -143,5 +162,140 @@ function SubmissionCard({
         </>
       )}
     </li>
+  );
+}
+
+/** Admin: log an idea that arrived by email, so it shows up for the crew to read. */
+function LogIdea({ onLogged }: { onLogged: () => void }) {
+  const [open, setOpen] = useState(false);
+  const [f, setF] = useState({
+    pitcher_name: '',
+    contact_email: '',
+    project_name: '',
+    pitch: '',
+    platforms: [] as string[],
+    help_wanted: [] as string[],
+  });
+  const [note, setNote] = useState<{ kind: 'ok' | 'error'; text: string } | null>(null);
+  const toggle = (key: 'platforms' | 'help_wanted', v: string) =>
+    setF((x) => ({
+      ...x,
+      [key]: x[key].includes(v) ? x[key].filter((y) => y !== v) : [...x[key], v],
+    }));
+
+  async function save(e: React.FormEvent) {
+    e.preventDefault();
+    if (!supabase) return;
+    const { error } = await supabase.from('submissions').insert(f);
+    if (error) return setNote({ kind: 'error', text: error.message });
+    setNote({ kind: 'ok', text: `${f.project_name} is logged.` });
+    setF({
+      pitcher_name: '',
+      contact_email: '',
+      project_name: '',
+      pitch: '',
+      platforms: [],
+      help_wanted: [],
+    });
+    onLogged();
+  }
+
+  return (
+    <section className="panel admin-only" aria-label="Log an idea">
+      <button
+        type="button"
+        className="secondary"
+        aria-expanded={open}
+        onClick={() => setOpen(!open)}
+      >
+        {open ? 'Close' : 'Log an idea from an email'}
+      </button>
+      {note && (
+        <p
+          role={note.kind === 'error' ? 'alert' : 'status'}
+          className={note.kind === 'error' ? 'error' : 'hint'}
+        >
+          {note.text}
+        </p>
+      )}
+      {open && (
+        <form onSubmit={save}>
+          <Field label="Their name">
+            {(id) => (
+              <input
+                id={id}
+                required
+                maxLength={80}
+                value={f.pitcher_name}
+                onChange={(e) => setF({ ...f, pitcher_name: e.target.value })}
+              />
+            )}
+          </Field>
+          <Field label="Their email">
+            {(id) => (
+              <input
+                id={id}
+                type="email"
+                maxLength={200}
+                value={f.contact_email}
+                onChange={(e) => setF({ ...f, contact_email: e.target.value })}
+              />
+            )}
+          </Field>
+          <Field label="Idea name">
+            {(id) => (
+              <input
+                id={id}
+                required
+                maxLength={80}
+                value={f.project_name}
+                onChange={(e) => setF({ ...f, project_name: e.target.value })}
+              />
+            )}
+          </Field>
+          <Field label="What it is">
+            {(id) => (
+              <textarea
+                id={id}
+                required
+                rows={4}
+                maxLength={3000}
+                value={f.pitch}
+                onChange={(e) => setF({ ...f, pitch: e.target.value })}
+              />
+            )}
+          </Field>
+          <fieldset>
+            <legend>Platforms</legend>
+            {PLATFORMS.map((p) => (
+              <label key={p} className="check">
+                <input
+                  type="checkbox"
+                  checked={f.platforms.includes(p)}
+                  onChange={() => toggle('platforms', p)}
+                />{' '}
+                {p}
+              </label>
+            ))}
+          </fieldset>
+          <fieldset>
+            <legend>Help they want</legend>
+            {HELP.map((p) => (
+              <label key={p} className="check">
+                <input
+                  type="checkbox"
+                  checked={f.help_wanted.includes(p)}
+                  onChange={() => toggle('help_wanted', p)}
+                />{' '}
+                {p}
+              </label>
+            ))}
+          </fieldset>
+          <button type="submit" className="primary admin-only">
+            Log the idea
+          </button>
+        </form>
+      )}
+    </section>
   );
 }

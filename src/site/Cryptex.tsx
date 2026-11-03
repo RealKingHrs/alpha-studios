@@ -1,14 +1,14 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { PIN_HANDOFF_KEY, PIN_START } from '../ui/pin';
+import { PinWheels } from '../ui/PinWheels';
 import type { LinkFn } from './parts';
 
 /**
  * The hidden way into the crew portal. Nothing on the site links to it: tap the logo seven times quickly, or type
- * the word "cryptex". A box of five lettered wheels opens; set them to the secret word and the entrance appears.
- * This hides the door; it does not lock it. The portal's own sign-in and the database rules do that.
+ * the word "cryptex". A box of five lettered wheels opens; each person sets their own PIN and continues to the portal,
+ * which checks it and emails a one-time code. The PIN is handed over inside this browser tab only (never in the address)
+ * and the public site never sends it anywhere. This hides the door; the portal's sign-in and the database rules lock it.
  */
-export const SECRET = 'ALPHA';
-const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-const START = 'QZMKX';
 const TAPS = 7;
 const WINDOW_MS = 5000;
 
@@ -47,17 +47,18 @@ export function useCryptexTriggers(open: () => void) {
   }, [open]);
 }
 
-const turn = (letter: string, by: number) =>
-  ALPHABET[(ALPHABET.indexOf(letter) + by + ALPHABET.length) % ALPHABET.length];
-
 export function Cryptex({ link, onClose }: { link: LinkFn; onClose: () => void }) {
-  const [letters, setLetters] = useState(START.split(''));
+  const [letters, setLetters] = useState(PIN_START.split(''));
   const panel = useRef<HTMLDivElement>(null);
-  const solved = letters.join('') === SECRET;
 
-  const change = useCallback((i: number, by: number) => {
-    setLetters((l) => l.map((x, k) => (k === i ? turn(x, by) : x)));
-  }, []);
+  const go = () => {
+    try {
+      sessionStorage.setItem(PIN_HANDOFF_KEY, letters.join(''));
+    } catch {
+      /* storage blocked: the person sets the wheels again in the portal */
+    }
+    location.href = link('/portal/app/');
+  };
 
   useEffect(() => {
     const root = document.documentElement;
@@ -91,59 +92,20 @@ export function Cryptex({ link, onClose }: { link: LinkFn; onClose: () => void }
 
   return (
     <div className="cx-backdrop" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
-      <div
-        ref={panel}
-        className={`cx ${solved ? 'is-solved' : ''}`}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="cx-title"
-      >
+      <div ref={panel} className="cx" role="dialog" aria-modal="true" aria-labelledby="cx-title">
         <p className="mono cx-kicker">Crew only</p>
         <h2 id="cx-title" className="display">
-          Set the five wheels
+          Set your PIN
         </h2>
-        <p className="cx-hint">Turn each wheel to spell the word. Arrow keys work too.</p>
-        <div className="cx-wheels">
-          {letters.map((l, i) => (
-            <div key={i} className="cx-wheel">
-              <button type="button" tabIndex={-1} aria-hidden="true" onClick={() => change(i, -1)}>
-                ▲
-              </button>
-              <div
-                className="cx-letter display"
-                role="spinbutton"
-                tabIndex={0}
-                aria-label={`Wheel ${i + 1} of 5`}
-                aria-valuemin={0}
-                aria-valuemax={25}
-                aria-valuenow={ALPHABET.indexOf(l)}
-                aria-valuetext={l}
-                onKeyDown={(e) => {
-                  if (e.key === 'ArrowUp') {
-                    e.preventDefault();
-                    change(i, -1);
-                  } else if (e.key === 'ArrowDown') {
-                    e.preventDefault();
-                    change(i, 1);
-                  }
-                }}
-              >
-                {l}
-              </div>
-              <button type="button" tabIndex={-1} aria-hidden="true" onClick={() => change(i, 1)}>
-                ▼
-              </button>
-            </div>
-          ))}
-        </div>
-        <p className="cx-status" role="status">
-          {solved ? 'Unlocked.' : ''}
+        <p className="cx-hint">
+          Turn each wheel to your own five-character PIN. Arrow keys, typing and the scroll wheel
+          work too.
         </p>
-        {solved && (
-          <a className="s-btn s-btn--gold" href={link('/portal/app/')}>
-            Enter the portal
-          </a>
-        )}
+        <PinWheels value={letters} onChange={setLetters} />
+        <p className="cx-status" role="status" />
+        <button type="button" className="s-btn s-btn--ink" onClick={go}>
+          Continue to the portal
+        </button>
         <button type="button" className="cx-close" onClick={onClose}>
           Close
         </button>

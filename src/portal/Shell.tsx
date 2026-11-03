@@ -26,10 +26,10 @@ const CREW_PAGES = [
   ['avatar', 'My avatar'],
   ['certificates', 'Certificates'],
   ['projects', 'Projects'],
+  ['submissions', 'Launchpad ideas'],
 ] as const;
 const ADMIN_PAGES = [
   ['crew', 'Crew'],
-  ['submissions', 'Submissions'],
   ['settings', 'Site settings'],
   ['audit', 'Audit log'],
 ] as const;
@@ -53,7 +53,7 @@ export function Shell({ me }: { me: MemberRow }) {
     );
   else if (page === 'avatar') screen = <AvatarScreen me={me} />;
   else if (page === 'certificates') screen = <Certificates me={me} />;
-  else if (page === 'submissions') screen = <Submissions />;
+  else if (page === 'submissions') screen = <Submissions admin={admin} />;
   else if (page === 'projects') screen = <Projects me={me} />;
   else if (page === 'crew') screen = <Crew />;
   else if (page === 'settings') screen = <SettingsScreen />;

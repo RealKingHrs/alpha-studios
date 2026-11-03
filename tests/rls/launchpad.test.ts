@@ -2,7 +2,8 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { must, run, service, signedIn, visitor, restoreAdmins, stepAsideAdmins } from './helpers';
 
-// Launchpad: pitches, review, approval and the permanent founder credit, against the local stack.
+// Launchpad: ideas the admin logs, crew read access, review, approval and the permanent founder credit, against the local stack.
+// Visitors pitch by email, so only the admin writes ideas here; active crew can read them, and nobody else can.
 
 let admin: SupabaseClient;
 let pitcher: SupabaseClient;
@@ -42,6 +43,20 @@ beforeAll(async () => {
       .single(),
   );
   members.push(row.id);
+  const crew = await must(
+    service
+      .from('members')
+      .insert({
+        slug: `l-crew-${run}`,
+        name: 'l-crew',
+        user_id: p.userId,
+        role: 'crew',
+        access_status: 'active',
+      })
+      .select('id')
+      .single(),
+  );
+  members.push(crew.id);
 });
 
 afterAll(async () => {
@@ -53,9 +68,9 @@ afterAll(async () => {
 });
 
 describe('submissions', () => {
-  it('lets a signed-in person pitch and read only their own', async () => {
+  it('lets the admin log an idea, crew read it, and outsiders see nothing', async () => {
     const mine = await must(
-      pitcher
+      admin
         .from('submissions')
         .insert(pitch(`Mine ${run}`))
         .select('id, status')
@@ -67,17 +82,44 @@ describe('submissions', () => {
     expect(await must(admin.from('submissions').select('id').eq('id', mine.id))).toHaveLength(1);
   });
 
-  it('refuses visitors, forged owners, self-approval and edits by the pitcher', async () => {
+  it('keeps crew read-only: they cannot log, review or approve ideas', async () => {
+    expect((await pitcher.from('submissions').insert(pitch(`Crew ${run}`))).error).not.toBeNull();
+    const row = await must(
+      admin
+        .from('submissions')
+        .insert(pitch(`Readonly ${run}`))
+        .select('id')
+        .single(),
+    );
+    const noted = await must(
+      pitcher
+        .from('submissions')
+        .update({ reviewer_notes: 'sneaky' })
+        .eq('id', row.id)
+        .select('id'),
+    );
+    expect(noted).toHaveLength(0);
+    expect(
+      (
+        await pitcher.rpc('approve_submission', {
+          p_id: row.id,
+          p_slug: `x-${run}`,
+          p_member_slug: `y-${run}`,
+        })
+      ).error,
+    ).not.toBeNull();
+  });
+
+  it('refuses visitors, forged owners, pre-approval and edits by crew', async () => {
     expect((await visitor.from('submissions').insert(pitch('Anon'))).error).not.toBeNull();
     expect(
-      (await pitcher.from('submissions').insert(pitch('Forged', { user_id: users[2] }))).error,
+      (await admin.from('submissions').insert(pitch('Forged', { user_id: users[2] }))).error,
     ).not.toBeNull();
     expect(
-      (await pitcher.from('submissions').insert(pitch('Pre-approved', { status: 'approved' })))
-        .error,
+      (await admin.from('submissions').insert(pitch('Pre-approved', { status: 'approved' }))).error,
     ).not.toBeNull();
     const mine = await must(
-      pitcher
+      admin
         .from('submissions')
         .insert(pitch(`Edit ${run}`))
         .select('id')
@@ -89,7 +131,7 @@ describe('submissions', () => {
     expect(changed).toHaveLength(0);
     expect(
       (
-        await pitcher
+        await admin
           .from('submissions')
           .insert(pitch('Bad help', { help_wanted: ['money-printer'] }))
       ).error,
@@ -98,7 +140,7 @@ describe('submissions', () => {
 
   it('lets the admin review and add notes', async () => {
     const row = await must(
-      pitcher
+      admin
         .from('submissions')
         .insert(pitch(`Review ${run}`))
         .select('id')
@@ -124,7 +166,7 @@ describe('approval and the founder credit', () => {
 
   it('lets only the admin approve, creating a locked project and an unclaimed founder profile', async () => {
     const row = await must(
-      pitcher
+      admin
         .from('submissions')
         .insert(pitch(`Approve ${run}`))
         .select('id')

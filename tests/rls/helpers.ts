@@ -5,6 +5,7 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 const env = JSON.parse(execSync('npx supabase status -o json', { encoding: 'utf8' }));
 export const url: string = env.API_URL;
 const anonKey: string = env.ANON_KEY;
+export const visitorKey = anonKey;
 const serviceKey: string = env.SERVICE_ROLE_KEY;
 const opts = { auth: { persistSession: false, autoRefreshToken: false } };
 

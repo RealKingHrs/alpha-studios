@@ -181,7 +181,7 @@ export function SiteApp({
         <a className="skip-link" href="#main">
           Skip to content
         </a>
-        <Header route={route} link={link} />
+        <Header route={route} link={link} snap={snap} />
         <main id="main" className={`page page--${phase}`}>
           {page}
         </main>

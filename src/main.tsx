@@ -4,6 +4,7 @@ import { Snapshot } from './content/schema';
 import 'lenis/dist/lenis.css';
 import { interceptLinks } from './router';
 import './styles/base.css';
+import './styles/wheels.css';
 import './styles/core.css';
 import './styles/components.css';
 import './styles/pages.css';

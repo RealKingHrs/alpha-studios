@@ -173,35 +173,23 @@ describe('crew', () => {
     ).not.toBeNull();
   });
 
-  it('can join and leave a project as themselves, not as someone else', async () => {
+  it('cannot join or leave projects: only the admin assigns people', async () => {
     expect(
       (
         await crew
           .from('project_members')
           .insert({ project_id: foreignProject, member_id: crewMemberId })
       ).error,
-    ).toBeNull();
-    expect(
-      (
-        await crew
-          .from('project_members')
-          .insert({ project_id: foreignProject, member_id: otherMemberId })
-      ).error,
     ).not.toBeNull();
     const left = await must(
       crew
         .from('project_members')
         .delete()
-        .eq('project_id', foreignProject)
+        .eq('project_id', ownProject)
         .eq('member_id', crewMemberId)
         .select(),
     );
-    expect(left).toHaveLength(1);
-    await must(
-      service
-        .from('project_members')
-        .insert({ project_id: foreignProject, member_id: otherMemberId }),
-    );
+    expect(left).toHaveLength(0);
     const removeOther = await must(
       crew
         .from('project_members')
@@ -308,6 +296,11 @@ describe('admin', () => {
   });
 
   it('can remove anyone from a project', async () => {
+    await must(
+      service
+        .from('project_members')
+        .upsert({ project_id: foreignProject, member_id: otherMemberId }),
+    );
     expect(
       await must(
         admin

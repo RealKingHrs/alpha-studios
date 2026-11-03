@@ -70,6 +70,47 @@ ${lines.map((l, i) => `<text x="480" y="${232 + titleLines.length * 74 + 10 + i 
     .toFile(join(dist, 'og', `${ogKey(path)}.png`));
 }
 
+/** The public address of one page, with a trailing slash like the files on disk. */
+const canonical = (path: string) =>
+  `${siteUrl}${base}${path === '/' ? '' : path.replace(/^\//, '').replace(/\/?$/, '/')}`;
+
+/** What search engines read to learn who we are: an organisation and a website, with the people as members. */
+function structuredData() {
+  const home = canonical('/');
+  // The studio's GitHub account, known to the publish workflow, ties the site to its code for search engines.
+  const owner = process.env.GITHUB_REPOSITORY_OWNER;
+  const same = owner ? [`https://github.com/${owner}`] : [];
+  return JSON.stringify({
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Organization',
+        '@id': `${home}#studio`,
+        name: 'Alpha Studios',
+        alternateName: ['Alpha Studios crew', 'alpha.'],
+        url: home,
+        logo: `${siteUrl}${base}icon-512.png`,
+        description: snap.settings.studioStatement,
+        ...(snap.settings.contactEmail ? { email: snap.settings.contactEmail } : {}),
+        ...(same.length ? { sameAs: same } : {}),
+        member: snap.members.map((m) => ({
+          '@type': 'Person',
+          name: m.name,
+          jobTitle: m.role,
+          url: canonical(`/crew/${m.slug}/`),
+        })),
+      },
+      {
+        '@type': 'WebSite',
+        '@id': `${home}#site`,
+        url: home,
+        name: 'Alpha Studios',
+        publisher: { '@id': `${home}#studio` },
+      },
+    ],
+  }).replace(/</g, '\\u003c');
+}
+
 function page(path: string): string {
   const { title, description } = pageMeta(base + path.replace(/^\//, ''), base, snap);
   const image = `${siteUrl}${base}og/${ogKey(path)}.png`;
@@ -81,6 +122,11 @@ function page(path: string): string {
     `<meta property="og:description" content="${esc(description)}" />`,
     `<meta property="og:image" content="${esc(image)}" />`,
     `<meta name="twitter:card" content="summary_large_image" />`,
+    ...(siteUrl ? [`<link rel="canonical" href="${esc(canonical(path))}" />`] : []),
+    `<meta property="og:site_name" content="Alpha Studios" />`,
+    `<meta property="og:type" content="${path === '/' ? 'website' : 'article'}" />`,
+    ...(siteUrl ? [`<meta property="og:url" content="${esc(canonical(path))}" />`] : []),
+    ...(path === '/' ? [`<script type="application/ld+json">${structuredData()}</script>`] : []),
     `<link rel="icon" href="${base}favicon.ico" sizes="48x48" />`,
     `<link rel="icon" href="${base}favicon.svg" type="image/svg+xml" />`,
     `<link rel="apple-touch-icon" href="${base}apple-touch-icon.png" />`,
@@ -104,4 +150,18 @@ for (const path of allPaths(snap)) {
   await shareImage('/__not-found__', m.title, m.description);
 }
 await writeFile(join(dist, '404.html'), page('/__not-found__'));
+// Search engines: a sitemap of every address and a robots file that points to it. The portal is kept out of search.
+if (siteUrl) {
+  const urls = allPaths(snap)
+    .filter((p) => !p.startsWith('/portal'))
+    .map((p) => `  <url><loc>${esc(canonical(p))}</loc></url>`);
+  await writeFile(
+    join(dist, 'sitemap.xml'),
+    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`,
+  );
+  await writeFile(
+    join(dist, 'robots.txt'),
+    `User-agent: *\nAllow: /\nDisallow: ${base}portal/\n\nSitemap: ${siteUrl}${base}sitemap.xml\n`,
+  );
+}
 console.log(`prerendered ${allPaths(snap).length} pages plus 404.html`);

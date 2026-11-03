@@ -2,6 +2,7 @@ import type { Snapshot } from '../content/schema';
 import { Marquee } from './Marquee';
 import { DoodleCircle } from './fx/Doodles';
 import { Magnetic } from './motion/Magnetic';
+import { PitchBrief } from './PitchBrief';
 import { SplitText } from './motion/SplitText';
 import type { LinkFn } from './parts';
 import { Reveal } from './Reveal';
@@ -63,7 +64,7 @@ const FAQ = [
 /** Where newcomers pitch an idea. Warm, bright and encouraging. It says nothing of how the studio decides. */
 export function LaunchpadPage({ snap, link }: { snap: Snapshot; link: LinkFn }) {
   const adopted = snap.projects.filter((p) => p.origin === 'launchpad');
-  const pitch = link('/portal/app/#/pitch');
+  const pitch = '#pitch';
   return (
     <>
       <section className="lp-hero a-mint" aria-labelledby="pt">
@@ -224,6 +225,8 @@ export function LaunchpadPage({ snap, link }: { snap: Snapshot; link: LinkFn }) 
           ))}
         </div>
       </section>
+
+      <PitchBrief to={snap.settings.contactEmail} />
 
       <section className="lp-final a-sun" aria-labelledby="final-title">
         <div className="s-wrap">

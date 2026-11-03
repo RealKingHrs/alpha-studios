@@ -4,7 +4,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import { App } from '../src/App';
 import { Snapshot } from '../src/content/schema';
-import { briefText } from '../src/site/Brief';
+import { pitchText } from '../src/site/PitchBrief';
 import { Barcode } from '../src/site/fx/Barcode';
 import { FAQ } from '../src/site/Faq';
 import { HEADLINE, HEADLINE_LOOP } from '../src/site/data';
@@ -28,9 +28,9 @@ describe('the catchphrase', () => {
 });
 
 describe('the portfolio sections', () => {
-  it('shows what we make, how we build, the stack, questions and the brief on the home page', () => {
+  it('shows what we make, how we build, the stack and the questions on the home page', () => {
     const home = html();
-    for (const id of ['id="make"', 'id="process"', 'id="stack"', 'id="faq"', 'id="brief"'])
+    for (const id of ['id="make"', 'id="process"', 'id="stack"', 'id="faq"'])
       expect(home, id).toContain(id);
     expect(home).toContain('Native iOS apps');
     expect(home).toContain('Four steps, no surprises.');
@@ -48,10 +48,12 @@ describe('the portfolio sections', () => {
     expect(home).toContain('aria-expanded');
   });
 
-  it('puts the brief and the questions on the contact page too', () => {
+  it('keeps the questions on the contact page, and the pitch form on Launchpad only', () => {
     const contact = html('contact/');
-    expect(contact).toContain('id="brief"');
     expect(contact).toContain('id="faq"');
+    expect(contact).not.toContain('id="pitch"');
+    expect(html()).not.toContain('id="pitch"');
+    expect(html('launchpad/')).toContain('id="pitch"');
   });
 
   it('has no dark mode left', () => {
@@ -61,31 +63,50 @@ describe('the portfolio sections', () => {
   });
 });
 
-describe('the project brief', () => {
+describe('the Launchpad pitch', () => {
+  const empty = {
+    name: '',
+    email: '',
+    idea: '',
+    about: '',
+    help: [],
+    platforms: [],
+    stage: '',
+    links: '',
+  };
+
   it('writes a readable email from what was filled in', () => {
-    const text = briefText({
+    const text = pitchText({
+      ...empty,
       name: 'Asha',
       email: 'asha@example.com',
-      about: 'A habit tracker',
-      platforms: ['iOS', 'Web'],
-      range: '2k to 10k',
-      when: 'This month',
+      idea: 'Habit Garden',
+      about: 'A habit tracker for students',
+      help: ['Design', 'Launch help'],
+      platforms: ['iOS'],
+      stage: 'Sketches or a prototype',
     });
-    expect(text).toContain('What I am building: A habit tracker');
-    expect(text).toContain('Platforms: iOS, Web');
-    expect(text).toContain('Budget range: 2k to 10k');
+    expect(text).toContain('Idea name: Habit Garden');
+    expect(text).toContain('Help I would like: Design, Launch help');
     expect(text).toContain('asha@example.com');
   });
 
-  it('falls back to plain defaults when the form is empty, and never crashes', () => {
-    const text = briefText({ name: '', email: '', about: '', platforms: [], range: '', when: '' });
+  it('falls back to plain defaults when the form is empty', () => {
+    const text = pitchText(empty);
     expect(text).toContain('(not filled in)');
     expect(text).toContain('Not sure yet');
   });
 
-  it('builds a mailto link to the studio address, with the text encoded', () => {
-    const page = html('contact/');
-    expect(page).toContain('mailto:hello@alphastudios.example?subject=Project%20brief');
+  it('opens an email to the studio, and never sends a visitor to the sign-in page', () => {
+    const page = html('launchpad/');
+    expect(page).toContain('mailto:hello@alphastudios.example?subject=Launchpad%20pitch');
+    expect(page).not.toContain('portal/app');
+    expect(page).toContain('href="#pitch"');
+  });
+
+  it('points the other Pitch buttons at the form on Launchpad', () => {
+    expect(html('about/')).toContain('href="/alpha-studios/launchpad/#pitch"');
+    expect(html('contact/')).toContain('href="/alpha-studios/launchpad/#pitch"');
   });
 });
 
@@ -116,9 +137,11 @@ describe('version 1 touches', () => {
     expect(a).toContain('<rect');
   });
 
-  it('hides the portal GitHub button unless it is switched on', () => {
+  it('signs in with a PIN and an emailed code only: no password form is left in the portal', () => {
+    const login = readFileSync('src/portal/screens/PinLogin.tsx', 'utf8');
+    expect(login).toContain('portal-pin');
+    expect(login).not.toMatch(/signInWithPassword|signUp|type="password"/);
     expect(html('portal/')).not.toMatch(/Continue with GitHub/);
-    expect(readFileSync('src/portal/screens/Login.tsx', 'utf8')).toContain('VITE_PORTAL_GITHUB');
   });
 
   it('has a go-live guide and a preflight script', () => {

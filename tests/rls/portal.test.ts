@@ -218,7 +218,7 @@ describe('guards', () => {
     expect(stillThere).toHaveLength(1);
   });
 
-  it('lets crew do their own profile and project membership and nothing wider', async () => {
+  it('lets crew edit their own profile and the projects the admin assigned to them, and nothing wider', async () => {
     expect(
       await must(
         crew
@@ -236,27 +236,32 @@ describe('guards', () => {
         .single(),
     );
     cleanup.projects.push(project.id);
+    // Crew cannot assign themselves; before the admin assigns them they cannot edit the project.
     expect(
       (
         await crew
           .from('project_members')
           .insert({ project_id: project.id, member_id: crewMemberId })
       ).error,
-    ).toBeNull();
+    ).not.toBeNull();
+    expect(
+      await must(
+        crew.from('projects').update({ summary: 'early' }).eq('id', project.id).select('id'),
+      ),
+    ).toHaveLength(0);
+    await must(
+      service.from('project_members').insert({ project_id: project.id, member_id: crewMemberId }),
+    );
     expect(
       await must(
         crew.from('projects').update({ summary: 'edited' }).eq('id', project.id).select('id'),
       ),
     ).toHaveLength(1);
-    expect(
-      (
-        await crew
-          .from('project_members')
-          .delete()
-          .eq('project_id', project.id)
-          .eq('member_id', crewMemberId)
-      ).error,
-    ).toBeNull();
+    await service
+      .from('project_members')
+      .delete()
+      .eq('project_id', project.id)
+      .eq('member_id', crewMemberId);
     expect(
       await must(
         crew.from('projects').update({ summary: 'no longer' }).eq('id', project.id).select('id'),

@@ -1,0 +1,32 @@
+/* The five PIN wheels, shared by the website's hidden door and the portal's sign-in. */
+.cx-wheels {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-1);
+}
+.cx-wheel {
+  display: grid;
+  gap: 4px;
+}
+.cx-wheel button {
+  min-height: 32px;
+  border: 0;
+  background: transparent;
+  color: var(--gold-soft);
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+.cx-letter {
+  display: grid;
+  place-items: center;
+  width: clamp(44px, 12vw, 56px);
+  height: clamp(60px, 16vw, 76px);
+  font-size: 2.1rem;
+  color: var(--ink-fixed);
+  background: linear-gradient(180deg, #f3dc98, #d4af5a 55%, #a97c25);
+  box-shadow: inset 0 -6px 10px rgb(20 17 15 / 0.28);
+}
+.cx-letter:focus-visible {
+  outline: 2px solid var(--paper-fixed);
+  outline-offset: 3px;
+}

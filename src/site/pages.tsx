@@ -9,7 +9,6 @@ import { accentFor, languageShares, marqueeItems, memberAccent, stackOrder } fro
 import { Marquee } from './Marquee';
 import { Magnetic } from './motion/Magnetic';
 import { SplitText } from './motion/SplitText';
-import { Brief } from './Brief';
 import { CopyButton } from './fx/CopyButton';
 import { Note } from './fx/Doodles';
 import { Faq } from './Faq';
@@ -35,7 +34,6 @@ export const HOME_SECTIONS = [
   'The stack',
   'Cover stars',
   'Questions',
-  'Brief',
   'Say hello',
 ];
 
@@ -56,7 +54,7 @@ function Hello({ snap, link, page = false }: { snap: Snapshot; link: LinkFn; pag
               'Contact'
             ) : (
               <>
-                <span className="s-num">09</span> Say hello
+                <span className="s-num">08</span> Say hello
               </>
             )}
           </p>
@@ -82,7 +80,7 @@ function Hello({ snap, link, page = false }: { snap: Snapshot; link: LinkFn; pag
         )}
         <p className="s-hello-alt">
           Have an idea of your own?{' '}
-          <a className="s-link" href={link('/launchpad/')}>
+          <a className="s-link" href={link('/launchpad/#pitch')}>
             Bring it to Launchpad <span aria-hidden="true">→</span>
           </a>
         </p>
@@ -95,7 +93,7 @@ export function Home({ snap, link, asset }: PageProps) {
   return (
     <>
       <Hero snap={snap} link={link} />
-      <Contents />
+      <Contents link={link} />
       <Marquee items={marqueeItems(snap)} accent="sun" label="Platforms and technologies used" />
       <Vision link={link} />
       <Services snap={snap} link={link} />
@@ -127,7 +125,6 @@ export function Home({ snap, link, asset }: PageProps) {
         </div>
       </section>
       <Faq />
-      <Brief to={snap.settings.contactEmail} />
       <Hello snap={snap} link={link} />
     </>
   );
@@ -205,7 +202,6 @@ export function ContactPage({ snap, link }: PageProps) {
   return (
     <>
       <Hello snap={snap} link={link} page />
-      <Brief to={snap.settings.contactEmail} />
       <Faq />
     </>
   );

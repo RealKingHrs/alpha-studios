@@ -9,35 +9,30 @@ const slugify = (s: string) =>
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
-const when = (iso: string) => new Date(iso).toLocaleString();
-
-interface Invite {
+interface Access {
   member_id: string;
-  expires_at: string;
-  used_at: string | null;
+  email: string;
+  pin_set_at: string | null;
 }
 
 /** Admin only. The database refuses all of this for anyone else, whatever the screen shows. */
 export function Crew() {
   const db = supabase!;
   const [note, setNote] = useState<string | null>(null);
-  const [code, setCode] = useState<{ member: string; code: string } | null>(null);
+  const [shown, setShown] = useState<{ member: string; pin: string } | null>(null);
   const [editing, setEditing] = useState<string | null>(null);
+  const [emailFor, setEmailFor] = useState<string | null>(null);
+  const [emailDraft, setEmailDraft] = useState('');
   const [name, setName] = useState('');
   const [title, setTitle] = useState('');
+  const [email, setEmail] = useState('');
 
   const { data, error, loading, reload } = useAsync(async () => {
-    const [members, invites] = await Promise.all([
+    const [members, access] = await Promise.all([
       must<MemberRow[]>(db.from('members').select('*').order('created_at')),
-      must<Invite[]>(
-        db
-          .from('invites')
-          .select('member_id, expires_at, used_at')
-          .is('used_at', null)
-          .gt('expires_at', new Date().toISOString()),
-      ),
+      must<Access[]>(db.from('member_access').select('member_id, email, pin_set_at')),
     ]);
-    return { members, pending: new Map(invites.map((i) => [i.member_id, i])) };
+    return { members, access: new Map(access.map((a) => [a.member_id, a])) };
   }, 'crew');
 
   async function run(fn: () => PromiseLike<{ error: { message: string } | null }>, ok: string) {
@@ -47,10 +42,18 @@ export function Crew() {
   }
 
   async function issue(m: MemberRow) {
-    const { data: c, error: e } = await db.rpc('issue_invite', { p_member: m.id });
+    const { data: pin, error: e } = await db.rpc('issue_pin', { p_member: m.id });
     if (e) return setNote(e.message);
-    setCode({ member: m.name, code: c as string });
+    setShown({ member: m.name, pin: pin as string });
     setNote(null);
+    reload();
+  }
+
+  async function saveEmail(m: MemberRow, value: string) {
+    const { error: e } = await db.rpc('set_member_email', { p_member: m.id, p_email: value });
+    if (e) return setNote(e.message);
+    setEmailFor(null);
+    setNote(`${m.name}'s email is saved. Issue a PIN so they can sign in.`);
     reload();
   }
 
@@ -67,19 +70,25 @@ export function Crew() {
   return (
     <>
       <h1>Crew</h1>
+      <p className="hint">
+        Each person signs in with their own five-character PIN, then a six-digit code sent to the
+        email you set here. Issue the PIN, then pass it on privately.
+      </p>
       {note && (
         <p role="status" className="hint">
           {note}
         </p>
       )}
-      {code && (
+      {shown && (
         <section className="card code-card" aria-labelledby="code-title">
-          <h2 id="code-title">Invite code for {code.member}</h2>
-          <p className="code mono">{code.code}</p>
+          <h2 id="code-title">PIN for {shown.member}</h2>
+          <p className="code mono">{shown.pin}</p>
           <p className="hint">
-            Send it to them privately. It is shown only now, works once and expires in seven days.
+            Send it to them privately. It is shown only now. They set it on the five wheels (type
+            &quot;cryptex&quot; on the website, or open the portal) and enter the code sent to their
+            email. Reissuing replaces the old PIN.
           </p>
-          <button type="button" className="secondary" onClick={() => setCode(null)}>
+          <button type="button" className="secondary" onClick={() => setShown(null)}>
             Done
           </button>
         </section>
@@ -87,7 +96,7 @@ export function Crew() {
       {data.members.length === 0 && <Empty>No crew yet. Add the first member below.</Empty>}
       <ul className="rows">
         {data.members.map((m) => {
-          const pending = data.pending.get(m.id);
+          const acc = data.access.get(m.id);
           const isAdmin = m.role === 'admin';
           return (
             <li key={m.id} className="row">
@@ -98,64 +107,41 @@ export function Crew() {
                   {isAdmin ? 'Admin' : m.access_status}
                 </span>
                 <span className="grow" />
-                {!isAdmin && (
-                  <>
-                    <button type="button" className="secondary admin-only" onClick={() => issue(m)}>
-                      {m.access_status === 'invited' && !pending
-                        ? 'Issue invite'
-                        : 'Reissue invite'}
-                    </button>
-                    {pending && (
-                      <button
-                        type="button"
-                        className="secondary"
-                        onClick={() =>
-                          run(
-                            () =>
-                              db
-                                .from('invites')
-                                .update({ expires_at: new Date().toISOString() })
-                                .eq('member_id', m.id)
-                                .is('used_at', null),
-                            'The invite was revoked.',
-                          )
-                        }
-                      >
-                        Revoke invite
-                      </button>
-                    )}
-                    {m.access_status === 'active' && (
-                      <ConfirmButton
-                        label="Revoke access"
-                        confirmLabel="Lock the account"
-                        onConfirm={() =>
-                          run(
-                            () =>
-                              db
-                                .from('members')
-                                .update({ access_status: 'revoked' })
-                                .eq('id', m.id),
-                            `${m.name} can no longer sign in to edit. Their profile stays.`,
-                          )
-                        }
-                      />
-                    )}
-                    {m.access_status === 'revoked' && m.user_id && (
-                      <button
-                        type="button"
-                        className="secondary"
-                        onClick={() =>
-                          run(
-                            () =>
-                              db.from('members').update({ access_status: 'active' }).eq('id', m.id),
-                            `Access restored for ${m.name}.`,
-                          )
-                        }
-                      >
-                        Restore access
-                      </button>
-                    )}
-                  </>
+                <button
+                  type="button"
+                  className="secondary admin-only"
+                  disabled={!acc}
+                  title={acc ? undefined : 'Set their email first'}
+                  onClick={() => issue(m)}
+                >
+                  {acc?.pin_set_at ? 'Reissue PIN' : 'Issue PIN'}
+                </button>
+                {!isAdmin && m.access_status === 'active' && (
+                  <ConfirmButton
+                    label="Pause access"
+                    confirmLabel="Lock the account"
+                    onConfirm={() =>
+                      run(
+                        () =>
+                          db.from('members').update({ access_status: 'revoked' }).eq('id', m.id),
+                        `${m.name} can no longer edit. Their profile stays.`,
+                      )
+                    }
+                  />
+                )}
+                {!isAdmin && m.access_status === 'revoked' && (
+                  <button
+                    type="button"
+                    className="secondary"
+                    onClick={() =>
+                      run(
+                        () => db.from('members').update({ access_status: 'active' }).eq('id', m.id),
+                        `Access restored for ${m.name}.`,
+                      )
+                    }
+                  >
+                    Restore access
+                  </button>
                 )}
                 <button
                   type="button"
@@ -179,7 +165,56 @@ export function Crew() {
                   />
                 )}
               </div>
-              {pending && <p className="hint">Invite pending until {when(pending.expires_at)}.</p>}
+              <p className="hint">
+                {acc ? (
+                  <>
+                    Signs in with <strong>{acc.email}</strong>
+                    {acc.pin_set_at
+                      ? ` · PIN set ${new Date(acc.pin_set_at).toLocaleDateString()}`
+                      : ' · no PIN yet'}
+                  </>
+                ) : (
+                  'No email yet, so they cannot sign in.'
+                )}{' '}
+                <button
+                  type="button"
+                  className="link"
+                  onClick={() => {
+                    setEmailFor(emailFor === m.id ? null : m.id);
+                    setEmailDraft(acc?.email ?? '');
+                  }}
+                >
+                  {acc ? 'Change email' : 'Set email'}
+                </button>
+              </p>
+              {emailFor === m.id && (
+                <form
+                  className="editor"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    void saveEmail(m, emailDraft);
+                  }}
+                >
+                  <Field
+                    label={`Email for ${m.name}`}
+                    hint="Their GitHub email or any inbox they check. Changing it signs them out until they sign in again with a new code."
+                  >
+                    {(id) => (
+                      <input
+                        id={id}
+                        type="email"
+                        required
+                        maxLength={200}
+                        value={emailDraft}
+                        onChange={(e) => setEmailDraft(e.target.value)}
+                      />
+                    )}
+                  </Field>
+                  <button type="submit" className="primary admin-only">
+                    Save email
+                  </button>
+                </form>
+              )}
               {editing === m.id && (
                 <MemberEditor
                   key={m.id}
@@ -199,12 +234,25 @@ export function Crew() {
         className="card"
         onSubmit={async (e) => {
           e.preventDefault();
-          await run(
-            () => db.from('members').insert({ name, slug: slugify(name), role_title: title }),
-            `${name} was added. Issue an invite so they can join.`,
-          );
+          const { data: row, error: e1 } = await db
+            .from('members')
+            .insert({ name, slug: slugify(name), role_title: title })
+            .select('id')
+            .single();
+          if (e1 || !row) return setNote(e1?.message ?? 'Could not add the member.');
+          const { error: e2 } = await db.rpc('set_member_email', {
+            p_member: row.id,
+            p_email: email,
+          });
+          if (e2) return setNote(`${name} was added, but the email was refused: ${e2.message}`);
+          const { data: pin, error: e3 } = await db.rpc('issue_pin', { p_member: row.id });
+          if (e3) return setNote(e3.message);
+          setShown({ member: name, pin: pin as string });
+          setNote(null);
           setName('');
           setTitle('');
+          setEmail('');
+          reload();
         }}
       >
         <h2>Add a crew member</h2>
@@ -229,8 +277,20 @@ export function Crew() {
             />
           )}
         </Field>
+        <Field label="Email" hint="Where their sign-in code is sent.">
+          {(id) => (
+            <input
+              id={id}
+              type="email"
+              required
+              maxLength={200}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          )}
+        </Field>
         <button type="submit" className="primary admin-only" disabled={!slugify(name)}>
-          Add member
+          Add member and issue PIN
         </button>
       </form>
     </>

@@ -1,39 +1,30 @@
-import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import '../styles/base.css';
+import '../styles/wheels.css';
 import '../styles/portal.css';
 import { AuthProvider, useAuth } from './auth';
-import { Login } from './screens/Login';
-import { Pitch } from './screens/Pitch';
-import { Redeem } from './screens/Redeem';
+import { PinLogin } from './screens/PinLogin';
 import { Shell } from './Shell';
 import { configured } from './supabase';
 import { Loading, OfflineBanner } from './ui';
 
-function useHash() {
-  const [hash, setHash] = useState(location.hash);
-  useEffect(() => {
-    const on = () => setHash(location.hash);
-    addEventListener('hashchange', on);
-    return () => removeEventListener('hashchange', on);
-  }, []);
-  return hash;
-}
-
 function Gate() {
-  const { state } = useAuth();
-  const hash = useHash();
+  const { state, signOut } = useAuth();
   if (state.status === 'loading') return <Loading what="Checking your sign-in." />;
-  if (state.status === 'signed-out') return <Login />;
+  if (state.status === 'signed-out') return <PinLogin />;
   if (state.status === 'no-profile')
-    return hash === '#/invite' ? (
-      <Redeem email={state.email} />
-    ) : (
-      <main className="auth wide">
-        <Pitch email={state.email} />
-        <p>
-          <a href="#/invite">Have an invite code?</a>
-        </p>
+    return (
+      <main className="auth">
+        <section className="card">
+          <h1>No profile on this login</h1>
+          <p className="hint">
+            {state.email} is signed in, but it is not linked to a crew profile. Ask the admin to
+            check your email and issue you a new PIN, then sign in again.
+          </p>
+          <button type="button" className="secondary" onClick={() => void signOut()}>
+            Sign out
+          </button>
+        </section>
       </main>
     );
   return <Shell me={state.me} />;

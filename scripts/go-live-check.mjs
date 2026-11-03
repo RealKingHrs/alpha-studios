@@ -38,6 +38,14 @@ check(
   'Remove the lines this lists, then commit:\n' + leaks,
 );
 
+for (const [file, why] of [
+  ['supabase/functions/portal-pin/handler.ts', 'The PIN sign-in function'],
+  ['supabase/templates/otp.html', 'The sign-in code email'],
+  ['scripts/admin-sql.mjs', 'The admin setup script'],
+  ['docs/GO-LIVE.md', 'The go-live guide'],
+])
+  check(existsSync(file), `${why} is in the repo (${file})`, `Restore ${file}`);
+
 check(
   existsSync('.github/workflows/publish.yml'),
   'The publish workflow is in the repo',

@@ -54,6 +54,9 @@ export function pageMeta(
     case 'not-found':
       return { title: `Page not found | ${STUDIO}`, description: 'This address does not exist.' };
     default:
-      return { title: STUDIO, description: snap.settings.studioStatement };
+      return {
+        title: `${STUDIO}: native apps, web apps and APIs by a young crew`,
+        description: snap.settings.studioStatement,
+      };
   }
 }

@@ -85,7 +85,7 @@ export function AboutPage({ snap, link }: { snap: Snapshot; link: LinkFn }) {
           </h2>
           <p className="s-actions">
             <Magnetic>
-              <a className="s-btn s-btn--ink" href={link('/launchpad/')}>
+              <a className="s-btn s-btn--ink" href={link('/launchpad/#pitch')}>
                 Bring it to Launchpad
               </a>
             </Magnetic>

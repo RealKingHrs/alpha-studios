@@ -9,6 +9,7 @@ import { Count } from './Counters';
 import { Wordmark } from '../brand/Wordmark';
 import { ACCENTS, HEADLINE, HEADLINE_LOOP, accentFor, headlineText, stackOrder } from './data';
 import { Barcode } from './fx/Barcode';
+import { Ticker } from './fx/Ticker';
 import { DoodleArrow, DoodleWave, Starburst } from './fx/Doodles';
 import { Shapes } from './fx/Shapes';
 import { Stamp } from './fx/Stamp';
@@ -47,7 +48,7 @@ const section = (route: Route) =>
 
 /** The masthead: the wordmark, the issue line and the sections. It tucks away as you scroll down and returns
  * the moment you scroll up. A solid block slides under the link you point at and rests on the current page. */
-export function Header({ route, link }: { route: Route; link: LinkFn }) {
+export function Header({ route, link, snap }: { route: Route; link: LinkFn; snap: Snapshot }) {
   const here = section(route);
   const on = useMotionOn();
   const { scrollY } = useScroll();
@@ -67,9 +68,7 @@ export function Header({ route, link }: { route: Route; link: LinkFn }) {
         <a className="s-brand" href={link('/')} aria-label="Alpha Studios, home">
           <Wordmark />
         </a>
-        <p className="s-issue mono" aria-hidden="true">
-          Issue 01 · Made at twenty · Nov 2026
-        </p>
+        <Ticker snap={snap} />
         <nav aria-label="Main" className="s-nav" onPointerLeave={() => setHover(null)}>
           <ul>
             {NAV.map(([path, label], i) => (
@@ -370,14 +369,14 @@ export function Hero({ snap, link }: { snap: Snapshot; link: LinkFn }) {
 }
 
 /** The contents page, styled as a tracklist: where everything in this issue lives. */
-export function Contents() {
+export function Contents({ link }: { link: LinkFn }) {
   const items = [
     ['#vision', 'Manifesto', 'What we will not trade away'],
     ['#make', 'What we make', 'iOS, macOS, web, AI and APIs'],
     ['#work', 'The drops', 'Bioscanner and Velocity'],
     ['#process', 'How we build', 'Four steps, no surprises'],
     ['#crew', 'Cover stars', 'Five builders, all twenty'],
-    ['#brief', 'Start a project', 'Tell us what you are building'],
+    [link('/launchpad/#pitch'), 'Pitch an idea', 'Bring it to Launchpad, keep your name'],
   ] as const;
   return (
     <nav className="s-contents" aria-label="In this issue">

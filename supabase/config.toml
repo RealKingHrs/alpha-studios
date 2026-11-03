@@ -233,7 +233,7 @@ max_frequency = "1s"
 # Number of characters used in the email OTP.
 otp_length = 6
 # Number of seconds before the email OTP expires (defaults to 1 hour).
-otp_expiry = 3600
+otp_expiry = 600
 
 # Use a production-ready SMTP server
 # [auth.email.smtp]
@@ -427,3 +427,12 @@ enabled = true
 enabled = false
 client_id = "env(SUPABASE_AUTH_GITHUB_CLIENT_ID)"
 secret = "env(SUPABASE_AUTH_GITHUB_SECRET)"
+
+[functions.portal-pin]
+# Public by design: the function checks the PIN itself and rate limits every caller.
+verify_jwt = false
+
+# The sign-in email carries the six-digit code (the portal uses it, not the link).
+[auth.email.template.magic_link]
+subject = "Your Alpha Studios sign-in code"
+content_path = "./supabase/templates/otp.html"

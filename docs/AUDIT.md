@@ -1,5 +1,13 @@
 # Full audit, 3 November 2026 (updated after the batch 23 editorial redesign)
 
+## Batch 26 re-check (PIN and code sign-in, roles, Launchpad pitch, search)
+
+- Database: new migration adds `member_access` (email and PIN hash, admin read only, hash never readable), `pin_attempts`, `issue_pin`, `set_member_email`, service-only `pin_find` and `pin_link`; crew can no longer join or leave projects; crew can read Launchpad ideas; only the admin logs ideas. Role tests cover each rule.
+- `portal-pin` function: unit tests with fake dependencies, plus an end-to-end test against the real function on the local stack (PIN, code, session, link, crew rights only).
+- Browser check on the local stack: wheels on the site, hand-off to the portal, masked address, emailed six-digit code (local inbox), admin portal opens.
+- Launchpad pitch is an email form; no public page links to the portal; sitemap, robots, canonical and structured data are generated when `SITE_URL` is set.
+- Not verified: a hosted Supabase project, Gmail delivery, Google indexing, and animation smoothness in a real browser.
+
 ## Batch 25 re-check (Version 1)
 
 - Cover circle and ring removed; cursor no longer inverts the page; stamp, doodles, starburst, tickets, barcode added. Portal GitHub button hidden unless `VITE_PORTAL_GITHUB=1`.
