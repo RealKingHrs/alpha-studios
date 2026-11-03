@@ -17,9 +17,6 @@ import { STACK_STEP, canStack, stickyTopFor } from './motion/viewport';
 import { Magnetic } from './motion/Magnetic';
 import { SplitText } from './motion/SplitText';
 import { Reveal } from './Reveal';
-import { earn } from './achievementStore';
-import { XpPanel } from './Achievements';
-import { propRender } from './renders';
 import { WorkStage } from './WorkStage';
 
 export type LinkFn = (path: string) => string;
@@ -85,20 +82,7 @@ export function Header({ route, link }: { route: Route; link: LinkFn }) {
   );
 }
 
-export function Footer({
-  snap,
-  link,
-  fxAvailable,
-  fxOn,
-  onFx,
-}: {
-  snap: Snapshot;
-  link: LinkFn;
-  fxAvailable: boolean;
-  fxOn: boolean;
-  onFx: () => void;
-}) {
-  const email = snap.settings.contactEmail;
+export function Footer({ link }: { link: LinkFn }) {
   return (
     <footer className="s-footer">
       <div className="s-wrap s-footer-grid">
@@ -119,46 +103,10 @@ export function Footer({
             <li>
               <a href={link('/contact/')}>Contact</a>
             </li>
-            {email && (
-              <li>
-                <a href={`mailto:${email}`}>{email}</a>
-              </li>
-            )}
-            <li>
-              <a href={link('/portal/')} className="s-quiet">
-                Crew login
-              </a>
-            </li>
           </ul>
         </nav>
         <div className="s-footer-meta">
           <span className="mono">© 2026 Alpha Studios</span>
-          <XpPanel />
-          <a
-            className="case"
-            href={link('/launchpad/')}
-            aria-label="The Case: a golden briefcase that opens the Launchpad"
-            data-cursor="Open"
-            onClick={() => earn('the-case')}
-          >
-            <img
-              src={propRender(link, 'briefcase')}
-              alt=""
-              width="44"
-              height="44"
-              loading="lazy"
-              decoding="async"
-            />
-          </a>
-          <p className="nods">
-            The nods to shows and games we love are affectionate and unaffiliated. No logos,
-            characters or quotes.
-          </p>
-          {fxAvailable && (
-            <button type="button" className="s-toggle" aria-pressed={fxOn} onClick={onFx}>
-              Playful effects {fxOn ? 'on' : 'off'}
-            </button>
-          )}
         </div>
       </div>
     </footer>
@@ -209,7 +157,7 @@ function Rotor() {
 }
 
 /** The hero: the headline rises word by word, the mark draws itself, and everything drifts apart as you scroll. */
-export function Hero({ snap, link }: { snap: Snapshot; link: LinkFn }) {
+export function Hero({ snap }: { snap: Snapshot }) {
   const ref = useRef<HTMLElement>(null);
   const on = useMotionOn();
   const { scrollYProgress: p } = useScroll({ target: ref, offset: ['start start', 'end start'] });
@@ -287,14 +235,6 @@ export function Hero({ snap, link }: { snap: Snapshot; link: LinkFn }) {
           >
             <Mark className="s-hero-mark" draw />
           </motion.div>
-          <img
-            className="s-hero-3d"
-            src={propRender(link, 'alpha')}
-            alt=""
-            width="360"
-            height="360"
-            decoding="async"
-          />
           <Sticker text="ALPHA STUDIOS" className="s-hero-sticker" />
         </div>
       </div>

@@ -1,5 +1,4 @@
 import type { Snapshot } from '../content/schema';
-import { earn } from './achievementStore';
 import { accentFor } from './data';
 
 /** The tech behind our work as a periodic table: one tile per technology, heavier where more projects use it. */
@@ -31,11 +30,7 @@ export function Elements({ snap }: { snap: Snapshot }) {
           The Elements
         </h2>
         <p className="s-lede">What our work is made of. Heavier means more projects use it.</p>
-        <ul
-          className="el-grid"
-          onPointerEnter={() => earn('elements')}
-          onFocus={() => earn('elements')}
-        >
+        <ul className="el-grid">
           {tiles.map((t, i) => (
             <li key={t.name} className={`el a-${accentFor(i)}`}>
               <span className="el-n mono">{t.number}</span>

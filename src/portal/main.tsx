@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import '../styles/base.css';
 import '../styles/portal.css';
@@ -9,20 +10,31 @@ import { Shell } from './Shell';
 import { configured } from './supabase';
 import { Loading, OfflineBanner } from './ui';
 
+function useHash() {
+  const [hash, setHash] = useState(location.hash);
+  useEffect(() => {
+    const on = () => setHash(location.hash);
+    addEventListener('hashchange', on);
+    return () => removeEventListener('hashchange', on);
+  }, []);
+  return hash;
+}
+
 function Gate() {
   const { state } = useAuth();
+  const hash = useHash();
   if (state.status === 'loading') return <Loading what="Checking your sign-in." />;
   if (state.status === 'signed-out') return <Login />;
   if (state.status === 'no-profile')
-    return location.hash === '#/pitch' ? (
+    return hash === '#/invite' ? (
+      <Redeem email={state.email} />
+    ) : (
       <main className="auth wide">
         <Pitch email={state.email} />
         <p>
-          <a href="#/">Back</a>
+          <a href="#/invite">Have an invite code?</a>
         </p>
       </main>
-    ) : (
-      <Redeem email={state.email} />
     );
   return <Shell me={state.me} />;
 }

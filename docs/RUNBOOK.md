@@ -69,9 +69,9 @@ A burst of edits makes a burst of requests. The workflow's concurrency group kee
 - **Before launch, a lawyer must write the terms** for adopting a project: what ownership transfers, what the studio provides, what the founder keeps, and what happens if the founder moves on. The site only says terms are agreed in writing; it does not define them.
 - A locked credit cannot be changed or removed from the app. To correct a mistake on purpose, use the SQL editor (no signed-in user) and note it in the audit trail by hand.
 
-## 3D renders
+## AI suggestions for the profile line
 
-`npm run render:3d` needs Blender 5 (set `BLENDER` if it is not at `/Applications/Blender.app`). Commit the new files in `public/3d/` and `src/site/renders.json`. A new member shows the live SVG character until their render exists.
+The portal's Suggest button calls the `suggest-tagline` Edge Function, which needs a backend secret: `npx supabase secrets set ANTHROPIC_API_KEY=...` and `npx supabase functions deploy suggest-tagline`. The key never goes in the site or the repository. Each call costs a small amount, so set a spending limit with the provider. Without the key the button says suggestions are not set up and members write their own.
 
 ## Creating the single admin
 

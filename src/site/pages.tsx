@@ -2,7 +2,7 @@ import type { Snapshot } from '../content/schema';
 import { Portrait } from '../avatar/Portrait';
 import { contributorsWithCrew, platformLabel, projectLinks, statusLabel } from '../rooms';
 import { Elements } from './Elements';
-import { Facts, Shelf, Skills, Works } from './Dossier';
+import { Shelf, Skills, Works } from './Dossier';
 import { CrewLineup } from './CrewLineup';
 import { accentFor, languageShares, marqueeItems, memberAccent, stackOrder } from './data';
 import { Mark, Sticker } from './Mark';
@@ -80,7 +80,7 @@ function Hello({
 export function Home({ snap, link, asset }: PageProps) {
   return (
     <>
-      <Hero snap={snap} link={link} />
+      <Hero snap={snap} />
       <Marquee items={marqueeItems(snap)} accent="tomato" label="Platforms and technologies used" />
       <section id="work" data-section className="s-section" aria-labelledby="work-title">
         <div className="s-wrap">
@@ -98,7 +98,7 @@ export function Home({ snap, link, asset }: PageProps) {
       >
         <div className="s-wrap">
           <SectionHead num="02" eyebrow="Crew" title="The people behind it" id="crew-title" />
-          <CrewLineup members={snap.members} link={link} snap={snap} />
+          <CrewLineup members={snap.members} link={link} />
         </div>
       </section>
       <Hello snap={snap} link={link} />
@@ -167,7 +167,7 @@ export function CrewPage({ snap, link }: PageProps) {
       />
       <section className="s-section">
         <div className="s-wrap">
-          <CrewLineup members={snap.members} link={link} snap={snap} />
+          <CrewLineup members={snap.members} link={link} />
         </div>
       </section>
     </>
@@ -387,16 +387,10 @@ export function CrewProfile({ snap, slug, link }: PageProps & { slug: string }) 
           <h1 id="pt" className="display">
             <SplitText text={m.name} />
           </h1>
-          {m.codename && (
-            <p className="dossier-code mono">
-              aka {m.codename}
-              {m.tagline ? ` · ${m.tagline}` : ''}
-            </p>
-          )}
+          {m.codename && <p className="dossier-code mono">{m.codename}</p>}
           <Reveal delay={120}>
             <p className="s-lede">{m.bio}</p>
             <Skills skills={m.skills} />
-            <Facts member={m} />
             {Object.keys(m.links).length > 0 && (
               <ul className="s-links" aria-label="Links">
                 {Object.entries(m.links).map(([k, v]) => (
@@ -413,7 +407,7 @@ export function CrewProfile({ snap, slug, link }: PageProps & { slug: string }) 
             <p className="s-eyebrow mono s-space">Works</p>
             <Works snap={snap} slug={slug} link={link} />
             <p className="s-eyebrow mono s-space">Achievements</p>
-            <Shelf link={link} certs={snap.certifications.filter((c) => c.memberSlug === slug)} />
+            <Shelf certs={snap.certifications.filter((c) => c.memberSlug === slug)} />
           </Reveal>
         </div>
       </div>

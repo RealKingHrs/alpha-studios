@@ -1,6 +1,5 @@
 import type { Certification, Member, Snapshot } from '../content/schema';
 import type { LinkFn } from './parts';
-import { propRender } from './renders';
 
 const SLOTS = 4;
 
@@ -46,21 +45,32 @@ export function Works({ snap, slug, link }: { snap: Snapshot; slug: string; link
   );
 }
 
+const Cup = () => (
+  <svg viewBox="0 0 48 48" width="40" height="40" aria-hidden="true">
+    <path
+      d="M14 8h20v12a10 10 0 0 1-20 0z"
+      fill="var(--gold)"
+      stroke="var(--ink)"
+      strokeWidth="2.5"
+    />
+    <path
+      d="M14 12H6c0 7 3 10 8 10M34 12h8c0 7-3 10-8 10"
+      fill="none"
+      stroke="var(--ink)"
+      strokeWidth="2.5"
+    />
+    <path d="M24 30v8M16 40h16" stroke="var(--ink)" strokeWidth="3" strokeLinecap="round" />
+  </svg>
+);
+
 /** The achievements shelf: earned certificates as trophies, and open slots waiting for the next one. */
-export function Shelf({ certs, link }: { certs: Certification[]; link: LinkFn }) {
+export function Shelf({ certs }: { certs: Certification[] }) {
   const empty = Math.max(1, SLOTS - certs.length);
   return (
     <ul className="shelf" aria-label="Achievements">
       {certs.map((c) => (
         <li key={c.id} className="trophy">
-          <img
-            src={propRender(link, 'trophy')}
-            alt=""
-            width="56"
-            height="56"
-            loading="lazy"
-            decoding="async"
-          />
+          <Cup />
           <strong>{c.title}</strong>
           <span className="mono">
             {[c.issuer, c.issuedOn?.slice(0, 4)].filter(Boolean).join(' · ')}
@@ -82,25 +92,5 @@ export function Shelf({ certs, link }: { certs: Certification[]; link: LinkFn })
         </li>
       ))}
     </ul>
-  );
-}
-
-/** Currently, fun fact and pop pick as a short list of labelled lines. */
-export function Facts({ member }: { member: Member }) {
-  const rows = [
-    ['Currently', member.currently],
-    ['Fun fact', member.funFact],
-    ['Pop pick', member.popPick],
-  ].filter(([, v]) => v);
-  if (rows.length === 0) return null;
-  return (
-    <dl className="dossier-facts">
-      {rows.map(([k, v]) => (
-        <div key={k}>
-          <dt className="mono">{k}</dt>
-          <dd>{v}</dd>
-        </div>
-      ))}
-    </dl>
   );
 }

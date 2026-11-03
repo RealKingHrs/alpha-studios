@@ -972,22 +972,6 @@ a.s-chip:hover {
   gap: var(--space-2);
   color: var(--paper-2);
 }
-.s-toggle {
-  min-height: 36px;
-  padding: 0 16px;
-  background: transparent;
-  color: var(--paper);
-  border: 2px solid var(--paper-2);
-  border-radius: 999px;
-  font: inherit;
-  font-size: 0.9rem;
-  cursor: pointer;
-}
-.s-toggle[aria-pressed='true'] {
-  background: var(--sun);
-  color: var(--ink);
-  border-color: var(--sun);
-}
 
 /* ------------------------------------------------------------ reveal */
 html.reveal-on .reveal.is-waiting {
@@ -1309,8 +1293,6 @@ html.reveal-on .s-rule {
   inset: 0;
   z-index: 180;
   pointer-events: none;
-  /* Difference against whatever is underneath, so the cursor reads on paper, on every accent and on the ink footer. */
-  mix-blend-mode: difference;
 }
 .cursor.is-gone {
   opacity: 0;
@@ -1321,14 +1303,16 @@ html.reveal-on .s-rule {
   top: 0;
   left: 0;
 }
+/* Solid ink with a paper halo: readable on paper, on every accent and on the ink footer, and never see-through. */
 .cursor-ring {
   display: grid;
   place-items: center;
   width: 38px;
   height: 38px;
   margin: -19px 0 0 -19px;
-  border: 1.5px solid #fff;
+  border: 2px solid var(--ink);
   border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--paper);
   font-size: 0.78rem;
   font-weight: 500;
   letter-spacing: 0.04em;
@@ -1336,32 +1320,31 @@ html.reveal-on .s-rule {
     width 0.4s var(--ease),
     height 0.4s var(--ease),
     margin 0.4s var(--ease),
-    background 0.3s var(--ease),
     scale 0.2s var(--ease);
 }
 .cursor-ring.is-hot {
-  width: 62px;
-  height: 62px;
-  margin: -31px 0 0 -31px;
-  background: rgb(255 255 255 / 0.14);
+  width: 56px;
+  height: 56px;
+  margin: -28px 0 0 -28px;
 }
 .cursor-ring.has-label {
-  width: 92px;
-  height: 92px;
-  margin: -46px 0 0 -46px;
-  background: #fff;
-  color: #000;
-  border-color: #fff;
+  width: 84px;
+  height: 84px;
+  margin: -42px 0 0 -42px;
+  background: var(--ink);
+  color: var(--paper);
+  box-shadow: 0 0 0 3px var(--paper);
 }
 .cursor-ring.is-down {
   scale: 0.86;
 }
 .cursor-dot {
-  width: 8px;
-  height: 8px;
-  margin: -4px 0 0 -4px;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
   border-radius: 50%;
-  background: #fff;
+  background: var(--paper);
+  border: 2px solid var(--ink);
   transition: opacity 0.2s var(--ease);
 }
 .cursor-dot.is-hidden {
@@ -1706,34 +1689,7 @@ html.reduce-motion .orbit {
 }
 
 /* ---------------------------------------------------------------- crew dossier */
-.crew-tag em {
-  display: block;
-  font-style: normal;
-  font-size: 0.85rem;
-  color: var(--fg-soft);
-  margin-top: 0.3rem;
-  text-wrap: balance;
-}
-.crew-skills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
-  justify-content: center;
-  margin-top: 0.6rem;
-}
-.crew-skills b {
-  font-weight: 500;
-  font-size: 0.72rem;
-  padding: 0.15rem 0.55rem;
-  border: 1.5px solid var(--ink);
-  border-radius: 999px;
-}
-.crew-stats {
-  display: block;
-  margin-top: 0.6rem;
-  font-size: 0.7rem;
-  color: var(--ink);
-}
+
 .dossier-code {
   margin: -0.4rem 0 1rem;
   color: var(--fg-soft);
@@ -1833,271 +1789,11 @@ html.reduce-motion .orbit {
 }
 
 /* ---------------------------------------------------------------- launchpad */
-.founder-credit {
-  margin: 0 0 1rem;
-  font-size: 0.78rem;
-  padding: 0.4rem 0.8rem;
-  border: 1.5px solid var(--ink);
-  border-radius: 999px;
-  display: inline-block;
-}
-.lp-plan,
-.lp-wanted,
-.lp-adopted,
-.lp-terms {
-  padding: clamp(3rem, 8vw, 6rem) 0;
-}
-.lp-plan {
-  background: var(--ink);
-  color: var(--paper);
-}
-.lp-plan .s-eyebrow {
-  color: var(--paper);
-}
-.plan {
-  list-style: none;
-  padding: 0;
-  margin: 2.4rem 0 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 1.4rem;
-  counter-reset: none;
-}
-.plan li {
-  border-top: 3px solid var(--tomato);
-  padding-top: 1rem;
-}
-.plan-n {
-  display: block;
-  font-size: clamp(3rem, 6vw, 5rem);
-  line-height: 1;
-  color: var(--tomato);
-}
-.plan strong {
-  display: block;
-  margin: 0.4rem 0;
-  font-size: 1.15rem;
-}
-.plan p {
-  margin: 0;
-  color: var(--paper);
-  opacity: 0.85;
-}
-.board {
-  list-style: none;
-  padding: 0;
-  margin: 2rem 0 0;
-  display: grid;
-  gap: 0;
-  border: 2px solid var(--ink);
-  border-radius: 18px;
-  overflow: hidden;
-  background: var(--paper-2);
-}
-.board li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem 1.4rem;
-  border-bottom: 1.5px dashed var(--ink);
-}
-.board li:last-child {
-  border-bottom: 0;
-}
-.stars {
-  display: inline-flex;
-  gap: 4px;
-}
-.stars i {
-  width: 18px;
-  height: 18px;
-  clip-path: polygon(
-    50% 0,
-    62% 36%,
-    100% 38%,
-    70% 60%,
-    80% 100%,
-    50% 76%,
-    20% 100%,
-    30% 60%,
-    0 38%,
-    38% 36%
-  );
-  background: transparent;
-  box-shadow: inset 0 0 0 20px rgb(20 17 15 / 0.18);
-}
-.stars i.on {
-  box-shadow: none;
-  background: var(--gold);
-}
-.adopted {
-  list-style: none;
-  padding: 0;
-  margin: 1.4rem 0 0;
-  display: grid;
-  gap: 0.6rem;
-}
-.adopted a {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1rem 1.2rem;
-  border: 1.5px solid var(--ink);
-  border-radius: 14px;
-  color: inherit;
-  text-decoration: none;
-}
 
 /* ---------------------------------------------------------------- blender renders */
-.s-hero-3d {
-  position: absolute;
-  left: -4%;
-  bottom: -6%;
-  width: min(42%, 260px);
-  height: auto;
-  pointer-events: none;
-  filter: drop-shadow(0 18px 24px rgb(20 17 15 / 0.22));
-}
-html.fx .s-hero-3d {
-  animation: float3d 6s ease-in-out infinite;
-}
-@keyframes float3d {
-  50% {
-    transform: translateY(-14px) rotate(3deg);
-  }
-}
-.figure {
-  position: relative;
-  display: block;
-  width: 100%;
-  aspect-ratio: 1;
-}
-.figure img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  transition: opacity 0.25s var(--ease);
-}
-.figure-b,
-.figure-c {
-  opacity: 0;
-}
-.crew-card:hover .figure-b,
-.crew-card:focus-visible .figure-b,
-.figure.is-c .figure-c {
-  opacity: 1;
-}
-.crew-card:hover .figure-a,
-.crew-card:focus-visible .figure-a,
-.figure.is-c .figure-a {
-  opacity: 0;
-}
-.trophy img {
-  width: 56px;
-  height: 56px;
-  object-fit: contain;
-}
 
 /* ---------------------------------------------------------------- game layer */
-.toast-region {
-  position: fixed;
-  right: 1rem;
-  bottom: 1rem;
-  z-index: 170;
-  pointer-events: none;
-}
-.toast {
-  margin: 0;
-  display: grid;
-  gap: 0.15rem;
-  min-width: 14rem;
-  padding: 0.9rem 1.2rem;
-  border: 2px solid var(--ink);
-  border-radius: 16px;
-  background: var(--gold);
-  color: var(--ink);
-  box-shadow: 6px 6px 0 var(--ink);
-  animation:
-    toast-in 0.5s var(--ease) both,
-    toast-out 0.4s 3.6s var(--ease) forwards;
-}
-.toast-kicker {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-@keyframes toast-in {
-  from {
-    transform: translateY(24px) rotate(2deg);
-    opacity: 0;
-  }
-}
-@keyframes toast-out {
-  to {
-    transform: translateY(12px);
-    opacity: 0;
-  }
-}
-.xp {
-  font-size: 0.8rem;
-}
-.xp summary {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  cursor: pointer;
-}
-.xp-bar {
-  width: 90px;
-  height: 8px;
-  border-radius: 999px;
-  border: 1.5px solid currentColor;
-  overflow: hidden;
-}
-.xp-bar i {
-  display: block;
-  height: 100%;
-  background: var(--gold);
-}
-.xp ul {
-  list-style: none;
-  margin: 0.8rem 0 0;
-  padding: 0;
-  display: grid;
-  gap: 0.4rem;
-}
-.xp li {
-  display: grid;
-}
-.xp li span {
-  opacity: 0.8;
-}
-.xp li.got strong {
-  color: var(--gold);
-}
-.case {
-  display: inline-flex;
-  width: fit-content;
-  filter: drop-shadow(0 0 8px rgb(201 162 75 / 0.6));
-}
-html.fx .case {
-  animation: case-glow 2.6s ease-in-out infinite;
-}
-@keyframes case-glow {
-  50% {
-    filter: drop-shadow(0 0 16px rgb(201 162 75 / 1));
-    transform: translateY(-2px);
-  }
-}
-.nods {
-  margin: 0.8rem 0 0;
-  font-size: 0.72rem;
-  opacity: 0.75;
-  max-width: 34rem;
-}
+
 .el-grid {
   list-style: none;
   padding: 0;
@@ -2135,60 +1831,8 @@ html.fx .case {
   background: transparent;
   border-style: dashed;
 }
-html.build .shape,
-html.build .crew-disc,
-html.build .el,
-html.build .s-btn,
-html.build .trophy {
-  border-radius: 0 !important;
-}
-html.build .shape {
-  clip-path: none !important;
-  box-shadow:
-    inset -10px -10px 0 rgb(20 17 15 / 0.22),
-    inset 10px 10px 0 rgb(255 255 255 / 0.25);
-  image-rendering: pixelated;
-}
-html.build body {
-  background-image:
-    linear-gradient(rgb(20 17 15 / 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(20 17 15 / 0.05) 1px, transparent 1px);
-  background-size: 32px 32px;
-}
-html.reduce-motion .toast,
-html.reduce-motion .case {
-  animation: none;
-}
 
 /* ---------------------------------------------------------------- quick look */
-.quick {
-  margin-top: 0.8rem;
-  font-size: 0.9rem;
-}
-.quick summary {
-  cursor: pointer;
-  font-weight: 500;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-.quick .dossier-skills {
-  grid-template-columns: 1fr;
-}
-.quick .shelf {
-  grid-template-columns: 1fr 1fr;
-}
-.lp-props {
-  display: flex;
-  gap: 0.5rem;
-  margin: 1.4rem 0 0;
-}
-.lp-props img {
-  width: clamp(72px, 12vw, 120px);
-  height: auto;
-}
-.crew-card .figure.is-c .figure-b {
-  opacity: 0;
-}
 
 @media (max-width: 380px) {
   /* On the narrowest phones the pill steps aside instead, and the plain Contact link returns. */
@@ -2207,4 +1851,236 @@ html.reduce-motion .case {
     gap: 6px;
     font-size: 0.8rem;
   }
+}
+
+/* ---------------------------------------------------------------- founder credit */
+.founder-credit {
+  margin: 0 0 1rem;
+  font-size: 0.78rem;
+  padding: 0.4rem 0.8rem;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  display: inline-block;
+}
+
+/* ---------------------------------------------------------------- launchpad */
+.lp-hero {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(5.5rem, 12vw, 9rem) 0 clamp(3rem, 8vw, 6rem);
+  background: var(--accent);
+  color: var(--ink);
+}
+.lp-hero .s-eyebrow,
+.lp-hero .s-lede {
+  color: var(--ink);
+}
+.lp-hero-grid {
+  position: relative;
+  display: grid;
+  gap: 2rem;
+  align-items: center;
+}
+@media (min-width: 900px) {
+  .lp-hero-grid {
+    grid-template-columns: 1.3fr 1fr;
+  }
+}
+.lp-title {
+  font-size: clamp(2.8rem, 8vw, 6.4rem);
+  line-height: 0.98;
+  margin: 0.4rem 0 1rem;
+}
+.lp-floats {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.lp-float {
+  position: absolute;
+  display: block;
+  width: clamp(36px, 6vw, 84px);
+  aspect-ratio: 1;
+  background: var(--accent);
+  border: var(--line-w, 2px) solid var(--ink);
+  animation: lp-bob 7s ease-in-out infinite;
+}
+.lp-float--circle {
+  top: 12%;
+  right: 8%;
+  border-radius: 50%;
+}
+.lp-float--square {
+  top: 62%;
+  right: 22%;
+  border-radius: 14px;
+  animation-delay: -2s;
+  rotate: 14deg;
+}
+.lp-float--pill {
+  bottom: 10%;
+  left: 6%;
+  width: clamp(64px, 10vw, 140px);
+  aspect-ratio: 2.4;
+  border-radius: 999px;
+  animation-delay: -4s;
+}
+.lp-float--ring {
+  top: 20%;
+  left: 44%;
+  border-radius: 50%;
+  background: transparent;
+  animation-delay: -1s;
+}
+.lp-float--dot {
+  bottom: 18%;
+  right: 4%;
+  width: clamp(20px, 3vw, 36px);
+  border-radius: 50%;
+  animation-delay: -3s;
+}
+@keyframes lp-bob {
+  50% {
+    transform: translateY(-18px) rotate(6deg);
+  }
+}
+.lp-hero-art {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 260px;
+}
+.lp-rocket {
+  width: min(46%, 190px);
+  animation: lp-launch 4.5s ease-in-out infinite;
+  filter: drop-shadow(8px 10px 0 rgb(20 17 15 / 0.2));
+}
+@keyframes lp-launch {
+  0%,
+  100% {
+    transform: translateY(8px) rotate(-6deg);
+  }
+  50% {
+    transform: translateY(-22px) rotate(4deg);
+  }
+}
+.lp-flame {
+  transform-origin: 60px 100px;
+  animation: lp-flicker 0.5s ease-in-out infinite alternate;
+}
+@keyframes lp-flicker {
+  to {
+    transform: scaleY(1.25);
+  }
+}
+.lp-sticker {
+  position: absolute;
+  right: 4%;
+  top: 0;
+}
+.lp-section {
+  padding: clamp(3.5rem, 9vw, 7rem) 0;
+}
+.lp-section--alt {
+  background: var(--paper-2);
+}
+.lp-cards {
+  list-style: none;
+  padding: 0;
+  margin: 2.4rem 0 0;
+  display: grid;
+  gap: 1.2rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+.lp-card {
+  height: 100%;
+  padding: 1.6rem;
+  background: var(--accent);
+  color: var(--ink);
+  border: var(--line-w, 2px) solid var(--ink);
+  border-radius: 22px;
+  transition:
+    transform 0.4s var(--ease),
+    box-shadow 0.4s var(--ease);
+}
+.lp-card:hover {
+  transform: translateY(-8px) rotate(-1.2deg);
+  box-shadow: 8px 10px 0 var(--ink);
+}
+.lp-card h3 {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+}
+.lp-card p {
+  margin: 0;
+}
+.lp-empty {
+  margin-top: 1.6rem;
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  padding: 1.6rem;
+  border: 2px dashed var(--ink);
+  border-radius: 22px;
+}
+.lp-empty-plus {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 72px;
+  height: 72px;
+  border: 2px dashed var(--ink);
+  border-radius: 50%;
+  font-size: 2.4rem;
+}
+.lp-empty p {
+  margin: 0;
+}
+.lp-adopted {
+  list-style: none;
+  padding: 0;
+  margin: 1.6rem 0 0;
+  display: grid;
+  gap: 0.6rem;
+}
+.lp-adopted a {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.2rem;
+  border: 1.5px solid var(--ink);
+  border-radius: 14px;
+  color: inherit;
+  text-decoration: none;
+}
+.lp-faq {
+  max-width: 48rem;
+}
+.lp-faq details {
+  border-bottom: 1.5px solid var(--ink);
+  padding: 1rem 0;
+}
+.lp-faq summary {
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+.lp-faq details p {
+  margin: 0.7rem 0 0;
+}
+.lp-final {
+  padding: clamp(4rem, 10vw, 8rem) 0;
+  background: var(--accent);
+  color: var(--ink);
+  text-align: center;
+}
+.lp-final h2 {
+  font-size: clamp(2.4rem, 7vw, 5rem);
+  margin: 0 0 1.6rem;
+}
+html.reduce-motion .lp-float,
+html.reduce-motion .lp-rocket,
+html.reduce-motion .lp-flame {
+  animation: none;
 }

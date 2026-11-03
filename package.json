@@ -17,7 +17,6 @@
     "test:rls": "RLS=1 vitest run tests/rls",
     "icons": "tsx scripts/icons.ts",
     "content:check": "tsx scripts/content-check.ts",
-    "render:3d": "tsx scripts/render-3d.ts",
     "sizes": "tsx scripts/sizes.ts",
     "wordmark": "tsx scripts/wordmark.ts",
     "placeholders": "tsx scripts/placeholders.ts",

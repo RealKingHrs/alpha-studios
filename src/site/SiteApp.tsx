@@ -4,7 +4,7 @@ import { Intro } from '../intro/Intro';
 import { pageMeta } from '../meta';
 import { matchRoute } from '../routes';
 import { usePathname } from '../router';
-import { hasSeenIntro, markIntroSeen, safeGet, safeSet } from '../util/storage';
+import { hasSeenIntro, markIntroSeen } from '../util/storage';
 import { MotionProvider, useIsoLayoutEffect } from './motion/context';
 import { WIPE } from './motion/helpers';
 import { Cursor } from './motion/Cursor';
@@ -22,7 +22,6 @@ import {
   PortalDoor,
   WorkPage,
 } from './pages';
-import { AchievementToast, useBuildMode, useRouteAchievements } from './Achievements';
 import { LaunchpadPage } from './Launchpad';
 import { Footer, Header, SectionIndex } from './parts';
 
@@ -42,7 +41,6 @@ export function SiteApp({
   const link = useCallback((path: string) => base + path.replace(/^\//, ''), [base]);
 
   const [allowed, setAllowed] = useState(false); // false on the server and until the first check: nothing animates
-  const [pref, setPref] = useState(true);
   const [fine, setFine] = useState(false);
   const [introDone, setIntroDone] = useState(true);
   const [phase, setPhase] = useState<WipePhase>('idle');
@@ -56,7 +54,6 @@ export function SiteApp({
     const reduced =
       matchMedia('(prefers-reduced-motion: reduce)').matches || q.get('motion') === 'reduce';
     setAllowed(!reduced);
-    setPref(safeGet('alpha:fx') !== '0');
     setFine(matchMedia('(pointer: fine)').matches);
     setIntroDone(
       !(firstVisit && matchRoute(location.pathname, base, snap).name === 'home' && !reduced),
@@ -65,9 +62,7 @@ export function SiteApp({
     document.documentElement.classList.add('ready');
   }, [base, snap, firstVisit]);
 
-  useRouteAchievements(route);
-  useBuildMode();
-  const enabled = allowed && pref;
+  const enabled = allowed;
   useEffect(() => {
     document.documentElement.classList.toggle('fx', enabled && fine);
     return () => document.documentElement.classList.remove('fx');
@@ -160,21 +155,11 @@ export function SiteApp({
         </a>
         <Header route={route} link={link} />
         <main id="main">{page}</main>
-        <Footer
-          snap={snap}
-          link={link}
-          fxAvailable={allowed}
-          fxOn={enabled}
-          onFx={() => {
-            safeSet('alpha:fx', pref ? '0' : '1');
-            setPref(!pref);
-          }}
-        />
+        <Footer link={link} />
         {route.name === 'home' && <SectionIndex labels={HOME_SECTIONS} />}
         <SmoothScroll enabled={enabled} />
         {enabled && fine && <Cursor />}
         <PageWipe phase={phase} />
-        <AchievementToast />
         <div className="visually-hidden" role="status" aria-live="polite">
           {announce}
         </div>

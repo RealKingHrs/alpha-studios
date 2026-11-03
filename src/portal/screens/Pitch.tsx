@@ -23,13 +23,15 @@ export const HELP = [
 
 export const STATUS_LABEL: Record<SubmissionRow['status'], string> = {
   new: 'Sent',
-  reviewing: 'Being reviewed',
+  reviewing: 'Being looked at',
   approved: 'Approved',
   declined: 'Not this time',
 };
 
-/** A grid of pressable tiles, like slots to fill. Pressed tiles are the chosen ones. */
-function Slots({
+const STEPS = ['About you', 'Your idea', 'How we can help'] as const;
+
+/** A grid of pressable tiles. Pressed tiles are the chosen ones. */
+function Tiles({
   label,
   options,
   value,
@@ -63,14 +65,9 @@ function Slots({
   );
 }
 
-/** Anyone signed in can pitch a project, with or without a crew profile. Pitches are private to the pitcher and the admin. */
-export function Pitch({ email: known = '', name: given = '' }: { email?: string; name?: string }) {
+/** For newcomers: a gentle three-step way to share an idea. Pitches are private to the sender and the studio. */
+export function Pitch({ email }: { email: string }) {
   const { signOut } = useAuth();
-  const session = useAsync<string>(
-    async () => known || (await supabase?.auth.getSession())?.data.session?.user.email || '',
-    'email',
-  );
-  const email = session.data ?? known;
   const mine = useAsync<SubmissionRow[]>(
     async () =>
       supabase
@@ -78,20 +75,28 @@ export function Pitch({ email: known = '', name: given = '' }: { email?: string;
         : [],
     'mine',
   );
-  const [name, setName] = useState(given);
+  const [step, setStep] = useState(0);
+  const [sent, setSent] = useState(false);
+  const [name, setName] = useState('');
+  const [site, setSite] = useState('');
   const [project, setProject] = useState('');
   const [pitch, setPitch] = useState('');
   const [platforms, setPlatforms] = useState<string[]>([]);
   const [help, setHelp] = useState<string[]>([]);
-  const [site, setSite] = useState('');
   const [busy, setBusy] = useState(false);
-  const [msg, setMsg] = useState<{ kind: 'ok' | 'error'; text: string } | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  async function send(e: React.FormEvent) {
-    e.preventDefault();
+  const ready = [
+    name.trim().length > 0,
+    project.trim().length > 0 && pitch.trim().length > 0,
+    true,
+  ][step];
+
+  async function send() {
     if (!supabase) return;
     setBusy(true);
-    const { error } = await supabase.from('submissions').insert({
+    setError(null);
+    const { error: e } = await supabase.from('submissions').insert({
       pitcher_name: name.trim(),
       contact_email: email,
       project_name: project.trim(),
@@ -101,117 +106,175 @@ export function Pitch({ email: known = '', name: given = '' }: { email?: string;
       links: site.trim() ? { site: site.trim() } : {},
     });
     setBusy(false);
-    if (error) return setMsg({ kind: 'error', text: error.message });
-    setMsg({
-      kind: 'ok',
-      text: 'Pitch sent. The team reads every one, and you will see its status below.',
-    });
+    if (e) return setError(e.message);
+    setSent(true);
+    mine.reload();
+  }
+
+  function again() {
+    setSent(false);
+    setStep(0);
     setProject('');
     setPitch('');
     setPlatforms([]);
     setHelp([]);
     setSite('');
-    mine.reload();
   }
 
   return (
     <>
-      <h1>Pitch a project</h1>
+      <h1>Share your idea</h1>
       <p className="hint">
-        Signed in as {email}. Tell us what you are building and where you are stuck. If the team
-        approves, we adopt it and credit you as its founder, permanently. Terms are agreed in
-        writing before anything is adopted, so pitching commits nobody.
+        We are so glad you are here. Three quick steps, no wrong answers. You are signed in as{' '}
+        {email}.
       </p>
-      <form onSubmit={send} className="card" aria-labelledby="pitch-form">
-        <h2 id="pitch-form">The idea</h2>
-        <Field label="Your name">
-          {(id) => (
-            <input
-              id={id}
-              required
-              maxLength={80}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          )}
-        </Field>
-        <Field label="Project name">
-          {(id) => (
-            <input
-              id={id}
-              required
-              maxLength={80}
-              value={project}
-              onChange={(e) => setProject(e.target.value)}
-            />
-          )}
-        </Field>
-        <Field
-          label="The pitch"
-          hint={`${pitch.length} of 3000 characters. What is it, who is it for, how far along are you?`}
-        >
-          {(id) => (
-            <textarea
-              id={id}
-              required
-              rows={7}
-              maxLength={3000}
-              value={pitch}
-              onChange={(e) => setPitch(e.target.value)}
-            />
-          )}
-        </Field>
-        <Slots label="Platforms" options={PLATFORMS} value={platforms} onChange={setPlatforms} />
-        <Slots label="What help do you want?" options={HELP} value={help} onChange={setHelp} />
-        <Field label="A link" hint="Optional: a repository, prototype or page.">
-          {(id) => (
-            <input
-              id={id}
-              type="url"
-              placeholder="https://"
-              value={site}
-              onChange={(e) => setSite(e.target.value)}
-            />
-          )}
-        </Field>
-        <button type="submit" className="primary" disabled={busy}>
-          Send the pitch
-        </button>
-        {msg && (
-          <p
-            role={msg.kind === 'error' ? 'alert' : 'status'}
-            className={msg.kind === 'error' ? 'error' : 'hint'}
-          >
-            {msg.text}
-          </p>
-        )}
-      </form>
 
-      <h2>Your pitches</h2>
+      {sent ? (
+        <section className="card pitch-done" aria-labelledby="done-title">
+          <p className="pitch-spark display" aria-hidden="true">
+            ✦
+          </p>
+          <h2 id="done-title">Your idea is on its way</h2>
+          <p>Thank you for sharing it. That took courage, and we are excited to read it.</p>
+          <button type="button" className="secondary" onClick={again}>
+            Share another idea
+          </button>
+        </section>
+      ) : (
+        <form
+          className="card"
+          aria-labelledby="step-title"
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (step < 2) setStep(step + 1);
+            else void send();
+          }}
+        >
+          <ol className="pitch-steps" aria-label="Progress">
+            {STEPS.map((t, i) => (
+              <li
+                key={t}
+                aria-current={i === step ? 'step' : undefined}
+                className={i <= step ? 'on' : ''}
+              >
+                <span>{i + 1}</span> {t}
+              </li>
+            ))}
+          </ol>
+          <h2 id="step-title">{STEPS[step]}</h2>
+
+          {step === 0 && (
+            <>
+              <Field label="What should we call you?">
+                {(id) => (
+                  <input
+                    id={id}
+                    required
+                    maxLength={80}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                )}
+              </Field>
+              <Field
+                label="A link to your work"
+                hint="Optional. A page, a repository, anything you are proud of."
+              >
+                {(id) => (
+                  <input
+                    id={id}
+                    type="url"
+                    placeholder="https://"
+                    value={site}
+                    onChange={(e) => setSite(e.target.value)}
+                  />
+                )}
+              </Field>
+            </>
+          )}
+
+          {step === 1 && (
+            <>
+              <Field label="What is it called?" hint="A working name is fine.">
+                {(id) => (
+                  <input
+                    id={id}
+                    required
+                    maxLength={80}
+                    value={project}
+                    onChange={(e) => setProject(e.target.value)}
+                  />
+                )}
+              </Field>
+              <Field
+                label="Tell us about it"
+                hint={`${pitch.length} of 3000 characters. What is it, and who is it for?`}
+              >
+                {(id) => (
+                  <textarea
+                    id={id}
+                    required
+                    rows={6}
+                    maxLength={3000}
+                    value={pitch}
+                    onChange={(e) => setPitch(e.target.value)}
+                  />
+                )}
+              </Field>
+              <Tiles
+                label="Where would it live?"
+                options={PLATFORMS}
+                value={platforms}
+                onChange={setPlatforms}
+              />
+            </>
+          )}
+
+          {step === 2 && (
+            <Tiles label="What would help most?" options={HELP} value={help} onChange={setHelp} />
+          )}
+
+          <div className="row">
+            {step > 0 && (
+              <button type="button" className="secondary" onClick={() => setStep(step - 1)}>
+                Back
+              </button>
+            )}
+            <button type="submit" className="primary" disabled={!ready || busy}>
+              {step < 2 ? 'Next' : 'Send my idea'}
+            </button>
+          </div>
+          {error && (
+            <p role="alert" className="error">
+              {error}
+            </p>
+          )}
+        </form>
+      )}
+
+      <h2>Your ideas</h2>
       {mine.loading ? (
-        <Loading what="Loading your pitches." />
+        <Loading what="Loading your ideas." />
       ) : mine.error ? (
         <ErrorState message={mine.error} onRetry={mine.reload} />
       ) : mine.data?.length ? (
-        <ul className="pitch-list" aria-label="Your pitches">
+        <ul className="pitch-list" aria-label="Your ideas">
           {mine.data.map((s) => (
             <li key={s.id} className="card">
               <strong>{s.project_name}</strong>
               <span className={`status status-${s.status}`}>{STATUS_LABEL[s.status]}</span>
-              {s.reviewer_notes && <p className="hint">Team notes: {s.reviewer_notes}</p>}
+              {s.reviewer_notes && <p className="hint">A note from us: {s.reviewer_notes}</p>}
             </li>
           ))}
         </ul>
       ) : (
-        <Empty>No pitches yet.</Empty>
+        <Empty>Nothing here yet. Your first idea will show up here.</Empty>
       )}
-      {!given && (
-        <p>
-          <button type="button" className="link" onClick={() => void signOut()}>
-            Sign out
-          </button>
-        </p>
-      )}
+      <p>
+        <button type="button" className="link" onClick={() => void signOut()}>
+          Sign out
+        </button>
+      </p>
     </>
   );
 }
