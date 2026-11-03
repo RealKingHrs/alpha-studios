@@ -60,12 +60,12 @@ export class Tween {
     const k = (now - this.t0) / this.dur;
     return k >= 1 ? this.to : this.from + (this.to - this.from) * this.ease(k);
   }
-  /** Duration 0 jumps straight to the target. */
-  go(target: number, now: number, durationSeconds: number) {
+  /** Duration 0 jumps straight to the target. `startAt` delays the start (it must not be before `now`). */
+  go(target: number, now: number, durationSeconds: number, startAt = now) {
     if (target === this.to) return;
     this.from = this.value(now);
     this.to = target;
-    this.t0 = now;
+    this.t0 = startAt;
     this.dur = durationSeconds;
   }
 }

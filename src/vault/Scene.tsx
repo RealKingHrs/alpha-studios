@@ -1,12 +1,24 @@
 /* eslint-disable react-hooks/immutability -- frame callbacks mutate shared camera state outside render */
 import { Environment, Lightformer, MeshReflectorMaterial } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import {
+  Component,
+  Suspense,
+  lazy,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react';
 import * as THREE from 'three';
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
 import { BOWL_PATH, BOWL_TRANSFORM, MARK_VIEWBOX, STEM_PATH } from '../brand/mark';
 import type { Snapshot } from '../content/schema';
 import { stats, transferredBytes } from '../dev/stats';
+import { Bust } from './Bust';
+import { isTap, useCursor } from './interact';
 import {
   ALCOVE_Z,
   CORRIDOR,
@@ -15,6 +27,8 @@ import {
   CREW_SPAN_DEG,
   DOOR_Z,
   HALL_Z,
+  ROOM,
+  roomSide,
   bustPlacement,
   pedestalPosition,
   type Pose,
@@ -22,7 +36,7 @@ import {
 } from './layout';
 import { createFrameMonitor, type Mode } from './mode';
 import type { Tokens } from './palette';
-import { blendPose, poseAt } from './path';
+import { blendPose, poseAt, roomPoseAt } from './path';
 import type { Tween } from './tween';
 
 /** Shared, mutable camera state. Lives in a ref so frames never trigger React renders. */
@@ -30,6 +44,9 @@ export interface Ctrl {
   progress: Tween;
   detail: Tween;
   detailPose: Pose | null;
+  /** 0 at the pedestal, 1 in the doorway, 2 inside the room. */
+  room: Tween;
+  roomPoses: [Pose, Pose, Pose] | null;
   pointer: { x: number; y: number };
   smooth: { x: number; y: number };
   reduce: boolean;
@@ -47,15 +64,12 @@ interface SceneProps {
   onPick: (path: string) => void;
   /** True when pointer movement may shift the view. */
   parallax: boolean;
+  /** Project whose room is mounted, or null. */
+  roomIndex: number | null;
+  base: string;
+  onRoomReady: () => void;
+  onRoomError: () => void;
 }
-
-const useCursor = () => ({
-  onPointerOver: () => void (document.body.style.cursor = 'pointer'),
-  onPointerOut: () => void (document.body.style.cursor = ''),
-});
-
-/** A click that was really a swipe must not open anything. */
-const isTap = (e: { delta: number }) => e.delta < 6;
 
 function CameraRig({ stops, ctrl, parallax }: Pick<SceneProps, 'stops' | 'ctrl' | 'parallax'>) {
   const camera = useThree((s) => s.camera);
@@ -67,6 +81,8 @@ function CameraRig({ stops, ctrl, parallax }: Pick<SceneProps, 'stops' | 'ctrl' 
     let pose = poseAt(stops, c.progress.value(now));
     const d = c.detail.value(now);
     if (c.detailPose && d > 0.0005) pose = blendPose(pose, c.detailPose, d);
+    const r = c.room.value(now);
+    if (c.roomPoses && r > 0.0005) pose = roomPoseAt(c.roomPoses, r);
     c.smooth.x += (c.pointer.x - c.smooth.x) * 0.06;
     c.smooth.y += (c.pointer.y - c.smooth.y) * 0.06;
     const k = parallax && !c.reduce ? 1 : 0;
@@ -250,7 +266,21 @@ function Ribs({ tokens }: { tokens: Tokens }) {
   );
 }
 
-function Shell({ tokens }: { tokens: Tokens }) {
+/** Wall pieces along z, leaving a gap at each doorway. */
+function wallPieces(gaps: number[]): Array<{ z0: number; z1: number }> {
+  const half = ROOM.doorW / 2;
+  const cuts = [...gaps].sort((a, b) => b - a);
+  const pieces: Array<{ z0: number; z1: number }> = [];
+  let from = CORRIDOR.front;
+  for (const g of cuts) {
+    pieces.push({ z0: from, z1: g + half });
+    from = g - half;
+  }
+  pieces.push({ z0: from, z1: CORRIDOR.back });
+  return pieces;
+}
+
+function Shell({ tokens, doorSides }: { tokens: Tokens; doorSides: Array<-1 | 1> }) {
   const len = CORRIDOR.front - CORRIDOR.back;
   const cz = (CORRIDOR.front + CORRIDOR.back) / 2;
   const w = CORRIDOR.width;
@@ -258,14 +288,45 @@ function Shell({ tokens }: { tokens: Tokens }) {
   const dark = <meshStandardMaterial color={tokens.obsidian} roughness={0.95} metalness={0} />;
   return (
     <group>
-      <mesh position={[-w / 2, h / 2, cz]}>
-        <boxGeometry args={[0.3, h, len]} />
-        {dark}
-      </mesh>
-      <mesh position={[w / 2, h / 2, cz]}>
-        <boxGeometry args={[0.3, h, len]} />
-        {dark}
-      </mesh>
+      {([-1, 1] as const).map((side) => {
+        const gaps = doorSides.includes(side) ? [HALL_Z] : [];
+        return (
+          <group key={side}>
+            {wallPieces(gaps).map((p) => (
+              <mesh key={p.z0} position={[side * (w / 2), h / 2, (p.z0 + p.z1) / 2]}>
+                <boxGeometry args={[0.3, h, p.z0 - p.z1]} />
+                {dark}
+              </mesh>
+            ))}
+            {gaps.length > 0 && (
+              <>
+                <mesh position={[side * (w / 2), (h + ROOM.doorH) / 2, HALL_Z]}>
+                  <boxGeometry args={[0.3, h - ROOM.doorH, ROOM.doorW]} />
+                  {dark}
+                </mesh>
+                {/* chrome frame around the doorway */}
+                {[-1, 1].map((k) => (
+                  <mesh
+                    key={k}
+                    position={[
+                      side * (w / 2),
+                      ROOM.doorH / 2,
+                      HALL_Z + (k * (ROOM.doorW + 0.12)) / 2,
+                    ]}
+                  >
+                    <boxGeometry args={[0.36, ROOM.doorH, 0.12]} />
+                    <meshStandardMaterial color={tokens.chrome} roughness={0.25} metalness={0.9} />
+                  </mesh>
+                ))}
+                <mesh position={[side * (w / 2), ROOM.doorH, HALL_Z]}>
+                  <boxGeometry args={[0.36, 0.12, ROOM.doorW + 0.24]} />
+                  <meshStandardMaterial color={tokens.chrome} roughness={0.25} metalness={0.9} />
+                </mesh>
+              </>
+            )}
+          </group>
+        );
+      })}
       <mesh position={[0, h, cz]}>
         <boxGeometry args={[w, 0.3, len]} />
         {dark}
@@ -334,54 +395,6 @@ function Pedestal({
         {...cursor}
       >
         <cylinderGeometry args={[0.9, 0.9, 2.8, 12]} />
-      </mesh>
-    </group>
-  );
-}
-
-function Bust({
-  tokens,
-  position,
-  rotY,
-  onPick,
-}: {
-  tokens: Tokens;
-  position: [number, number, number];
-  rotY: number;
-  onPick: () => void;
-}) {
-  const cursor = useCursor();
-  const clay = <meshStandardMaterial color={tokens.silver} roughness={0.85} metalness={0} />;
-  return (
-    <group position={position} rotation={[0, rotY, 0]}>
-      <mesh position={[0, 0.45, 0]}>
-        <cylinderGeometry args={[0.3, 0.34, 0.9, 32]} />
-        <meshStandardMaterial color={tokens.graphite} roughness={0.5} metalness={0.3} />
-      </mesh>
-      <mesh position={[0, 1.02, 0]} scale={[1.2, 0.6, 0.7]}>
-        <sphereGeometry args={[0.33, 24, 16]} />
-        {clay}
-      </mesh>
-      <mesh position={[0, 1.27, 0]}>
-        <cylinderGeometry args={[0.07, 0.09, 0.16, 16]} />
-        {clay}
-      </mesh>
-      <mesh position={[0, 1.46, 0]}>
-        <sphereGeometry args={[0.17, 24, 16]} />
-        {clay}
-      </mesh>
-      {/* A small nose marks the front of the placeholder */}
-      <mesh position={[0, 1.45, 0.17]}>
-        <sphereGeometry args={[0.03, 12, 8]} />
-        {clay}
-      </mesh>
-      <mesh
-        position={[0, 1, 0]}
-        visible={false}
-        onClick={(e) => isTap(e) && (e.stopPropagation(), onPick())}
-        {...cursor}
-      >
-        <cylinderGeometry args={[0.45, 0.45, 2, 10]} />
       </mesh>
     </group>
   );
@@ -529,6 +542,25 @@ function Lights({
   );
 }
 
+const Room = lazy(() => import('./rooms/Room'));
+
+/** If a room fails to load or draw, tell the page and leave the corridor working. */
+class RoomBoundary extends Component<
+  { onError: () => void; children: ReactNode },
+  { failed: boolean }
+> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  componentDidCatch() {
+    this.props.onError();
+  }
+  render() {
+    return this.state.failed ? null : this.props.children;
+  }
+}
+
 export default function Scene(props: SceneProps) {
   const { snap, tokens, mode, ctrl, onPick } = props;
   const n = snap.projects.length;
@@ -565,7 +597,7 @@ export default function Scene(props: SceneProps) {
       <Lights tokens={tokens} mode={mode} pedestals={pedestalXs} />
       <CameraRig stops={props.stops} ctrl={ctrl} parallax={props.parallax} />
       <Telemetry dev={props.dev} mode={mode} onReady={props.onReady} onSlow={props.onSlow} />
-      <Shell tokens={tokens} />
+      <Shell tokens={tokens} doorSides={[...new Set(snap.projects.map((_, i) => roomSide(i)))]} />
       <Floor tokens={tokens} mode={mode} />
       <AlphaLogo tokens={tokens} mode={mode} reduce={ctrl.reduce} />
       {snap.projects.map((p, i) => (
@@ -593,6 +625,21 @@ export default function Scene(props: SceneProps) {
       })}
       <Alcove tokens={tokens} />
       <KeyholeDoor tokens={tokens} onPick={() => onPick('/portal/')} />
+      {props.roomIndex !== null && (
+        <RoomBoundary key={props.roomIndex} onError={props.onRoomError}>
+          <Suspense fallback={null}>
+            <Room
+              snap={snap}
+              index={props.roomIndex}
+              tokens={tokens}
+              reduce={ctrl.reduce}
+              base={props.base}
+              onReady={props.onRoomReady}
+              onPick={onPick}
+            />
+          </Suspense>
+        </RoomBoundary>
+      )}
     </>
   );
 }

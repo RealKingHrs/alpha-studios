@@ -20,6 +20,7 @@ export function buildSnapshot(rows: Rows, now = new Date()): Snapshot {
     generatedAt: now.toISOString(),
     settings: {
       studioStatement: rows.settings.studio_statement,
+      contactEmail: rows.settings.contact_email ?? undefined,
       introEnabled: rows.settings.intro_enabled,
       soundDefault: 'off',
     },
@@ -36,6 +37,7 @@ export function buildSnapshot(rows: Rows, now = new Date()): Snapshot {
       slug: p.slug,
       name: p.name,
       summary: p.summary,
+      story: p.story,
       status: p.status,
       platforms: p.platforms,
       tech: p.tech,

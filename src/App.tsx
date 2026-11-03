@@ -10,13 +10,16 @@ import {
   NotFound,
   Portal,
   ProjectPage,
+  RoomPage,
 } from './pages/pages';
 import { pageMeta } from './meta';
 import { BEATS, beatOf, matchRoute } from './routes';
 import { usePathname } from './router';
+import { stepLinks } from './nav';
 import { Controls } from './ui/Controls';
 import { PositionIndex } from './ui/PositionIndex';
 import { hasSeenIntro, markIntroSeen } from './util/storage';
+import { buildStops } from './vault/layout';
 import { chooseMode, parseOverrides, type Mode } from './vault/mode';
 
 const VaultLayer = lazy(() => import('./vault/VaultLayer'));
@@ -73,6 +76,8 @@ export function App({
   const link = useCallback((path: string) => base + path.replace(/^\//, ''), [base]);
   const route = matchRoute(pathname, base, snap);
   const beat = beatOf(route);
+  const stops = useMemo(() => buildStops(snap.projects.map((p) => p.slug)), [snap]);
+  const steps = stepLinks(route, stops);
 
   // Enhancement state: all unset on the server and during hydration, so the first paint is plain HTML.
   const [env, setEnv] = useState<{ mode: Mode; reduceMotion: boolean; dev: boolean } | null>(null);
@@ -142,6 +147,9 @@ export function App({
     case 'project':
       page = <ProjectPage snap={snap} slug={route.slug} link={link} />;
       break;
+    case 'room':
+      page = <RoomPage snap={snap} slug={route.slug} link={link} />;
+      break;
     case 'member':
       page = <MemberPage snap={snap} slug={route.slug} link={link} />;
       break;
@@ -174,7 +182,7 @@ export function App({
       )}
       {page}
       <PositionIndex current={beat} link={link} />
-      {enhanced && <Controls current={beat} link={link} />}
+      {enhanced && <Controls steps={steps} link={link} />}
       <div className="visually-hidden" role="status" aria-live="polite">
         {label ?? ''}
       </div>

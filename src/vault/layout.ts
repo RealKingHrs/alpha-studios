@@ -88,3 +88,38 @@ export function buildStops(projectSlugs: string[]): Stop[] {
     },
   ];
 }
+
+/** Project rooms sit beside the corridor, alternating left and right, reached through a doorway in the wall. */
+export const ROOM = {
+  offset: 20,
+  halfW: 7,
+  halfD: 6,
+  height: 5,
+  passageEnd: 14,
+  doorW: 3.2,
+  doorH: 3.6,
+};
+
+export const roomSide = (i: number): -1 | 1 => (i % 2 === 0 ? -1 : 1);
+
+/**
+ * Rooms are modelled in their own frame: entrance at local +z, the back wall at local -z.
+ * This turns a local point into a world point for project i.
+ */
+export function roomToWorld(i: number, local: Vec3): Vec3 {
+  const th = -roomSide(i) * (Math.PI / 2);
+  const c = Math.cos(th);
+  const s = Math.sin(th);
+  const [x, y, z] = local;
+  return [roomSide(i) * ROOM.offset + x * c + z * s, y, HALL_Z + (-x * s + z * c)];
+}
+
+/** Camera poses for entering a room: the pedestal stop, the doorway, then inside. */
+export function roomPoses(i: number, pedestal: Pose): [Pose, Pose, Pose] {
+  const side = roomSide(i);
+  return [
+    pedestal,
+    { pos: [side * 4.4, 1.6, HALL_Z], look: [side * 12, 1.5, HALL_Z] },
+    { pos: roomToWorld(i, [0, 1.6, 2]), look: roomToWorld(i, [0, 1.75, -5]) },
+  ];
+}

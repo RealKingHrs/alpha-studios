@@ -34,6 +34,7 @@ export const Project = z.object({
   slug,
   name: z.string().min(1),
   summary: z.string(),
+  story: z.string(),
   status: z.enum(['live', 'beta', 'in-development']),
   platforms: z.array(Platform),
   tech: z.array(z.string()),
@@ -48,7 +49,9 @@ export const Project = z.object({
     .regex(/^[\w.-]+\/[\w.-]+$/)
     .nullable(),
   featured: z.boolean(),
-  screenshots: z.array(z.object({ src: z.string(), alt: z.string() })),
+  screenshots: z.array(
+    z.object({ src: z.string(), alt: z.string(), device: z.enum(['iphone', 'android', 'mac', 'browser']) }),
+  ),
 });
 
 export const Membership = z.object({ projectSlug: slug, memberSlug: slug });

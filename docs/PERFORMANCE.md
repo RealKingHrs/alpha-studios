@@ -45,3 +45,9 @@ The automatic switch from full to lite when the frame rate stays under 30 fps fo
 - No measurement on a real phone or an older laptop yet.
 - Draw calls in full mode are higher than needed because every beat's objects stay in the scene. Culling is automatic, but the reflective floor draws the scene a second time. Merging static geometry is the first thing to try if a slow device turns up.
 - Total page weight with lazy parts (dev panel, fonts for other scripts) was not measured separately.
+
+## Added in milestone 3
+
+- Rooms load only when visited: the room chunk (2.3 kB gzip) and its three screenshots are fetched on entry, and a fresh load of the hall requests neither. Verified from the resource timing list in the browser.
+- The 3D chunk shrank to about 39 kB gzip because the shared three.js code moved into a common chunk; the total before the corridor is unchanged to within a few kB.
+- Gap: time to the first rendered frame is erratic in the built-in browser, from about 0.5 s to about 9 s on cold loads (shader compile time with many lights, and the pane being throttled). The intro stops waiting after 6 s so a slow device is never trapped behind it. Measure on a real laptop and phone before launch; if it persists, compile shaders earlier or reduce the number of lights.

@@ -36,7 +36,7 @@ describe('routes', () => {
   it('gives every address a beat, and every beat an address', () => {
     expect(beatOf(matchRoute(base + 'crew/member-one/', base, snap))).toBe('crew');
     expect(beatOf(matchRoute(base + 'nope', base, snap))).toBeNull();
-    expect(allPaths(snap)).toHaveLength(5 + 2 + 5);
+    expect(allPaths(snap)).toHaveLength(5 + 4 + 5);
   });
 });
 

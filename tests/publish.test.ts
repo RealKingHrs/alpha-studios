@@ -21,6 +21,7 @@ describe('buildSnapshot', () => {
         slug: 'one',
         name: 'One',
         summary: '',
+        story: '',
         status: 'live',
         platforms: ['web'],
         tech: [],

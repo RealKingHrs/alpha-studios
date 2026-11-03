@@ -1,25 +1,23 @@
-import { BEATS, type Beat } from '../routes';
+import type { StepLinks } from '../nav';
 
-/** Forward and back through the five beats, for touch and mouse. */
-export function Controls({ current, link }: { current: Beat | null; link: (p: string) => string }) {
-  const i = BEATS.findIndex((b) => b.id === current);
-  const prev = i > 0 ? BEATS[i - 1] : null;
-  const next = i >= 0 && i < BEATS.length - 1 ? BEATS[i + 1] : null;
+/** Forward and back along the camera path, for touch and mouse. */
+export function Controls({ steps, link }: { steps: StepLinks; link: (p: string) => string }) {
+  const { back, forward } = steps;
   return (
     <div className="controls">
       <a
         className="control"
-        href={prev ? link(prev.path) : undefined}
-        aria-disabled={!prev}
-        aria-label={prev ? `Back to ${prev.label.toLowerCase()}` : 'Back'}
+        href={back ? link(back.path) : undefined}
+        aria-disabled={!back}
+        aria-label={back ? `Back to ${back.label}` : 'Back'}
       >
         Back
       </a>
       <a
         className="control"
-        href={next ? link(next.path) : undefined}
-        aria-disabled={!next}
-        aria-label={next ? `Forward to ${next.label.toLowerCase()}` : 'Forward'}
+        href={forward ? link(forward.path) : undefined}
+        aria-disabled={!forward}
+        aria-label={forward ? `Forward to ${forward.label}` : 'Forward'}
       >
         Forward
       </a>

@@ -57,3 +57,10 @@ export function swipeDirection(dx: number, dy: number, min = 40): 1 | -1 | 0 {
   if (Math.abs(main) < min) return 0;
   return main < 0 ? 1 : -1;
 }
+
+/** Camera pose along the three room poses for r in 0 (pedestal) to 2 (inside). */
+export function roomPoseAt(poses: [Pose, Pose, Pose], r: number): Pose {
+  const c = Math.max(0, Math.min(2, r));
+  const i = Math.min(1, Math.floor(c));
+  return blendPose(poses[i], poses[i + 1], smooth(c - i));
+}

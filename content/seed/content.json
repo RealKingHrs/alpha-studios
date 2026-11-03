@@ -4,7 +4,8 @@
   "settings": {
     "studioStatement": "Alpha Studios builds native iOS and macOS apps, web apps and more.",
     "introEnabled": true,
-    "soundDefault": "off"
+    "soundDefault": "off",
+    "contactEmail": "hello@example.test"
   },
   "members": [
     {
@@ -19,7 +20,8 @@
           "hairStyle": 1,
           "skinTone": 3
         }
-      }
+      },
+      "githubUsername": "placeholder-member-one"
     },
     {
       "slug": "member-two",
@@ -33,7 +35,8 @@
           "hairStyle": 2,
           "skinTone": 4
         }
-      }
+      },
+      "githubUsername": "placeholder-member-two"
     },
     {
       "slug": "member-three",
@@ -47,7 +50,8 @@
           "hairStyle": 3,
           "skinTone": 5
         }
-      }
+      },
+      "githubUsername": "placeholder-member-three"
     },
     {
       "slug": "member-four",
@@ -61,7 +65,8 @@
           "hairStyle": 4,
           "skinTone": 6
         }
-      }
+      },
+      "githubUsername": "placeholder-member-four"
     },
     {
       "slug": "member-five",
@@ -75,7 +80,8 @@
           "hairStyle": 5,
           "skinTone": 7
         }
-      }
+      },
+      "githubUsername": "placeholder-member-five"
     }
   ],
   "projects": [
@@ -83,37 +89,78 @@
       "slug": "project-one",
       "name": "Project one",
       "summary": "Placeholder summary. Replace with real content before launch.",
-      "status": "in-development",
+      "status": "live",
       "platforms": [
         "ios",
-        "web"
+        "macos"
       ],
       "tech": [
         "Swift",
-        "TypeScript"
+        "SwiftUI",
+        "CloudKit"
       ],
-      "links": {},
-      "repo": null,
+      "links": {
+        "appStore": "https://apps.apple.com/app/placeholder",
+        "github": "https://github.com/alpha-studios-placeholder/project-one"
+      },
+      "repo": "alpha-studios-placeholder/project-one",
       "featured": true,
-      "screenshots": []
+      "screenshots": [
+        {
+          "src": "screens/project-one-iphone-1.png",
+          "alt": "Placeholder iPhone screenshot, first screen of Project one",
+          "device": "iphone"
+        },
+        {
+          "src": "screens/project-one-mac-1.png",
+          "alt": "Placeholder Mac screenshot of Project one",
+          "device": "mac"
+        },
+        {
+          "src": "screens/project-one-iphone-2.png",
+          "alt": "Placeholder iPhone screenshot, second screen of Project one",
+          "device": "iphone"
+        }
+      ],
+      "story": "Placeholder story. This room shows how a project is presented: what it is, who it is for, and how it was built. Replace this text with the real story, between eighty and one hundred and twenty words, before launch. Screenshots on the walls are generated placeholders and are labelled as such."
     },
     {
       "slug": "project-two",
       "name": "Project two",
       "summary": "Placeholder summary. Replace with real content before launch.",
-      "status": "in-development",
+      "status": "beta",
       "platforms": [
-        "ios",
         "web"
       ],
       "tech": [
-        "Swift",
-        "TypeScript"
+        "TypeScript",
+        "React",
+        "Postgres"
       ],
-      "links": {},
-      "repo": null,
+      "links": {
+        "github": "https://github.com/alpha-studios-placeholder/project-two",
+        "demo": "https://example.com/placeholder-demo"
+      },
+      "repo": "alpha-studios-placeholder/project-two",
       "featured": false,
-      "screenshots": []
+      "screenshots": [
+        {
+          "src": "screens/project-two-browser-1.png",
+          "alt": "Placeholder browser screenshot, first page of Project two",
+          "device": "browser"
+        },
+        {
+          "src": "screens/project-two-browser-2.png",
+          "alt": "Placeholder browser screenshot, second page of Project two",
+          "device": "browser"
+        },
+        {
+          "src": "screens/project-two-iphone-1.png",
+          "alt": "Placeholder iPhone screenshot of Project two",
+          "device": "iphone"
+        }
+      ],
+      "story": "Placeholder story. This room shows how a project is presented: what it is, who it is for, and how it was built. Replace this text with the real story, between eighty and one hundred and twenty words, before launch. Screenshots on the walls are generated placeholders and are labelled as such."
     }
   ],
   "memberships": [
@@ -150,5 +197,73 @@
       "memberSlug": "member-five"
     }
   ],
-  "repos": {}
+  "repos": {
+    "alpha-studios-placeholder/project-one": {
+      "stars": 0,
+      "languages": {
+        "Swift": 48210,
+        "Shell": 1200
+      },
+      "recentCommits": [
+        {
+          "sha": "a1b2c0d",
+          "message": "Placeholder commit 1",
+          "date": "2026-10-20T10:00:00Z",
+          "author": "placeholder-member-one"
+        },
+        {
+          "sha": "a1b2c1d",
+          "message": "Placeholder commit 2",
+          "date": "2026-10-21T10:00:00Z",
+          "author": "placeholder-member-three"
+        },
+        {
+          "sha": "a1b2c2d",
+          "message": "Placeholder commit 3",
+          "date": "2026-10-22T10:00:00Z",
+          "author": "placeholder-member-five"
+        }
+      ],
+      "contributors": [
+        "placeholder-member-one",
+        "placeholder-member-three",
+        "placeholder-member-five",
+        "outside-contributor"
+      ],
+      "fetchedAt": "2026-11-03T00:00:00.000Z"
+    },
+    "alpha-studios-placeholder/project-two": {
+      "stars": 0,
+      "languages": {
+        "TypeScript": 31200,
+        "CSS": 4100
+      },
+      "recentCommits": [
+        {
+          "sha": "a1b2c0d",
+          "message": "Placeholder commit 1",
+          "date": "2026-10-20T10:00:00Z",
+          "author": "placeholder-member-two"
+        },
+        {
+          "sha": "a1b2c1d",
+          "message": "Placeholder commit 2",
+          "date": "2026-10-21T10:00:00Z",
+          "author": "placeholder-member-four"
+        },
+        {
+          "sha": "a1b2c2d",
+          "message": "Placeholder commit 3",
+          "date": "2026-10-22T10:00:00Z",
+          "author": "placeholder-member-two"
+        }
+      ],
+      "contributors": [
+        "placeholder-member-two",
+        "placeholder-member-four",
+        "outside-contributor"
+      ],
+      "fetchedAt": "2026-11-03T00:00:00.000Z"
+    }
+  }
 }

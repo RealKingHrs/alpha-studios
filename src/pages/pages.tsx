@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import type { Snapshot } from '../content/schema';
 import { BEATS, type Beat } from '../routes';
+import { contributorsWithCrew, platformLabel, projectLinks, statusLabel } from '../rooms';
 
 export type Link = (path: string) => string;
 
@@ -98,36 +99,98 @@ export function Contact({ snap, link }: { snap: Snapshot; link: Link }) {
 
 export function ProjectPage({ snap, slug, link }: { snap: Snapshot; slug: string; link: Link }) {
   const p = snap.projects.find((x) => x.slug === slug)!;
-  const team = snap.memberships
-    .filter((m) => m.projectSlug === slug)
-    .map((m) => snap.members.find((x) => x.slug === m.memberSlug)!);
-  const repo = p.repo ? snap.repos[p.repo] : undefined;
   return (
     <Shell link={link}>
       <h1>{p.name}</h1>
       <p>{p.summary}</p>
       <p className="mono">
-        {p.status}, {p.platforms.join(', ')}
+        {statusLabel[p.status]}, {p.platforms.map((x) => platformLabel[x]).join(', ')}
       </p>
-      {p.tech.length > 0 && <p className="mono">{p.tech.join(', ')}</p>}
-      {repo && <p className="mono">{repo.stars} stars</p>}
-      <ul>
-        {Object.entries(p.links).map(([k, v]) => (
-          <li key={k}>
-            <a href={v}>{k}</a>
+      <p>
+        <a href={link(`/projects/${slug}/room/`)}>Enter the room</a>
+      </p>
+      <nav className="flow" aria-label="Continue the journey">
+        <a href={link('/projects/')}>Back to the project hall</a>
+      </nav>
+    </Shell>
+  );
+}
+
+/** The room: everything about one project, as plain HTML first. The 3D room is layered on top. */
+export function RoomPage({ snap, slug, link }: { snap: Snapshot; slug: string; link: Link }) {
+  const p = snap.projects.find((x) => x.slug === slug)!;
+  const team = snap.memberships
+    .filter((m) => m.projectSlug === slug)
+    .map((m) => snap.members.find((x) => x.slug === m.memberSlug)!);
+  const repo = p.repo ? snap.repos[p.repo] : undefined;
+  const contributors = repo ? contributorsWithCrew(repo, snap.members) : [];
+  const buttons = projectLinks(p);
+  return (
+    <Shell link={link}>
+      <h1>{p.name}</h1>
+      <p>{p.story || p.summary}</p>
+      <ul className="badges" aria-label="Status and platforms">
+        <li className="mono">{statusLabel[p.status]}</li>
+        {p.platforms.map((x) => (
+          <li key={x} className="mono">
+            {platformLabel[x]}
           </li>
         ))}
       </ul>
+      {p.tech.length > 0 && <p className="mono">{p.tech.join(', ')}</p>}
+      {buttons.length > 0 && (
+        <p className="actions">
+          {buttons.map((b) => (
+            <a key={b.key} className="button" href={b.href} rel="noopener noreferrer">
+              {b.label}
+            </a>
+          ))}
+        </p>
+      )}
+      {p.screenshots.length > 0 && (
+        <ul className="shots" aria-label="Screenshots">
+          {p.screenshots.map((s) => (
+            <li key={s.src}>
+              <img src={link(`/${s.src}`)} alt={s.alt} loading="lazy" />
+            </li>
+          ))}
+        </ul>
+      )}
+      {repo && (
+        <>
+          <h2>On GitHub</h2>
+          <p className="mono">
+            {repo.stars} stars, {Object.keys(repo.languages).join(', ') || 'no languages listed'}
+          </p>
+          <ul>
+            {repo.recentCommits.map((c) => (
+              <li key={c.sha}>
+                <span className="mono">{c.sha}</span> {c.message}{' '}
+                <span className="mono">{c.author}</span>
+              </li>
+            ))}
+          </ul>
+          <p>
+            Contributors:{' '}
+            {contributors.map((c, i) => (
+              <span key={c.login}>
+                {i > 0 && ', '}
+                {c.member ? <a href={link(`/crew/${c.member.slug}/`)}>{c.member.name}</a> : c.login}
+              </span>
+            ))}
+          </p>
+        </>
+      )}
       <h2>Team</h2>
       <ul>
         {team.map((m) => (
           <li key={m.slug}>
-            <a href={link(`/crew/${m.slug}/`)}>{m.name}</a>
+            <a href={link(`/crew/${m.slug}/`)}>{m.name}</a>, <span className="mono">{m.role}</span>
           </li>
         ))}
       </ul>
       <nav className="flow" aria-label="Continue the journey">
-        <a href={link('/projects/')}>Back to the project hall</a>
+        <a href={link(`/projects/${slug}/`)}>Back to the pedestal</a>
       </nav>
     </Shell>
   );
