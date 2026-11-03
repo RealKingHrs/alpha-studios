@@ -1,38 +1,27 @@
 import { motion } from 'motion/react';
-import { useRef, useState } from 'react';
-import type { Member, Snapshot } from '../content/schema';
+import { useRef } from 'react';
+import type { Snapshot } from '../content/schema';
 import { usePortraitLook } from '../avatar/look';
-import { Portrait } from '../avatar/Portrait';
-import { accentFor } from './data';
+import { CrewCard } from './CrewCard';
 import { useMotionOn } from './motion/context';
 import type { LinkFn } from './parts';
-import { CrewCard } from './CrewCard';
 
 /**
- * The crew as a row of geometric characters on coloured discs. They look toward the cursor, lift their brows
- * and hop when you hover, and pop in one after another as the row scrolls into view.
+ * The crew as a row of editorial cards. The characters look toward the cursor, and the cards rise in one after
+ * another as the row scrolls into view. A slim progress line under the row replaces the browser's scrollbar.
  */
-export function CrewLineup({
-  members,
-  link,
-  profile = false,
-  snap,
-}: {
-  members: Member[];
-  link: LinkFn;
-  profile?: boolean;
-  snap?: Snapshot;
-}) {
+export function CrewLineup({ link, snap }: { link: LinkFn; snap: Snapshot }) {
   const box = useRef<HTMLDivElement>(null);
   const bar = useRef<HTMLSpanElement>(null);
   const on = useMotionOn();
   usePortraitLook(box, on);
+  const members = snap.members;
 
   return (
-    <div className={profile ? undefined : 'crew-wrap'}>
+    <div className="crew-wrap">
       <div
         ref={box}
-        className={`crew ${profile ? 'crew--profile' : ''}`}
+        className="crew"
         onScroll={(e) => {
           const el = e.currentTarget;
           const max = el.scrollWidth - el.clientWidth;
@@ -48,44 +37,14 @@ export function CrewLineup({
               viewport={{ once: true, margin: '0px 0px -8% 0px' }}
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: i * 0.09 }}
             >
-              {profile ? (
-                <Waver member={m} index={i} />
-              ) : snap ? (
-                <CrewCard member={m} index={i} link={link} snap={snap} />
-              ) : null}
+              <CrewCard member={m} index={i} link={link} snap={snap} />
             </motion.li>
           ))}
         </ul>
       </div>
-      {!profile && (
-        <span className="crew-progress" aria-hidden="true">
-          <i ref={bar} />
-        </span>
-      )}
+      <span className="crew-progress" aria-hidden="true">
+        <i ref={bar} />
+      </span>
     </div>
-  );
-}
-
-/** The big profile character: tap or click to make it wave. Orbiting dots circle the disc. */
-function Waver({ member, index }: { member: Member; index: number }) {
-  const [waves, setWaves] = useState(0);
-  return (
-    <button
-      type="button"
-      className={`crew-card crew-card--profile a-${accentFor(index)}`}
-      onClick={() => setWaves((n) => n + 1)}
-      aria-label={`${member.name}. Select to make them wave.`}
-    >
-      <span className="orbit" aria-hidden="true">
-        <i />
-        <i />
-        <i />
-      </span>
-      <span className="crew-disc">
-        <span key={waves} className={waves ? 'is-wave' : ''}>
-          <Portrait record={member.avatar} />
-        </span>
-      </span>
-    </button>
   );
 }

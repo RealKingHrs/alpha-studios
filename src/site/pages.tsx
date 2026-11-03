@@ -128,7 +128,7 @@ export function Home({ snap, link, asset }: PageProps) {
       >
         <div className="s-wrap">
           <SectionHead num="02" eyebrow="Crew" title="The people behind it" id="crew-title" />
-          <CrewLineup members={snap.members} link={link} snap={snap} />
+          <CrewLineup link={link} snap={snap} />
         </div>
       </section>
       <Hello snap={snap} link={link} />
@@ -197,7 +197,7 @@ export function CrewPage({ snap, link }: PageProps) {
       />
       <section className="s-section">
         <div className="s-wrap">
-          <CrewLineup members={snap.members} link={link} snap={snap} />
+          <CrewLineup link={link} snap={snap} />
         </div>
       </section>
     </>

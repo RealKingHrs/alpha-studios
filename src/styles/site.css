@@ -1391,15 +1391,7 @@ html.reveal-on .s-rule {
 .portrait-mouth {
   transform-origin: 100px 134px;
 }
-.crew-card:hover .portrait-brows {
-  transform: translateY(-5px);
-}
-.crew-card:hover .portrait-mouth {
-  transform: scale(1.16);
-}
-.crew-card:hover .portrait-figure {
-  animation: hop 0.6s var(--ease);
-}
+
 @keyframes hop {
   30% {
     transform: translateY(-9px) scale(1.01);
@@ -1432,6 +1424,11 @@ html.reveal-on .s-rule {
   padding: 8px 8px 20px;
   margin-inline: -8px;
   scroll-snap-type: x proximity;
+  /* The slim progress line under the row replaces the browser's own scrollbar, so there is only one. */
+  scrollbar-width: none;
+}
+.crew::-webkit-scrollbar {
+  display: none;
 }
 .crew-grid {
   --col: clamp(150px, 17vw, 230px);
@@ -1439,65 +1436,7 @@ html.reveal-on .s-rule {
   grid-template-columns: repeat(var(--n), var(--col));
   gap: 0;
 }
-.crew--profile .crew-grid {
-  --col: min(78vw, 400px);
-}
-.crew-card {
-  display: block;
-  position: relative;
-  scroll-snap-align: start;
-  text-decoration: none;
-  background: none;
-  border: 0;
-  padding: 0;
-  color: inherit;
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-}
-.crew-disc {
-  position: relative;
-  display: block;
-  width: 88%;
-  aspect-ratio: 1;
-  margin: 0 auto;
-  overflow: hidden;
-  border-radius: 50%;
-  background: var(--accent);
-  border: var(--line-w) solid var(--ink);
-  transition:
-    rotate var(--dur-base) var(--ease),
-    scale var(--dur-base) var(--ease);
-}
-.crew-card:hover .crew-disc {
-  rotate: -4deg;
-  scale: 1.04;
-}
-.crew-disc .portrait {
-  position: absolute;
-  left: 3%;
-  bottom: -4%;
-  width: 94%;
-}
-.crew-tag {
-  display: grid;
-  gap: 2px;
-  margin-top: var(--space-2);
-  padding-inline: 6%;
-  transform-origin: left top;
-}
-.crew-tag strong {
-  font-family: var(--font-display);
-  font-variation-settings: 'SOFT' 100;
-  font-size: 1.25rem;
-  font-weight: 600;
-}
-.crew-tag .mono {
-  color: var(--ink-soft);
-}
-.crew-card:hover .crew-tag {
-  animation: wobble 0.7s var(--ease);
-}
+
 @keyframes wobble {
   20% {
     transform: rotate(-3deg);
@@ -1508,45 +1447,6 @@ html.reveal-on .s-rule {
   70% {
     transform: rotate(-1.2deg);
   }
-}
-.crew-card--profile .crew-disc {
-  width: 100%;
-  margin: 0;
-}
-.crew-card--profile:hover .crew-disc {
-  rotate: 0deg;
-}
-.orbit {
-  position: absolute;
-  inset: -9%;
-  animation: spin 16s linear infinite;
-}
-.orbit i {
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  border: var(--line-w) solid var(--ink);
-  background: var(--paper);
-}
-.orbit i:nth-child(1) {
-  top: 0;
-  left: 50%;
-  background: var(--sun);
-}
-.orbit i:nth-child(2) {
-  bottom: 14%;
-  right: 4%;
-  background: var(--sky);
-  width: 14px;
-  height: 14px;
-}
-.orbit i:nth-child(3) {
-  bottom: 10%;
-  left: 6%;
-  background: var(--tomato);
-  width: 11px;
-  height: 11px;
 }
 
 .s-avatar {
@@ -1678,34 +1578,7 @@ html.reduce-motion .orbit {
   margin: -0.4rem 0 1rem;
   color: var(--fg-soft);
 }
-.dossier-skills {
-  list-style: none;
-  padding: 0;
-  margin: 1.4rem 0 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-  gap: 0.6rem 1.4rem;
-}
-.dossier-skills li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.8rem;
-  font-size: 0.92rem;
-}
-.pips {
-  display: inline-flex;
-  gap: 4px;
-}
-.pips i {
-  width: 14px;
-  height: 14px;
-  border: 1.5px solid var(--ink);
-  border-radius: 50%;
-}
-.pips i.on {
-  background: var(--ink);
-}
+
 .dossier-facts {
   margin: 1.4rem 0 0;
   display: grid;
@@ -1718,23 +1591,7 @@ html.reduce-motion .orbit {
 .dossier-facts dd {
   margin: 0.1rem 0 0;
 }
-.dossier-works {
-  list-style: none;
-  padding: 0;
-  margin: 0.6rem 0 0;
-  display: grid;
-  gap: 0.5rem;
-}
-.dossier-works a {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.7rem 1rem;
-  border: 1.5px solid var(--ink);
-  border-radius: 14px;
-  color: inherit;
-  text-decoration: none;
-}
+
 .shelf {
   list-style: none;
   padding: 0;

@@ -1,47 +1,6 @@
-import type { Certification, Member, Snapshot } from '../content/schema';
-import type { LinkFn } from './parts';
+import type { Certification } from '../content/schema';
 
 const SLOTS = 4;
-
-/** Skill bars: a slim bar per skill that fills to the member's level (out of 5). */
-export function Skills({ skills }: { skills: Member['skills'] }) {
-  if (skills.length === 0) return null;
-  return (
-    <ul className="dossier-skills" aria-label="Skills">
-      {skills.map((s) => (
-        <li key={s.name}>
-          <span>{s.name}</span>
-          <span className="skill-bar" role="img" aria-label={`${s.level} out of 5`}>
-            <i style={{ '--w': `${s.level * 20}%` } as React.CSSProperties} />
-          </span>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-/** Projects a member works on, each with their role on it. */
-export function Works({ snap, slug, link }: { snap: Snapshot; slug: string; link: LinkFn }) {
-  const rows = snap.memberships
-    .filter((x) => x.memberSlug === slug)
-    .flatMap((x) => {
-      const p = snap.projects.find((q) => q.slug === x.projectSlug);
-      return p ? [{ p, role: x.role }] : [];
-    });
-  if (rows.length === 0) return null;
-  return (
-    <ul className="dossier-works" aria-label="Works">
-      {rows.map(({ p, role }) => (
-        <li key={p.slug}>
-          <a href={link(`/projects/${p.slug}/`)}>
-            <strong>{p.name}</strong>
-            <span className="mono">{role || p.status}</span>
-          </a>
-        </li>
-      ))}
-    </ul>
-  );
-}
 
 const Cup = () => (
   <svg viewBox="0 0 48 48" width="40" height="40" aria-hidden="true">
