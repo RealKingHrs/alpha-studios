@@ -2,6 +2,13 @@ import { useState } from 'react';
 import { useAuth } from '../auth';
 import { supabase } from '../supabase';
 import type { MemberRow } from '../types';
+import {
+  EducationEditor,
+  ExperienceEditor,
+  toList,
+  type Education,
+  type Experience,
+} from '../DetailLists';
 import { SkillsPicker, type Skill } from '../SkillsPicker';
 import { Field, SAVED } from '../ui';
 
@@ -15,6 +22,12 @@ export function Profile({ me }: { me: MemberRow }) {
   const [bio, setBio] = useState(me.bio);
   const [codename, setCodename] = useState(me.codename ?? '');
   const [popPick, setPopPick] = useState(me.pop_pick ?? '');
+  const [location, setLocation] = useState(me.location ?? '');
+  const [openTo, setOpenTo] = useState(me.open_to ?? '');
+  const [languages, setLanguages] = useState((me.languages ?? []).join(', '));
+  const [interestsText, setInterestsText] = useState((me.interests ?? []).join(', '));
+  const [experience, setExperience] = useState<Experience[]>(me.experience ?? []);
+  const [education, setEducation] = useState<Education[]>(me.education ?? []);
   const [skills, setSkills] = useState<Skill[]>(me.skills ?? []);
   const [interests, setInterests] = useState('');
   const [ideas, setIdeas] = useState<string[]>([]);
@@ -65,6 +78,12 @@ export function Profile({ me }: { me: MemberRow }) {
         codename,
         skills,
         pop_pick: popPick,
+        location,
+        open_to: openTo,
+        languages: toList(languages, 8),
+        interests: toList(interestsText, 10),
+        experience: experience.filter((e) => e.title.trim()),
+        education: education.filter((e) => e.school.trim()),
       })
       .eq('id', me.id)
       .select('id');
@@ -180,6 +199,39 @@ export function Profile({ me }: { me: MemberRow }) {
         )}
       </div>
       <SkillsPicker value={skills} onChange={setSkills} />
+      <Field label="Where you are based" hint="A city is plenty.">
+        {(id) => (
+          <input
+            id={id}
+            maxLength={80}
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+          />
+        )}
+      </Field>
+      <Field
+        label="Open to"
+        hint="What you would happily help with, for example mentoring or side projects."
+      >
+        {(id) => (
+          <input
+            id={id}
+            maxLength={120}
+            value={openTo}
+            onChange={(e) => setOpenTo(e.target.value)}
+          />
+        )}
+      </Field>
+      <Field label="Languages you speak" hint="Separated by commas.">
+        {(id) => <input id={id} value={languages} onChange={(e) => setLanguages(e.target.value)} />}
+      </Field>
+      <Field label="Outside work" hint="Things you love, separated by commas.">
+        {(id) => (
+          <input id={id} value={interestsText} onChange={(e) => setInterestsText(e.target.value)} />
+        )}
+      </Field>
+      <ExperienceEditor value={experience} onChange={setExperience} />
+      <EducationEditor value={education} onChange={setEducation} />
       <Field label="GitHub username" hint="Used to show you as a contributor on project rooms.">
         {(id) => (
           <input id={id} autoCapitalize="none" value={gh} onChange={(e) => setGh(e.target.value)} />

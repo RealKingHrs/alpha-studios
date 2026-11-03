@@ -19,6 +19,15 @@ export function pageMeta(
       const m = snap.members.find((x) => x.slug === route.slug)!;
       return { title: `${m.name}, ${m.role} | ${STUDIO}`, description: m.bio };
     }
+    case 'certificate': {
+      const c = snap.certifications.find((x) => x.id === route.id)!;
+      const m = snap.members.find((x) => x.slug === route.slug)!;
+      return {
+        title: `${c.title}, ${m.name} | ${STUDIO}`,
+        description:
+          `${m.name} earned ${c.title}${c.issuer ? ` from ${c.issuer}` : ''}. ${c.description}`.trim(),
+      };
+    }
     case 'projects':
       return {
         title: `Projects | ${STUDIO}`,

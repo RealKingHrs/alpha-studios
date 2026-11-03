@@ -61,7 +61,43 @@
           "outfitColor": 2
         }
       },
-      "tagline": ""
+      "tagline": "",
+      "location": "Bengaluru, India",
+      "openTo": "Mentoring, backend side projects",
+      "languages": [
+        "English",
+        "Malayalam",
+        "Hindi"
+      ],
+      "interests": [
+        "Espresso",
+        "Chess",
+        "Trail running"
+      ],
+      "experience": [
+        {
+          "title": "Founder and backend engineer",
+          "org": "Alpha Studios",
+          "from": "2024",
+          "to": "Now",
+          "note": "Designs the sync and receipts services behind every app."
+        },
+        {
+          "title": "Backend engineer",
+          "org": "Northwind Labs",
+          "from": "2020",
+          "to": "2024",
+          "note": "Moved a monolith onto small services without downtime."
+        }
+      ],
+      "education": [
+        {
+          "school": "Example Institute of Technology",
+          "field": "Computer science",
+          "from": "2016",
+          "to": "2020"
+        }
+      ]
     },
     {
       "slug": "zara-okafor",
@@ -116,7 +152,43 @@
           "outfitColor": 7
         }
       },
-      "tagline": ""
+      "tagline": "",
+      "location": "Lagos, Nigeria",
+      "openTo": "Design reviews, speaking",
+      "languages": [
+        "English",
+        "Yoruba",
+        "French"
+      ],
+      "interests": [
+        "Illustration",
+        "Afrobeats",
+        "Board games"
+      ],
+      "experience": [
+        {
+          "title": "Interface and motion lead",
+          "org": "Alpha Studios",
+          "from": "2024",
+          "to": "Now",
+          "note": "Owns the motion language and the design system."
+        },
+        {
+          "title": "Product designer",
+          "org": "Brightpath",
+          "from": "2021",
+          "to": "2024",
+          "note": "Shipped an onboarding flow that cut drop-off by a third."
+        }
+      ],
+      "education": [
+        {
+          "school": "Example University",
+          "field": "Industrial design",
+          "from": "2017",
+          "to": "2021"
+        }
+      ]
     },
     {
       "slug": "kenji-watanabe",
@@ -171,7 +243,42 @@
           "outfitColor": 4
         }
       },
-      "tagline": ""
+      "tagline": "",
+      "location": "Osaka, Japan",
+      "openTo": "Code reviews, mentoring juniors",
+      "languages": [
+        "Japanese",
+        "English"
+      ],
+      "interests": [
+        "Film cameras",
+        "Ramen hunting",
+        "Go"
+      ],
+      "experience": [
+        {
+          "title": "iOS and macOS lead",
+          "org": "Alpha Studios",
+          "from": "2024",
+          "to": "Now",
+          "note": "Leads the native apps and their release plans."
+        },
+        {
+          "title": "iOS developer",
+          "org": "Tidewater Apps",
+          "from": "2019",
+          "to": "2024",
+          "note": "Five apps shipped, two with over a million downloads."
+        }
+      ],
+      "education": [
+        {
+          "school": "Example Polytechnic",
+          "field": "Information engineering",
+          "from": "2015",
+          "to": "2019"
+        }
+      ]
     },
     {
       "slug": "priya-nair",
@@ -226,7 +333,43 @@
           "outfitColor": 5
         }
       },
-      "tagline": ""
+      "tagline": "",
+      "location": "Pune, India",
+      "openTo": "Android talks, pair programming",
+      "languages": [
+        "English",
+        "Malayalam",
+        "Marathi"
+      ],
+      "interests": [
+        "Astronomy",
+        "Night photography",
+        "Baking"
+      ],
+      "experience": [
+        {
+          "title": "Android and platform engineer",
+          "org": "Alpha Studios",
+          "from": "2025",
+          "to": "Now",
+          "note": "Builds the Android apps and keeps the pipelines green."
+        },
+        {
+          "title": "Android developer",
+          "org": "Orbit Mobile",
+          "from": "2021",
+          "to": "2025",
+          "note": "Rewrote a legacy app in Compose."
+        }
+      ],
+      "education": [
+        {
+          "school": "Example College of Engineering",
+          "field": "Electronics",
+          "from": "2017",
+          "to": "2021"
+        }
+      ]
     },
     {
       "slug": "mateo-alvarez",
@@ -281,7 +424,42 @@
           "outfitColor": 3
         }
       },
-      "tagline": ""
+      "tagline": "",
+      "location": "Mexico City, Mexico",
+      "openTo": "User research, testing workshops",
+      "languages": [
+        "Spanish",
+        "English"
+      ],
+      "interests": [
+        "Street food",
+        "Retro games",
+        "Football"
+      ],
+      "experience": [
+        {
+          "title": "Product and quality lead",
+          "org": "Alpha Studios",
+          "from": "2024",
+          "to": "Now",
+          "note": "Turns rough ideas into clear plans and tests them hard."
+        },
+        {
+          "title": "QA analyst",
+          "org": "Pixel Forge",
+          "from": "2020",
+          "to": "2024",
+          "note": "Built the test plan for a game used by half a million players."
+        }
+      ],
+      "education": [
+        {
+          "school": "Example Autonomous University",
+          "field": "Communication",
+          "from": "2015",
+          "to": "2019"
+        }
+      ]
     }
   ],
   "projects": [
@@ -419,7 +597,10 @@
       "title": "PostgreSQL Associate",
       "issuer": "Example Academy",
       "issuedOn": "2026-03-01",
-      "expiresOn": null
+      "expiresOn": null,
+      "description": "Covers indexing, query plans and day-to-day database care.",
+      "credentialId": "PG-ASSOC-2026-0142",
+      "url": "https://example.com/verify/pg-assoc"
     },
     {
       "id": "c2",
@@ -427,7 +608,10 @@
       "title": "Cloud Practitioner",
       "issuer": "Example Academy",
       "issuedOn": "2025-11-12",
-      "expiresOn": null
+      "expiresOn": null,
+      "description": "The cloud basics: compute, storage, networking and costs.",
+      "credentialId": "CP-2025-88213",
+      "url": "https://example.com/verify/cloud-practitioner"
     },
     {
       "id": "c3",
@@ -435,7 +619,10 @@
       "title": "Web Accessibility Specialist",
       "issuer": "Example Academy",
       "issuedOn": "2026-05-20",
-      "expiresOn": null
+      "expiresOn": null,
+      "description": "Building websites people of every ability can use.",
+      "credentialId": "WAS-2026-3071",
+      "url": "https://example.com/verify/accessibility"
     },
     {
       "id": "c4",
@@ -443,7 +630,10 @@
       "title": "Swift Developer",
       "issuer": "Example Academy",
       "issuedOn": "2026-02-10",
-      "expiresOn": null
+      "expiresOn": null,
+      "description": "Writing, testing and shipping apps in Swift.",
+      "credentialId": "SW-DEV-2026-5520",
+      "url": "https://example.com/verify/swift-developer"
     },
     {
       "id": "c5",
@@ -451,7 +641,10 @@
       "title": "Associate Android Developer",
       "issuer": "Example Academy",
       "issuedOn": "2026-06-02",
-      "expiresOn": null
+      "expiresOn": null,
+      "description": "Building modern Android apps with Kotlin and Compose.",
+      "credentialId": "AAD-2026-7714",
+      "url": "https://example.com/verify/android-developer"
     }
   ],
   "repos": {

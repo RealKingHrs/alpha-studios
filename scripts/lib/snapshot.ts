@@ -39,6 +39,12 @@ export function buildSnapshot(rows: Rows, now = new Date()): Snapshot {
       currently: m.currently ?? '',
       funFact: m.fun_fact ?? '',
       popPick: m.pop_pick ?? '',
+      location: m.location ?? '',
+      openTo: m.open_to ?? '',
+      languages: m.languages ?? [],
+      interests: m.interests ?? [],
+      experience: m.experience ?? [],
+      education: m.education ?? [],
     })),
     projects: rows.projects.map((p) => ({
       slug: p.slug,
@@ -72,6 +78,8 @@ export function buildSnapshot(rows: Rows, now = new Date()): Snapshot {
         issuedOn: c.issued_on ?? null,
         expiresOn: c.expires_on ?? null,
         url: c.credential_url ?? undefined,
+        credentialId: c.credential_id ?? undefined,
+        description: c.description ?? '',
       })),
     repos: Object.fromEntries(
       rows.repoCache.filter((r) => wanted.has(r.repo)).map((r) => [r.repo, r.data]),

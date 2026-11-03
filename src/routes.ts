@@ -8,6 +8,7 @@ export type Route =
   | { name: 'launchpad' }
   | { name: 'project'; slug: string }
   | { name: 'member'; slug: string }
+  | { name: 'certificate'; slug: string; id: string }
   | { name: 'portal' }
   | { name: 'not-found' };
 
@@ -21,7 +22,12 @@ export function matchRoute(pathname: string, base: string, snap: Snapshot): Rout
   if (p === '/crew') return { name: 'crew' };
   if (p === '/contact') return { name: 'contact' };
   if (p === '/launchpad') return { name: 'launchpad' };
-  const [, kind, slug, extra] = p.split('/');
+  const [, kind, slug, extra, certId] = p.split('/');
+  if (kind === 'crew' && extra === 'certificates' && certId && p.split('/').length === 5) {
+    if (snap.certifications.some((c) => c.id === certId && c.memberSlug === slug))
+      return { name: 'certificate', slug, id: certId };
+    return { name: 'not-found' };
+  }
   if (extra === undefined && kind === 'projects' && snap.projects.some((x) => x.slug === slug))
     return { name: 'project', slug };
   if (extra === undefined && kind === 'crew' && snap.members.some((x) => x.slug === slug))
@@ -40,5 +46,6 @@ export function allPaths(snap: Snapshot): string[] {
     '/portal/',
     ...snap.projects.map((p) => `/projects/${p.slug}/`),
     ...snap.members.map((m) => `/crew/${m.slug}/`),
+    ...snap.certifications.map((c) => `/crew/${c.memberSlug}/certificates/${c.id}/`),
   ];
 }

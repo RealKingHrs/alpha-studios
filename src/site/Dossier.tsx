@@ -62,14 +62,28 @@ const Cup = () => (
 );
 
 /** The achievements shelf: earned certificates as trophies, and open slots waiting for the next one. */
-export function Shelf({ certs }: { certs: Certification[] }) {
+export function Shelf({
+  certs,
+  hrefFor,
+}: {
+  certs: Certification[];
+  hrefFor?: (c: Certification) => string;
+}) {
   const empty = Math.max(1, SLOTS - certs.length);
   return (
     <ul className="shelf" aria-label="Achievements">
       {certs.map((c) => (
         <li key={c.id} className="trophy">
           <Cup />
-          <strong>{c.title}</strong>
+          <strong>
+            {hrefFor ? (
+              <a className="trophy-link" href={hrefFor(c)}>
+                {c.title}
+              </a>
+            ) : (
+              c.title
+            )}
+          </strong>
           <span className="mono">
             {[c.issuer, c.issuedOn?.slice(0, 4)].filter(Boolean).join(' · ')}
           </span>

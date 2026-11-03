@@ -25,6 +25,7 @@ d('built site', () => {
     'projects/harbor/index.html',
     'projects/lumen/index.html',
     'crew/aarav-menon/index.html',
+    'crew/aarav-menon/certificates/c1/index.html',
   ];
 
   it.each(routes)('%s serves readable HTML with title and share image', (r) => {

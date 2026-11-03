@@ -213,3 +213,78 @@ describe('profile fields', () => {
     await service.from('projects').delete().eq('id', project.id);
   });
 });
+
+describe('member details and certificate fields', () => {
+  it('lets a member edit their own details and refuses edits to someone else’s', async () => {
+    const mine = await must(
+      crew
+        .from('members')
+        .update({
+          location: 'Pune, India',
+          open_to: 'Mentoring',
+          languages: ['English', 'Hindi'],
+          interests: ['Chess'],
+          experience: [{ title: 'Engineer', org: 'Acme', from: '2022', to: 'Now', note: '' }],
+          education: [{ school: 'Example University', field: 'CS', from: '2018', to: '2022' }],
+        })
+        .eq('id', ids.crew)
+        .select('location, languages'),
+    );
+    expect(mine[0]).toMatchObject({ location: 'Pune, India', languages: ['English', 'Hindi'] });
+    const theirs = await must(
+      crew.from('members').update({ location: 'Nowhere' }).eq('id', ids.other).select('id'),
+    );
+    expect(theirs).toHaveLength(0);
+    const seen = await must(
+      visitor.from('members').select('location, experience').eq('id', ids.crew),
+    );
+    expect(seen[0].experience).toHaveLength(1);
+  });
+
+  it('rejects too many roles', async () => {
+    const roles = Array.from({ length: 9 }, (_, i) => ({ title: `Role ${i}` }));
+    const bad = await crew.from('members').update({ experience: roles }).eq('id', ids.crew);
+    expect(bad.error).not.toBeNull();
+  });
+
+  it('stores a certificate description and credential id, readable by visitors, and reverts them', async () => {
+    const made = await must(
+      crew
+        .from('certifications')
+        .insert({
+          member_id: ids.crew,
+          title: 'Detailed',
+          description: 'Covers the basics',
+          credential_id: 'ABC-123',
+        })
+        .select('id')
+        .single(),
+    );
+    const seen = await must(
+      visitor.from('certifications').select('description, credential_id').eq('id', made.id),
+    );
+    expect(seen[0]).toEqual({ description: 'Covers the basics', credential_id: 'ABC-123' });
+    await must(
+      crew
+        .from('certifications')
+        .update({ credential_id: 'CHANGED' })
+        .eq('id', made.id)
+        .select('id'),
+    );
+    const log = await must(
+      service
+        .from('audit_log')
+        .select('id')
+        .eq('table_name', 'certifications')
+        .eq('row_id', made.id)
+        .eq('action', 'UPDATE')
+        .single(),
+    );
+    expect((await admin.rpc('revert_audit', { p_id: log.id })).data).toMatchObject({ ok: true });
+    const back = await must(
+      service.from('certifications').select('credential_id').eq('id', made.id),
+    );
+    expect(back[0].credential_id).toBe('ABC-123');
+    await service.from('certifications').delete().eq('id', made.id);
+  });
+});

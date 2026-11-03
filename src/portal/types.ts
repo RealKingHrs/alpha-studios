@@ -17,6 +17,12 @@ export interface MemberRow {
   currently: string;
   fun_fact: string;
   pop_pick: string;
+  location: string;
+  open_to: string;
+  languages: string[];
+  interests: string[];
+  experience: Array<{ title: string; org: string; from: string; to: string; note: string }>;
+  education: Array<{ school: string; field: string; from: string; to: string }>;
 }
 
 export interface SubmissionRow {
@@ -43,6 +49,8 @@ export interface CertificationRow {
   issued_on: string | null;
   expires_on: string | null;
   credential_url: string | null;
+  credential_id: string | null;
+  description: string;
 }
 
 export interface ProjectRow {

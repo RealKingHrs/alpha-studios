@@ -24,6 +24,8 @@ export function Certificates({ me }: { me: MemberRow }) {
   const [issued, setIssued] = useState('');
   const [expires, setExpires] = useState('');
   const [url, setUrl] = useState('');
+  const [credId, setCredId] = useState('');
+  const [desc, setDesc] = useState('');
   const [msg, setMsg] = useState<{ kind: 'ok' | 'error'; text: string } | null>(null);
 
   async function add(e: React.FormEvent) {
@@ -36,6 +38,8 @@ export function Certificates({ me }: { me: MemberRow }) {
       issued_on: issued || null,
       expires_on: expires || null,
       credential_url: url.trim() || null,
+      credential_id: credId.trim() || null,
+      description: desc.trim(),
     });
     if (error) return setMsg({ kind: 'error', text: error.message });
     setMsg({ kind: 'ok', text: SAVED });
@@ -44,6 +48,8 @@ export function Certificates({ me }: { me: MemberRow }) {
     setIssued('');
     setExpires('');
     setUrl('');
+    setCredId('');
+    setDesc('');
     list.reload();
   }
 
@@ -114,6 +120,24 @@ export function Certificates({ me }: { me: MemberRow }) {
               type="date"
               value={expires}
               onChange={(e) => setExpires(e.target.value)}
+            />
+          )}
+        </Field>
+        <Field label="What it covers" hint="One line, up to 300 characters.">
+          {(id) => (
+            <input id={id} maxLength={300} value={desc} onChange={(e) => setDesc(e.target.value)} />
+          )}
+        </Field>
+        <Field
+          label="Credential ID"
+          hint="Shown publicly on the certificate page. Leave it empty to keep it private."
+        >
+          {(id) => (
+            <input
+              id={id}
+              maxLength={80}
+              value={credId}
+              onChange={(e) => setCredId(e.target.value)}
             />
           )}
         </Field>

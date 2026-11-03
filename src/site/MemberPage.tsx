@@ -92,6 +92,12 @@ export function MemberPage({ snap, slug, link }: { snap: Snapshot; slug: string;
             <SplitText text={m.name} />
           </h1>
           {m.codename && <p className="mp-call mono">{m.codename}</p>}
+          {(m.location || m.openTo) && (
+            <ul className="mp-meta" aria-label="Where and what for">
+              {m.location && <li>{m.location}</li>}
+              {m.openTo && <li>Open to: {m.openTo}</li>}
+            </ul>
+          )}
           <motion.div className="mp-avatar" style={on ? { y: avatarY } : undefined}>
             <WavingPortrait record={m.avatar} />
           </motion.div>
@@ -143,14 +149,78 @@ export function MemberPage({ snap, slug, link }: { snap: Snapshot; slug: string;
           </Reveal>
         )}
 
-        <Reveal className={`mp-tile mp-tile--fav a-${accent}`} delay={80}>
-          <h2 className="mp-h">Currently into</h2>
-          <div className="mp-fav">
-            <PopScene scene={theme.scene} />
-          </div>
-          <p className="mp-fav-title display">{m.popPick || 'Surprise me'}</p>
-          <p className="mono mp-fav-cap">{theme.caption}</p>
-        </Reveal>
+        {m.popPick && (
+          <Reveal className={`mp-tile mp-tile--fav a-${accent}`} delay={80}>
+            <h2 className="mp-h mp-h--small">Currently into</h2>
+            <div className="mp-fav">
+              <PopScene scene={theme.scene} />
+            </div>
+            <p className="mp-fav-title display">{m.popPick}</p>
+          </Reveal>
+        )}
+
+        {(m.experience.length > 0 || m.education.length > 0) && (
+          <Reveal className="mp-tile mp-tile--journey" delay={40}>
+            <h2 className="mp-h">Journey</h2>
+            <ol className="mp-journey">
+              {[
+                ...m.experience.map((e) => ({
+                  kind: 'Work',
+                  title: e.title,
+                  where: e.org,
+                  from: e.from,
+                  to: e.to,
+                  note: e.note,
+                })),
+                ...m.education.map((e) => ({
+                  kind: 'Study',
+                  title: e.field || e.school,
+                  where: e.field ? e.school : '',
+                  from: e.from,
+                  to: e.to,
+                  note: '',
+                })),
+              ].map((j) => (
+                <li key={`${j.kind}-${j.title}-${j.from}`}>
+                  <span className="mp-j-when mono">
+                    {[j.from, j.to].filter(Boolean).join(' – ')}
+                  </span>
+                  <strong>{j.title}</strong>
+                  <span className="mp-j-where">
+                    <i className="mono">{j.kind}</i>
+                    {j.where}
+                  </span>
+                  {j.note && <p>{j.note}</p>}
+                </li>
+              ))}
+            </ol>
+          </Reveal>
+        )}
+
+        {(m.languages.length > 0 || m.interests.length > 0) && (
+          <Reveal className="mp-tile mp-tile--more" delay={80}>
+            {m.languages.length > 0 && (
+              <>
+                <h2 className="mp-h mp-h--small">Speaks</h2>
+                <ul className="mp-tags">
+                  {m.languages.map((l) => (
+                    <li key={l}>{l}</li>
+                  ))}
+                </ul>
+              </>
+            )}
+            {m.interests.length > 0 && (
+              <>
+                <h2 className="mp-h mp-h--small">Outside work</h2>
+                <ul className="mp-tags">
+                  {m.interests.map((l) => (
+                    <li key={l}>{l}</li>
+                  ))}
+                </ul>
+              </>
+            )}
+          </Reveal>
+        )}
 
         {works.length > 0 && (
           <Reveal className="mp-tile mp-tile--works" delay={40}>
@@ -179,7 +249,7 @@ export function MemberPage({ snap, slug, link }: { snap: Snapshot; slug: string;
 
         <Reveal className="mp-tile mp-tile--ach" delay={80}>
           <h2 className="mp-h">Achievements</h2>
-          <Shelf certs={certs} />
+          <Shelf certs={certs} hrefFor={(c) => link(`/crew/${slug}/certificates/${c.id}/`)} />
         </Reveal>
 
         <Reveal className="mp-tile mp-tile--connect" delay={120}>

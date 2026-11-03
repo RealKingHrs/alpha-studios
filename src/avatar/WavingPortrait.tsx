@@ -37,53 +37,72 @@ export function WavingPortrait({
       <svg x={0} y={0} width={200} height={220} viewBox="0 0 200 220" overflow="visible">
         <Portrait record={record} />
       </svg>
-      <g className="waving-arm">
+      <g className="wv-arm">
+        {/* upper arm, out to the elbow */}
         <path
-          d="M 172 214 L 232 128"
+          d="M 168 210 L 226 204"
           stroke={INK}
           strokeWidth={36}
           strokeLinecap="round"
           fill="none"
         />
         <path
-          d="M 172 214 L 232 128"
+          d="M 168 210 L 226 204"
           stroke={sleeve}
           strokeWidth={30}
           strokeLinecap="round"
           fill="none"
         />
-        <g className="waving-hand">
-          <ellipse cx={236} cy={104} rx={19} ry={22} fill={skin} {...STROKE} />
-          {[
-            [-34, 0],
-            [-16, -6],
-            [2, -8],
-            [20, -4],
-          ].map(([deg, dy], i) => (
+        {/* forearm and hand pivot on the elbow */}
+        <g className="wv-fore">
+          <path
+            d="M 226 204 L 240 138"
+            stroke={INK}
+            strokeWidth={32}
+            strokeLinecap="round"
+            fill="none"
+          />
+          <path
+            d="M 226 204 L 240 138"
+            stroke={sleeve}
+            strokeWidth={26}
+            strokeLinecap="round"
+            fill="none"
+          />
+          <g className="wv-hand">
+            {[
+              [-15, 222, 26],
+              [-5, 232, 31],
+              [5, 242, 29],
+              [15, 252, 22],
+            ].map(([deg, x, h]) => (
+              <rect
+                key={x}
+                x={x}
+                y={106 - h}
+                width={10}
+                height={h + 12}
+                rx={5}
+                fill={skin}
+                {...STROKE}
+                strokeWidth={2.6}
+                transform={`rotate(${deg} ${x + 5} 112)`}
+              />
+            ))}
             <rect
-              key={i}
-              x={231}
-              y={58 + dy}
+              x={207}
+              y={108}
               width={10}
-              height={34}
+              height={26}
               rx={5}
               fill={skin}
               {...STROKE}
-              strokeWidth={2.5}
-              transform={`rotate(${deg} 236 104)`}
+              strokeWidth={2.6}
+              transform="rotate(-52 217 126)"
             />
-          ))}
-          <rect
-            x={246}
-            y={92}
-            width={10}
-            height={28}
-            rx={5}
-            fill={skin}
-            {...STROKE}
-            strokeWidth={2.5}
-            transform="rotate(58 241 104)"
-          />
+            <rect x={220} y={100} width={40} height={44} rx={17} fill={skin} {...STROKE} />
+            <rect x={225} y={96} width={30} height={12} fill={skin} />
+          </g>
         </g>
       </g>
     </svg>

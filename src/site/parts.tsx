@@ -33,7 +33,7 @@ const NAV = [
 const section = (route: Route) =>
   route.name === 'projects' || route.name === 'project'
     ? '/projects/'
-    : route.name === 'crew' || route.name === 'member'
+    : route.name === 'crew' || route.name === 'member' || route.name === 'certificate'
       ? '/crew/'
       : route.name === 'launchpad'
         ? '/launchpad/'

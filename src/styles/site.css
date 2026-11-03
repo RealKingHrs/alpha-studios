@@ -2452,42 +2452,66 @@ html.reduce-motion .sc-bubble {
   height: auto;
   overflow: visible;
 }
-.waving-arm {
+.wv-fore {
   transform-box: view-box;
-  transform-origin: 172px 214px;
-  animation: wave-arm 3.4s ease-in-out infinite;
+  transform-origin: 226px 204px;
+  animation: wv-sway 4.2s ease-in-out infinite;
 }
-.waving-hand {
+.wv-hand {
   transform-box: view-box;
-  transform-origin: 236px 128px;
-  animation: wave-hand 1.5s ease-in-out infinite;
+  transform-origin: 240px 140px;
+  animation: wv-wave 4.2s ease-in-out infinite;
 }
-@keyframes wave-arm {
-  50% {
-    transform: rotate(-4deg);
-  }
-}
-@keyframes wave-hand {
+@keyframes wv-sway {
   0%,
   100% {
-    transform: rotate(-12deg);
+    transform: rotate(0deg);
   }
-  50% {
-    transform: rotate(14deg);
+  20% {
+    transform: rotate(-5deg);
+  }
+  40% {
+    transform: rotate(2deg);
   }
 }
-.mcard:hover .waving-hand,
-.mcard:focus-visible .waving-hand,
-.profile-avatar:hover .waving-hand {
-  animation-duration: 0.6s;
+@keyframes wv-wave {
+  0%,
+  42%,
+  100% {
+    transform: rotate(0deg);
+  }
+  6% {
+    transform: rotate(-20deg);
+  }
+  12% {
+    transform: rotate(18deg);
+  }
+  18% {
+    transform: rotate(-20deg);
+  }
+  24% {
+    transform: rotate(18deg);
+  }
+  30% {
+    transform: rotate(-16deg);
+  }
+  36% {
+    transform: rotate(6deg);
+  }
 }
-html.reduce-motion .waving-arm,
-html.reduce-motion .waving-hand {
+.mcard:hover .wv-fore,
+.mp-avatar:hover .wv-fore,
+.mcard:hover .wv-hand,
+.mp-avatar:hover .wv-hand {
+  animation-duration: 2.4s;
+}
+html.reduce-motion .wv-fore,
+html.reduce-motion .wv-hand {
   animation: none;
 }
 @media (prefers-reduced-motion: reduce) {
-  .waving-arm,
-  .waving-hand {
+  .wv-fore,
+  .wv-hand {
     animation: none;
   }
 }

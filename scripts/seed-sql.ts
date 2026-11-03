@@ -12,7 +12,7 @@ const lines = [
   `insert into public.site_settings (id, studio_statement, intro_enabled, contact_email) values (1, ${q(snap.settings.studioStatement)}, ${snap.settings.introEnabled}, ${snap.settings.contactEmail ? q(snap.settings.contactEmail) : 'null'}) on conflict (id) do nothing;`,
   ...snap.members.map(
     (m) =>
-      `insert into public.members (slug, name, role_title, bio, github_username, links, avatar, codename, tagline, skills, currently, fun_fact, pop_pick) values (${q(m.slug)}, ${q(m.name)}, ${q(m.role)}, ${q(m.bio)}, ${m.githubUsername ? q(m.githubUsername) : 'null'}, ${j(m.links)}, ${j(m.avatar)}, ${q(m.codename)}, ${q(m.tagline)}, ${j(m.skills)}, ${q(m.currently)}, ${q(m.funFact)}, ${q(m.popPick)}) on conflict (slug) do nothing;`,
+      `insert into public.members (slug, name, role_title, bio, github_username, links, avatar, codename, tagline, skills, currently, fun_fact, pop_pick, location, open_to, languages, interests, experience, education) values (${q(m.slug)}, ${q(m.name)}, ${q(m.role)}, ${q(m.bio)}, ${m.githubUsername ? q(m.githubUsername) : 'null'}, ${j(m.links)}, ${j(m.avatar)}, ${q(m.codename)}, ${q(m.tagline)}, ${j(m.skills)}, ${q(m.currently)}, ${q(m.funFact)}, ${q(m.popPick)}, ${q(m.location)}, ${q(m.openTo)}, ${arr(m.languages)}, ${arr(m.interests)}, ${j(m.experience)}, ${j(m.education)}) on conflict (slug) do nothing;`,
   ),
   ...snap.projects.map(
     (p) =>
@@ -24,7 +24,7 @@ const lines = [
   ),
   ...snap.certifications.map(
     (c) =>
-      `insert into public.certifications (member_id, title, issuer, issued_on, expires_on, credential_url) select m.id, ${q(c.title)}, ${q(c.issuer)}, ${c.issuedOn ? q(c.issuedOn) : 'null'}, ${c.expiresOn ? q(c.expiresOn) : 'null'}, ${c.url ? q(c.url) : 'null'} from public.members m where m.slug = ${q(c.memberSlug)} and not exists (select 1 from public.certifications x where x.member_id = m.id and x.title = ${q(c.title)});`,
+      `insert into public.certifications (member_id, title, issuer, issued_on, expires_on, credential_url, credential_id, description) select m.id, ${q(c.title)}, ${q(c.issuer)}, ${c.issuedOn ? q(c.issuedOn) : 'null'}, ${c.expiresOn ? q(c.expiresOn) : 'null'}, ${c.url ? q(c.url) : 'null'}, ${c.credentialId ? q(c.credentialId) : 'null'}, ${q(c.description)} from public.members m where m.slug = ${q(c.memberSlug)} and not exists (select 1 from public.certifications x where x.member_id = m.id and x.title = ${q(c.title)});`,
   ),
 ];
 writeFileSync('supabase/seed.sql', lines.join('\n') + '\n');

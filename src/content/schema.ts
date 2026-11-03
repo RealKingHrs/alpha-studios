@@ -32,6 +32,31 @@ export const Member = z.object({
   currently: z.string().default(''),
   funFact: z.string().default(''),
   popPick: z.string().default(''),
+  location: z.string().default(''),
+  openTo: z.string().default(''),
+  languages: z.array(z.string()).default([]),
+  interests: z.array(z.string()).default([]),
+  experience: z
+    .array(
+      z.object({
+        title: z.string().min(1),
+        org: z.string().default(''),
+        from: z.string().default(''),
+        to: z.string().default(''),
+        note: z.string().default(''),
+      }),
+    )
+    .default([]),
+  education: z
+    .array(
+      z.object({
+        school: z.string().min(1),
+        field: z.string().default(''),
+        from: z.string().default(''),
+        to: z.string().default(''),
+      }),
+    )
+    .default([]),
 });
 
 export const Certification = z.object({
@@ -42,6 +67,8 @@ export const Certification = z.object({
   issuedOn: z.string().nullable().default(null),
   expiresOn: z.string().nullable().default(null),
   url: url.optional(),
+  credentialId: z.string().optional(),
+  description: z.string().default(''),
 });
 
 export const Platform = z.enum(['ios', 'macos', 'android', 'web']);
