@@ -1,6 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { must, run, service, signedIn } from './helpers';
+import { must, run, service, signedIn, restoreAdmins, stepAsideAdmins } from './helpers';
 
 // Invite codes, consent, revert and the new guards, with real sign-ins against the local stack.
 
@@ -9,6 +9,7 @@ let crew: SupabaseClient;
 let crewUser: string;
 let adminMemberId: string;
 let crewMemberId: string;
+let steppedAside: string[] = [];
 const cleanup = { members: [] as string[], projects: [] as string[], users: [] as string[] };
 
 async function member(slug: string, extra: Record<string, unknown> = {}) {
@@ -34,7 +35,7 @@ beforeAll(async () => {
   const c = await signedIn('pcrew');
   [admin, crew, crewUser] = [a.client, c.client, c.userId];
   cleanup.users.push(a.userId, c.userId);
-  await service.from('members').update({ role: 'crew' }).eq('role', 'admin');
+  steppedAside = await stepAsideAdmins();
   adminMemberId = await member('p-admin', {
     user_id: a.userId,
     role: 'admin',
@@ -46,6 +47,7 @@ beforeAll(async () => {
 afterAll(async () => {
   await service.from('invite_attempts').delete().in('user_id', cleanup.users);
   await service.from('members').delete().in('id', cleanup.members);
+  await restoreAdmins(steppedAside);
   await service.from('projects').delete().in('id', cleanup.projects);
   for (const id of cleanup.users) await service.auth.admin.deleteUser(id);
 });

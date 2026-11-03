@@ -123,3 +123,7 @@ export function roomPoses(i: number, pedestal: Pose): [Pose, Pose, Pose] {
     { pos: roomToWorld(i, [0, 1.6, 2]), look: roomToWorld(i, [0, 1.75, -5]) },
   ];
 }
+
+/** The dead end for addresses that lead nowhere: a bare wall near the entrance with a single ring on it. */
+export const LOST_POSE: Pose = { pos: [-2.4, 1.6, 4.6], look: [-6, 1.7, 3.2] };
+export const LOST_MARK: Vec3 = [-5.8, 1.7, 3.2];

@@ -68,7 +68,7 @@ export function Builder({ store, reduce }: { store: AvatarStore; reduce: boolean
 
   return (
     <div className="builder">
-      <div className="stage" aria-label="Live preview of your avatar">
+      <div className="stage" role="img" aria-label="Live preview of your avatar">
         <Canvas camera={{ position: [0, 0.6, 2.2], rotation: [0, 0, 0], fov: 32 }} dpr={[1, 2]}>
           <color attach="background" args={[bg]} />
           <hemisphereLight args={['#ffffff', bg, 1.6]} />

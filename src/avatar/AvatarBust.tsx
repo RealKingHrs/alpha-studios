@@ -16,6 +16,8 @@ interface Props {
   reduce?: boolean;
   /** Overall scale. 1 fits a bust on a plinth in the gallery. */
   scale?: number;
+  /** 'low' halves the smoothness of every round part. For busts seen from a distance. */
+  detail?: 'high' | 'low';
 }
 
 /** Height of the surface of the head ellipsoid at (x, y), so features sit on the face. */
@@ -45,7 +47,9 @@ export function AvatarBust({
   reactKey = 0,
   reduce = false,
   scale = 1,
+  detail = 'high',
 }: Props) {
+  const S = (n: number) => (detail === 'low' ? Math.max(6, Math.round(n / 2)) : n);
   const spec = useMemo(() => describeAvatar(record), [record]);
   const color = useMemo(() => {
     const read = readSwatches();
@@ -101,11 +105,11 @@ export function AvatarBust({
       <group ref={body}>
         {/* shoulders and neck */}
         <mesh position={[0, 0.1, 0]} scale={[0.34, 0.17, 0.19]}>
-          <sphereGeometry args={[1, 32, 20]} />
+          <sphereGeometry args={[1, S(32), S(20)]} />
           {clay(outfit)}
         </mesh>
         <mesh position={[0, 0.27, 0]}>
-          <cylinderGeometry args={[0.055, 0.065, 0.14, 20]} />
+          <cylinderGeometry args={[0.055, 0.065, 0.14, S(20)]} />
           {clay(skin)}
         </mesh>
         {spec.outfit.style === 'hoodie' && (
@@ -115,7 +119,7 @@ export function AvatarBust({
               {clay(outfit)}
             </mesh>
             <mesh position={[0, 0.27, -0.07]} scale={[1.2, 1, 0.6]}>
-              <sphereGeometry args={[0.1, 20, 14]} />
+              <sphereGeometry args={[0.1, S(20), S(14)]} />
               {clay(outfit)}
             </mesh>
           </>
@@ -143,20 +147,20 @@ export function AvatarBust({
 
       <group ref={head} position={[0, headY, 0]}>
         <mesh scale={[H.w, H.h, H.d]}>
-          <sphereGeometry args={[1, 40, 28]} />
+          <sphereGeometry args={[1, S(40), S(28)]} />
           {clay(skin, 0.75)}
         </mesh>
         {/* ears */}
         {[-1, 1].map((s) => (
           <mesh key={s} position={[s * H.w * 0.98, -0.01, 0]} scale={[0.5, 1, 0.8]}>
-            <sphereGeometry args={[0.035, 14, 10]} />
+            <sphereGeometry args={[0.035, S(14), S(10)]} />
             {clay(skin)}
           </mesh>
         ))}
         {spec.earrings === 'stud' &&
           [-1, 1].map((s) => (
             <mesh key={s} position={[s * (H.w + 0.012), -0.055, 0.005]}>
-              <sphereGeometry args={[0.012, 10, 8]} />
+              <sphereGeometry args={[0.012, S(10), S(8)]} />
               {metal}
             </mesh>
           ))}
@@ -180,7 +184,7 @@ export function AvatarBust({
               position={[s * E.gap, eyeY, faceZ(H, s * E.gap, eyeY) - 0.004]}
               scale={[1, 1.15, 0.6]}
             >
-              <sphereGeometry args={[E.r, 14, 10]} />
+              <sphereGeometry args={[E.r, S(14), S(10)]} />
               <meshStandardMaterial color="#1b1b1d" roughness={0.3} />
             </mesh>
             <mesh
@@ -195,7 +199,7 @@ export function AvatarBust({
 
         {/* nose */}
         <mesh position={[0, -0.02, nz + N.z * 0.5]} scale={[1, 1.1, 1]}>
-          <sphereGeometry args={[N.r, 14, 10]} />
+          <sphereGeometry args={[N.r, S(14), S(10)]} />
           {clay(skin.clone().multiplyScalar(0.96))}
         </mesh>
 
@@ -215,7 +219,7 @@ export function AvatarBust({
           )}
           {M.kind === 'open' && (
             <mesh scale={[1, 0.7, 0.4]}>
-              <sphereGeometry args={[M.w * 0.5, 14, 10]} />
+              <sphereGeometry args={[M.w * 0.5, S(14), S(10)]} />
               <meshStandardMaterial color="#5a2a2a" roughness={0.6} />
             </mesh>
           )}
@@ -250,19 +254,19 @@ export function AvatarBust({
             scale={[H.w * (spec.hair.style === 'buzz' ? 1.02 : 1.06), H.h * 1.05, H.d * 1.06]}
             position={[0, 0.005, -0.004]}
           >
-            <sphereGeometry args={[1, 36, 20, 0, Math.PI * 2, 0, Math.PI * capAngle]} />
+            <sphereGeometry args={[1, S(36), S(20), 0, Math.PI * 2, 0, Math.PI * capAngle]} />
             {clay(hair)}
           </mesh>
         )}
         {spec.hair.style === 'long' && (
           <mesh position={[0, -H.h * 0.35, -H.d * 0.35]} scale={[H.w * 1.1, H.h * 1.0, H.d * 0.7]}>
-            <sphereGeometry args={[1, 24, 16]} />
+            <sphereGeometry args={[1, S(24), S(16)]} />
             {clay(hair)}
           </mesh>
         )}
         {spec.hair.style === 'bun' && (
           <mesh position={[0, H.h * 1.05, -H.d * 0.2]}>
-            <sphereGeometry args={[0.065, 20, 14]} />
+            <sphereGeometry args={[0.065, S(20), S(14)]} />
             {clay(hair)}
           </mesh>
         )}
@@ -275,7 +279,7 @@ export function AvatarBust({
                 position={[Math.sin(a) * H.w * 0.55, H.h * 0.88, Math.cos(a) * H.d * 0.45 - 0.02]}
                 rotation={[Math.cos(a) * 0.5, 0, -Math.sin(a) * 0.5]}
               >
-                <coneGeometry args={[0.03, 0.09, 10]} />
+                <coneGeometry args={[0.03, 0.09, S(10)]} />
                 {clay(hair)}
               </mesh>
             );
@@ -293,7 +297,7 @@ export function AvatarBust({
                   Math.cos(a) * H.d * ring * 0.8 - 0.015,
                 ]}
               >
-                <sphereGeometry args={[0.05, 14, 10]} />
+                <sphereGeometry args={[0.05, S(14), S(10)]} />
                 {clay(hair)}
               </mesh>
             );
@@ -308,7 +312,7 @@ export function AvatarBust({
                 H.d * (0.1 + (k % 2) * 0.28),
               ]}
             >
-              <sphereGeometry args={[0.055, 14, 10]} />
+              <sphereGeometry args={[0.055, S(14), S(10)]} />
               {clay(hair)}
             </mesh>
           ))}
@@ -318,7 +322,7 @@ export function AvatarBust({
             rotation={[0.5, 0, 0.35]}
             scale={[H.w * 0.75, 0.04, H.d * 0.6]}
           >
-            <sphereGeometry args={[1, 18, 12]} />
+            <sphereGeometry args={[1, S(18), S(12)]} />
             {clay(hair)}
           </mesh>
         )}
@@ -326,7 +330,9 @@ export function AvatarBust({
         {/* facial hair */}
         {spec.facialHair.style === 'stubble' && (
           <mesh scale={[H.w * 1.008, H.h * 1.008, H.d * 1.008]}>
-            <sphereGeometry args={[1, 32, 16, 0, Math.PI * 2, Math.PI * 0.62, Math.PI * 0.38]} />
+            <sphereGeometry
+              args={[1, S(32), S(16), 0, Math.PI * 2, Math.PI * 0.62, Math.PI * 0.38]}
+            />
             <meshStandardMaterial color={hair} roughness={1} transparent opacity={0.4} />
           </mesh>
         )}
@@ -341,7 +347,9 @@ export function AvatarBust({
         )}
         {spec.facialHair.style === 'beard' && (
           <mesh scale={[H.w * 1.05, H.h * 1.04, H.d * 1.05]} position={[0, -0.01, 0.004]}>
-            <sphereGeometry args={[1, 32, 16, 0, Math.PI * 2, Math.PI * 0.6, Math.PI * 0.4]} />
+            <sphereGeometry
+              args={[1, S(32), S(16), 0, Math.PI * 2, Math.PI * 0.6, Math.PI * 0.4]}
+            />
             {clay(hair)}
           </mesh>
         )}

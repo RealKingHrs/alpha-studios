@@ -4,7 +4,7 @@ import type { StepLinks } from '../nav';
 export function Controls({ steps, link }: { steps: StepLinks; link: (p: string) => string }) {
   const { back, forward } = steps;
   return (
-    <div className="controls">
+    <nav className="controls" aria-label="Move through the vault">
       <a
         className="control"
         href={back ? link(back.path) : undefined}
@@ -21,6 +21,6 @@ export function Controls({ steps, link }: { steps: StepLinks; link: (p: string) 
       >
         Forward
       </a>
-    </div>
+    </nav>
   );
 }

@@ -27,6 +27,7 @@ import {
   CREW_SPAN_DEG,
   DOOR_Z,
   HALL_Z,
+  LOST_MARK,
   ROOM,
   roomSide,
   bustPlacement,
@@ -50,6 +51,8 @@ export interface Ctrl {
   pointer: { x: number; y: number };
   smooth: { x: number; y: number };
   reduce: boolean;
+  /** Pointer-driven touches are on. */
+  fx: boolean;
 }
 
 interface SceneProps {
@@ -124,7 +127,7 @@ function Telemetry({
   useFrame((state, dt) => {
     monitor.tick(dt);
     count.frames++;
-    if (count.frames === 3) {
+    if (count.frames === 2) {
       stats.readyAt = performance.now();
       stats.bytesAtReady = transferredBytes();
       onReady();
@@ -352,18 +355,39 @@ function Pedestal({
   position,
   featured,
   reduce,
+  ctrl,
   onPick,
 }: {
   tokens: Tokens;
   position: [number, number, number];
   featured: boolean;
   reduce: boolean;
+  ctrl: Ctrl;
   onPick: () => void;
 }) {
   const object = useRef<THREE.Mesh>(null);
+  const hovered = useRef(false);
   const cursor = useCursor();
-  useFrame(({ clock }) => {
-    if (object.current && !reduce) object.current.rotation.y = clock.elapsedTime * 0.3;
+  const hoverCursor = {
+    onPointerOver: () => {
+      hovered.current = true;
+      cursor.onPointerOver();
+    },
+    onPointerOut: () => {
+      hovered.current = false;
+      cursor.onPointerOut();
+    },
+  };
+  useFrame(({ clock, pointer }) => {
+    const o = object.current;
+    if (!o) return;
+    if (!reduce) o.rotation.y = clock.elapsedTime * 0.3;
+    // With effects on, the device leans toward the pointer, is drawn a little toward it, and lifts when hovered.
+    const k = ctrl.fx ? 1 : 0;
+    o.rotation.x += (-pointer.y * 0.18 * k - o.rotation.x) * 0.1;
+    o.rotation.z += (pointer.x * 0.1 * k - o.rotation.z) * 0.1;
+    o.position.x += (pointer.x * 0.06 * k - o.position.x) * 0.1;
+    o.position.y += (1.95 + (hovered.current && k ? 0.08 : 0) - o.position.y) * 0.1;
   });
   return (
     <group position={position}>
@@ -392,11 +416,21 @@ function Pedestal({
         position={[0, 1.4, 0]}
         visible={false}
         onClick={(e) => isTap(e) && (e.stopPropagation(), onPick())}
-        {...cursor}
+        {...hoverCursor}
       >
         <cylinderGeometry args={[0.9, 0.9, 2.8, 12]} />
       </mesh>
     </group>
+  );
+}
+
+/** A lone chrome ring on the entrance wall. It only matters to someone who followed an address that leads nowhere. */
+function LostMark({ tokens }: { tokens: Tokens }) {
+  return (
+    <mesh position={LOST_MARK} rotation={[0, Math.PI / 2, 0]}>
+      <torusGeometry args={[0.45, 0.025, 12, 48]} />
+      <meshStandardMaterial color={tokens.chrome} roughness={0.25} metalness={0.9} />
+    </mesh>
   );
 }
 
@@ -607,9 +641,11 @@ export default function Scene(props: SceneProps) {
           position={pedestalPosition(i, n)}
           featured={i === featured}
           reduce={ctrl.reduce}
+          ctrl={ctrl}
           onPick={() => onPick(`/projects/${p.slug}/`)}
         />
       ))}
+      <LostMark tokens={tokens} />
       <CrewPlatform tokens={tokens} />
       {snap.members.map((mem, i) => {
         const { pos, rotY } = bustPlacement(i, m);
@@ -621,6 +657,7 @@ export default function Scene(props: SceneProps) {
             rotY={rotY}
             record={mem.avatar}
             reduce={ctrl.reduce}
+            follow={ctrl.fx}
             onPick={() => onPick(`/crew/${mem.slug}/`)}
           />
         );

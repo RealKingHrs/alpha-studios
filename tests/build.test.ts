@@ -82,4 +82,27 @@ d('built site', () => {
     ])
       expect(existsSync(join('dist', f))).toBe(true);
   });
+
+  it('gives every address its own share image that exists', () => {
+    const pages = walk('dist').filter((f) => f.endsWith('index.html') && !f.includes('portal/app'));
+    pages.push('dist/404.html');
+    const images = new Set<string>();
+    for (const f of pages) {
+      const m = /property="og:image" content="([^"]+)"/.exec(readFileSync(f, 'utf8'));
+      expect(m, f).toBeTruthy();
+      const file = m![1].replace(/^.*\/og\//, 'dist/og/');
+      expect(existsSync(file), `${f} -> ${file}`).toBe(true);
+      images.add(file);
+    }
+    expect(images.size).toBe(pages.length);
+  });
+
+  it('has a manifest whose colours match the design tokens', () => {
+    const manifest = JSON.parse(readFileSync('dist/manifest.webmanifest', 'utf8'));
+    const tokens = readFileSync('design/tokens.css', 'utf8');
+    const obsidian = /--obsidian:\s*(#[0-9a-fA-F]{6})/.exec(tokens)![1].toLowerCase();
+    expect(manifest.background_color.toLowerCase()).toBe(obsidian);
+    expect(manifest.theme_color.toLowerCase()).toBe(obsidian);
+    for (const icon of manifest.icons) expect(existsSync(join('dist', icon.src))).toBe(true);
+  });
 });

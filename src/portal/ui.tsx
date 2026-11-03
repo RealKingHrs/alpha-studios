@@ -1,21 +1,36 @@
 import { useEffect, useState, type ReactNode } from 'react';
 
-export const Loading = ({ what = 'Loading.' }: { what?: string }) => (
-  <p role="status" className="state">
-    {what}
-  </p>
+/** A loading state keeps the page's heading, so the page never loses its structure while data arrives. */
+export const Loading = ({ what = 'Loading.', title }: { what?: string; title?: string }) => (
+  <>
+    {title && <h1>{title}</h1>}
+    <p role="status" className="state">
+      {what}
+    </p>
+  </>
 );
 
-export function ErrorState({ message, onRetry }: { message: string; onRetry?: () => void }) {
+export function ErrorState({
+  message,
+  onRetry,
+  title,
+}: {
+  message: string;
+  onRetry?: () => void;
+  title?: string;
+}) {
   return (
-    <div role="alert" className="state error-state">
-      <p>{message}</p>
-      {onRetry && (
-        <button type="button" className="secondary" onClick={onRetry}>
-          Try again
-        </button>
-      )}
-    </div>
+    <>
+      {title && <h1>{title}</h1>}
+      <div role="alert" className="state error-state">
+        <p>{message}</p>
+        {onRetry && (
+          <button type="button" className="secondary" onClick={onRetry}>
+            Try again
+          </button>
+        )}
+      </div>
+    </>
   );
 }
 

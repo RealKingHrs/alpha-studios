@@ -106,3 +106,50 @@ Recheck the free-tier limits before launch (SPEC section 8).
 - With no `SUPABASE_URL` secret it publishes the placeholder seed, so the site works before the backend is connected.
 - If GitHub is unreachable it keeps the cached repo details. If the data fails the snapshot contract the job fails and nothing is deployed.
 - Dry run on your machine: `npm run publish:dry`.
+
+## Free-tier limits (rechecked 3 November 2026)
+
+Read from the vendors' own pages on that date; recheck on the day of launch.
+
+| Service       | Limit                                                                                                                                                                                                                                                                                                                                             | Source                                             |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| Supabase Free | A free project with too little database activity over a week is paused. A paused project keeps all of its data and settings. You get an email about a week before and another when it happens. The page does not say how long a paused project stays restorable. A few requests a day usually keeps a project awake, but that is not a guarantee. | supabase.com/kb/faqs/platform/free-project-pausing |
+| GitHub Pages  | Sites may be no larger than 1 GB. Soft bandwidth limit of 100 GB a month. Soft limit of 10 builds an hour, which does not apply to custom GitHub Actions workflows (this site uses one). Deployments time out after 10 minutes.                                                                                                                   | docs.github.com, GitHub Pages limits               |
+
+The built site is about 2 MB, far inside the size limit. The publish job makes a request to the backend at least twice a day.
+
+## Launch checklist
+
+Tick each line with the date and who checked it. Nothing here is done until a person has seen it done.
+
+**Blocked on you**
+
+- [ ] Trademark search for "Alpha Studios" and for lowercase-alpha marks in software and app classes (spec section 3). Record the result and date here: ________. If it conflicts, switch to the fallback mark before launch.
+- [ ] Real content in `content/seed/content.json` or through the portal: studio statement, contact email, five bios, two projects with stories, real screenshots in `public/screens/`, store and GitHub links, GitHub repositories for stars and commits. Every "Placeholder" string is gone: `git grep -n -i placeholder -- content public src` finds nothing.
+- [ ] Each crew member has agreed in the portal that name, role, bio and links are public (their consent date shows on their profile).
+- [ ] Domain decision recorded (free GitHub Pages address or a custom domain).
+
+**Accounts and secrets** (see "Secrets" above)
+
+- [ ] GitHub repo is public, Pages source is GitHub Actions.
+- [ ] Supabase project created, `npx supabase db push` applied, seed or real content loaded.
+- [ ] GitHub sign-in enabled on the Supabase project; the OAuth app callback matches.
+- [ ] Repo secrets set: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, optional `REPO_READ_TOKEN`. Repo variables set: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`.
+- [ ] `git log -p | git grep` style check: no service key, token or password is in the history. Run a secret scanner over the full history, not only the working tree.
+- [ ] Admin created, GitHub two-factor on, admin can sign in to the portal.
+- [ ] Publish trigger deployed and the four database webhooks created, or the team accepts twice-daily publishing only.
+
+**Health**
+
+- [ ] Publish workflow ran green from the Actions tab and the live site shows the new content.
+- [ ] A change in the portal appears on the live site after the next publish.
+- [ ] Direct links to a room, a profile and an unknown address work on the live host (the unknown one shows the in-vault 404).
+- [ ] Backup export taken: from the Supabase dashboard, a database backup or `pg_dump`, plus a copy of the published `content.json`. Stored outside the repo. Date: ________.
+- [ ] Free-tier limits rechecked today.
+
+**Quality**
+
+- [ ] Performance measured on a real recent laptop and a real mid-range phone; numbers written in `docs/PERFORMANCE.md`; gaps accepted by the owner.
+- [ ] Keyboard-only walkthrough and a real screen reader pass (VoiceOver on Mac and iPhone) by a person.
+- [ ] Opened on a real phone: intro, travel by swipe, a room, the portal sign-in.
+- [ ] Share previews checked by pasting a few addresses into a chat or social post.

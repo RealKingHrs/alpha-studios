@@ -148,13 +148,15 @@ export function RoomPage({ snap, slug, link }: { snap: Snapshot; slug: string; l
         </p>
       )}
       {p.screenshots.length > 0 && (
-        <ul className="shots" aria-label="Screenshots">
-          {p.screenshots.map((s) => (
-            <li key={s.src}>
-              <img src={link(`/${s.src}`)} alt={s.alt} loading="lazy" />
-            </li>
-          ))}
-        </ul>
+        <div className="shots" role="region" aria-label="Screenshots" tabIndex={0}>
+          <ul>
+            {p.screenshots.map((s) => (
+              <li key={s.src}>
+                <img src={link(`/${s.src}`)} alt={s.alt} loading="lazy" />
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
       {repo && (
         <>

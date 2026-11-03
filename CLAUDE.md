@@ -53,7 +53,8 @@ Run from the repo root. Node 22.
 - Unit and build tests: `npm test` (the build tests need `npm run build` first and skip otherwise)
 - Role tests (visitor, crew, admin): `npx supabase start -x studio,imgproxy,vector,logflare,edge-runtime,realtime,storage-api,inbucket,mailpit`, then `npm run test:rls`. Needs Docker. `npx supabase db reset` reapplies migrations and seed.
 - Publish job dry run: `npm run publish:dry` (seed only, no network). Real run: `npm run publish:snapshot` with `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` set.
-- Regenerate icons from the favicon cut: `npm run icons`. Regenerate `supabase/seed.sql`: `npx tsx scripts/seed-sql.ts`.
+- Download budget: `npm run sizes` (after a build); `tests/budget.test.ts` fails if the first visit passes 3 MB.
+- Regenerate icons from the favicon cut: `npm run icons`. Regenerate `supabase/seed.sql`: `npx tsx scripts/seed-sql.ts`. Placeholder screenshots: `npm run placeholders`. Outlined wordmark: `npm run wordmark`.
 - Try the vault modes in the address bar: `?mode=full`, `?mode=lite`, `?mode=plain` (no 3D), `?motion=reduce`, and `?dev` for the frame-rate and download-size panel.
 - Local portal try-out: `npm run dev:users` (local stack only), then `npm run build` and `npm run preview`, and open `/alpha-studios/portal/app/`.
 - Operations, secrets and recovery: `docs/RUNBOOK.md`.

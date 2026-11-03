@@ -1,53 +1,51 @@
-# Performance, milestone 2
+# Performance
 
-Measured 3 November 2026 on the development machine (Apple silicon laptop, 120 Hz display) with the production build served by `vite preview`, in the desktop app's built-in browser. Use `?dev` on any address to see the same readout.
+Measured on 3 November 2026 on the development machine (Apple silicon laptop) with the production build served by `vite preview`, in the desktop app's built-in browser, using `?dev`. Download sizes come from `npm run sizes`, which reads the built files, and are enforced by `tests/budget.test.ts`.
 
-## Caveats
+## Read this first: what these numbers can and cannot say
 
-- The built-in browser pane is sometimes hidden or throttled, which lowers frame rates and delays the first frame. Frame rates below are what the pane reported while visible. Treat them as indicative, not certified.
-- Not tried: a real phone. The phone-sized runs used a 406 x 652 viewport, which the vault detects as lite mode. Open the preview on a real phone over the local network before relying on the lite numbers.
-- `vite preview` serves compressed files, so the download figures match gzip sizes below. GitHub Pages also compresses.
+- The built-in browser pane throttles animation frames hard when it is not in front (about 1.5 frames a second at times), so **frame rate and time to first frame in this environment are not reliable**. Frame rates below are the smoothed figure the readout showed; the readout ignores very long frames on purpose, so a throttled pane can still show a high number.
+- No real phone, no older laptop and no real GPU stress was tried. The phone-sized runs used a 406 by 652 viewport, which the vault treats as lite mode.
+- Draw calls are counted per whole frame and include the second pass the reflective floor makes in full mode, so full mode roughly doubles what is on screen.
 
-## Download size (cold load, gzip)
+## Targets from the spec, and where we stand
 
-Everything needed before the corridor first renders, on a desktop load:
+| Target                                                             | Result                                                                                                             | Verdict                                         |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------- |
+| Under 3 MB downloaded before the corridor appears                  | About **459 kB** gzip (`npm run sizes`), checked by a test                                                         | Met, with a wide margin                         |
+| 60 fps on a recent laptop                                          | 65 to 96 fps reported at every stop in both modes                                                                  | Met on this machine; unproven on other hardware |
+| Lite mode when frame rate stays under 30 fps for 2 s, or low power | Logic covered by unit tests (`tests/vault.test.ts`); battery, memory, cores and save-data signals feed the choice  | Not exercised on a real slow device             |
+| Compressed models and textures                                     | No model or texture files exist: everything is drawn in code; screenshots are small PNGs loaded only inside a room | Met                                             |
+| Each project room loaded only when visited                         | Room chunk (2.3 kB) and its screenshots are fetched on entry; a fresh load of the hall requests neither            | Met                                             |
 
-| Part                                                                    | Size                               |
-| ----------------------------------------------------------------------- | ---------------------------------- |
-| HTML, CSS, snapshot                                                     | 12 kB                              |
-| App code (React, router, pages, intro)                                  | 94 kB                              |
-| 3D chunk (three, React Three Fiber, scene)                              | 275 kB                             |
-| Shared chunks                                                           | 6 kB                               |
-| Fonts actually used (Inter 400 and 500 latin, JetBrains Mono 400 latin) | 69 kB                              |
-| **Total before the corridor**                                           | **about 456 kB** (readout: 449 kB) |
+## First visit, before the corridor (gzip)
 
-Target: under 3 MB. Met with a wide margin. Other fonts ranges (Cyrillic, Greek, Vietnamese) download only if the text needs them. The share image is 13 kB and is not part of the page load.
+| Part                                                           | Size         |
+| -------------------------------------------------------------- | ------------ |
+| HTML and snapshot                                              | 2.6 kB       |
+| App code and styles                                            | 112.5 kB     |
+| 3D chunk (three.js, scene, avatars)                            | 276.4 kB     |
+| Fonts used (Inter 400 and 500 Latin, JetBrains Mono 400 Latin) | 67.5 kB      |
+| **Total**                                                      | **458.9 kB** |
 
-## Frame rate and draw calls
+On demand, not part of the first visit: project room 2.3 kB, sound engine 0.5 kB, dev panel 0.5 kB, the portal (its own page, 64 kB gzip) and per-room screenshots.
 
-Full mode, one reading per stop:
+## Scene cost per stop
 
-| Stop         | Draw calls | Triangles    |
-| ------------ | ---------- | ------------ |
-| Hall         | about 100  | about 24,000 |
-| Crew gallery | about 112  | about 24,000 |
-| Contact      | about 119  | about 17,000 |
-| Crew door    | 28         | about 1,200  |
+| Stop          | Full mode: draw calls, triangles   | Lite mode: draw calls, triangles |
+| ------------- | ---------------------------------- | -------------------------------- |
+| Entrance      | 80, 18,500                         | 38, 5,900                        |
+| Hall          | about 230 to 350, 30,000 to 49,000 | 152, 24,600                      |
+| Crew gallery  | about 218, 31,500                  | 107, 15,700                      |
+| Contact       | about 84, 6,000                    | 19, 2,700                        |
+| Crew door     | about 70, 1,700                    | 12, 600                          |
+| Inside a room | about 36, 4,700                    | not measured                     |
 
-Frame rate: 60 to 134 fps reported across the walk. Target: 60 fps on a recent laptop. Met on this machine.
+Reading the table: the five busts are the heaviest thing in the scene. Each is about 35 small parts. Two measures already cut that: gallery and room busts use a half-smoothness version of the avatar, and a bust further than 38 m from the camera (deep in the fog) is not drawn. These halved the triangle count at the entrance from about 117,000 to 18,500.
 
-Lite mode (phone-sized viewport), one reading per stop: 36 to 53 draw calls, 8,400 to 14,800 triangles, 60 to 87 fps.
+## Gaps and what to try next
 
-The automatic switch from full to lite when the frame rate stays under 30 fps for two seconds is covered by unit tests (`tests/vault.test.ts`), not by a live slow device.
-
-## Gaps
-
-- No measurement on a real phone or an older laptop yet.
-- Draw calls in full mode are higher than needed because every beat's objects stay in the scene. Culling is automatic, but the reflective floor draws the scene a second time. Merging static geometry is the first thing to try if a slow device turns up.
-- Total page weight with lazy parts (dev panel, fonts for other scripts) was not measured separately.
-
-## Added in milestone 3
-
-- Rooms load only when visited: the room chunk (2.3 kB gzip) and its three screenshots are fetched on entry, and a fresh load of the hall requests neither. Verified from the resource timing list in the browser.
-- The 3D chunk shrank to about 39 kB gzip because the shared three.js code moved into a common chunk; the total before the corridor is unchanged to within a few kB.
-- Gap: time to the first rendered frame is erratic in the built-in browser, from about 0.5 s to about 9 s on cold loads (shader compile time with many lights, and the pane being throttled). The intro stops waiting after 6 s so a slow device is never trapped behind it. Measure on a real laptop and phone before launch; if it persists, compile shaders earlier or reduce the number of lights.
+1. **Draw calls in the hall are higher than they need to be** (up to about 350 in full mode, mostly the busts, drawn twice because of the reflective floor). Next step if a real device struggles: merge each avatar's parts into a few meshes, or skip the floor reflection of the busts.
+2. **Time to first frame is unproven.** It ranged from under a second to about nine in this environment, and the pane's frame throttling explains much of it. The intro stops waiting after 6 seconds so nobody is trapped, and the scene now reports ready after 2 rendered frames instead of 3. Measure on a real laptop and phone before launch.
+3. **No real-device measurements.** Run the launch checklist's performance line on a recent laptop and a mid-range phone and write the numbers here.
+4. The automatic drop to lite mode is only tested in unit tests.

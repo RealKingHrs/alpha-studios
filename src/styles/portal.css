@@ -336,3 +336,8 @@ a.admin-only {
     grid-template-columns: 1fr;
   }
 }
+.auth {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-3);
+}

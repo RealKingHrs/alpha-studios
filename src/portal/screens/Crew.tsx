@@ -54,9 +54,15 @@ export function Crew() {
     reload();
   }
 
-  if (loading) return <Loading what="Loading the crew." />;
+  if (loading) return <Loading what="Loading the crew." title="Crew" />;
   if (error || !data)
-    return <ErrorState message={error ?? 'The crew could not be loaded.'} onRetry={reload} />;
+    return (
+      <ErrorState
+        message={error ?? 'The crew could not be loaded.'}
+        onRetry={reload}
+        title="Crew"
+      />
+    );
 
   return (
     <>

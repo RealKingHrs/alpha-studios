@@ -26,65 +26,72 @@ export function Login() {
   }
 
   return (
-    <section className="card" aria-labelledby="login-title">
-      <h1 id="login-title">Sign in</h1>
-      <p className="hint">
-        For crew and the admin. New here? Create a login, then enter the invite code you were sent.
-      </p>
-      <button
-        type="button"
-        className="primary wide"
-        onClick={() =>
-          supabase?.auth.signInWithOAuth({
-            provider: 'github',
-            options: { redirectTo: location.href.split('#')[0] },
-          })
-        }
-      >
-        Continue with GitHub
-      </button>
-      <p className="divider">or</p>
-      <form onSubmit={submit}>
-        <Field label="Email">
-          {(id) => (
-            <input
-              id={id}
-              type="email"
-              autoComplete="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          )}
-        </Field>
-        <Field label="Password" hint={mode === 'up' ? 'At least 8 characters.' : undefined}>
-          {(id) => (
-            <input
-              id={id}
-              type="password"
-              autoComplete={mode === 'in' ? 'current-password' : 'new-password'}
-              minLength={8}
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          )}
-        </Field>
-        <button type="submit" className="primary" disabled={busy}>
-          {mode === 'in' ? 'Sign in' : 'Create login'}
-        </button>
-        <button type="button" className="link" onClick={() => setMode(mode === 'in' ? 'up' : 'in')}>
-          {mode === 'in' ? 'Create a login instead' : 'I already have a login'}
-        </button>
-      </form>
-      {message && (
-        <p
-          role={message.kind === 'error' ? 'alert' : 'status'}
-          className={message.kind === 'error' ? 'error' : 'hint'}
-        >
-          {message.text}
+    <main className="auth">
+      <section className="card" aria-labelledby="login-title">
+        <h1 id="login-title">Sign in</h1>
+        <p className="hint">
+          For crew and the admin. New here? Create a login, then enter the invite code you were
+          sent.
         </p>
-      )}
-    </section>
+        <button
+          type="button"
+          className="primary wide"
+          onClick={() =>
+            supabase?.auth.signInWithOAuth({
+              provider: 'github',
+              options: { redirectTo: location.href.split('#')[0] },
+            })
+          }
+        >
+          Continue with GitHub
+        </button>
+        <p className="divider">or</p>
+        <form onSubmit={submit}>
+          <Field label="Email">
+            {(id) => (
+              <input
+                id={id}
+                type="email"
+                autoComplete="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            )}
+          </Field>
+          <Field label="Password" hint={mode === 'up' ? 'At least 8 characters.' : undefined}>
+            {(id) => (
+              <input
+                id={id}
+                type="password"
+                autoComplete={mode === 'in' ? 'current-password' : 'new-password'}
+                minLength={8}
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            )}
+          </Field>
+          <button type="submit" className="primary" disabled={busy}>
+            {mode === 'in' ? 'Sign in' : 'Create login'}
+          </button>
+          <button
+            type="button"
+            className="link"
+            onClick={() => setMode(mode === 'in' ? 'up' : 'in')}
+          >
+            {mode === 'in' ? 'Create a login instead' : 'I already have a login'}
+          </button>
+        </form>
+        {message && (
+          <p
+            role={message.kind === 'error' ? 'alert' : 'status'}
+            className={message.kind === 'error' ? 'error' : 'hint'}
+          >
+            {message.text}
+          </p>
+        )}
+      </section>
+    </main>
   );
 }

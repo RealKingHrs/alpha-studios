@@ -36,3 +36,15 @@ export async function must<T>(
   if (error) throw new Error(error.message);
   return data as NonNullable<T>;
 }
+
+/** The tests need to be the only admin. Step any existing admin aside, and put them back afterwards. */
+export async function stepAsideAdmins(): Promise<string[]> {
+  const rows = await must(
+    service.from('members').update({ role: 'crew' }).eq('role', 'admin').select('id'),
+  );
+  return rows.map((r: { id: string }) => r.id);
+}
+
+export async function restoreAdmins(ids: string[]) {
+  if (ids.length) await service.from('members').update({ role: 'admin' }).in('id', ids);
+}

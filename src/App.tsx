@@ -1,4 +1,4 @@
-import { Suspense, lazy, useCallback, useEffect, useMemo, useState } from 'react';
+import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Snapshot } from './content/schema';
 import { Intro } from './intro/Intro';
 import {
@@ -18,7 +18,11 @@ import { usePathname } from './router';
 import { stepLinks } from './nav';
 import { Controls } from './ui/Controls';
 import { PositionIndex } from './ui/PositionIndex';
-import { hasSeenIntro, markIntroSeen } from './util/storage';
+import { cueForMove, cueLabel } from './audio/cues';
+import { createSoundController, rememberSound, wantedSound } from './audio/controller';
+import { Effects } from './ui/Effects';
+import { Toggles } from './ui/Toggles';
+import { hasSeenIntro, markIntroSeen, safeGet, safeSet } from './util/storage';
 import { buildStops } from './vault/layout';
 import { chooseMode, parseOverrides, type Mode } from './vault/mode';
 
@@ -84,6 +88,22 @@ export function App({
   const [mode, setMode] = useState<Mode>('fallback');
   const [ready, setReady] = useState(false);
   const [introDone, setIntroDone] = useState(false);
+
+  // Sound: off until the visitor turns it on. The engine is fetched only then.
+  const [sound] = useState(() =>
+    createSoundController(async () => {
+      const { createSound } = await import('./audio/engine');
+      const w = window as unknown as {
+        AudioContext: typeof AudioContext;
+        webkitAudioContext?: typeof AudioContext;
+      };
+      const Ctor = w.AudioContext ?? w.webkitAudioContext!;
+      return () => createSound(Ctor);
+    }),
+  );
+  const [soundOn, setSoundOn] = useState(false);
+  const [cue, setCue] = useState<string | null>(null);
+  const [fxChoice, setFxChoice] = useState(true);
   const firstVisit = useMemo(() => (typeof window === 'undefined' ? true : !hasSeenIntro()), []);
 
   useEffect(() => {
@@ -100,6 +120,55 @@ export function App({
   }, []);
 
   const enhanced = env !== null && mode !== 'fallback';
+  const fxAvailable = env !== null && !env.reduceMotion;
+  const fxOn = fxAvailable && fxChoice;
+
+  // Remember the effects choice, read after mount so the first paint matches the server.
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setFxChoice(safeGet('alpha:fx') !== '0');
+  }, []);
+  useEffect(() => {
+    document.documentElement.classList.toggle('fx', fxOn);
+  }, [fxOn]);
+
+  const toggleSound = useCallback(async () => {
+    if (soundOn) {
+      sound.disable();
+      setSoundOn(false);
+      rememberSound(false);
+    } else {
+      await sound.enable();
+      setSoundOn(true);
+      rememberSound(true);
+    }
+  }, [sound, soundOn]);
+
+  // A remembered "on" still waits for the visitor's first touch, click or key press after the intro.
+  useEffect(() => {
+    if (!introDone || !wantedSound()) return;
+    const arm = () => void sound.enable().then(() => setSoundOn(true));
+    const opts = { once: true } as const;
+    window.addEventListener('pointerdown', arm, opts);
+    window.addEventListener('keydown', arm, opts);
+    return () => {
+      window.removeEventListener('pointerdown', arm);
+      window.removeEventListener('keydown', arm);
+    };
+  }, [introDone, sound]);
+
+  // A soft tick between places, a chime on opening a room. Each is also shown as text.
+  const lastRoute = useRef(route);
+  useEffect(() => {
+    const c = cueForMove(lastRoute.current, route);
+    lastRoute.current = route;
+    if (!c) return;
+    sound.cue(c);
+    if (!sound.on) return;
+    setCue(cueLabel[c]);
+    const id = window.setTimeout(() => setCue(null), 2200);
+    return () => clearTimeout(id);
+  }, [route, sound]);
   useEffect(() => {
     const root = document.documentElement;
     root.classList.toggle('vault', enhanced);
@@ -173,6 +242,7 @@ export function App({
             base={base}
             mode={mode as 'full' | 'lite'}
             reduceMotion={env.reduceMotion}
+            effects={fxOn}
             dev={env.dev}
             link={link}
             onReady={onReady}
@@ -186,6 +256,20 @@ export function App({
       <div className="visually-hidden" role="status" aria-live="polite">
         {label ?? ''}
       </div>
+      {env && introDone && (
+        <Toggles
+          soundOn={soundOn}
+          fxOn={fxOn}
+          fxAvailable={fxAvailable}
+          cue={cue}
+          onSound={() => void toggleSound()}
+          onFx={() => {
+            safeSet('alpha:fx', fxChoice ? '0' : '1');
+            setFxChoice(!fxChoice);
+          }}
+        />
+      )}
+      {fxOn && <Effects />}
       {env?.dev && (
         <Suspense fallback={null}>
           <DevPanel />

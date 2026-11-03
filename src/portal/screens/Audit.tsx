@@ -53,9 +53,15 @@ export function Audit() {
     };
   }, 'audit');
 
-  if (loading) return <Loading what="Loading the audit log." />;
+  if (loading) return <Loading what="Loading the audit log." title="Audit log" />;
   if (error || !data)
-    return <ErrorState message={error ?? 'The audit log could not be loaded.'} onRetry={reload} />;
+    return (
+      <ErrorState
+        message={error ?? 'The audit log could not be loaded.'}
+        onRetry={reload}
+        title="Audit log"
+      />
+    );
 
   async function revert(id: number) {
     const { data: res, error: e } = await db.rpc('revert_audit', { p_id: id });

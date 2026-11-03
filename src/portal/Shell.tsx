@@ -40,9 +40,12 @@ export function Shell({ me }: { me: MemberRow }) {
   let screen;
   if (!allowed)
     screen = (
-      <p role="alert" className="state error-state">
-        Only the admin can open this page.
-      </p>
+      <>
+        <h1>Admin only</h1>
+        <p role="alert" className="state error-state">
+          Only the admin can open this page.
+        </p>
+      </>
     );
   else if (page === 'avatar') screen = <AvatarScreen me={me} />;
   else if (page === 'projects') screen = <Projects me={me} />;

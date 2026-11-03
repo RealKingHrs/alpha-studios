@@ -3,7 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Snapshot } from '../content/schema';
 import { navigate } from '../router';
-import { bustPose, buildStops, roomPoses } from './layout';
+import { LOST_POSE, bustPose, buildStops, roomPoses } from './layout';
 import type { Mode } from './mode';
 import { readTokens } from './palette';
 import { createWheelStepper, step, swipeDirection } from './path';
@@ -16,6 +16,8 @@ export interface VaultProps {
   base: string;
   mode: Exclude<Mode, 'fallback'>;
   reduceMotion: boolean;
+  /** Cursor-driven touches: busts follow the pointer and pedestals lean toward it. */
+  effects: boolean;
   dev: boolean;
   /** Maps a site path like "/crew/" to the deployed address. */
   link: (path: string) => string;
@@ -77,18 +79,24 @@ export default function VaultLayer(props: VaultProps) {
     const t0 = target ?? { index: 0, member: null, room: null };
     return {
       progress: new Tween(t0.index, ease),
-      detail: new Tween(t0.member === null ? 0 : 1, ease),
-      detailPose: t0.member === null ? null : bustPose(t0.member, snap.members.length),
+      detail: new Tween(!target || t0.member !== null ? 1 : 0, ease),
+      detailPose: !target
+        ? LOST_POSE
+        : t0.member === null
+          ? null
+          : bustPose(t0.member, snap.members.length),
       room: new Tween(t0.room === null ? 0 : 2, ease),
       roomPoses: t0.room === null ? null : roomPoses(t0.room, stops[t0.index].pose),
       pointer: { x: 0, y: 0 },
       smooth: { x: 0, y: 0 },
       reduce: reduceMotion,
+      fx: props.effects,
     };
   });
   useEffect(() => {
     ctrl.reduce = reduceMotion;
-  }, [ctrl, reduceMotion]);
+    ctrl.fx = props.effects && !reduceMotion;
+  }, [ctrl, reduceMotion, props.effects]);
 
   useEffect(() => {
     const on = () => setOnline(true);
@@ -149,6 +157,14 @@ export default function VaultLayer(props: VaultProps) {
     // mountedRoom is read for the unmount decision only; it must not retrigger the flight.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ctrl, index, member, room, reduceMotion, snap.members.length, stops, tokens.durSlow]);
+
+  // An address that leads nowhere: the camera turns to the dead end near the entrance.
+  const lost = target === null;
+  useEffect(() => {
+    if (!lost) return;
+    ctrl.detailPose = LOST_POSE;
+    ctrl.detail.go(1, performance.now() / 1000, reduceMotion ? 0 : tokens.durSlow * 1.4);
+  }, [ctrl, lost, reduceMotion, tokens.durSlow]);
 
   const current = index ?? 0;
   const goTo = (i: number) => navigate(link(stops[i].path), { replace: true });

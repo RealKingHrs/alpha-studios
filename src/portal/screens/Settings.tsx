@@ -21,9 +21,15 @@ export function SettingsScreen() {
       ),
     'settings',
   );
-  if (loading) return <Loading what="Loading site settings." />;
+  if (loading) return <Loading what="Loading site settings." title="Site settings" />;
   if (error || !data)
-    return <ErrorState message={error ?? 'Settings could not be loaded.'} onRetry={reload} />;
+    return (
+      <ErrorState
+        message={error ?? 'Settings could not be loaded.'}
+        onRetry={reload}
+        title="Site settings"
+      />
+    );
   return <SettingsForm initial={data} />;
 }
 

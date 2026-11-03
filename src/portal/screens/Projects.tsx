@@ -35,9 +35,15 @@ export function Projects({ me }: { me: MemberRow }) {
     if (!e) reload();
   }
 
-  if (loading) return <Loading what="Loading projects." />;
+  if (loading) return <Loading what="Loading projects." title="Projects" />;
   if (error || !data)
-    return <ErrorState message={error ?? 'Projects could not be loaded.'} onRetry={reload} />;
+    return (
+      <ErrorState
+        message={error ?? 'Projects could not be loaded.'}
+        onRetry={reload}
+        title="Projects"
+      />
+    );
 
   return (
     <>

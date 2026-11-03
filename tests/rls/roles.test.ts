@@ -1,6 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { must, run, service, signedIn, visitor } from './helpers';
+import { must, run, service, signedIn, visitor, restoreAdmins, stepAsideAdmins } from './helpers';
 
 // Proves the permissions table in docs/SPEC.md section 7 for visitor, crew and admin,
 // using real sign-ins against the local stack. Run: supabase start, then npm run test:rls.
@@ -13,6 +13,7 @@ let otherMemberId: string;
 let adminMemberId: string;
 let ownProject: string; // crew is a member
 let foreignProject: string; // crew is not a member
+let steppedAside: string[] = [];
 const created = { members: [] as string[], projects: [] as string[], users: [] as string[] };
 
 async function newMember(slug: string, userId: string | null, role: 'crew' | 'admin' = 'crew') {
@@ -53,7 +54,7 @@ beforeAll(async () => {
   created.users.push(a.userId, c.userId, o.userId);
 
   // The single admin exists already on a real project; locally, make way for the test admin.
-  await service.from('members').update({ role: 'crew' }).eq('role', 'admin');
+  steppedAside = await stepAsideAdmins();
   adminMemberId = await newMember('test-admin', a.userId, 'admin');
   crewMemberId = await newMember('test-crew', c.userId);
   otherMemberId = await newMember('test-other', o.userId);
@@ -66,6 +67,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await service.from('members').delete().in('id', created.members);
+  await restoreAdmins(steppedAside);
   await service.from('projects').delete().in('id', created.projects);
   for (const id of created.users) await service.auth.admin.deleteUser(id);
 });
