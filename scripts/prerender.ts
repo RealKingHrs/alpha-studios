@@ -59,26 +59,31 @@ async function shareImage(path: string, title: string, description: string) {
   const accent = hex(ACCENT_NAMES[ogIndex++ % ACCENT_NAMES.length]);
   const ink = hex('ink');
   const paper = hex('paper');
-  const lines = wrap(description, 38, 3);
-  const titleLines = wrap(head, 19, 3);
+  const lines = wrap(description, 60, 2);
+  const titleLines = wrap(head, 28, 2);
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
+<defs>
+<radialGradient id="ga" cx="18%" cy="10%" r="60%"><stop offset="0" stop-color="${hex('tomato')}" stop-opacity="0.55"/><stop offset="1" stop-color="${paper}" stop-opacity="0"/></radialGradient>
+<radialGradient id="gb" cx="88%" cy="0%" r="55%"><stop offset="0" stop-color="${hex('lilac')}" stop-opacity="0.5"/><stop offset="1" stop-color="${paper}" stop-opacity="0"/></radialGradient>
+<radialGradient id="gc" cx="60%" cy="110%" r="60%"><stop offset="0" stop-color="${accent}" stop-opacity="0.45"/><stop offset="1" stop-color="${paper}" stop-opacity="0"/></radialGradient>
+<linearGradient id="gt" x1="0" x2="1"><stop offset="0" stop-color="${hex('sun')}"/><stop offset="0.5" stop-color="${hex('tomato')}"/><stop offset="1" stop-color="${hex('lilac')}"/></linearGradient>
+</defs>
 <rect width="1200" height="630" fill="${paper}"/>
-<rect x="0" y="0" width="440" height="630" fill="${accent}"/>
-<rect x="440" y="0" width="4" height="630" fill="${ink}"/>
-<circle cx="232" cy="363" r="170" fill="${ink}"/>
-<circle cx="220" cy="351" r="170" fill="${paper}" stroke="${ink}" stroke-width="6"/>
-<g transform="rotate(-8 600 40)"><rect x="520" y="22" width="160" height="40" fill="${hex('sun')}" opacity="0.85"/></g>
-<rect x="6" y="6" width="1188" height="618" fill="none" stroke="${ink}" stroke-width="12"/>
-${titleLines.map((l, i) => `<text x="500" y="${170 + i * 66}" fill="${ink}" font-family="Georgia, 'Times New Roman', serif" font-weight="bold" font-size="56">${xml(l)}</text>`).join('\n')}
-${lines.map((l, i) => `<text x="500" y="${170 + titleLines.length * 66 + 20 + i * 38}" fill="${hex('ink-soft')}" font-family="Helvetica, Arial, sans-serif" font-size="29">${xml(l)}</text>`).join('\n')}
-<text x="500" y="570" fill="${ink}" font-family="Helvetica, Arial, sans-serif" font-size="22" letter-spacing="6">ALPHA STUDIOS</text>
+<rect width="1200" height="630" fill="url(#ga)"/>
+<rect width="1200" height="630" fill="url(#gb)"/>
+<rect width="1200" height="630" fill="url(#gc)"/>
+<rect x="72" y="72" width="132" height="120" rx="28" fill="${hex('surface-2')}" stroke="${hex('surface-3')}"/>
+${titleLines.map((l, i) => `<text x="72" y="${300 + i * 70}" fill="${ink}" font-family="Georgia, 'Times New Roman', serif" font-weight="bold" font-size="62">${xml(l)}</text>`).join('\n')}
+${lines.map((l, i) => `<text x="72" y="${300 + titleLines.length * 70 + 16 + i * 38}" fill="${hex('ink-soft')}" font-family="Helvetica, Arial, sans-serif" font-size="28">${xml(l)}</text>`).join('\n')}
+<rect x="72" y="560" width="220" height="3" rx="1.5" fill="url(#gt)"/>
+<text x="1128" y="570" text-anchor="end" fill="${hex('ink-soft')}" font-family="Helvetica, Arial, sans-serif" font-size="20" letter-spacing="6">ALPHA STUDIOS</text>
 </svg>`;
-  const mark = await sharp(Buffer.from(markSvg(300, ink, hex('gold'))))
+  const mark = await sharp(Buffer.from(markSvg(96, ink, hex('gold'))))
     .png()
     .toBuffer();
   await mkdir(join(dist, 'og'), { recursive: true });
   await sharp(Buffer.from(svg))
-    .composite([{ input: mark, left: 70, top: 215 }])
+    .composite([{ input: mark, left: 90, top: 89 }])
     .png({ compressionLevel: 9 })
     .toFile(join(dist, 'og', `${ogKey(path)}.png`));
 }

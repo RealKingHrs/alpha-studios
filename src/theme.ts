@@ -10,7 +10,7 @@ export const resolveTheme = (saved: string | null): Theme => (saved === 'light' 
  * Runs in the page head before first paint, so a saved light choice never flashes dark.
  * Kept as a string so the same text goes into both HTML shells and the test can run it.
  */
-export const THEME_SCRIPT = `try{if(localStorage.getItem('${THEME_KEY}')==='light')document.documentElement.dataset.theme='light'}catch(e){}`;
+export const THEME_SCRIPT = `try{if(localStorage.getItem('${THEME_KEY}')==='light')document.documentElement.dataset.theme='light';}catch(e){}`;
 
 export function currentTheme(): Theme {
   return document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';

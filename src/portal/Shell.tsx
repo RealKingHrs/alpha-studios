@@ -10,6 +10,7 @@ import { Submissions } from './screens/Submissions';
 import { SettingsScreen } from './screens/Settings';
 import type { MemberRow } from './types';
 import { OfflineBanner } from './ui';
+import { ThemeToggle } from '../site/fx/ThemeToggle';
 
 const useHash = () => {
   const [hash, setHash] = useState(() => location.hash || '#/profile');
@@ -91,6 +92,7 @@ export function Shell({ me }: { me: MemberRow }) {
           </ul>
         </nav>
         <span className="who">
+          <ThemeToggle />
           <span className="mono hint">{me.name}</span>
           <button type="button" className="link" onClick={() => void signOut()}>
             Sign out

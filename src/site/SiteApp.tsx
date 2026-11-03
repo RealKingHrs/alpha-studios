@@ -24,7 +24,7 @@ import {
 } from './pages';
 import { AboutPage } from './AboutPage';
 import { Cryptex, useCryptexTriggers } from './Cryptex';
-import { FoundToast } from './zine/Zine';
+import { FoundToast } from './fx/FoundToast';
 import { useSpotlight } from './Spotlight';
 import { CertificatePage } from './CertificatePage';
 import { LaunchpadPage } from './Launchpad';

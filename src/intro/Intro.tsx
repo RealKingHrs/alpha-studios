@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Aurora } from '../site/fx/Aurora';
 import { MARK_GRADIENT, MARK_PATH, MARK_VIEWBOX, MARK_WIDTH } from '../brand/mark';
 
 type Phase = 'draw' | 'fill' | 'hold' | 'open' | 'fade' | 'gone';
@@ -104,13 +105,7 @@ export function Intro({ ready, reduceMotion, firstVisit, onDone }: Props) {
         } as React.CSSProperties
       }
     >
-      {['midnight', 'midnight-2', 'midnight', 'midnight-2', 'midnight'].map((c, i) => (
-        <div
-          key={c}
-          className="intro-band"
-          style={{ '--i': i, background: `var(--${c})` } as React.CSSProperties}
-        />
-      ))}
+      <Aurora className="intro-aurora" />
       <svg className="intro-mark" viewBox={MARK_VIEWBOX} aria-hidden="true">
         <defs>
           <linearGradient
@@ -121,7 +116,7 @@ export function Intro({ ready, reduceMotion, firstVisit, onDone }: Props) {
             x2={MARK_GRADIENT.x2}
             y2={MARK_GRADIENT.y2}
           >
-            <stop offset={MARK_GRADIENT.at} style={{ stopColor: 'var(--ink)' }} />
+            <stop offset={MARK_GRADIENT.at} style={{ stopColor: 'var(--text)' }} />
             <stop offset={MARK_GRADIENT.at} style={{ stopColor: 'var(--gold)' }} />
           </linearGradient>
         </defs>

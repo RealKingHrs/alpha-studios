@@ -31,7 +31,9 @@ describe('theme', () => {
   });
 
   it('both HTML shells carry the head script, so neither flashes the wrong theme', () => {
+    // Formatting may spread the script over lines, so compare without whitespace.
+    const squash = (t: string) => t.replace(/\s+/g, '');
     for (const f of ['index.html', 'portal/app/index.html'])
-      expect(readFileSync(f, 'utf8'), f).toContain(THEME_SCRIPT);
+      expect(squash(readFileSync(f, 'utf8')), f).toContain(squash(THEME_SCRIPT));
   });
 });

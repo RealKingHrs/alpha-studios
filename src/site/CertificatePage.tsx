@@ -1,5 +1,4 @@
 import type { Snapshot } from '../content/schema';
-import { Sticker } from './Mark';
 import { Magnetic } from './motion/Magnetic';
 import { SplitText } from './motion/SplitText';
 import { accentFor } from './data';
@@ -48,12 +47,17 @@ export function CertificatePage({
           <a href={link('/crew/')}>Crew</a> / <a href={link(`/crew/${slug}/`)}>{m.name}</a> /
           Certificate
         </p>
-        <div className="cert-frame">
+        <div className="cert-frame fx-shine">
           <span className="cert-corner cert-corner--tl" aria-hidden="true" />
           <span className="cert-corner cert-corner--tr" aria-hidden="true" />
           <span className="cert-corner cert-corner--bl" aria-hidden="true" />
           <span className="cert-corner cert-corner--br" aria-hidden="true" />
-          <Sticker text="CERTIFIED · CERTIFIED" className="cert-seal" />
+          <span className="cert-seal" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2l2.4 2.1 3.1-.4 1 3 2.8 1.5-.9 3 .9 3-2.8 1.5-1 3-3.1-.4L12 22l-2.4-2.1-3.1.4-1-3L2.7 15.8l.9-3-.9-3 2.8-1.5 1-3 3.1.4z" />
+              <path className="cert-tick" d="M8 12.4l2.6 2.6L16 9.6" />
+            </svg>
+          </span>
           <p className="mono cert-kicker">Certificate of achievement</p>
           <h1 id="pt" className="display cert-title">
             <SplitText text={c.title} />

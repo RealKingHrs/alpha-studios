@@ -1,5 +1,6 @@
 import type { Snapshot } from '../content/schema';
 import { Counters } from './Counters';
+import { Aurora } from './fx/Aurora';
 import { Magnetic } from './motion/Magnetic';
 import { SplitText } from './motion/SplitText';
 import type { LinkFn } from './parts';
@@ -16,7 +17,8 @@ const TOWARDS = [
 export function AboutPage({ snap, link }: { snap: Snapshot; link: LinkFn }) {
   return (
     <>
-      <section className="s-about-hero a-sun" aria-labelledby="pt">
+      <section className="s-about-hero" data-spot aria-labelledby="pt">
+        <Aurora />
         <div className="s-wrap">
           <p className="s-eyebrow mono">About Alpha Studios</p>
           <h1 id="pt" className="display s-about-title">
@@ -36,7 +38,7 @@ export function AboutPage({ snap, link }: { snap: Snapshot; link: LinkFn }) {
           </Reveal>
           <ul className="s-principles s-principles--long">
             {PRINCIPLES.map((p, i) => (
-              <li key={p.title}>
+              <li key={p.title} className="s-bento-card" data-spot>
                 <Reveal delay={i * 80}>
                   <span className="s-principle-icon">
                     <p.icon />
@@ -78,7 +80,8 @@ export function AboutPage({ snap, link }: { snap: Snapshot; link: LinkFn }) {
         </div>
       </section>
 
-      <section className="s-about-cta theme-dark" aria-labelledby="cta-title">
+      <section className="s-about-cta" aria-labelledby="cta-title">
+        <Aurora />
         <div className="s-wrap">
           <h2 id="cta-title" className="display">
             Have an idea that deserves to exist?

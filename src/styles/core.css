@@ -1,0 +1,821 @@
+/* Core layer (batch 22): layout, type, buttons, chips, links, reveal and the shared effects.
+   Values come from design/tokens.css. Proportions follow the golden ratio and the Fibonacci space scale. */
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-size: var(--step-0);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition:
+    background-color var(--dur-base) var(--ease),
+    color var(--dur-base) var(--ease);
+}
+::selection {
+  background: var(--sun);
+  color: var(--on-accent);
+}
+a {
+  color: inherit;
+}
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+.site {
+  position: relative;
+  overflow-x: clip;
+}
+main.page {
+  overflow-x: clip;
+}
+
+/* ------------------------------------------------------------ type */
+.display {
+  font-family: var(--font-display);
+  font-weight: 560;
+  font-variation-settings: 'opsz' 144;
+  letter-spacing: var(--track-head);
+  line-height: var(--leading-tight);
+}
+h1.display,
+.s-hero-title {
+  letter-spacing: var(--track-display);
+  line-height: var(--leading-display);
+}
+.mono {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: 0.02em;
+}
+.s-lede {
+  max-width: var(--measure);
+  font-size: var(--step-1);
+  line-height: var(--leading-snug);
+  color: var(--text-soft);
+}
+.s-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-bottom: var(--space-3);
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+}
+.s-eyebrow a {
+  color: var(--text-soft);
+  text-decoration: none;
+}
+.s-eyebrow a:hover {
+  color: var(--text);
+}
+.s-num,
+.s-eyebrow span.s-num {
+  display: inline-grid;
+  place-items: center;
+  min-width: 28px;
+  height: 20px;
+  padding: 0 6px;
+  border: var(--line-w) solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  color: var(--text);
+}
+.grad-text,
+.s-hero-accent,
+.s-vision-title em {
+  background: var(--grad-text);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: grad-pan 13s var(--ease-in-out) infinite alternate;
+}
+@keyframes grad-pan {
+  to {
+    background-position: 100% 0;
+  }
+}
+
+/* ------------------------------------------------------------ layout */
+.s-wrap {
+  position: relative;
+  width: 100%;
+  max-width: calc(var(--wrap) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.s-wrap--wide {
+  max-width: calc(var(--wrap-wide) + 2 * var(--gutter));
+}
+.s-section {
+  position: relative;
+  padding-block: var(--section-y);
+}
+.s-section--tint {
+  background: var(--surface-1);
+  border-block: var(--line-w) solid var(--line);
+}
+.s-section-head {
+  margin-bottom: var(--space-5);
+}
+.s-section-head h2,
+.s-h2,
+.lp-section h2,
+.s-section h2.display {
+  font-size: var(--display-l);
+  max-width: 18ch;
+}
+.s-rule {
+  display: block;
+  height: var(--line-w);
+  margin-top: var(--space-4);
+  background: linear-gradient(90deg, var(--line-strong), transparent);
+}
+.s-space {
+  margin-top: var(--space-4);
+}
+.s-quiet {
+  color: var(--text-faint);
+}
+
+/* ------------------------------------------------------------ buttons */
+.s-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+.magnetic {
+  display: inline-flex;
+}
+.s-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  min-height: 48px;
+  padding: 0 var(--space-4);
+  border: var(--line-w) solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  font: inherit;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  isolation: isolate;
+  transition:
+    transform var(--dur-fast) var(--ease),
+    background-color var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease),
+    box-shadow var(--dur-fast) var(--ease);
+}
+.s-btn::after {
+  content: '→';
+  transition: translate var(--dur-fast) var(--ease);
+}
+.s-btn:hover::after {
+  translate: 4px 0;
+}
+.s-btn:active {
+  transform: scale(0.97);
+}
+.s-btn--ink {
+  background: var(--text);
+  color: var(--bg);
+  border-color: transparent;
+  box-shadow: var(--shadow-1);
+}
+.s-btn--ink:hover {
+  box-shadow:
+    0 0 0 4px rgb(255 200 61 / 0.16),
+    var(--shadow-2);
+}
+.s-btn--line {
+  background: var(--glass);
+  color: var(--text);
+  backdrop-filter: blur(12px);
+}
+.s-btn--line:hover {
+  border-color: var(--text-faint);
+  background: var(--surface-2);
+}
+.s-copy::after,
+.cx .s-btn::after {
+  content: none;
+}
+.s-link {
+  display: inline-flex;
+  gap: 0.4em;
+  color: var(--text);
+  font-weight: 500;
+  text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size var(--dur-base) var(--ease);
+}
+.s-link:hover {
+  background-size: 100% 1px;
+}
+
+/* ------------------------------------------------------------ chips */
+.s-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.s-chip {
+  padding: 4px 12px;
+  border: var(--line-w) solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  background: var(--glass);
+  font-size: 0.82rem;
+  color: var(--text-soft);
+}
+.s-chip--solid {
+  background: var(--accent, var(--sun));
+  border-color: transparent;
+  color: var(--on-accent);
+  font-weight: 500;
+}
+
+/* ------------------------------------------------------------ accents: one variable per element */
+.a-tomato {
+  --accent: var(--tomato);
+}
+.a-sun {
+  --accent: var(--sun);
+}
+.a-mint {
+  --accent: var(--mint);
+}
+.a-sky {
+  --accent: var(--sky);
+}
+.a-lilac {
+  --accent: var(--lilac);
+}
+
+/* ------------------------------------------------------------ the mark */
+.mark {
+  display: block;
+  overflow: visible;
+}
+.mark-stop-ink {
+  stop-color: var(--text);
+}
+.mark-stop-gold {
+  stop-color: var(--gold);
+}
+
+/* ------------------------------------------------------------ reveal and words */
+html.reveal-on .reveal.is-waiting {
+  opacity: 0;
+}
+.reveal.is-in {
+  animation: rise var(--dur-slow) var(--ease) backwards;
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateY(var(--reveal-distance));
+  }
+}
+.sw-line {
+  display: inline;
+}
+.sw-mask {
+  display: inline-block;
+  vertical-align: top;
+}
+.sw-word {
+  display: inline-block;
+  will-change: transform, filter;
+}
+
+/* ------------------------------------------------------------ effects */
+
+/* Aurora: five soft blobs, one per accent, each drifting on a Fibonacci-length loop. */
+.fx-aurora {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  filter: blur(64px) saturate(1.2);
+  opacity: var(--glow-strength);
+}
+.fx-aurora i {
+  position: absolute;
+  width: 46vmax;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+  animation: drift var(--loop, 34s) var(--ease-in-out) infinite alternate;
+}
+:root[data-theme='light'] .fx-aurora i {
+  mix-blend-mode: multiply;
+}
+.fx-aurora-a {
+  --loop: 21s;
+  top: -28%;
+  left: -12%;
+  background: radial-gradient(closest-side, var(--tomato), transparent);
+}
+.fx-aurora-b {
+  --loop: 34s;
+  top: -22%;
+  right: -16%;
+  background: radial-gradient(closest-side, var(--lilac), transparent);
+}
+.fx-aurora-c {
+  --loop: 55s;
+  bottom: -36%;
+  left: 18%;
+  background: radial-gradient(closest-side, var(--sky), transparent);
+}
+.fx-aurora-d {
+  --loop: 89s;
+  bottom: -30%;
+  right: 8%;
+  width: 32vmax;
+  background: radial-gradient(closest-side, var(--mint), transparent);
+}
+.fx-aurora-e {
+  --loop: 44s;
+  top: 18%;
+  left: 38%;
+  width: 26vmax;
+  background: radial-gradient(closest-side, var(--sun), transparent);
+  opacity: 0.6;
+}
+@keyframes drift {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(8vmax, 5vmax) scale(1.18);
+  }
+  100% {
+    transform: translate(-6vmax, 8vmax) scale(0.88);
+  }
+}
+
+/* Flowing lines: each path runs its dash on a loop 0.6 s longer than the one before. */
+.fx-paths {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  color: var(--text);
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 75%);
+}
+.fx-paths svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.fx-paths path {
+  stroke: currentColor;
+  stroke-dasharray: 0.3 0.7;
+  stroke-dashoffset: 0;
+  animation: flow calc(20s + var(--i) * 0.6s) linear infinite;
+}
+@keyframes flow {
+  to {
+    stroke-dashoffset: -1;
+  }
+}
+
+/* Spotlight: a soft light under the pointer, and a lit edge, on anything marked data-spot. */
+[data-spot] {
+  --mx: -400px;
+  --my: -400px;
+}
+.fx-spot,
+.s-bento-card,
+.s-work,
+.lp-card,
+.mp-tile,
+.mcard {
+  position: relative;
+  isolation: isolate;
+}
+.s-bento-card::before,
+.lp-card::before,
+.mp-tile::before,
+.s-work::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(
+    420px circle at var(--mx) var(--my),
+    color-mix(in srgb, var(--accent, var(--sun)) 18%, transparent),
+    transparent 62%
+  );
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease);
+  pointer-events: none;
+}
+.s-bento-card:hover::before,
+.lp-card:hover::before,
+.mp-tile:hover::before,
+.s-work:hover::before {
+  opacity: 1;
+}
+.s-bento-card::after,
+.lp-card::after,
+.mp-tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(
+    260px circle at var(--mx) var(--my),
+    color-mix(in srgb, var(--accent, var(--sun)) 80%, transparent),
+    transparent 70%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease);
+  pointer-events: none;
+}
+.s-bento-card:hover::after,
+.lp-card:hover::after,
+.mp-tile:hover::after {
+  opacity: 1;
+}
+
+/* Shine border: a light that runs round the edge on a 5 s loop. */
+@property --shine {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+.fx-shine {
+  position: relative;
+}
+.fx-shine::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--shine),
+    transparent 0deg,
+    var(--sun) 40deg,
+    var(--tomato) 80deg,
+    var(--lilac) 120deg,
+    transparent 160deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+  animation: shine 5s linear infinite;
+  pointer-events: none;
+}
+@keyframes shine {
+  to {
+    --shine: 360deg;
+  }
+}
+
+/* The word loop holds its widest line, so nothing below it jumps. */
+.fx-loop {
+  display: inline-grid;
+}
+.fx-loop-word {
+  display: inline-block;
+  grid-area: 1 / 1;
+  white-space: nowrap;
+}
+
+/* Theme toggle: the sun's rays fold away as the moon slides in. */
+.fx-theme {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: var(--line-w) solid var(--line);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease);
+}
+.fx-theme:hover {
+  background: var(--surface-2);
+}
+.fx-theme svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+.fx-theme-sun,
+.fx-theme-rays,
+.fx-theme-moon {
+  transform-origin: 12px 12px;
+  transition:
+    transform var(--dur-base) var(--ease),
+    opacity var(--dur-base) var(--ease);
+}
+.fx-theme[data-theme-now='dark'] .fx-theme-sun,
+.fx-theme[data-theme-now='dark'] .fx-theme-rays {
+  opacity: 0;
+  transform: scale(0.4) rotate(-90deg);
+}
+.fx-theme[data-theme-now='light'] .fx-theme-moon {
+  opacity: 0;
+  transform: scale(0.4) rotate(90deg);
+}
+
+/* Achievement toast */
+.fx-toast {
+  position: fixed;
+  z-index: 400;
+  left: 50%;
+  bottom: var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3) var(--space-2) var(--space-2);
+  translate: -50% 0;
+  background: var(--glass);
+  border: var(--line-w) solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-2);
+  backdrop-filter: blur(16px) saturate(1.4);
+  animation: toast 3.6s var(--ease) both;
+}
+.fx-toast small {
+  display: block;
+  color: var(--text-faint);
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+.fx-toast-icon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--grad-text);
+  color: var(--on-accent);
+}
+@keyframes toast {
+  0% {
+    opacity: 0;
+    translate: -50% 20px;
+    filter: blur(6px);
+  }
+  8%,
+  88% {
+    opacity: 1;
+    translate: -50% 0;
+    filter: blur(0);
+  }
+  100% {
+    opacity: 0;
+    translate: -50% 10px;
+  }
+}
+
+/* ------------------------------------------------------------ cursor: a soft dot and a halo */
+.cursor {
+  position: fixed;
+  inset: 0;
+  z-index: 180;
+  pointer-events: none;
+  mix-blend-mode: difference;
+}
+.cursor.is-gone {
+  opacity: 0;
+}
+.cursor-ring-wrap,
+.cursor-dot-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.cursor-ring {
+  width: 32px;
+  height: 32px;
+  margin: -16px 0 0 -16px;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  transition:
+    width var(--dur-base) var(--ease),
+    height var(--dur-base) var(--ease),
+    margin var(--dur-base) var(--ease),
+    border-radius var(--dur-base) var(--ease),
+    scale var(--dur-fast) var(--ease),
+    background-color var(--dur-fast) var(--ease);
+}
+.cursor-ring.is-hot {
+  width: 52px;
+  height: 52px;
+  margin: -26px 0 0 -26px;
+  background: rgb(255 255 255 / 0.12);
+}
+.cursor-ring.is-text {
+  width: 2px;
+  height: 24px;
+  margin: -12px 0 0 -1px;
+  border-radius: 1px;
+  background: #fff;
+}
+.cursor-ring.is-down {
+  scale: 0.82;
+}
+.cursor-dot {
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  background: #fff;
+  transition:
+    scale var(--dur-fast) var(--ease),
+    opacity var(--dur-fast) var(--ease);
+}
+.cursor-dot.is-hot {
+  scale: 0;
+}
+.cursor-dot.is-text {
+  opacity: 0;
+}
+
+/* ------------------------------------------------------------ changing page: blur out, blur in */
+.page {
+  transition:
+    opacity var(--dur-fast) var(--ease),
+    filter var(--dur-fast) var(--ease),
+    transform var(--dur-fast) var(--ease);
+}
+.page--cover {
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateY(-8px);
+}
+.page--reveal {
+  animation: page-in var(--dur-slow) var(--ease) both;
+}
+@keyframes page-in {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateY(16px);
+  }
+}
+.page-line {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 120;
+  height: 2px;
+  background: var(--grad-text);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+.page-line--cover {
+  transform: scaleX(0.6);
+  transition: transform var(--dur-fast) var(--ease);
+}
+.page-line--reveal {
+  transform: scaleX(1);
+  opacity: 0;
+  transition:
+    transform var(--dur-base) var(--ease),
+    opacity var(--dur-base) var(--ease) var(--dur-fast);
+}
+
+/* ------------------------------------------------------------ the scroll cue */
+.s-scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: var(--space-4);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  translate: -50% 0;
+  color: var(--text-faint);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.66rem;
+}
+.s-scroll-cue i {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(var(--text-faint), transparent);
+  animation: cue 2.1s var(--ease-in-out) infinite;
+  transform-origin: 50% 0;
+}
+@keyframes cue {
+  0% {
+    transform: scaleY(0);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+  100% {
+    transform: scaleY(1);
+    opacity: 0;
+  }
+}
+@media (min-width: 900px) and (min-height: 760px) {
+  .s-hero .s-scroll-cue {
+    display: flex;
+  }
+}
+
+/* ------------------------------------------------------------ running index */
+.s-index {
+  position: fixed;
+  right: var(--space-3);
+  bottom: var(--space-3);
+  z-index: 60;
+  padding: 6px 14px;
+  background: var(--glass);
+  border: var(--line-w) solid var(--line);
+  border-radius: var(--radius-pill);
+  backdrop-filter: blur(12px);
+  font-size: 0.72rem;
+  color: var(--text-soft);
+  opacity: 0;
+  translate: 0 12px;
+  transition:
+    opacity var(--dur-slow) var(--ease),
+    translate var(--dur-slow) var(--ease);
+  pointer-events: none;
+}
+.s-index span {
+  color: var(--text);
+}
+.s-index.is-on {
+  opacity: 1;
+  translate: 0 0;
+}
+@media (max-width: 899px) {
+  .s-index {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------ calm: everything that moves stops */
+@media (prefers-reduced-motion: reduce) {
+  .fx-aurora i,
+  .fx-paths path,
+  .fx-shine::before,
+  .grad-text,
+  .s-hero-accent,
+  .s-scroll-cue i,
+  .fx-toast,
+  .reveal.is-in,
+  .page--reveal {
+    animation: none !important;
+  }
+  .page,
+  body {
+    transition: none;
+  }
+}
+html.reduce-motion .fx-aurora i,
+html.reduce-motion .fx-paths path,
+html.reduce-motion .fx-shine::before,
+html.reduce-motion .grad-text,
+html.reduce-motion .s-hero-accent,
+html.reduce-motion .s-scroll-cue i,
+html.reduce-motion .fx-toast,
+html.reduce-motion .reveal.is-in,
+html.reduce-motion .page--reveal {
+  animation: none !important;
+}

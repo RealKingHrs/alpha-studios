@@ -9,6 +9,8 @@ import { accentFor, languageShares, marqueeItems, memberAccent, stackOrder } fro
 import { Marquee } from './Marquee';
 import { Magnetic } from './motion/Magnetic';
 import { SplitText } from './motion/SplitText';
+import { CopyButton } from './fx/CopyButton';
+import { Aurora } from './fx/Aurora';
 import { Hero, SectionHead, WorkList, type LinkFn } from './parts';
 import { Reveal } from './Reveal';
 import { WorkStage } from './WorkStage';
@@ -30,19 +32,11 @@ function Hello({ snap, link, page = false }: { snap: Snapshot; link: LinkFn; pag
     <section
       id="contact"
       data-section
-      className={`s-hello ${page ? 's-hello--page a-lilac' : 'theme-dark'}`}
+      className={`s-hello ${page ? 's-hello--page' : ''}`}
       aria-labelledby="hello-title"
     >
+      <Aurora />
       <div className="s-wrap">
-        {page && (
-          <span className="zn-postmark" aria-hidden="true">
-            Alpha Studios
-            <br />
-            postbox
-            <br />
-            2026
-          </span>
-        )}
         <Reveal>
           <p className="s-eyebrow mono">
             {page ? (
@@ -62,11 +56,14 @@ function Hello({ snap, link, page = false }: { snap: Snapshot; link: LinkFn; pag
           read it.
         </p>
         {mail ? (
-          <Magnetic strength={0.4}>
-            <a className="s-hello-mail display" href={`mailto:${mail}`}>
-              {mail}
-            </a>
-          </Magnetic>
+          <div className="s-hello-row">
+            <Magnetic strength={0.3}>
+              <a className="s-hello-mail display" href={`mailto:${mail}`}>
+                {mail}
+              </a>
+            </Magnetic>
+            <CopyButton text={mail} />
+          </div>
         ) : (
           <p className="s-lede">Contact details are added with the real content.</p>
         )}
@@ -85,7 +82,19 @@ export function Home({ snap, link, asset }: PageProps) {
   return (
     <>
       <Hero snap={snap} link={link} />
-      <Marquee items={marqueeItems(snap)} accent="tomato" label="Platforms and technologies used" />
+      <div className="s-marquees">
+        <Marquee
+          items={marqueeItems(snap)}
+          accent="tomato"
+          label="Platforms and technologies used"
+        />
+        <Marquee
+          items={['Native iOS', 'macOS', 'Web apps', 'AI and ML', 'Backends', 'Launchpad']}
+          accent="lilac"
+          label="What the studio builds"
+          reverse
+        />
+      </div>
       <Vision link={link} />
       <section id="work" data-section className="s-section" aria-labelledby="work-title">
         <div className="s-wrap">
@@ -123,7 +132,8 @@ function PageHead({
   lede: string;
 }) {
   return (
-    <section className={`s-page-head a-${accent}`} aria-labelledby="pt">
+    <section className={`s-page-head a-${accent}`} data-spot aria-labelledby="pt">
+      <Aurora />
       <div className="s-wrap">
         <Reveal>
           <p className="s-eyebrow mono">{eyebrow}</p>
@@ -434,10 +444,11 @@ export function PortalDoor({ link }: { link: LinkFn }) {
 
 export function NotFoundPage({ link }: { link: LinkFn }) {
   return (
-    <section className="s-hello a-tomato s-lost" aria-labelledby="pt">
+    <section className="s-hello s-lost" aria-labelledby="pt">
+      <Aurora />
       <div className="s-wrap">
         <p className="s-eyebrow mono">Season finale</p>
-        <p className="s-lost-code display" aria-hidden="true">
+        <p className="s-lost-code display" data-text="404" aria-hidden="true">
           404
         </p>
         <h1 id="pt" className="display s-hello-title">

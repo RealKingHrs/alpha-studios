@@ -1,4 +1,14 @@
-# Full audit, 3 November 2026 (updated after the batch 17 visual identity)
+# Full audit, 3 November 2026 (updated after the batch 22 rebuild)
+
+## Batch 22 re-check (full visual rebuild, two themes)
+
+- Lint, format, typecheck, build (19 pages plus 404) and 118 unit tests pass; contrast test covers both themes; new theme test covers the head script and blocked storage.
+- Role tests: 58 passing against the local Supabase stack (no database changes in this batch).
+- axe (WCAG 2.1 AA): no violations on the 10 public addresses in dark and in light, nor on the portal sign-in screen in both themes. Signed-in portal screens were not re-run.
+- No horizontal overflow at 375 px on the 10 public addresses. First visit 281 kB.
+- Not verified here: animation smoothness (the preview throttles frames) and real devices.
+
+## Earlier record (batch 17)
 
 Everything below was run against the local build and the local backend. Nothing is deployed.
 

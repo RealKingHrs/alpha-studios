@@ -22,7 +22,7 @@ export const PRINCIPLES = [
   },
 ] as const;
 
-/** The vision on the home page: one clear statement and three principles. */
+/** The vision on the home page: one statement card and three principles, laid out as a bento on the golden split. */
 export function Vision({ link }: { link: LinkFn }) {
   return (
     <section id="vision" data-section className="s-section s-vision" aria-labelledby="vision-title">
@@ -32,30 +32,36 @@ export function Vision({ link }: { link: LinkFn }) {
             <span className="s-num">00</span> Our vision
           </p>
         </Reveal>
-        <h2 id="vision-title" className="display s-vision-title">
-          <SplitText text="Good software is built with care, shipped with honesty and open to the next generation of builders." />
-        </h2>
-        <ul className="s-principles">
-          {PRINCIPLES.map((p, i) => (
-            <li key={p.title}>
-              <Reveal delay={i * 80}>
-                <span className="s-principle-icon">
-                  <p.icon />
-                </span>
-                <span className="s-principle-n mono" aria-hidden="true">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <h3>{p.title}</h3>
-                <p>{p.text}</p>
-              </Reveal>
-            </li>
-          ))}
-        </ul>
-        <p className="s-vision-more">
-          <a className="s-link" href={link('/about/')}>
-            Read why we exist <span aria-hidden="true">→</span>
-          </a>
-        </p>
+        <div className="s-bento">
+          <div className="s-bento-card s-bento-lead" data-spot>
+            <h2 id="vision-title" className="display s-vision-title">
+              <SplitText text="Good software is built with care, shipped with honesty and open to the next generation of builders." />
+            </h2>
+            <a className="s-link" href={link('/about/')}>
+              Read the origin story <span aria-hidden="true">→</span>
+            </a>
+          </div>
+          <ul className="s-principles">
+            {PRINCIPLES.map((p, i) => (
+              <li
+                key={p.title}
+                className={`s-bento-card a-${['tomato', 'mint', 'sky'][i]}`}
+                data-spot
+              >
+                <Reveal delay={i * 60}>
+                  <span className="s-principle-icon">
+                    <p.icon />
+                  </span>
+                  <span className="s-principle-n mono" aria-hidden="true">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <h3>{p.title}</h3>
+                  <p>{p.text}</p>
+                </Reveal>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
   );

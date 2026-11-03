@@ -11,7 +11,7 @@ import { Magnetic } from './motion/Magnetic';
 import { useMotionOn } from './motion/context';
 import { SplitText } from './motion/SplitText';
 import type { LinkFn } from './parts';
-import { PopScene } from './PopScene';
+import { Aurora } from './fx/Aurora';
 import { popTheme } from './popTheme';
 import { Reveal } from './Reveal';
 import { SkillRadar } from './SkillRadar';
@@ -75,7 +75,7 @@ export function MemberPage({ snap, slug, link }: { snap: Snapshot; slug: string;
         aria-labelledby="pt"
         onPointerMove={onMove}
       >
-        <PopScene scene={theme.scene} />
+        <Aurora />
         <motion.span
           className="mp-giant display"
           aria-hidden="true"
@@ -151,10 +151,8 @@ export function MemberPage({ snap, slug, link }: { snap: Snapshot; slug: string;
         {m.popPick && (
           <Reveal className={`mp-tile mp-tile--fav a-${accent}`} delay={80}>
             <h2 className="mp-h mp-h--small">Currently into</h2>
-            <div className="mp-fav">
-              <PopScene scene={theme.scene} />
-            </div>
             <p className="mp-fav-title display">{m.popPick}</p>
+            <p className="mp-fav-cap mono">{theme.caption}</p>
           </Reveal>
         )}
 

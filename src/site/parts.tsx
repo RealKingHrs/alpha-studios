@@ -1,10 +1,17 @@
 import { motion, useMotionValueEvent, useScroll, useSpring, useTransform } from 'motion/react';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 import type { Project, Snapshot } from '../content/schema';
 import { platformLabel, projectLinks, statusLabel } from '../rooms';
 import type { Route } from '../routes';
-import { ACCENTS, HEADLINE, accentFor, headlineText, stackOrder } from './data';
-import { Mark, Sticker } from './Mark';
+import { Portrait } from '../avatar/Portrait';
+import { Count } from './Counters';
+import { ACCENTS, HEADLINE, HEADLINE_LOOP, accentFor, headlineText, stackOrder } from './data';
+import { Aurora } from './fx/Aurora';
+import { BackgroundPaths } from './fx/BackgroundPaths';
+import { ThemeToggle } from './fx/ThemeToggle';
+import { WordLoop } from './fx/WordLoop';
+import { Mark } from './Mark';
 import { useMotionOn, useWide } from './motion/context';
 import { coverAmount, coverProgress, currentSection } from './motion/helpers';
 import { STACK_STEP, canStack, stickyTopFor } from './motion/viewport';
@@ -12,7 +19,6 @@ import { Magnetic } from './motion/Magnetic';
 import { scrollToTop } from './motion/SmoothScroll';
 import { SplitText } from './motion/SplitText';
 import { Reveal } from './Reveal';
-import { Doodle } from './zine/Zine';
 import { WorkStage } from './WorkStage';
 
 export type LinkFn = (path: string) => string;
@@ -38,46 +44,60 @@ const section = (route: Route) =>
             ? '/contact/'
             : null;
 
-/** The header tucks away as you scroll down and returns the moment you scroll up. */
+/** A floating dock: it tucks away as you scroll down and returns the moment you scroll up. A pill slides to the
+ * link under the pointer and rests on the current page. */
 export function Header({ route, link }: { route: Route; link: LinkFn }) {
   const here = section(route);
   const on = useMotionOn();
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
   const [solid, setSolid] = useState(false);
+  const [hover, setHover] = useState<string | null>(null);
   useMotionValueEvent(scrollY, 'change', (y) => {
     const prev = scrollY.getPrevious() ?? 0;
     setSolid(y > 12);
     if (on) setHidden(y > 160 && y > prev);
     if (y < 160 || y < prev) setHidden(false);
   });
+  const pill = hover ?? here;
   return (
     <header className={`s-header ${hidden ? 'is-hidden' : ''} ${solid ? 'is-solid' : ''}`}>
-      <a className="s-brand" href={link('/')} aria-label="Alpha Studios, home">
-        <Mark className="s-brand-mark" />
-        <span>Alpha Studios</span>
-      </a>
-      <MenuButton link={link} here={here} />
-      <nav aria-label="Main" className="s-nav">
-        <ul>
-          {NAV.map(([path, label]) => (
-            <li key={path}>
-              <Magnetic strength={0.6}>
+      <div className="s-dock">
+        <a className="s-brand" href={link('/')} aria-label="Alpha Studios, home">
+          <Mark className="s-brand-mark" />
+          <span>Alpha Studios</span>
+        </a>
+        <nav aria-label="Main" className="s-nav" onPointerLeave={() => setHover(null)}>
+          <ul>
+            {NAV.map(([path, label]) => (
+              <li key={path} onPointerEnter={() => setHover(path)}>
+                {pill === path &&
+                  (on ? (
+                    <motion.span
+                      layoutId="nav-pill"
+                      className="s-nav-pill"
+                      transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+                    />
+                  ) : (
+                    <span className="s-nav-pill" />
+                  ))}
                 <a href={link(path)} aria-current={here === path ? 'page' : undefined}>
                   {label}
                 </a>
-              </Magnetic>
-            </li>
-          ))}
-          <li>
-            <Magnetic>
-              <a className="s-pill" href={link('/contact/')}>
-                Say hello
-              </a>
-            </Magnetic>
-          </li>
-        </ul>
-      </nav>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <div className="s-dock-end">
+          <ThemeToggle />
+          <Magnetic>
+            <a className="s-pill fx-shine" href={link('/contact/')}>
+              Say hello
+            </a>
+          </Magnetic>
+          <MenuButton link={link} here={here} />
+        </div>
+      </div>
       <ProgressLine />
     </header>
   );
@@ -149,33 +169,35 @@ function MenuButton({ link, here }: { link: LinkFn; here: string | null }) {
         <i aria-hidden="true" />
         <i aria-hidden="true" />
       </button>
-      {open && (
-        <div
-          id="s-menu"
-          ref={panel}
-          className="s-menu theme-dark"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Menu"
-        >
-          <ul>
-            {links.map(([path, label], i) => (
-              <li key={path} style={{ '--i': i } as React.CSSProperties}>
-                <a
-                  href={link(path)}
-                  aria-current={here === path ? 'page' : undefined}
-                  onClick={() => setOpen(false)}
-                >
-                  <span className="mono" aria-hidden="true">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  {label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      {open &&
+        createPortal(
+          <div
+            id="s-menu"
+            ref={panel}
+            className="s-menu"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menu"
+          >
+            <ul>
+              {links.map(([path, label], i) => (
+                <li key={path} style={{ '--i': i } as React.CSSProperties}>
+                  <a
+                    href={link(path)}
+                    aria-current={here === path ? 'page' : undefined}
+                    onClick={() => setOpen(false)}
+                  >
+                    <span className="mono" aria-hidden="true">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    {label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>,
+          document.body,
+        )}
     </>
   );
 }
@@ -199,16 +221,13 @@ export function Footer({ link }: { link: LinkFn }) {
     ],
   ] as const;
   return (
-    <footer className="s-footer theme-dark">
+    <footer className="s-footer">
       <div className="s-wrap s-footer-grid">
         <div className="s-footer-brand">
           <a className="s-footer-logo" href={link('/')} aria-label="Alpha Studios, home">
             <Mark className="s-footer-mark" />
             <span className="display">Alpha Studios</span>
           </a>
-          <p className="s-footer-credit mono">
-            Post-credit scene: you scrolled all the way down. Go build something.
-          </p>
           <p className="s-footer-line">
             Software people rely on, and a home for young builders with something worth finishing.
           </p>
@@ -227,47 +246,39 @@ export function Footer({ link }: { link: LinkFn }) {
             </div>
           ))}
         </nav>
-        <div className="s-footer-meta">
-          <span className="mono">© 2026 Alpha Studios</span>
-          <button
-            type="button"
-            className="s-top"
-            onClick={() => scrollToTop(false)}
-            aria-label="Back to the top"
-          >
-            <span aria-hidden="true">↑</span> Top
-          </button>
-        </div>
+      </div>
+      <p className="s-footer-word display" aria-hidden="true">
+        Alpha Studios
+      </p>
+      <div className="s-wrap s-footer-meta">
+        <span className="mono">© 2026 Alpha Studios</span>
+        <span className="mono s-footer-credit">
+          Post-credit scene: you scrolled all the way down. Go build something.
+        </span>
+        <button
+          type="button"
+          className="s-top"
+          onClick={() => scrollToTop(false)}
+          aria-label="Back to the top"
+        >
+          <span aria-hidden="true">↑</span> Top
+        </button>
       </div>
     </footer>
   );
 }
 
-/** The hero: warm paper, direct words, the mark drawing itself once, and calm shapes that part slowly as you scroll. */
+/**
+ * The hero: an aurora in the five accents over slow flowing lines, a headline that blurs in and cycles its
+ * ending, the crew as a stack of faces, and the numbers counting up. The copy sits on the upper third line.
+ */
 export function Hero({ snap, link }: { snap: Snapshot; link: LinkFn }) {
   const ref = useRef<HTMLElement>(null);
   const on = useMotionOn();
   const { scrollYProgress: p } = useScroll({ target: ref, offset: ['start start', 'end start'] });
-  const gridY = useTransform(p, [0, 1], ['0%', '-10%']);
-  const shapeA = useTransform(p, [0, 1], ['0%', '-18%']);
-  const shapeB = useTransform(p, [0, 1], ['0%', '-9%']);
-  const shapeC = useTransform(p, [0, 1], ['0%', '-24%']);
-  const markY = useTransform(p, [0, 1], ['0%', '10%']);
-  const copyY = useTransform(p, [0, 1], ['0%', '-6%']);
-  const copyOpacity = useTransform(p, [0, 0.85], [1, 0.15]);
-
-  // The layers shift a few pixels with the pointer. Skipped without motion.
-  useEffect(() => {
-    const el = ref.current;
-    if (!on || !el) return;
-    const onMove = (e: PointerEvent) => {
-      if (e.pointerType !== 'mouse') return;
-      el.style.setProperty('--px', String((e.clientX / innerWidth - 0.5) * 2));
-      el.style.setProperty('--py', String((e.clientY / innerHeight - 0.5) * 2));
-    };
-    window.addEventListener('pointermove', onMove, { passive: true });
-    return () => window.removeEventListener('pointermove', onMove);
-  }, [on]);
+  const copyY = useTransform(p, [0, 1], ['0%', '18%']);
+  const copyOpacity = useTransform(p, [0, 0.8], [1, 0]);
+  const glowScale = useTransform(p, [0, 1], [1, 1.25]);
 
   const platforms = new Set(snap.projects.flatMap((x) => x.platforms)).size;
   const proof = [
@@ -275,90 +286,79 @@ export function Hero({ snap, link }: { snap: Snapshot; link: LinkFn }) {
     [snap.members.length, 'people on the crew'],
     [platforms, platforms === 1 ? 'platform' : 'platforms'],
   ] as const;
+  const latest = snap.projects[snap.projects.length - 1];
 
   return (
     <section ref={ref} className="s-hero" data-spot aria-labelledby="hero-title">
-      <div className="s-shapes" aria-hidden="true">
-        <motion.span className="shape-slot" style={on ? { y: shapeA } : undefined}>
-          <span className="shape shape--circle a-tomato" />
-        </motion.span>
-        <motion.span className="shape-slot" style={on ? { y: shapeB } : undefined}>
-          <span className="shape shape--square a-sun" />
-        </motion.span>
-        <motion.span className="shape-slot" style={on ? { y: shapeC } : undefined}>
-          <span className="shape shape--pill a-mint" />
-        </motion.span>
-        <motion.span className="shape-slot" style={on ? { y: gridY } : undefined}>
-          <span className="shape shape--ring a-sky" />
-        </motion.span>
-      </div>
-      <div className="s-wrap s-hero-grid">
-        <motion.div
-          className="s-hero-copy"
-          style={on ? { y: copyY, opacity: copyOpacity } : undefined}
-        >
-          <p className="s-eyebrow mono">Native apps · Web platforms · Backends</p>
-          <h1 id="hero-title" className="display s-hero-title">
-            <span className="visually-hidden">{headlineText()}</span>
-            <span aria-hidden="true">
-              <span className="s-hero-line">
-                <SplitText text={HEADLINE[0]} delay={0.2} step={0.1} />
-              </span>
-              <span className="s-hero-line s-hero-accent">
-                <SplitText text={HEADLINE[1]} delay={0.55} step={0.1} />
-              </span>
+      <motion.div className="s-hero-bg" style={on ? { scale: glowScale } : undefined}>
+        <Aurora />
+      </motion.div>
+      <BackgroundPaths />
+      <div className="s-hero-grid-lines" aria-hidden="true" />
+      <motion.div
+        className="s-wrap s-hero-copy"
+        style={on ? { y: copyY, opacity: copyOpacity } : undefined}
+      >
+        {latest && (
+          <a className="s-badge fx-shine" href={link(`/projects/${latest.slug}/`)}>
+            <span className="s-badge-dot" aria-hidden="true" />
+            <span className="mono">New drop</span> {latest.name},{' '}
+            {statusLabel[latest.status].toLowerCase()}
+            <span aria-hidden="true">→</span>
+          </a>
+        )}
+        <h1 id="hero-title" className="display s-hero-title">
+          <span className="visually-hidden">{headlineText()}</span>
+          <span aria-hidden="true">
+            <span className="s-hero-line">
+              <SplitText text={HEADLINE[0]} delay={0.15} step={0.08} />
             </span>
-          </h1>
-          <p className="s-lede">{snap.settings.studioStatement}</p>
-          <p className="s-actions">
-            <Magnetic>
-              <a className="s-btn s-btn--ink" href="#work">
-                See our projects
-              </a>
-            </Magnetic>
-            <Magnetic>
-              <a className="s-btn s-btn--line" href={link('/launchpad/')}>
-                Back a project
-              </a>
-            </Magnetic>
-          </p>
+            <span className="s-hero-line s-hero-accent">
+              <WordLoop words={HEADLINE_LOOP} />
+            </span>
+          </span>
+        </h1>
+        <p className="s-lede s-hero-lede">{snap.settings.studioStatement}</p>
+        <p className="s-actions">
+          <Magnetic>
+            <a className="s-btn s-btn--ink fx-shine" href="#work">
+              See the drops
+            </a>
+          </Magnetic>
+          <Magnetic>
+            <a className="s-btn s-btn--line" href={link('/launchpad/')}>
+              Back a project
+            </a>
+          </Magnetic>
+        </p>
+        <div className="s-hero-foot">
+          <a className="s-faces" href={link('/crew/')} aria-label="Meet the crew">
+            {snap.members.slice(0, 5).map((m, i) => (
+              <span key={m.slug} className={`s-face a-${accentFor(i)}`} aria-hidden="true">
+                <Portrait record={m.avatar} />
+              </span>
+            ))}
+            <span className="s-faces-text">
+              <strong>{snap.members.length} builders</strong>
+              <span className="mono">all aged twenty</span>
+            </span>
+          </a>
           <ul className="s-hero-proof" aria-label="The studio in numbers">
             {proof.map(([n, label]) => (
               <li key={label}>
-                <b className="display">{n}</b>
+                <b className="display">
+                  <Count to={n} />
+                </b>
                 <span className="mono">{label}</span>
               </li>
             ))}
           </ul>
-        </motion.div>
-        <div className="s-play" aria-hidden="true">
-          <span className="play-seal">
-            <Sticker text="ALPHA STUDIOS" className="play-sticker" draw />
-          </span>
-          <span className="play-chip play-chip--1 a-sun">Native iOS</span>
-          <span className="play-chip play-chip--2 a-mint">macOS</span>
-          <span className="play-chip play-chip--3 a-sky">AI and ML</span>
-          <span className="play-chip play-chip--4 a-lilac">Web apps</span>
-          <svg className="play-star" viewBox="0 0 100 100">
-            <path d="M50 4 L61 34 L92 28 L70 52 L90 78 L58 70 L50 96 L42 70 L10 78 L30 52 L8 28 L39 34 Z" />
-          </svg>
-          <svg className="play-squig" viewBox="0 0 160 30">
-            <path d="M4 15 Q24 -2 44 15 T84 15 T124 15 T156 15" />
-          </svg>
-          <Doodle name="spark" className="play-spark" />
-          <Doodle name="heart" className="play-heart" />
         </div>
-        <Doodle name="arrow" />
-        <a className="s-scroll-cue mono" href="#work">
-          <span>Scroll</span>
-          <i aria-hidden="true" />
-        </a>
-        <div className="s-hero-art" aria-hidden="true">
-          <motion.div className="s-hero-mark-wrap" style={on ? { y: markY } : undefined}>
-            <Mark className="s-hero-mark" draw />
-          </motion.div>
-        </div>
-      </div>
+      </motion.div>
+      <a className="s-scroll-cue mono" href="#work">
+        <span>Scroll</span>
+        <i aria-hidden="true" />
+      </a>
     </section>
   );
 }
@@ -392,10 +392,14 @@ export function WorkPanel({
   const buttons = projectLinks(project);
   const shots = stackOrder(project.screenshots);
   return (
-    <article className={`s-work a-${accent}`} style={{ '--i': index } as React.CSSProperties}>
+    <article
+      className={`s-work a-${accent}`}
+      data-spot
+      style={{ '--i': index } as React.CSSProperties}
+    >
       <div className="s-work-copy">
-        <span className="s-work-num display" aria-hidden="true">
-          {String(index + 1).padStart(2, '0')}
+        <span className="s-work-num mono" aria-hidden="true">
+          Drop {String(index + 1).padStart(2, '0')}
         </span>
         <h3 className="display">
           <a href={link(`/projects/${project.slug}/`)}>{project.name}</a>

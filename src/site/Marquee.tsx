@@ -19,10 +19,13 @@ export function Marquee({
   items,
   accent = 'sun',
   label,
+  reverse = false,
 }: {
   items: string[];
   accent?: string;
   label: string;
+  /** Runs the other way: the same loop, mirrored in position, never in text. */
+  reverse?: boolean;
 }) {
   const on = useMotionOn();
   const track = useRef<HTMLDivElement>(null);
@@ -41,7 +44,8 @@ export function Marquee({
       first.current.offsetWidth,
       marqueeBase(innerWidth),
     );
-    track.current.style.transform = `translate3d(${x.current}px,0,0)`;
+    const pos = reverse ? -first.current.offsetWidth - x.current : x.current;
+    track.current.style.transform = `translate3d(${pos}px,0,0)`;
   });
 
   if (items.length === 0) return null;
@@ -50,13 +54,16 @@ export function Marquee({
       {items.map((t, i) => (
         <li key={`${t}-${i}`}>
           {t}
-          <span aria-hidden="true"> ✺ </span>
+          <span aria-hidden="true"> ✦ </span>
         </li>
       ))}
     </ul>
   );
   return (
-    <section className={`marquee a-${accent} ${on ? 'is-js' : ''}`} aria-label={label}>
+    <section
+      className={`marquee a-${accent} ${reverse ? 'marquee--reverse' : ''} ${on ? 'is-js' : ''}`}
+      aria-label={label}
+    >
       <motion.div style={on ? { skewX } : undefined}>
         <div className="marquee-track" ref={track}>
           {row(false, first)}
