@@ -64,6 +64,9 @@ export function Redeem({ email }: { email: string }) {
           <button type="submit" className="primary" disabled={busy || !consent}>
             Join the crew
           </button>
+          <a className="link" href="#/pitch">
+            Not crew? Pitch a project to Launchpad
+          </a>
           <button type="button" className="link" onClick={() => void signOut()}>
             Sign out
           </button>

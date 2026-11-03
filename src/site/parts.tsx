@@ -13,9 +13,13 @@ import { ACCENTS, HEADLINE, ROTATING_WORDS, accentFor, headlineText, stackOrder 
 import { Mark, Sticker } from './Mark';
 import { useMotionOn, useWide } from './motion/context';
 import { coverAmount, coverProgress, currentSection } from './motion/helpers';
+import { STACK_STEP, canStack, stickyTopFor } from './motion/viewport';
 import { Magnetic } from './motion/Magnetic';
 import { SplitText } from './motion/SplitText';
 import { Reveal } from './Reveal';
+import { earn } from './achievementStore';
+import { XpPanel } from './Achievements';
+import { propRender } from './renders';
 import { WorkStage } from './WorkStage';
 
 export type LinkFn = (path: string) => string;
@@ -23,6 +27,7 @@ export type LinkFn = (path: string) => string;
 const NAV = [
   ['/projects/', 'Work'],
   ['/crew/', 'Crew'],
+  ['/launchpad/', 'Launchpad'],
   ['/contact/', 'Contact'],
 ] as const;
 
@@ -31,9 +36,11 @@ const section = (route: Route) =>
     ? '/projects/'
     : route.name === 'crew' || route.name === 'member'
       ? '/crew/'
-      : route.name === 'contact'
-        ? '/contact/'
-        : null;
+      : route.name === 'launchpad'
+        ? '/launchpad/'
+        : route.name === 'contact'
+          ? '/contact/'
+          : null;
 
 /** The header tucks away as you scroll down and returns the moment you scroll up. */
 export function Header({ route, link }: { route: Route; link: LinkFn }) {
@@ -107,6 +114,9 @@ export function Footer({
               <a href={link('/crew/')}>Crew</a>
             </li>
             <li>
+              <a href={link('/launchpad/')}>Launchpad</a>
+            </li>
+            <li>
               <a href={link('/contact/')}>Contact</a>
             </li>
             {email && (
@@ -123,6 +133,38 @@ export function Footer({
         </nav>
         <div className="s-footer-meta">
           <span className="mono">© 2026 Alpha Studios</span>
+          <XpPanel />
+          <a
+            className="case"
+            href={link('/launchpad/')}
+            aria-label="The Case: a golden briefcase that opens the Launchpad"
+            data-cursor="Open"
+            onClick={() => earn('the-case')}
+          >
+            <svg viewBox="0 0 48 40" width="30" height="25" aria-hidden="true">
+              <rect
+                x="3"
+                y="12"
+                width="42"
+                height="25"
+                rx="4"
+                fill="var(--gold)"
+                stroke="#fff"
+                strokeWidth="2"
+              />
+              <path
+                d="M17 12V8a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v4"
+                fill="none"
+                stroke="#fff"
+                strokeWidth="2.5"
+              />
+              <rect x="21" y="21" width="6" height="6" rx="1" fill="var(--ink)" />
+            </svg>
+          </a>
+          <p className="nods">
+            The nods to shows and games we love are affectionate and unaffiliated. No logos,
+            characters or quotes.
+          </p>
           {fxAvailable && (
             <button type="button" className="s-toggle" aria-pressed={fxOn} onClick={onFx}>
               Playful effects {fxOn ? 'on' : 'off'}
@@ -178,19 +220,19 @@ function Rotor() {
 }
 
 /** The hero: the headline rises word by word, the mark draws itself, and everything drifts apart as you scroll. */
-export function Hero({ snap }: { snap: Snapshot }) {
+export function Hero({ snap, link }: { snap: Snapshot; link: LinkFn }) {
   const ref = useRef<HTMLElement>(null);
   const on = useMotionOn();
   const { scrollYProgress: p } = useScroll({ target: ref, offset: ['start start', 'end start'] });
   const markRotate = useTransform(p, [0, 1], [-6, 26]);
-  const markY = useTransform(p, [0, 1], [0, 90]);
-  const copyY = useTransform(p, [0, 1], [0, -70]);
+  const markY = useTransform(p, [0, 1], ['0%', '14%']);
+  const copyY = useTransform(p, [0, 1], ['0%', '-8%']);
   const copyOpacity = useTransform(p, [0, 0.85], [1, 0.1]);
-  const s1 = useTransform(p, [0, 1], [0, -180]);
-  const s2 = useTransform(p, [0, 1], [0, -90]);
-  const s3 = useTransform(p, [0, 1], [0, -240]);
-  const s4 = useTransform(p, [0, 1], [0, -50]);
-  const s5 = useTransform(p, [0, 1], [0, -130]);
+  const s1 = useTransform(p, [0, 1], ['0%', '-22%']);
+  const s2 = useTransform(p, [0, 1], ['0%', '-11%']);
+  const s3 = useTransform(p, [0, 1], ['0%', '-30%']);
+  const s4 = useTransform(p, [0, 1], ['0%', '-6%']);
+  const s5 = useTransform(p, [0, 1], ['0%', '-16%']);
 
   // Shapes lean toward the pointer a little. Skipped without motion.
   useEffect(() => {
@@ -256,6 +298,14 @@ export function Hero({ snap }: { snap: Snapshot }) {
           >
             <Mark className="s-hero-mark" draw />
           </motion.div>
+          <img
+            className="s-hero-3d"
+            src={propRender(link, 'alpha')}
+            alt=""
+            width="360"
+            height="360"
+            decoding="async"
+          />
           <Sticker text="ALPHA STUDIOS" className="s-hero-sticker" />
         </div>
       </div>
@@ -276,9 +326,6 @@ function Chips({ project }: { project: Project }) {
   );
 }
 
-const STICKY_TOP = 92;
-const STACK_STEP = 16;
-
 /** One project as a coloured panel. On wide screens the panels stack: each sticks, and the one behind recedes. */
 export function WorkPanel({
   project,
@@ -294,12 +341,11 @@ export function WorkPanel({
   const accent = accentFor(index);
   const buttons = projectLinks(project);
   const shots = stackOrder(project.screenshots);
-  const wide = useWide(900);
   return (
     <article
       className={`s-work a-${accent}`}
       data-cursor="Open"
-      style={wide ? { top: STICKY_TOP + index * STACK_STEP } : undefined}
+      style={{ '--i': index } as React.CSSProperties}
     >
       <div className="s-work-copy">
         <span className="s-work-num display" aria-hidden="true">
@@ -330,25 +376,57 @@ export function WorkPanel({
   );
 }
 
-/** The panels in a column. Watches the scroll and tells each panel how far the next one has covered it. */
+/**
+ * The panels in a column. On screens where every panel fits, they stack: each sticks and the one behind recedes
+ * as the next covers it. Elsewhere they scroll past normally. Watches the screen so the choice follows resizing.
+ */
 export function WorkList({ snap, link, asset }: { snap: Snapshot; link: LinkFn; asset: LinkFn }) {
   const on = useMotionOn();
-  const wide = useWide(900);
   const ref = useRef<HTMLDivElement>(null);
+  const [stack, setStack] = useState(false);
   const { scrollY } = useScroll();
+
+  useEffect(() => {
+    const list = ref.current;
+    if (!on || !list) {
+      setStack(false);
+      return;
+    }
+    const decide = () => {
+      const panels = [...list.children] as HTMLElement[];
+      list.style.setProperty('--sticky', `${stickyTopFor(innerHeight)}px`);
+      setStack(
+        canStack(
+          panels.map((p) => p.offsetHeight),
+          innerHeight,
+          innerWidth,
+        ),
+      );
+    };
+    decide();
+    const ro = new ResizeObserver(decide);
+    ro.observe(list);
+    addEventListener('resize', decide);
+    return () => {
+      ro.disconnect();
+      removeEventListener('resize', decide);
+    };
+  }, [on]);
+
   useMotionValueEvent(scrollY, 'change', () => {
     const list = ref.current;
     if (!list) return;
     const panels = [...list.children] as HTMLElement[];
+    const top = stickyTopFor(innerHeight);
     panels.forEach((el, i) => {
       const next = panels[i + 1];
       const amount =
-        on && wide && next
+        stack && next
           ? coverAmount(
               coverProgress(
                 next.getBoundingClientRect().top,
                 innerHeight,
-                STICKY_TOP + (i + 1) * STACK_STEP,
+                top + (i + 1) * STACK_STEP,
               ),
             )
           : 0;
@@ -356,7 +434,7 @@ export function WorkList({ snap, link, asset }: { snap: Snapshot; link: LinkFn; 
     });
   });
   return (
-    <div className="s-work-list" ref={ref}>
+    <div className="s-work-list" ref={ref} data-stack={stack ? 'on' : 'off'}>
       {snap.projects.map((p, i) => (
         <WorkPanel key={p.slug} project={p} index={i} link={link} assetBase={asset} />
       ))}

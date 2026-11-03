@@ -22,6 +22,8 @@ import {
   PortalDoor,
   WorkPage,
 } from './pages';
+import { AchievementToast, useBuildMode, useRouteAchievements } from './Achievements';
+import { LaunchpadPage } from './Launchpad';
 import { Footer, Header, SectionIndex } from './parts';
 
 /** The site: premium, animated, and complete as plain HTML before any script runs. */
@@ -63,6 +65,8 @@ export function SiteApp({
     document.documentElement.classList.add('ready');
   }, [base, snap, firstVisit]);
 
+  useRouteAchievements(route);
+  useBuildMode();
   const enabled = allowed && pref;
   useEffect(() => {
     document.documentElement.classList.toggle('fx', enabled && fine);
@@ -138,6 +142,9 @@ export function SiteApp({
     case 'contact':
       page = <ContactPage {...props} />;
       break;
+    case 'launchpad':
+      page = <LaunchpadPage snap={snap} link={link} />;
+      break;
     case 'portal':
       page = <PortalDoor link={link} />;
       break;
@@ -167,6 +174,7 @@ export function SiteApp({
         <SmoothScroll enabled={enabled} />
         {enabled && fine && <Cursor />}
         <PageWipe phase={phase} />
+        <AchievementToast />
         <div className="visually-hidden" role="status" aria-live="polite">
           {announce}
         </div>

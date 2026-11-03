@@ -41,6 +41,12 @@ Read `docs/SPEC.md` before any work. It is the source of truth. If this file and
 - `assets/logo/`: the Alpha mark, ink version, lockup and brand board.
 - `content/CONTENT-TEMPLATE.md`: the words and images the user must supply.
 
+## Batch 9 notes
+
+- Founder credit is locked in the database and cannot be changed from the app; never add app code that tries.
+- Pop-culture nods use wording and mechanics only. No logos, artwork, characters or quotations.
+- `npm run render:3d` regenerates `public/3d/`; the SVG avatar stays the fallback.
+
 ## Commands
 
 Run from the repo root. Node 22.
@@ -58,3 +64,4 @@ Run from the repo root. Node 22.
 - Test the calm path with `?motion=reduce` on any address.
 - Local portal try-out: `npm run dev:users` (local stack only), then `npm run build` and `npm run preview`, and open `/alpha-studios/portal/app/`.
 - Operations, secrets and recovery: `docs/RUNBOOK.md`.
+- `npm run render:3d`: render the Blender crew, mark and trophy (needs Blender).

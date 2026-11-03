@@ -26,6 +26,22 @@ export const Member = z.object({
   githubUsername: z.string().optional(),
   links: SocialLinks,
   avatar: AvatarRecord,
+  codename: z.string().default(''),
+  tagline: z.string().default(''),
+  skills: z.array(z.object({ name: z.string().min(1), level: z.number().int().min(1).max(5) })).default([]),
+  currently: z.string().default(''),
+  funFact: z.string().default(''),
+  popPick: z.string().default(''),
+});
+
+export const Certification = z.object({
+  id: z.string(),
+  memberSlug: slug,
+  title: z.string().min(1),
+  issuer: z.string().default(''),
+  issuedOn: z.string().nullable().default(null),
+  expiresOn: z.string().nullable().default(null),
+  url: url.optional(),
 });
 
 export const Platform = z.enum(['ios', 'macos', 'android', 'web']);
@@ -49,12 +65,14 @@ export const Project = z.object({
     .regex(/^[\w.-]+\/[\w.-]+$/)
     .nullable(),
   featured: z.boolean(),
+  origin: z.enum(['studio', 'launchpad']).default('studio'),
+  founderName: z.string().default(''),
   screenshots: z.array(
     z.object({ src: z.string(), alt: z.string(), device: z.enum(['iphone', 'android', 'mac', 'browser']) }),
   ),
 });
 
-export const Membership = z.object({ projectSlug: slug, memberSlug: slug });
+export const Membership = z.object({ projectSlug: slug, memberSlug: slug, role: z.string().default('') });
 
 export const RepoDetails = z.object({
   stars: z.number().int().nonnegative(),
@@ -81,6 +99,7 @@ export const Snapshot = z
     members: z.array(Member),
     projects: z.array(Project),
     memberships: z.array(Membership),
+    certifications: z.array(Certification).default([]),
     /** Keyed by "owner/name". */
     repos: z.record(z.string(), RepoDetails),
   })
@@ -100,5 +119,6 @@ export const Snapshot = z
 
 export type Snapshot = z.infer<typeof Snapshot>;
 export type Member = z.infer<typeof Member>;
+export type Certification = z.infer<typeof Certification>;
 export type Project = z.infer<typeof Project>;
 export type RepoDetails = z.infer<typeof RepoDetails>;

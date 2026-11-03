@@ -11,6 +11,38 @@ export interface MemberRow {
   role: 'crew' | 'admin';
   access_status: 'invited' | 'active' | 'revoked';
   consented_at: string | null;
+  codename: string;
+  tagline: string;
+  skills: Array<{ name: string; level: number }>;
+  currently: string;
+  fun_fact: string;
+  pop_pick: string;
+}
+
+export interface SubmissionRow {
+  id: string;
+  user_id: string;
+  pitcher_name: string;
+  contact_email: string;
+  project_name: string;
+  pitch: string;
+  platforms: string[];
+  help_wanted: string[];
+  links: Record<string, string>;
+  status: 'new' | 'reviewing' | 'approved' | 'declined';
+  reviewer_notes: string;
+  project_id: string | null;
+  created_at: string;
+}
+
+export interface CertificationRow {
+  id: string;
+  member_id: string;
+  title: string;
+  issuer: string;
+  issued_on: string | null;
+  expires_on: string | null;
+  credential_url: string | null;
 }
 
 export interface ProjectRow {

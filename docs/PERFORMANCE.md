@@ -25,6 +25,8 @@ Measured on 3 November 2026 on the development machine (Apple silicon laptop) wi
 | Fonts used (Fraunces, Inter 400 and 500, JetBrains Mono 400, Latin) | 128.5 kB     |
 | **Total**                                                           | **311.2 kB** |
 
+After batch 9 (Launchpad, achievements, Elements, 3D renders) the first visit measured 315.9 kB. The Blender renders are lazy-loaded WebP files of 10 to 19 kB each, and the hero mark is about 19 kB.
+
 For comparison, the retired 3D vault added about 282 kB more and drew hundreds of calls per frame; its removal is the single biggest performance change.
 
 ## Gaps and what to try next

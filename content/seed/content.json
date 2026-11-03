@@ -34,7 +34,26 @@
           "outfitColor": 0
         }
       },
-      "githubUsername": "placeholder-member-one"
+      "githubUsername": "placeholder-member-one",
+      "codename": "The Architect",
+      "tagline": "Builds the backbone nobody sees but everybody feels.",
+      "skills": [
+        {
+          "name": "Backend",
+          "level": 5
+        },
+        {
+          "name": "Postgres",
+          "level": 4
+        },
+        {
+          "name": "TypeScript",
+          "level": 4
+        }
+      ],
+      "currently": "Wiring up a payments sandbox",
+      "funFact": "Once debugged a bug by sleeping on it. It worked.",
+      "popPick": "Breaking Bad"
     },
     {
       "slug": "member-two",
@@ -62,7 +81,26 @@
           "outfitColor": 2
         }
       },
-      "githubUsername": "placeholder-member-two"
+      "githubUsername": "placeholder-member-two",
+      "codename": "Pixel Pusher",
+      "tagline": "Makes buttons you want to press twice.",
+      "skills": [
+        {
+          "name": "React",
+          "level": 5
+        },
+        {
+          "name": "Motion",
+          "level": 4
+        },
+        {
+          "name": "Design",
+          "level": 4
+        }
+      ],
+      "currently": "Polishing a hero animation",
+      "funFact": "Has opinions about easing curves at dinner.",
+      "popPick": "Minecraft"
     },
     {
       "slug": "member-three",
@@ -90,7 +128,26 @@
           "outfitColor": 3
         }
       },
-      "githubUsername": "placeholder-member-three"
+      "githubUsername": "placeholder-member-three",
+      "codename": "The Professor",
+      "tagline": "Plans three sprints ahead, then adjusts.",
+      "skills": [
+        {
+          "name": "Swift",
+          "level": 5
+        },
+        {
+          "name": "Apps",
+          "level": 4
+        },
+        {
+          "name": "Testing",
+          "level": 3
+        }
+      ],
+      "currently": "Shipping an iOS beta",
+      "funFact": "Keeps a whiteboard in the car.",
+      "popPick": "Money Heist"
     },
     {
       "slug": "member-four",
@@ -118,7 +175,26 @@
           "outfitColor": 4
         }
       },
-      "githubUsername": "placeholder-member-four"
+      "githubUsername": "placeholder-member-four",
+      "codename": "Night Owl",
+      "tagline": "Ships best after midnight.",
+      "skills": [
+        {
+          "name": "Android",
+          "level": 4
+        },
+        {
+          "name": "Kotlin",
+          "level": 4
+        },
+        {
+          "name": "CI",
+          "level": 3
+        }
+      ],
+      "currently": "Squashing a Play Store review note",
+      "funFact": "Never owned an alarm clock.",
+      "popPick": "Pulp Fiction"
     },
     {
       "slug": "member-five",
@@ -146,7 +222,26 @@
           "outfitColor": 7
         }
       },
-      "githubUsername": "placeholder-member-five"
+      "githubUsername": "placeholder-member-five",
+      "codename": "Wildcard",
+      "tagline": "Learns the thing the week it is needed.",
+      "skills": [
+        {
+          "name": "Rust",
+          "level": 3
+        },
+        {
+          "name": "DevOps",
+          "level": 4
+        },
+        {
+          "name": "Docs",
+          "level": 4
+        }
+      ],
+      "currently": "Taming the build pipeline",
+      "funFact": "Can solve a cube blindfolded.",
+      "popPick": "GTA VI"
     }
   ],
   "projects": [
@@ -231,35 +326,43 @@
   "memberships": [
     {
       "projectSlug": "project-one",
-      "memberSlug": "member-one"
+      "memberSlug": "member-one",
+      "role": "Backend lead"
     },
     {
       "projectSlug": "project-one",
-      "memberSlug": "member-two"
+      "memberSlug": "member-two",
+      "role": "Interface"
     },
     {
       "projectSlug": "project-one",
-      "memberSlug": "member-three"
+      "memberSlug": "member-three",
+      "role": "Product lead"
     },
     {
       "projectSlug": "project-two",
-      "memberSlug": "member-three"
+      "memberSlug": "member-three",
+      "role": "Product lead"
     },
     {
       "projectSlug": "project-one",
-      "memberSlug": "member-four"
+      "memberSlug": "member-four",
+      "role": "Mobile"
     },
     {
       "projectSlug": "project-two",
-      "memberSlug": "member-four"
+      "memberSlug": "member-four",
+      "role": "Mobile"
     },
     {
       "projectSlug": "project-one",
-      "memberSlug": "member-five"
+      "memberSlug": "member-five",
+      "role": "Tooling"
     },
     {
       "projectSlug": "project-two",
-      "memberSlug": "member-five"
+      "memberSlug": "member-five",
+      "role": "Tooling"
     }
   ],
   "repos": {
@@ -330,5 +433,23 @@
       ],
       "fetchedAt": "2026-11-03T00:00:00.000Z"
     }
-  }
+  },
+  "certifications": [
+    {
+      "id": "cert-1",
+      "memberSlug": "member-one",
+      "title": "Placeholder: Cloud Practitioner",
+      "issuer": "Example Academy",
+      "issuedOn": "2026-03-01",
+      "expiresOn": null
+    },
+    {
+      "id": "cert-2",
+      "memberSlug": "member-three",
+      "title": "Placeholder: Swift Developer",
+      "issuer": "Example Academy",
+      "issuedOn": "2026-05-12",
+      "expiresOn": null
+    }
+  ]
 }

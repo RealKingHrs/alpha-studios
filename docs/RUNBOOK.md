@@ -63,6 +63,16 @@ Changes in the portal reach the public site when the publish job runs. To start 
 
 A burst of edits makes a burst of requests. The workflow's concurrency group keeps one run going and one waiting, so it becomes at most two builds. The twice-daily scheduled runs remain as the fallback if a webhook is missed.
 
+## Launchpad and founder credit
+
+- A pitch arrives under **Portal > Submissions**. Approving creates the project with the founder credit locked and an unclaimed founder profile. Open **Crew**, issue that profile an invite, and give the founder the code so they can claim it.
+- **Before launch, a lawyer must write the terms** for adopting a project: what ownership transfers, what the studio provides, what the founder keeps, and what happens if the founder moves on. The site only says terms are agreed in writing; it does not define them.
+- A locked credit cannot be changed or removed from the app. To correct a mistake on purpose, use the SQL editor (no signed-in user) and note it in the audit trail by hand.
+
+## 3D renders
+
+`npm run render:3d` needs Blender 5 (set `BLENDER` if it is not at `/Applications/Blender.app`). Commit the new files in `public/3d/` and `src/site/renders.json`. A new member shows the live SVG character until their render exists.
+
 ## Creating the single admin
 
 Exactly one admin exists, created once, directly in the backend.

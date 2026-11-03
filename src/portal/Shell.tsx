@@ -2,9 +2,12 @@ import { useEffect, useState } from 'react';
 import { useAuth } from './auth';
 import { Audit } from './screens/Audit';
 import { AvatarScreen } from './screens/AvatarScreen';
+import { Certificates } from './screens/Certificates';
 import { Crew } from './screens/Crew';
+import { Pitch } from './screens/Pitch';
 import { Profile } from './screens/Profile';
 import { Projects } from './screens/Projects';
+import { Submissions } from './screens/Submissions';
 import { SettingsScreen } from './screens/Settings';
 import type { MemberRow } from './types';
 import { OfflineBanner } from './ui';
@@ -22,10 +25,13 @@ const useHash = () => {
 const CREW_PAGES = [
   ['profile', 'My profile'],
   ['avatar', 'My avatar'],
+  ['certificates', 'Certificates'],
   ['projects', 'Projects'],
+  ['pitch', 'Pitch'],
 ] as const;
 const ADMIN_PAGES = [
   ['crew', 'Crew'],
+  ['submissions', 'Submissions'],
   ['settings', 'Site settings'],
   ['audit', 'Audit log'],
 ] as const;
@@ -48,6 +54,9 @@ export function Shell({ me }: { me: MemberRow }) {
       </>
     );
   else if (page === 'avatar') screen = <AvatarScreen me={me} />;
+  else if (page === 'certificates') screen = <Certificates me={me} />;
+  else if (page === 'pitch') screen = <Pitch name={me.name} />;
+  else if (page === 'submissions') screen = <Submissions />;
   else if (page === 'projects') screen = <Projects me={me} />;
   else if (page === 'crew') screen = <Crew />;
   else if (page === 'settings') screen = <SettingsScreen />;

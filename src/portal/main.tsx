@@ -3,6 +3,7 @@ import '../styles/base.css';
 import '../styles/portal.css';
 import { AuthProvider, useAuth } from './auth';
 import { Login } from './screens/Login';
+import { Pitch } from './screens/Pitch';
 import { Redeem } from './screens/Redeem';
 import { Shell } from './Shell';
 import { configured } from './supabase';
@@ -12,7 +13,17 @@ function Gate() {
   const { state } = useAuth();
   if (state.status === 'loading') return <Loading what="Checking your sign-in." />;
   if (state.status === 'signed-out') return <Login />;
-  if (state.status === 'no-profile') return <Redeem email={state.email} />;
+  if (state.status === 'no-profile')
+    return location.hash === '#/pitch' ? (
+      <main className="auth wide">
+        <Pitch email={state.email} />
+        <p>
+          <a href="#/">Back</a>
+        </p>
+      </main>
+    ) : (
+      <Redeem email={state.email} />
+    );
   return <Shell me={state.me} />;
 }
 

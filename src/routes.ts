@@ -5,6 +5,7 @@ export type Route =
   | { name: 'projects' }
   | { name: 'crew' }
   | { name: 'contact' }
+  | { name: 'launchpad' }
   | { name: 'project'; slug: string }
   | { name: 'member'; slug: string }
   | { name: 'portal' }
@@ -19,6 +20,7 @@ export function matchRoute(pathname: string, base: string, snap: Snapshot): Rout
   if (p === '/projects') return { name: 'projects' };
   if (p === '/crew') return { name: 'crew' };
   if (p === '/contact') return { name: 'contact' };
+  if (p === '/launchpad') return { name: 'launchpad' };
   const [, kind, slug, extra] = p.split('/');
   if (extra === undefined && kind === 'projects' && snap.projects.some((x) => x.slug === slug))
     return { name: 'project', slug };
@@ -33,6 +35,7 @@ export function allPaths(snap: Snapshot): string[] {
     '/',
     '/projects/',
     '/crew/',
+    '/launchpad/',
     '/contact/',
     '/portal/',
     ...snap.projects.map((p) => `/projects/${p.slug}/`),

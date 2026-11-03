@@ -1,6 +1,8 @@
 import type { Snapshot } from '../content/schema';
 import { Portrait } from '../avatar/Portrait';
 import { contributorsWithCrew, platformLabel, projectLinks, statusLabel } from '../rooms';
+import { Elements } from './Elements';
+import { Facts, Shelf, Skills, Works } from './Dossier';
 import { CrewLineup } from './CrewLineup';
 import { accentFor, languageShares, marqueeItems, memberAccent, stackOrder } from './data';
 import { Mark, Sticker } from './Mark';
@@ -78,7 +80,7 @@ function Hello({
 export function Home({ snap, link, asset }: PageProps) {
   return (
     <>
-      <Hero snap={snap} />
+      <Hero snap={snap} link={link} />
       <Marquee items={marqueeItems(snap)} accent="tomato" label="Platforms and technologies used" />
       <section id="work" data-section className="s-section" aria-labelledby="work-title">
         <div className="s-wrap">
@@ -96,7 +98,7 @@ export function Home({ snap, link, asset }: PageProps) {
       >
         <div className="s-wrap">
           <SectionHead num="02" eyebrow="Crew" title="The people behind it" id="crew-title" />
-          <CrewLineup members={snap.members} link={link} />
+          <CrewLineup members={snap.members} link={link} snap={snap} />
         </div>
       </section>
       <Hello snap={snap} link={link} />
@@ -149,6 +151,7 @@ export function WorkPage({ snap, link, asset }: PageProps) {
           <WorkList snap={snap} link={link} asset={asset} />
         </div>
       </section>
+      <Elements snap={snap} />
     </>
   );
 }
@@ -164,7 +167,7 @@ export function CrewPage({ snap, link }: PageProps) {
       />
       <section className="s-section">
         <div className="s-wrap">
-          <CrewLineup members={snap.members} link={link} />
+          <CrewLineup members={snap.members} link={link} snap={snap} />
         </div>
       </section>
     </>
@@ -203,6 +206,11 @@ export function CaseStudy({ snap, slug, link, asset }: PageProps & { slug: strin
             </h1>
             <Reveal delay={120}>
               <p className="s-lede">{p.summary}</p>
+              {p.origin === 'launchpad' && (
+                <p className="founder-credit mono">
+                  Founded by {p.founderName} · Owned and supported by Alpha Studios
+                </p>
+              )}
               <ul className="s-chips" aria-label="Status and platforms">
                 <li className="s-chip s-chip--solid">{statusLabel[p.status]}</li>
                 {p.platforms.map((x) => (
@@ -366,9 +374,6 @@ export function CaseStudy({ snap, slug, link, asset }: PageProps & { slug: strin
 export function CrewProfile({ snap, slug, link }: PageProps & { slug: string }) {
   const index = snap.members.findIndex((m) => m.slug === slug);
   const m = snap.members[index];
-  const projects = snap.memberships
-    .filter((x) => x.memberSlug === slug)
-    .map((x) => snap.projects.find((p) => p.slug === x.projectSlug)!);
   return (
     <section className={`s-profile a-${accentFor(index)}`} aria-labelledby="pt">
       <div className="s-wrap s-profile-grid">
@@ -382,8 +387,16 @@ export function CrewProfile({ snap, slug, link }: PageProps & { slug: string }) 
           <h1 id="pt" className="display">
             <SplitText text={m.name} />
           </h1>
+          {m.codename && (
+            <p className="dossier-code mono">
+              aka {m.codename}
+              {m.tagline ? ` · ${m.tagline}` : ''}
+            </p>
+          )}
           <Reveal delay={120}>
             <p className="s-lede">{m.bio}</p>
+            <Skills skills={m.skills} />
+            <Facts member={m} />
             {Object.keys(m.links).length > 0 && (
               <ul className="s-links" aria-label="Links">
                 {Object.entries(m.links).map(([k, v]) => (
@@ -397,20 +410,10 @@ export function CrewProfile({ snap, slug, link }: PageProps & { slug: string }) 
                 ))}
               </ul>
             )}
-            {projects.length > 0 && (
-              <>
-                <p className="s-eyebrow mono s-space">Works on</p>
-                <ul className="s-chips">
-                  {projects.map((p) => (
-                    <li key={p.slug}>
-                      <a className="s-chip s-chip--solid" href={link(`/projects/${p.slug}/`)}>
-                        {p.name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
+            <p className="s-eyebrow mono s-space">Works</p>
+            <Works snap={snap} slug={slug} link={link} />
+            <p className="s-eyebrow mono s-space">Achievements</p>
+            <Shelf link={link} certs={snap.certifications.filter((c) => c.memberSlug === slug)} />
           </Reveal>
         </div>
       </div>

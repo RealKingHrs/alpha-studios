@@ -20,6 +20,7 @@ d('built site', () => {
     'projects/index.html',
     'crew/index.html',
     'contact/index.html',
+    'launchpad/index.html',
     'portal/index.html',
     'projects/project-one/index.html',
     'projects/project-two/index.html',

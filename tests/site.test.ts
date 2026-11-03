@@ -100,7 +100,7 @@ describe('the site', () => {
     expect(html).toContain('href="/alpha-studios/projects/project-one/"');
     expect(html).toContain('href="/alpha-studios/projects/project-two/"');
     expect(html).toContain('Member one');
-    expect(html).not.toMatch(/explore|vault|3D/i);
+    expect(html).not.toMatch(/explore|vault|webgl/i);
   });
 
   it('keeps one first-level heading on every address', () => {
@@ -111,6 +111,7 @@ describe('the site', () => {
       'crew/',
       'crew/member-two/',
       'contact/',
+      'launchpad/',
       'portal/',
       'nowhere/',
     ];

@@ -73,6 +73,14 @@ Tokens live in `design/tokens.css`. Colour roles:
 
 The site is a set of real pages, each with its own address and prerendered HTML: the home page (hero, a marquee of the tech used, the work as stacking coloured panels with device mockups, the crew lineup, contact), a case study for each project, a profile for each crew member, and a playful 404. Motion is layered on top: smooth scrolling, scroll-linked parallax, masked text reveals, page transitions, magnetic buttons and a refined cursor. Every effect switches off for reduced motion and by the "Playful effects" switch, and the content is complete without any of it.
 
+## 5a. Batch 9 additions (3 November 2026)
+
+- **Crew dossiers.** Members have a codename, tagline, skills, what they are on now, a fun fact and a pop pick; each project membership has a role; certifications are their own table (own CRUD, admin all, public read, audited, revertable). Crew cards and profiles show works and an achievements shelf with empty "next unlock" slots.
+- **Launchpad.** Anyone signed in can pitch a project (`submissions`, private to the pitcher and the admin). The admin approves through `approve_submission`, which creates the project, locks the founder credit and creates an unclaimed founder profile to be invited. A locked credit (`founder_credit_locked`) cannot be changed or removed from the app, by anyone including the admin; the project cannot be deleted from the app either. Only the backend owner (SQL editor or service key) can, on purpose. Ownership, support and credit terms are agreed in writing with each founder; this site does not define them.
+- **Blender renders.** `npm run render:3d` renders each member (two expressions), a 3D alpha mark and a trophy into `public/3d/` as WebP. The live SVG character remains the fallback and the builder preview. Renders are static images and are re-run by hand when an avatar changes.
+- **The game layer.** Achievements and XP (stored only in the visitor's browser), an Elements table of the stack, "The Plan" and "The board" on Launchpad, a golden briefcase link in the footer, a Build mode easter egg, and a footer note that the pop-culture nods are affectionate and unaffiliated (wording and mechanics only: no logos, artwork, characters or quotes).
+- **Consistency.** Stacking panels only stack when every panel fits the screen (`src/site/motion/viewport.ts`); parallax is in percent; marquee speed follows viewport width; the cursor uses a white difference blend so it reads on every surface.
+
 ## 6. Crew avatars
 
 Each member builds a bold geometric character, drawn as animated SVG, from a parts kit. No AI service.

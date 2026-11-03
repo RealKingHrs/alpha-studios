@@ -456,3 +456,59 @@ button:disabled {
     animation: none;
   }
 }
+
+/* ---------------------------------------------------------------- launchpad and certificates */
+.slots {
+  border: 0;
+  padding: 0;
+  margin: 0 0 1rem;
+}
+.slots legend {
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+}
+.slot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 0.5rem;
+}
+.slot-tile {
+  min-height: 56px;
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+.slot-tile.on {
+  background: var(--ink);
+  color: var(--paper);
+}
+.pitch-list,
+.cert-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.8rem;
+}
+.pitch-body {
+  white-space: pre-wrap;
+}
+.status {
+  display: inline-block;
+  padding: 0.15rem 0.7rem;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  margin-left: 0.6rem;
+}
+.status-approved {
+  background: var(--mint);
+}
+.status-declined {
+  background: var(--paper-2);
+}
+.auth.wide {
+  max-width: 44rem;
+}

@@ -11,3 +11,4 @@ coverage
 public/content.json
 .dev-credentials
 dist-dev
+blender/.tmp

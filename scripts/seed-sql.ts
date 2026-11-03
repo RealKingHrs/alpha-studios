@@ -12,7 +12,7 @@ const lines = [
   `insert into public.site_settings (id, studio_statement, intro_enabled, contact_email) values (1, ${q(snap.settings.studioStatement)}, ${snap.settings.introEnabled}, ${snap.settings.contactEmail ? q(snap.settings.contactEmail) : 'null'}) on conflict (id) do nothing;`,
   ...snap.members.map(
     (m) =>
-      `insert into public.members (slug, name, role_title, bio, github_username, links, avatar) values (${q(m.slug)}, ${q(m.name)}, ${q(m.role)}, ${q(m.bio)}, ${m.githubUsername ? q(m.githubUsername) : 'null'}, ${j(m.links)}, ${j(m.avatar)}) on conflict (slug) do nothing;`,
+      `insert into public.members (slug, name, role_title, bio, github_username, links, avatar, codename, tagline, skills, currently, fun_fact, pop_pick) values (${q(m.slug)}, ${q(m.name)}, ${q(m.role)}, ${q(m.bio)}, ${m.githubUsername ? q(m.githubUsername) : 'null'}, ${j(m.links)}, ${j(m.avatar)}, ${q(m.codename)}, ${q(m.tagline)}, ${j(m.skills)}, ${q(m.currently)}, ${q(m.funFact)}, ${q(m.popPick)}) on conflict (slug) do nothing;`,
   ),
   ...snap.projects.map(
     (p) =>
@@ -20,7 +20,11 @@ const lines = [
   ),
   ...snap.memberships.map(
     (m) =>
-      `insert into public.project_members (project_id, member_id) select p.id, m.id from public.projects p, public.members m where p.slug = ${q(m.projectSlug)} and m.slug = ${q(m.memberSlug)} on conflict do nothing;`,
+      `insert into public.project_members (project_id, member_id, role) select p.id, m.id, ${q(m.role)} from public.projects p, public.members m where p.slug = ${q(m.projectSlug)} and m.slug = ${q(m.memberSlug)} on conflict do nothing;`,
+  ),
+  ...snap.certifications.map(
+    (c) =>
+      `insert into public.certifications (member_id, title, issuer, issued_on, expires_on, credential_url) select m.id, ${q(c.title)}, ${q(c.issuer)}, ${c.issuedOn ? q(c.issuedOn) : 'null'}, ${c.expiresOn ? q(c.expiresOn) : 'null'}, ${c.url ? q(c.url) : 'null'} from public.members m where m.slug = ${q(c.memberSlug)} and not exists (select 1 from public.certifications x where x.member_id = m.id and x.title = ${q(c.title)});`,
   ),
 ];
 writeFileSync('supabase/seed.sql', lines.join('\n') + '\n');

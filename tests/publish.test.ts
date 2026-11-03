@@ -53,7 +53,7 @@ describe('buildSnapshot', () => {
 
   it('maps backend rows to the snapshot and keeps only referenced repos', () => {
     const snap = buildSnapshot(base, new Date('2026-01-01T00:00:00Z'));
-    expect(snap.memberships).toEqual([{ projectSlug: 'one', memberSlug: 'ada' }]);
+    expect(snap.memberships).toEqual([{ projectSlug: 'one', memberSlug: 'ada', role: '' }]);
     expect(Object.keys(snap.repos)).toEqual(['a/b']);
     expect(snap.generatedAt).toBe('2026-01-01T00:00:00.000Z');
   });

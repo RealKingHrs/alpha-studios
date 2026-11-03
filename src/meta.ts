@@ -26,6 +26,12 @@ export function pageMeta(
       };
     case 'crew':
       return { title: `Crew | ${STUDIO}`, description: 'The people who build at Alpha Studios.' };
+    case 'launchpad':
+      return {
+        title: `Launchpad | ${STUDIO}`,
+        description:
+          'Pitch your project to Alpha Studios. If the team approves, we adopt it and credit you as founder for good.',
+      };
     case 'contact':
       return { title: `Contact | ${STUDIO}`, description: 'Get in touch with Alpha Studios.' };
     case 'portal':

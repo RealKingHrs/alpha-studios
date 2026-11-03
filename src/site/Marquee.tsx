@@ -9,6 +9,7 @@ import {
 import { useRef } from 'react';
 import { useMotionOn } from './motion/context';
 import { marqueeStep, velocitySkew } from './motion/helpers';
+import { marqueeBase } from './motion/viewport';
 
 /**
  * A band of words sliding past on an accent colour. With motion on, it speeds up and leans while the page
@@ -33,7 +34,13 @@ export function Marquee({
 
   useAnimationFrame((_, delta) => {
     if (!on || !track.current || !first.current) return;
-    x.current = marqueeStep(x.current, delta / 1000, velocity.get(), first.current.offsetWidth);
+    x.current = marqueeStep(
+      x.current,
+      delta / 1000,
+      velocity.get(),
+      first.current.offsetWidth,
+      marqueeBase(innerWidth),
+    );
     track.current.style.transform = `translate3d(${x.current}px,0,0)`;
   });
 

@@ -6,7 +6,8 @@ type Row = Record<string, unknown>;
 export interface Rows {
   members: Row[];
   projects: Row[];
-  projectMembers: Array<{ project_id: string; member_id: string }>;
+  projectMembers: Array<{ project_id: string; member_id: string; role?: string }>;
+  certifications?: Row[];
   settings: Row;
   repoCache: Array<{ repo: string; data: unknown }>;
 }
@@ -32,6 +33,12 @@ export function buildSnapshot(rows: Rows, now = new Date()): Snapshot {
       githubUsername: m.github_username ?? undefined,
       links: m.links,
       avatar: m.avatar,
+      codename: m.codename ?? '',
+      tagline: m.tagline ?? '',
+      skills: m.skills ?? [],
+      currently: m.currently ?? '',
+      funFact: m.fun_fact ?? '',
+      popPick: m.pop_pick ?? '',
     })),
     projects: rows.projects.map((p) => ({
       slug: p.slug,
@@ -44,6 +51,8 @@ export function buildSnapshot(rows: Rows, now = new Date()): Snapshot {
       links: p.links,
       repo: p.repo,
       featured: p.featured,
+      origin: p.origin ?? 'studio',
+      founderName: p.founder_name ?? '',
       screenshots: p.screenshots,
     })),
     memberships: rows.projectMembers
@@ -51,6 +60,18 @@ export function buildSnapshot(rows: Rows, now = new Date()): Snapshot {
       .map((pm) => ({
         projectSlug: slugOfProject.get(pm.project_id),
         memberSlug: slugOfMember.get(pm.member_id),
+        role: pm.role ?? '',
+      })),
+    certifications: (rows.certifications ?? [])
+      .filter((c) => slugOfMember.has(c.member_id))
+      .map((c) => ({
+        id: c.id,
+        memberSlug: slugOfMember.get(c.member_id),
+        title: c.title,
+        issuer: c.issuer ?? '',
+        issuedOn: c.issued_on ?? null,
+        expiresOn: c.expires_on ?? null,
+        url: c.credential_url ?? undefined,
       })),
     repos: Object.fromEntries(
       rows.repoCache.filter((r) => wanted.has(r.repo)).map((r) => [r.repo, r.data]),

@@ -46,7 +46,8 @@ for (const repo of new Set(
 const snap = buildSnapshot({
   members: await rows(db.from('members').select('*').order('created_at')),
   projects,
-  projectMembers: await rows(db.from('project_members').select('project_id, member_id')),
+  certifications: await rows(db.from('certifications').select('*').order('created_at')),
+  projectMembers: await rows(db.from('project_members').select('project_id, member_id, role')),
   settings: await rows(db.from('site_settings').select('*').eq('id', 1).single()),
   repoCache: await rows(db.from('repo_cache').select('repo, data')),
 });
