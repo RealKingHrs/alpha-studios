@@ -1,1 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 160" role="img" aria-label="Alpha Studios"><rect width="520" height="160" fill="#F6F1E7"/><g transform="translate(-6 -6) scale(1.35)"><defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="80" y1="60" x2="112" y2="100"><stop offset=".66" stop-color="#14110F"/><stop offset=".66" stop-color="#C9A24B"/></linearGradient></defs><path d="M106 30 C86 26 52 34 38 56 C26 76 40 96 62 86 C78 78 84 58 86 40 C86 60 80 80 84 92 C88 102 100 98 110 86" fill="none" stroke="url(#g)" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/></g><text x="168" y="86" fill="#14110F" font-family="Inter, Helvetica Neue, Arial, sans-serif" font-size="44" font-weight="500" letter-spacing="9">ALPHA</text><text x="171" y="118" fill="#4A443D" font-family="Inter, Helvetica Neue, Arial, sans-serif" font-size="16" letter-spacing="13">STUDIOS</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 220" role="img" aria-label="Alpha Studios">
+  <!-- The wordmark: "alpha." in Fraunces italic 800 with a gold full stop, "studios" in JetBrains Mono.
+       Live text: install Fraunces and JetBrains Mono (both open licence) for this file to render exactly. -->
+  <rect width="520" height="220" fill="#f6f1e7"/>
+  <text x="470" y="128" text-anchor="end" fill="#14110f" font-family="Fraunces, Georgia, serif" font-style="italic" font-weight="800" font-size="150" letter-spacing="-9">alpha<tspan fill="#c9a24b">.</tspan></text>
+  <text x="474" y="178" text-anchor="end" fill="#14110f" font-family="JetBrains Mono, Menlo, monospace" font-size="30" letter-spacing="14">STUDIOS</text>
+</svg>

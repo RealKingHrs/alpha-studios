@@ -1,5 +1,4 @@
 import type { Snapshot } from '../content/schema';
-import { Aurora } from './fx/Aurora';
 import { Marquee } from './Marquee';
 import { Magnetic } from './motion/Magnetic';
 import { SplitText } from './motion/SplitText';
@@ -66,8 +65,7 @@ export function LaunchpadPage({ snap, link }: { snap: Snapshot; link: LinkFn }) 
   const pitch = link('/portal/app/#/pitch');
   return (
     <>
-      <section className="lp-hero" data-spot aria-labelledby="pt">
-        <Aurora />
+      <section className="lp-hero a-mint" aria-labelledby="pt">
         <div className="s-wrap lp-hero-grid">
           <div>
             <p className="s-eyebrow mono">Launchpad</p>
@@ -111,7 +109,7 @@ export function LaunchpadPage({ snap, link }: { snap: Snapshot; link: LinkFn }) 
                 <b className="mono">03</b> Credit
               </span>
             </div>
-            <div className="lp-credit fx-shine">
+            <div className="lp-credit">
               <p className="mono lp-credit-k">Project</p>
               <p className="display lp-credit-t">Your idea</p>
               <ul>
@@ -144,7 +142,7 @@ export function LaunchpadPage({ snap, link }: { snap: Snapshot; link: LinkFn }) 
             {WHO.map(([accent, title, text], i) => (
               <li key={title}>
                 <Reveal delay={i * 120}>
-                  <div className={`lp-card ${accent}`} data-spot>
+                  <div className={`lp-card ${accent}`}>
                     <h3>{title}</h3>
                     <p>{text}</p>
                   </div>
@@ -225,8 +223,7 @@ export function LaunchpadPage({ snap, link }: { snap: Snapshot; link: LinkFn }) 
         </div>
       </section>
 
-      <section className="lp-final" aria-labelledby="final-title">
-        <Aurora />
+      <section className="lp-final a-sun" aria-labelledby="final-title">
         <div className="s-wrap">
           <h2 id="final-title" className="display">
             <SplitText text="Ready when you are." />

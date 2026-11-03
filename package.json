@@ -18,7 +18,6 @@
     "icons": "tsx scripts/icons.ts",
     "content:check": "tsx scripts/content-check.ts",
     "sizes": "tsx scripts/sizes.ts",
-    "wordmark": "tsx scripts/wordmark.ts",
     "placeholders": "tsx scripts/placeholders.ts",
     "dev:users": "tsx scripts/dev-users.ts",
     "publish:dry": "tsx scripts/publish.ts --dry-run",

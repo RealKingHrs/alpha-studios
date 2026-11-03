@@ -10,8 +10,7 @@ import { Marquee } from './Marquee';
 import { Magnetic } from './motion/Magnetic';
 import { SplitText } from './motion/SplitText';
 import { CopyButton } from './fx/CopyButton';
-import { Aurora } from './fx/Aurora';
-import { Hero, SectionHead, WorkList, type LinkFn } from './parts';
+import { Contents, Hero, SectionHead, WorkList, type LinkFn } from './parts';
 import { Reveal } from './Reveal';
 import { WorkStage } from './WorkStage';
 
@@ -32,10 +31,9 @@ function Hello({ snap, link, page = false }: { snap: Snapshot; link: LinkFn; pag
     <section
       id="contact"
       data-section
-      className={`s-hello ${page ? 's-hello--page' : ''}`}
+      className={`s-hello ${page ? 's-hello--page a-lilac' : 'a-sun'}`}
       aria-labelledby="hello-title"
     >
-      <Aurora />
       <div className="s-wrap">
         <Reveal>
           <p className="s-eyebrow mono">
@@ -43,7 +41,7 @@ function Hello({ snap, link, page = false }: { snap: Snapshot; link: LinkFn; pag
               'Contact'
             ) : (
               <>
-                <span className="s-num">04</span> Contact
+                <span className="s-num">05</span> Say hello
               </>
             )}
           </p>
@@ -82,23 +80,12 @@ export function Home({ snap, link, asset }: PageProps) {
   return (
     <>
       <Hero snap={snap} link={link} />
-      <div className="s-marquees">
-        <Marquee
-          items={marqueeItems(snap)}
-          accent="tomato"
-          label="Platforms and technologies used"
-        />
-        <Marquee
-          items={['Native iOS', 'macOS', 'Web apps', 'AI and ML', 'Backends', 'Launchpad']}
-          accent="lilac"
-          label="What the studio builds"
-          reverse
-        />
-      </div>
+      <Contents link={link} />
+      <Marquee items={marqueeItems(snap)} accent="sun" label="Platforms and technologies used" />
       <Vision link={link} />
       <section id="work" data-section className="s-section" aria-labelledby="work-title">
         <div className="s-wrap">
-          <SectionHead num="01" eyebrow="Projects" title="Projects" id="work-title" />
+          <SectionHead num="02" eyebrow="The drops" title="Projects" id="work-title" />
         </div>
         <div className="s-wrap s-wrap--wide">
           <WorkList snap={snap} link={link} asset={asset} />
@@ -107,11 +94,16 @@ export function Home({ snap, link, asset }: PageProps) {
       <section
         id="crew"
         data-section
-        className="s-section s-section--tint"
+        className="s-section s-section--crew"
         aria-labelledby="crew-title"
       >
         <div className="s-wrap">
-          <SectionHead num="02" eyebrow="Crew" title="The people behind it" id="crew-title" />
+          <SectionHead
+            num="03"
+            eyebrow="Cover stars"
+            title="The people behind it"
+            id="crew-title"
+          />
           <CrewLineup link={link} snap={snap} />
         </div>
       </section>
@@ -132,8 +124,7 @@ function PageHead({
   lede: string;
 }) {
   return (
-    <section className={`s-page-head a-${accent}`} data-spot aria-labelledby="pt">
-      <Aurora />
+    <section className={`s-page-head a-${accent}`} aria-labelledby="pt">
       <div className="s-wrap">
         <Reveal>
           <p className="s-eyebrow mono">{eyebrow}</p>
@@ -444,19 +435,18 @@ export function PortalDoor({ link }: { link: LinkFn }) {
 
 export function NotFoundPage({ link }: { link: LinkFn }) {
   return (
-    <section className="s-hello s-lost" aria-labelledby="pt">
-      <Aurora />
+    <section className="s-hello s-lost a-tomato" aria-labelledby="pt">
       <div className="s-wrap">
         <p className="s-eyebrow mono">Season finale</p>
         <p className="s-lost-code display" data-text="404" aria-hidden="true">
           404
         </p>
         <h1 id="pt" className="display s-hello-title">
-          <SplitText text="This page is not here." />
+          <SplitText text="This page got cancelled." />
         </h1>
         <p className="s-lede">
           This address does not lead anywhere on the site. It may have moved, or the link may have a
-          typo. The credits are rolling, but you can still get back to the good scenes.
+          typo. No renewal, no spin-off. The good episodes are still on.
         </p>
         <p className="s-actions">
           <Magnetic>

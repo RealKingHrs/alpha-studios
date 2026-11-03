@@ -1,4 +1,11 @@
-# Full audit, 3 November 2026 (updated after the batch 22 rebuild)
+# Full audit, 3 November 2026 (updated after the batch 23 editorial redesign)
+
+## Batch 23 re-check (bold editorial pop, wordmark logo)
+
+- Lint, format, typecheck, build (19 pages plus 404) and unit tests pass; contrast and theme tests now treat light as the default.
+- axe (WCAG 2.1 AA): no violations on the 10 public addresses and the portal sign-in, in light and in dark (after fixing five contrast issues on paper slips, commit hashes and the empty element tile).
+- No horizontal overflow at 375 px on any public address; the cover headline is sized to the measure.
+- Not verified here: animation smoothness (the preview throttles frames), real devices, signed-in portal screens.
 
 ## Batch 22 re-check (full visual rebuild, two themes)
 

@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Aurora } from '../site/fx/Aurora';
-import { MARK_GRADIENT, MARK_PATH, MARK_VIEWBOX, MARK_WIDTH } from '../brand/mark';
+import { ACCENTS } from '../site/data';
 
 type Phase = 'draw' | 'fill' | 'hold' | 'open' | 'fade' | 'gone';
 
@@ -105,23 +104,24 @@ export function Intro({ ready, reduceMotion, firstVisit, onDone }: Props) {
         } as React.CSSProperties
       }
     >
-      <Aurora className="intro-aurora" />
-      <svg className="intro-mark" viewBox={MARK_VIEWBOX} aria-hidden="true">
-        <defs>
-          <linearGradient
-            id="intro-stroke"
-            gradientUnits="userSpaceOnUse"
-            x1={MARK_GRADIENT.x1}
-            y1={MARK_GRADIENT.y1}
-            x2={MARK_GRADIENT.x2}
-            y2={MARK_GRADIENT.y2}
-          >
-            <stop offset={MARK_GRADIENT.at} style={{ stopColor: 'var(--text)' }} />
-            <stop offset={MARK_GRADIENT.at} style={{ stopColor: 'var(--gold)' }} />
-          </linearGradient>
-        </defs>
-        <path className="intro-stroke" d={MARK_PATH} strokeWidth={MARK_WIDTH} pathLength={1} />
-      </svg>
+      {ACCENTS.map((c, n) => (
+        <div
+          key={c}
+          className="intro-band"
+          style={{ '--i': n, background: `var(--${c})` } as React.CSSProperties}
+        />
+      ))}
+      <p className="intro-word" aria-hidden="true">
+        {[...'alpha'].map((ch, n) => (
+          <span key={n} style={{ '--i': n } as React.CSSProperties}>
+            {ch}
+          </span>
+        ))}
+        <span className="intro-dot" style={{ '--i': 5 } as React.CSSProperties}>
+          .
+        </span>
+        <small>studios</small>
+      </p>
       {phase !== 'fade' && (
         <button type="button" className="intro-skip" onClick={skip}>
           Skip intro

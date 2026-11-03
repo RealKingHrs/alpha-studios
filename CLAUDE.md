@@ -22,7 +22,7 @@ Read `docs/SPEC.md` before any work. It is the source of truth. If this file and
 5. Respect reduced motion everywhere: every animation, smooth scroll and cursor effect switches off, and content is complete without them.
 6. Real photos of members are never uploaded or stored. Avatars are saved as small versioned records of chosen options.
 7. Use the tokens in `design/tokens.css`. Do not hardcode colours, spacing or durations.
-8. Colour: dark (default) and light themes switch by `data-theme` on `<html>`; the five accents are glows, gradients and fills with `--on-accent` text, never body text in the light theme; gold is only the logo tail, trophies, the hidden cryptex and admin-only portal controls.
+8. Colour: light paper is the default and dark is `data-theme="dark"` on `<html>`; the five accents are flat colour blocks with `--on-accent` ink text, never body text on paper; gold is only the wordmark's full stop, trophies, the hidden cryptex and admin-only portal controls.
 9. There is no sound.
 10. Copy is sentence case, plain and specific. No emoji, no filler, no exclamation marks in system text.
 
@@ -38,7 +38,7 @@ Read `docs/SPEC.md` before any work. It is the source of truth. If this file and
 - `docs/SPEC.md`: the full spec.
 - `docs/milestones/`: six build steps, each with tasks, "Done when", and a kickoff prompt.
 - `design/tokens.css`: colour, type, spacing and motion tokens (two themes, golden-ratio type, Fibonacci space, five accents, gold).
-- `assets/logo/`: the Alpha mark, ink version, lockup and brand board.
+- `assets/logo/`: the wordmark lockup, the "a." icon cut (`alpha-a-icon.png`) and the favicon.
 - `content/CONTENT-TEMPLATE.md`: the words and images the user must supply.
 
 ## Batch 9 notes
@@ -59,7 +59,7 @@ Run from the repo root. Node 22.
 - Role tests (visitor, crew, admin): `npx supabase start -x studio,imgproxy,vector,logflare,edge-runtime,realtime,storage-api,inbucket,mailpit`, then `npm run test:rls`. Needs Docker. `npx supabase db reset` reapplies migrations and seed.
 - Publish job dry run: `npm run publish:dry` (seed only, no network). Real run: `npm run publish:snapshot` with `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` set.
 - Download budget: `npm run sizes` (after a build); `tests/budget.test.ts` fails if the first visit passes 3 MB.
-- Regenerate icons from the favicon cut: `npm run icons`. Regenerate `supabase/seed.sql`: `npx tsx scripts/seed-sql.ts`. Placeholder screenshots: `npm run placeholders`. Outlined wordmark: `npm run wordmark`.
+- Regenerate icons from the favicon cut: `npm run icons`. Regenerate `supabase/seed.sql`: `npx tsx scripts/seed-sql.ts`. Placeholder screenshots: `npm run placeholders`.
 - Test the calm path with `?motion=reduce` on any address.
 - Local portal try-out: `npm run dev:users` (local stack only), then `npm run build` and `npm run preview`, and open `/alpha-studios/portal/app/`.
 - Operations, secrets and recovery: `docs/RUNBOOK.md`.

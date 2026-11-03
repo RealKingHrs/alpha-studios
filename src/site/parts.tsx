@@ -6,12 +6,9 @@ import { platformLabel, projectLinks, statusLabel } from '../rooms';
 import type { Route } from '../routes';
 import { Portrait } from '../avatar/Portrait';
 import { Count } from './Counters';
-import { ACCENTS, HEADLINE, HEADLINE_LOOP, accentFor, headlineText, stackOrder } from './data';
-import { Aurora } from './fx/Aurora';
-import { BackgroundPaths } from './fx/BackgroundPaths';
+import { Wordmark } from '../brand/Wordmark';
+import { ACCENTS, HEADLINE, accentFor, headlineText, stackOrder } from './data';
 import { ThemeToggle } from './fx/ThemeToggle';
-import { WordLoop } from './fx/WordLoop';
-import { Mark } from './Mark';
 import { useMotionOn, useWide } from './motion/context';
 import { coverAmount, coverProgress, currentSection } from './motion/helpers';
 import { STACK_STEP, canStack, stickyTopFor } from './motion/viewport';
@@ -44,8 +41,8 @@ const section = (route: Route) =>
             ? '/contact/'
             : null;
 
-/** A floating dock: it tucks away as you scroll down and returns the moment you scroll up. A pill slides to the
- * link under the pointer and rests on the current page. */
+/** The masthead: the wordmark, the issue line and the sections. It tucks away as you scroll down and returns
+ * the moment you scroll up. A solid block slides under the link you point at and rests on the current page. */
 export function Header({ route, link }: { route: Route; link: LinkFn }) {
   const here = section(route);
   const on = useMotionOn();
@@ -64,19 +61,21 @@ export function Header({ route, link }: { route: Route; link: LinkFn }) {
     <header className={`s-header ${hidden ? 'is-hidden' : ''} ${solid ? 'is-solid' : ''}`}>
       <div className="s-dock">
         <a className="s-brand" href={link('/')} aria-label="Alpha Studios, home">
-          <Mark className="s-brand-mark" />
-          <span>Alpha Studios</span>
+          <Wordmark />
         </a>
+        <p className="s-issue mono" aria-hidden="true">
+          Issue 01 · Made at twenty · Nov 2026
+        </p>
         <nav aria-label="Main" className="s-nav" onPointerLeave={() => setHover(null)}>
           <ul>
-            {NAV.map(([path, label]) => (
-              <li key={path} onPointerEnter={() => setHover(path)}>
+            {NAV.map(([path, label], i) => (
+              <li key={path} className={`a-${accentFor(i)}`} onPointerEnter={() => setHover(path)}>
                 {pill === path &&
                   (on ? (
                     <motion.span
                       layoutId="nav-pill"
                       className="s-nav-pill"
-                      transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+                      transition={{ type: 'spring', stiffness: 420, damping: 34 }}
                     />
                   ) : (
                     <span className="s-nav-pill" />
@@ -90,11 +89,6 @@ export function Header({ route, link }: { route: Route; link: LinkFn }) {
         </nav>
         <div className="s-dock-end">
           <ThemeToggle />
-          <Magnetic>
-            <a className="s-pill fx-shine" href={link('/contact/')}>
-              Say hello
-            </a>
-          </Magnetic>
           <MenuButton link={link} here={here} />
         </div>
       </div>
@@ -181,7 +175,11 @@ function MenuButton({ link, here }: { link: LinkFn; here: string | null }) {
           >
             <ul>
               {links.map(([path, label], i) => (
-                <li key={path} style={{ '--i': i } as React.CSSProperties}>
+                <li
+                  key={path}
+                  className={`a-${accentFor(i)}`}
+                  style={{ '--i': i } as React.CSSProperties}
+                >
                   <a
                     href={link(path)}
                     aria-current={here === path ? 'page' : undefined}
@@ -223,15 +221,9 @@ export function Footer({ link }: { link: LinkFn }) {
   return (
     <footer className="s-footer">
       <div className="s-wrap s-footer-grid">
-        <div className="s-footer-brand">
-          <a className="s-footer-logo" href={link('/')} aria-label="Alpha Studios, home">
-            <Mark className="s-footer-mark" />
-            <span className="display">Alpha Studios</span>
-          </a>
-          <p className="s-footer-line">
-            Software people rely on, and a home for young builders with something worth finishing.
-          </p>
-        </div>
+        <p className="s-footer-line display">
+          Software people rely on, and a home for young builders with something worth finishing.
+        </p>
         <nav aria-label="Footer" className="s-footer-nav">
           {cols.map(([title, items]) => (
             <div key={title}>
@@ -247,11 +239,11 @@ export function Footer({ link }: { link: LinkFn }) {
           ))}
         </nav>
       </div>
-      <p className="s-footer-word display" aria-hidden="true">
-        Alpha Studios
-      </p>
+      <a className="s-footer-logo" href={link('/')} aria-label="Alpha Studios, home">
+        <Wordmark className="wm--mega" />
+      </a>
       <div className="s-wrap s-footer-meta">
-        <span className="mono">© 2026 Alpha Studios</span>
+        <span className="mono">© 2026 Alpha Studios · Issue 01</span>
         <span className="mono s-footer-credit">
           Post-credit scene: you scrolled all the way down. Go build something.
         </span>
@@ -269,59 +261,62 @@ export function Footer({ link }: { link: LinkFn }) {
 }
 
 /**
- * The hero: an aurora in the five accents over slow flowing lines, a headline that blurs in and cycles its
- * ending, the crew as a stack of faces, and the numbers counting up. The copy sits on the upper third line.
+ * The hero is a magazine cover: the headline set huge across the page, the second line on a solid orange block,
+ * cover lines in the margin, the issue number turned on its side, and the crew along the bottom edge.
  */
 export function Hero({ snap, link }: { snap: Snapshot; link: LinkFn }) {
   const ref = useRef<HTMLElement>(null);
   const on = useMotionOn();
   const { scrollYProgress: p } = useScroll({ target: ref, offset: ['start start', 'end start'] });
-  const copyY = useTransform(p, [0, 1], ['0%', '18%']);
-  const copyOpacity = useTransform(p, [0, 0.8], [1, 0]);
-  const glowScale = useTransform(p, [0, 1], [1, 1.25]);
+  const lineA = useTransform(p, [0, 1], ['0%', '-12%']);
+  const lineB = useTransform(p, [0, 1], ['0%', '10%']);
 
   const platforms = new Set(snap.projects.flatMap((x) => x.platforms)).size;
   const proof = [
-    [snap.projects.length, snap.projects.length === 1 ? 'project shipped' : 'projects shipped'],
-    [snap.members.length, 'people on the crew'],
+    [snap.projects.length, snap.projects.length === 1 ? 'drop shipped' : 'drops shipped'],
+    [snap.members.length, 'builders on the crew'],
     [platforms, platforms === 1 ? 'platform' : 'platforms'],
   ] as const;
   const latest = snap.projects[snap.projects.length - 1];
 
   return (
-    <section ref={ref} className="s-hero" data-spot aria-labelledby="hero-title">
-      <motion.div className="s-hero-bg" style={on ? { scale: glowScale } : undefined}>
-        <Aurora />
-      </motion.div>
-      <BackgroundPaths />
-      <div className="s-hero-grid-lines" aria-hidden="true" />
-      <motion.div
-        className="s-wrap s-hero-copy"
-        style={on ? { y: copyY, opacity: copyOpacity } : undefined}
-      >
+    <section ref={ref} className="s-hero" aria-labelledby="hero-title">
+      <div className="s-wrap s-hero-top">
+        <p className="s-eyebrow mono">Native apps · Web platforms · Backends</p>
         {latest && (
-          <a className="s-badge fx-shine" href={link(`/projects/${latest.slug}/`)}>
-            <span className="s-badge-dot" aria-hidden="true" />
+          <a className="s-badge" href={link(`/projects/${latest.slug}/`)}>
             <span className="mono">New drop</span> {latest.name},{' '}
-            {statusLabel[latest.status].toLowerCase()}
-            <span aria-hidden="true">→</span>
+            {statusLabel[latest.status].toLowerCase()} <span aria-hidden="true">→</span>
           </a>
         )}
-        <h1 id="hero-title" className="display s-hero-title">
-          <span className="visually-hidden">{headlineText()}</span>
-          <span aria-hidden="true">
-            <span className="s-hero-line">
-              <SplitText text={HEADLINE[0]} delay={0.15} step={0.08} />
-            </span>
-            <span className="s-hero-line s-hero-accent">
-              <WordLoop words={HEADLINE_LOOP} />
-            </span>
-          </span>
-        </h1>
+      </div>
+      <h1 id="hero-title" className="display s-hero-title">
+        <span className="visually-hidden">{headlineText()}</span>
+        <span aria-hidden="true">
+          <motion.span className="s-hero-line" style={on ? { x: lineA } : undefined}>
+            <SplitText text={HEADLINE[0]} delay={0.1} step={0.06} />
+          </motion.span>
+          <motion.span className="s-hero-line s-hero-accent" style={on ? { x: lineB } : undefined}>
+            <SplitText text={HEADLINE[1]} delay={0.3} step={0.06} />
+          </motion.span>
+        </span>
+      </h1>
+      <div className="s-wrap s-hero-body">
         <p className="s-lede s-hero-lede">{snap.settings.studioStatement}</p>
+        <ul className="s-coverlines" aria-label="In this issue">
+          <li>
+            <b className="mono">p. 02</b> Two drops, zero chill
+          </li>
+          <li>
+            <b className="mono">p. 03</b> Meet the five cover stars
+          </li>
+          <li>
+            <b className="mono">p. 05</b> Bring your idea, keep your name
+          </li>
+        </ul>
         <p className="s-actions">
           <Magnetic>
-            <a className="s-btn s-btn--ink fx-shine" href="#work">
+            <a className="s-btn s-btn--ink" href="#work">
               See the drops
             </a>
           </Magnetic>
@@ -331,35 +326,60 @@ export function Hero({ snap, link }: { snap: Snapshot; link: LinkFn }) {
             </a>
           </Magnetic>
         </p>
-        <div className="s-hero-foot">
-          <a className="s-faces" href={link('/crew/')} aria-label="Meet the crew">
-            {snap.members.slice(0, 5).map((m, i) => (
-              <span key={m.slug} className={`s-face a-${accentFor(i)}`} aria-hidden="true">
-                <Portrait record={m.avatar} />
-              </span>
-            ))}
-            <span className="s-faces-text">
-              <strong>{snap.members.length} builders</strong>
-              <span className="mono">all aged twenty</span>
+      </div>
+      <div className="s-wrap s-hero-foot">
+        <a className="s-faces" href={link('/crew/')} aria-label="Meet the crew">
+          {snap.members.slice(0, 5).map((m, i) => (
+            <span key={m.slug} className={`s-face a-${accentFor(i)}`} aria-hidden="true">
+              <Portrait record={m.avatar} />
             </span>
-          </a>
-          <ul className="s-hero-proof" aria-label="The studio in numbers">
-            {proof.map(([n, label]) => (
-              <li key={label}>
-                <b className="display">
-                  <Count to={n} />
-                </b>
-                <span className="mono">{label}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </motion.div>
-      <a className="s-scroll-cue mono" href="#work">
-        <span>Scroll</span>
-        <i aria-hidden="true" />
-      </a>
+          ))}
+        </a>
+        <ul className="s-hero-proof" aria-label="The studio in numbers">
+          {proof.map(([n, label]) => (
+            <li key={label}>
+              <b className="display">
+                <Count to={n} />
+              </b>
+              <span className="mono">{label}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <span className="s-issue-side mono" aria-hidden="true">
+        Issue 01 / 2026
+      </span>
     </section>
+  );
+}
+
+/** The contents page, styled as a tracklist: where everything in this issue lives. */
+export function Contents({ link }: { link: LinkFn }) {
+  const items = [
+    ['#vision', 'Manifesto', 'What we will not trade away'],
+    ['#work', 'The drops', 'Bioscanner and Velocity'],
+    ['#crew', 'Cover stars', 'Five builders, all twenty'],
+    [link('/launchpad/'), 'Launchpad', 'Bring an idea, keep your name'],
+    ['#contact', 'Say hello', 'A person reads every message'],
+  ] as const;
+  return (
+    <nav className="s-contents" aria-label="In this issue">
+      <div className="s-wrap">
+        <p className="s-eyebrow mono">Tracklist</p>
+        <ol>
+          {items.map(([href, title, sub], i) => (
+            <li key={title} className={`a-${accentFor(i)}`}>
+              <a href={href}>
+                <span className="mono">{String(i + 1).padStart(2, '0')}</span>
+                <strong className="display">{title}</strong>
+                <em>{sub}</em>
+                <span aria-hidden="true">→</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </nav>
   );
 }
 
@@ -392,11 +412,7 @@ export function WorkPanel({
   const buttons = projectLinks(project);
   const shots = stackOrder(project.screenshots);
   return (
-    <article
-      className={`s-work a-${accent}`}
-      data-spot
-      style={{ '--i': index } as React.CSSProperties}
-    >
+    <article className={`s-work a-${accent}`} style={{ '--i': index } as React.CSSProperties}>
       <div className="s-work-copy">
         <span className="s-work-num mono" aria-hidden="true">
           Drop {String(index + 1).padStart(2, '0')}

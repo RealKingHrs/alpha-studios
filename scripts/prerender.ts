@@ -6,7 +6,6 @@ import { createElement } from 'react';
 import { renderToString } from 'react-dom/server';
 import { App } from '../src/App';
 import { Snapshot } from '../src/content/schema';
-import { MARK_GRADIENT, MARK_PATH, MARK_VIEWBOX, MARK_WIDTH } from '../src/brand/mark';
 import { pageMeta } from '../src/meta';
 import { allPaths } from '../src/routes';
 
@@ -45,45 +44,28 @@ const hex = (name: string) => new RegExp(`--${name}:\\s*(#[0-9a-fA-F]{6})`).exec
 const ACCENT_NAMES = ['tomato', 'sun', 'mint', 'sky', 'lilac'] as const;
 let ogIndex = 0;
 
-const markSvg = (
-  size: number,
-  ink: string,
-  gold: string,
-) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${MARK_VIEWBOX}" width="${size}" height="${Math.round((size * 98) / 108)}">
-<defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="${MARK_GRADIENT.x1}" y1="${MARK_GRADIENT.y1}" x2="${MARK_GRADIENT.x2}" y2="${MARK_GRADIENT.y2}"><stop offset="${MARK_GRADIENT.at}" stop-color="${ink}"/><stop offset="${MARK_GRADIENT.at}" stop-color="${gold}"/></linearGradient></defs>
-<path d="${MARK_PATH}" fill="none" stroke="url(#g)" stroke-width="${MARK_WIDTH}" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-
 /** A 1200 by 630 share image for one address: an accent panel with the mark, then the title and description on paper. */
 async function shareImage(path: string, title: string, description: string) {
   const [head] = title.split(' | ');
   const accent = hex(ACCENT_NAMES[ogIndex++ % ACCENT_NAMES.length]);
-  const ink = hex('ink');
-  const paper = hex('paper');
-  const lines = wrap(description, 60, 2);
-  const titleLines = wrap(head, 28, 2);
+  const lines = wrap(description, 42, 3);
+  const titleLines = wrap(head, 18, 3);
+  const paperFixed = hex('paper-fixed');
+  const inkFixed = hex('ink-fixed');
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
-<defs>
-<radialGradient id="ga" cx="18%" cy="10%" r="60%"><stop offset="0" stop-color="${hex('tomato')}" stop-opacity="0.55"/><stop offset="1" stop-color="${paper}" stop-opacity="0"/></radialGradient>
-<radialGradient id="gb" cx="88%" cy="0%" r="55%"><stop offset="0" stop-color="${hex('lilac')}" stop-opacity="0.5"/><stop offset="1" stop-color="${paper}" stop-opacity="0"/></radialGradient>
-<radialGradient id="gc" cx="60%" cy="110%" r="60%"><stop offset="0" stop-color="${accent}" stop-opacity="0.45"/><stop offset="1" stop-color="${paper}" stop-opacity="0"/></radialGradient>
-<linearGradient id="gt" x1="0" x2="1"><stop offset="0" stop-color="${hex('sun')}"/><stop offset="0.5" stop-color="${hex('tomato')}"/><stop offset="1" stop-color="${hex('lilac')}"/></linearGradient>
-</defs>
-<rect width="1200" height="630" fill="${paper}"/>
-<rect width="1200" height="630" fill="url(#ga)"/>
-<rect width="1200" height="630" fill="url(#gb)"/>
-<rect width="1200" height="630" fill="url(#gc)"/>
-<rect x="72" y="72" width="132" height="120" rx="28" fill="${hex('surface-2')}" stroke="${hex('surface-3')}"/>
-${titleLines.map((l, i) => `<text x="72" y="${300 + i * 70}" fill="${ink}" font-family="Georgia, 'Times New Roman', serif" font-weight="bold" font-size="62">${xml(l)}</text>`).join('\n')}
-${lines.map((l, i) => `<text x="72" y="${300 + titleLines.length * 70 + 16 + i * 38}" fill="${hex('ink-soft')}" font-family="Helvetica, Arial, sans-serif" font-size="28">${xml(l)}</text>`).join('\n')}
-<rect x="72" y="560" width="220" height="3" rx="1.5" fill="url(#gt)"/>
-<text x="1128" y="570" text-anchor="end" fill="${hex('ink-soft')}" font-family="Helvetica, Arial, sans-serif" font-size="20" letter-spacing="6">ALPHA STUDIOS</text>
+<rect width="1200" height="630" fill="${paperFixed}"/>
+<rect x="0" y="0" width="420" height="630" fill="${accent}"/>
+<rect x="420" y="0" width="3" height="630" fill="${inkFixed}"/>
+<rect x="0" y="0" width="1200" height="630" fill="none" stroke="${inkFixed}" stroke-width="6"/>
+<text x="480" y="104" fill="${inkFixed}" font-family="Helvetica, Arial, sans-serif" font-size="20" letter-spacing="5">ISSUE 01 · ALPHA STUDIOS</text>
+<rect x="480" y="128" width="660" height="3" fill="${inkFixed}"/>
+${titleLines.map((l, i) => `<text x="480" y="${232 + i * 74}" fill="${inkFixed}" font-family="Georgia, 'Times New Roman', serif" font-weight="bold" font-size="68">${xml(l)}</text>`).join('\n')}
+${lines.map((l, i) => `<text x="480" y="${232 + titleLines.length * 74 + 10 + i * 38}" fill="#4a443d" font-family="Helvetica, Arial, sans-serif" font-size="27">${xml(l)}</text>`).join('\n')}
 </svg>`;
-  const mark = await sharp(Buffer.from(markSvg(96, ink, hex('gold'))))
-    .png()
-    .toBuffer();
+  const mark = await sharp('assets/logo/alpha-a-icon.png').resize(260, 260).png().toBuffer();
   await mkdir(join(dist, 'og'), { recursive: true });
   await sharp(Buffer.from(svg))
-    .composite([{ input: mark, left: 90, top: 89 }])
+    .composite([{ input: mark, left: 80, top: 185 }])
     .png({ compressionLevel: 9 })
     .toFile(join(dist, 'og', `${ogKey(path)}.png`));
 }

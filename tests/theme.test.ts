@@ -16,16 +16,16 @@ function runHead(saved: string | null, throws = false) {
 }
 
 describe('theme', () => {
-  it('is dark unless light was chosen', () => {
-    expect(resolveTheme(null)).toBe('dark');
-    expect(resolveTheme('dark')).toBe('dark');
+  it('is light paper unless dark was chosen', () => {
+    expect(resolveTheme(null)).toBe('light');
     expect(resolveTheme('light')).toBe('light');
-    expect(resolveTheme('purple')).toBe('dark');
+    expect(resolveTheme('dark')).toBe('dark');
+    expect(resolveTheme('purple')).toBe('light');
   });
 
-  it('the head script applies a saved light choice before paint and survives blocked storage', () => {
-    expect(runHead('light')).toBe('light');
-    expect(runHead('dark')).toBeUndefined();
+  it('the head script applies a saved dark choice before paint and survives blocked storage', () => {
+    expect(runHead('dark')).toBe('dark');
+    expect(runHead('light')).toBeUndefined();
     expect(runHead(null)).toBeUndefined();
     expect(runHead(null, true)).toBeUndefined();
   });

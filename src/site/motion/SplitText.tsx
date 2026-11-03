@@ -33,8 +33,8 @@ export function SplitText({
             <span className="sw-mask">
               <motion.span
                 className="sw-word"
-                initial={{ y: '40%', opacity: 0, filter: 'blur(10px)' }}
-                animate={seen ? { y: '0%', opacity: 1, filter: 'blur(0px)' } : undefined}
+                initial={{ y: '110%' }}
+                animate={seen ? { y: '0%' } : undefined}
                 transition={{
                   duration: 0.62,
                   ease: [0.22, 1, 0.36, 1],

@@ -29,11 +29,11 @@ export function Vision({ link }: { link: LinkFn }) {
       <div className="s-wrap">
         <Reveal>
           <p className="s-eyebrow mono">
-            <span className="s-num">00</span> Our vision
+            <span className="s-num">01</span> Manifesto
           </p>
         </Reveal>
         <div className="s-bento">
-          <div className="s-bento-card s-bento-lead" data-spot>
+          <div className="s-bento-card s-bento-lead">
             <h2 id="vision-title" className="display s-vision-title">
               <SplitText text="Good software is built with care, shipped with honesty and open to the next generation of builders." />
             </h2>
@@ -43,11 +43,7 @@ export function Vision({ link }: { link: LinkFn }) {
           </div>
           <ul className="s-principles">
             {PRINCIPLES.map((p, i) => (
-              <li
-                key={p.title}
-                className={`s-bento-card a-${['tomato', 'mint', 'sky'][i]}`}
-                data-spot
-              >
+              <li key={p.title} className={`s-bento-card a-${['tomato', 'mint', 'sky'][i]}`}>
                 <Reveal delay={i * 60}>
                   <span className="s-principle-icon">
                     <p.icon />

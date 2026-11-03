@@ -8,16 +8,8 @@ export type Accent = (typeof ACCENTS)[number];
 export const accentFor = (index: number): Accent =>
   ACCENTS[((index % ACCENTS.length) + ACCENTS.length) % ACCENTS.length];
 
-/** The headline. Direct, and true of what the studio does. The second part is set in the gradient. */
+/** The headline. Direct, and true of what the studio does. The second part sits on an orange block. */
 export const HEADLINE = ['We build software', 'people rely on.'] as const;
-
-/** Endings the hero cycles through after the real one. Decoration only: the sentence above is what is read. */
-export const HEADLINE_LOOP = [
-  HEADLINE[1],
-  'that feels fast.',
-  'built to last.',
-  'with young builders.',
-] as const;
 
 export const headlineText = () => HEADLINE.join(' ');
 

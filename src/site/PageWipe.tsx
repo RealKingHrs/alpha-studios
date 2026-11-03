@@ -1,9 +1,15 @@
 export type WipePhase = 'idle' | 'cover' | 'reveal';
 
 /**
- * A thin accent line along the top that runs while the page changes. The page itself fades and rises
- * (see .page in the stylesheet); this line only tells the eye that something is happening.
+ * Changing page: one solid colour block sweeps up over the old page, the new page is swapped in underneath,
+ * and the block carries on up and away. The colour follows the page you are going to.
  */
-export function PageWipe({ phase }: { phase: WipePhase }) {
-  return <div className={`page-line page-line--${phase}`} aria-hidden="true" />;
+export function PageWipe({ phase, accent }: { phase: WipePhase; accent: string }) {
+  return (
+    <div
+      className={`page-wipe page-wipe--${phase}`}
+      style={{ background: `var(--${accent})` }}
+      aria-hidden="true"
+    />
+  );
 }

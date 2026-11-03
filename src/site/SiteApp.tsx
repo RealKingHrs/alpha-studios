@@ -25,12 +25,24 @@ import {
 import { AboutPage } from './AboutPage';
 import { Cryptex, useCryptexTriggers } from './Cryptex';
 import { FoundToast } from './fx/FoundToast';
-import { useSpotlight } from './Spotlight';
 import { CertificatePage } from './CertificatePage';
 import { LaunchpadPage } from './Launchpad';
 import { Footer, Header, SectionIndex } from './parts';
 
-/** The site: premium, animated, and complete as plain HTML before any script runs. */
+/** The colour of the block that sweeps in when you change page, by where you are going. */
+const WIPE_ACCENT: Record<string, string> = {
+  home: 'tomato',
+  projects: 'sun',
+  project: 'sun',
+  crew: 'mint',
+  member: 'mint',
+  certificate: 'mint',
+  launchpad: 'mint',
+  about: 'sky',
+  contact: 'lilac',
+};
+
+/** The site: bold, animated, and complete as plain HTML before any script runs. */
 export function SiteApp({
   snap,
   pathname: initial,
@@ -71,7 +83,6 @@ export function SiteApp({
   const openCryptex = useCallback(() => setCryptex(true), []);
   useCryptexTriggers(openCryptex);
   const enabled = allowed;
-  useSpotlight(enabled && fine);
   useEffect(() => {
     document.documentElement.classList.toggle('fx', enabled && fine);
     return () => document.documentElement.classList.remove('fx');
@@ -176,7 +187,7 @@ export function SiteApp({
         {route.name === 'home' && <SectionIndex labels={HOME_SECTIONS} />}
         <SmoothScroll enabled={enabled} />
         {enabled && fine && <Cursor />}
-        <PageWipe phase={phase} />
+        <PageWipe phase={phase} accent={WIPE_ACCENT[route.name] ?? 'sun'} />
         <FoundToast route={route} />
         {cryptex && <Cryptex link={link} onClose={() => setCryptex(false)} />}
         <div className="visually-hidden" role="status" aria-live="polite">

@@ -44,11 +44,7 @@
   }
 }
 .s-case-hero {
-  background: radial-gradient(
-    70% 80% at 90% 20%,
-    color-mix(in srgb, var(--accent) 22%, transparent),
-    transparent 65%
-  );
+  background: transparent;
 }
 .s-work-stage--case {
   min-height: clamp(300px, 40vw, 540px);
@@ -140,13 +136,7 @@
   padding: var(--space-4);
   border: var(--line-w) solid var(--line);
   border-radius: var(--radius-xl);
-  background:
-    radial-gradient(
-      100% 100% at 0% 0%,
-      color-mix(in srgb, var(--accent) 16%, transparent),
-      transparent 70%
-    ),
-    var(--surface-1);
+  background: var(--surface-1);
 }
 .s-stat strong {
   font-size: var(--phi-3);
@@ -200,10 +190,10 @@
 }
 .s-commits li > .mono:first-child {
   margin-right: var(--space-1);
-  color: var(--sun);
-}
-:root[data-theme='light'] .s-commits li > .mono:first-child {
   color: var(--text-faint);
+}
+:root[data-theme='dark'] .s-commits li > .mono:first-child {
+  color: var(--sun);
 }
 .s-next,
 .mp-next {
@@ -211,11 +201,7 @@
   overflow: hidden;
   padding-block: var(--space-6);
   border-top: var(--line-w) solid var(--line);
-  background: radial-gradient(
-    60% 120% at 0% 100%,
-    color-mix(in srgb, var(--accent) 22%, transparent),
-    transparent 70%
-  );
+  background: transparent;
 }
 .s-next-link,
 .mp-next-link {
@@ -257,9 +243,7 @@
   padding: var(--space-2);
   border: var(--line-w) solid var(--line);
   border-radius: var(--radius-l);
-  background:
-    linear-gradient(160deg, color-mix(in srgb, var(--accent) 20%, transparent), transparent 70%),
-    var(--surface-1);
+  background: var(--surface-1);
   transition:
     transform var(--dur-fast) var(--ease),
     border-color var(--dur-fast) var(--ease);
@@ -304,10 +288,7 @@
   margin: var(--space-1) 0 0;
   font-size: var(--phi-3);
   line-height: 1;
-  background: var(--grad-text);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--text);
 }
 
 /* ------------------------------------------------------------ About */
@@ -376,10 +357,7 @@
 }
 .lp-title-accent {
   display: block;
-  background: var(--grad-text);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--text);
 }
 /* The orbit: three steps on a circle, 120 degrees apart, turning once every 55 s. */
 .lp-hero-art {
@@ -493,10 +471,7 @@ html.reduce-motion .lp-node--3 {
 .lp-credit-t {
   margin-top: var(--space-1);
   font-size: var(--phi-2);
-  background: var(--grad-text);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--text);
 }
 .lp-credit ul {
   display: grid;
@@ -543,15 +518,11 @@ html.reduce-motion .lp-node--3 {
   padding: var(--space-4);
   border: var(--line-w) solid var(--line);
   border-radius: var(--radius-xl);
-  background:
-    linear-gradient(160deg, color-mix(in srgb, var(--accent) 16%, transparent), transparent 55%),
-    var(--surface-1);
+  background: var(--surface-1);
   box-shadow: var(--inset-hi);
 }
 .lp-section--alt .lp-card {
-  background:
-    linear-gradient(160deg, color-mix(in srgb, var(--accent) 16%, transparent), transparent 55%),
-    var(--surface-2);
+  background: var(--surface-2);
 }
 .lp-card h3 {
   font-family: var(--font-display);
@@ -657,11 +628,7 @@ html.reduce-motion .lp-node--3 {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: radial-gradient(
-    60% 70% at 72% 55%,
-    color-mix(in srgb, var(--accent) 35%, transparent),
-    transparent 70%
-  );
+  background: transparent;
 }
 .mp-giant {
   position: absolute;
@@ -749,13 +716,7 @@ html.reduce-motion .lp-node--3 {
   overflow: hidden;
   border: var(--line-w) solid var(--line-strong);
   border-radius: 50%;
-  background:
-    radial-gradient(
-      circle at 50% 30%,
-      color-mix(in srgb, var(--accent) 50%, transparent),
-      transparent 70%
-    ),
-    var(--surface-1);
+  background: var(--surface-1);
   box-shadow: var(--shadow-3);
 }
 .mp-avatar .waving {
@@ -805,13 +766,7 @@ html.reduce-motion .lp-node--3 {
   box-shadow: var(--inset-hi);
 }
 .mp-tile--fav {
-  background:
-    radial-gradient(
-      120% 90% at 100% 0%,
-      color-mix(in srgb, var(--accent) 30%, transparent),
-      transparent 65%
-    ),
-    var(--surface-1);
+  background: var(--surface-1);
 }
 .mp-h {
   margin-bottom: var(--space-3);
@@ -903,7 +858,7 @@ html.reduce-motion .lp-node--3 {
   width: var(--w);
   height: 100%;
   border-radius: inherit;
-  background: var(--grad-text);
+  background: var(--text);
 }
 .mp-journey {
   position: relative;
@@ -920,7 +875,7 @@ html.reduce-motion .lp-node--3 {
   bottom: 6px;
   left: 5px;
   width: 1px;
-  background: linear-gradient(var(--sun), var(--lilac));
+  background: transparent;
 }
 .mp-journey li {
   position: relative;
@@ -984,11 +939,7 @@ html.reduce-motion .lp-node--3 {
   padding: var(--space-3);
   border: var(--line-w) solid var(--line);
   border-radius: var(--radius-l);
-  background: linear-gradient(
-    90deg,
-    color-mix(in srgb, var(--accent) 14%, transparent),
-    transparent 60%
-  );
+  background: transparent;
   text-decoration: none;
   transition:
     border-color var(--dur-fast) var(--ease),
@@ -1002,7 +953,7 @@ html.reduce-motion .lp-node--3 {
   font-size: var(--phi-2);
   color: var(--accent);
 }
-:root[data-theme='light'] .mp-work-n {
+:root[data-theme='dark'] .mp-work-n {
   color: var(--text-faint);
 }
 .mp-work-body {
@@ -1078,8 +1029,7 @@ html.reduce-motion .lp-node--3 {
   padding: var(--space-3);
   border: var(--line-w) solid var(--line);
   border-radius: var(--radius-l);
-  background:
-    radial-gradient(100% 80% at 0% 0%, rgb(201 162 75 / 0.16), transparent 70%), var(--surface-2);
+  background: var(--surface-2);
 }
 .trophy svg path {
   stroke: var(--text);
@@ -1116,11 +1066,7 @@ html.reduce-motion .lp-node--3 {
 /* ------------------------------------------------------------ certificate */
 .cert-page {
   padding-block: 160px var(--section-y);
-  background: radial-gradient(
-    60% 50% at 50% 30%,
-    color-mix(in srgb, var(--accent) 18%, transparent),
-    transparent 70%
-  );
+  background: transparent;
 }
 .cert-frame {
   position: relative;
@@ -1128,8 +1074,7 @@ html.reduce-motion .lp-node--3 {
   padding: clamp(var(--space-4), 6vw, var(--space-6));
   border-radius: var(--radius-xl);
   border: var(--line-w) solid var(--line-strong);
-  background:
-    radial-gradient(90% 60% at 50% 0%, rgb(201 162 75 / 0.12), transparent 70%), var(--surface-1);
+  background: var(--surface-1);
   box-shadow: var(--shadow-3);
   text-align: center;
 }
@@ -1275,4 +1220,335 @@ html.reduce-motion .lp-node,
 html.reduce-motion .radar-shape,
 html.reduce-motion .lp-faq details p {
   animation: none !important;
+}
+
+/* ================================================================ editorial pass (batch 23)
+   Inner page heroes are solid colour blocks with ink type; tiles are ruled boxes; glass and glow are gone. */
+.s-page-head,
+.s-about-hero,
+.lp-hero,
+.s-case-hero,
+.mp-hero,
+.cert-page {
+  background: var(--accent, var(--surface-2));
+  color: var(--on-accent);
+  border-bottom: var(--rule-w) solid var(--on-accent);
+  padding-top: calc(72px + var(--space-6));
+}
+.s-page-head h1,
+.s-about-title,
+.lp-title,
+.s-case-hero h1,
+.mp-name {
+  font-size: var(--mega);
+  line-height: 0.88;
+  letter-spacing: var(--track-display);
+}
+.s-about-title {
+  font-size: var(--display-xl);
+  max-width: 18ch;
+}
+.lp-title {
+  font-size: var(--display-xl);
+}
+.lp-title-accent {
+  display: inline-block;
+  margin-top: 0.1em;
+  padding: 0 0.12em 0.06em;
+  background: var(--on-accent);
+  color: var(--accent);
+}
+.s-page-head .s-lede,
+.s-about-hero .s-lede,
+.lp-hero .s-lede,
+.s-case-hero .s-lede,
+.s-page-head .s-eyebrow,
+.s-case-hero .s-eyebrow,
+.mp-hero .s-eyebrow {
+  color: inherit;
+}
+.s-case-hero .s-chip,
+.lp-hero .s-chip {
+  border-color: var(--on-accent);
+}
+.s-facts dl > div {
+  border-left: var(--rule-w) solid var(--text);
+}
+.s-facts dl {
+  border-bottom: var(--rule-w) solid var(--text);
+}
+.s-story::first-letter {
+  float: left;
+  margin: 0.05em 0.1em 0 0;
+  padding: 0 0.1em;
+  background: var(--sun);
+  color: var(--on-accent);
+  font-size: 3.2em;
+  line-height: 0.85;
+}
+.s-stat,
+.s-counters dl > div,
+.lp-card,
+.mp-tile,
+.trophy,
+.el,
+.s-commits ul,
+.lp-adopted a,
+.lp-empty {
+  border: var(--rule-w) solid var(--text);
+  border-radius: 0;
+  box-shadow: none;
+}
+.s-stat {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.s-stat .mono,
+.s-counters dt {
+  color: inherit;
+}
+.s-counters dl > div:nth-child(5n + 1) {
+  background: var(--sun);
+  color: var(--on-accent);
+}
+.s-counters dl > div:nth-child(5n + 2) {
+  background: var(--mint);
+  color: var(--on-accent);
+}
+.s-counters dl > div:nth-child(5n + 3) {
+  background: var(--sky);
+  color: var(--on-accent);
+}
+.s-counters dl > div:nth-child(5n + 4) {
+  background: var(--lilac);
+  color: var(--on-accent);
+}
+.s-counters dd {
+  color: inherit;
+}
+.lp-card {
+  background: var(--accent);
+  color: var(--on-accent);
+  transition:
+    transform var(--dur-fast) var(--ease),
+    box-shadow var(--dur-fast) var(--ease);
+}
+.lp-card p {
+  color: inherit;
+}
+.lp-card:hover,
+.mp-tile:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 6px 6px 0 var(--text);
+}
+.lp-section--alt {
+  background: var(--surface-2);
+  border-block: var(--rule-w) solid var(--text);
+}
+.lp-section--alt .lp-card {
+  background: var(--accent);
+}
+.lp-ring {
+  border-color: var(--on-accent);
+}
+.lp-ring--2 {
+  border-color: var(--on-accent);
+  opacity: 0.4;
+}
+.lp-node {
+  border: var(--rule-w) solid var(--on-accent);
+  border-radius: 0;
+  box-shadow: 3px 3px 0 var(--on-accent);
+}
+.lp-credit {
+  background: var(--paper-fixed);
+  color: var(--ink-fixed);
+  border: var(--rule-w) solid var(--ink-fixed);
+  border-radius: 0;
+  box-shadow: 8px 8px 0 var(--ink-fixed);
+  backdrop-filter: none;
+}
+.lp-credit-k,
+.lp-credit li .mono {
+  color: var(--ink-soft);
+}
+.lp-credit-t {
+  color: var(--ink-fixed);
+  font-style: italic;
+}
+.lp-faq summary::after {
+  border-radius: 0;
+  border-color: var(--text);
+}
+.lp-faq details {
+  border-bottom: var(--rule-w) solid var(--text);
+}
+.s-about-cta,
+.lp-final {
+  background: var(--accent);
+  color: var(--on-accent);
+  border-top: var(--rule-w) solid var(--on-accent);
+}
+.s-about-cta h2,
+.lp-final h2 {
+  font-size: var(--mega);
+  line-height: 0.9;
+  max-width: 12ch;
+}
+.s-towards li {
+  border-top: var(--rule-w) solid var(--text);
+}
+.mp-hero {
+  align-items: end;
+}
+.mp-hero::after {
+  content: none;
+}
+.mp-giant {
+  -webkit-text-stroke: 1.5px var(--on-accent);
+  opacity: 0.35;
+  font-style: italic;
+}
+.mp-call {
+  background: var(--on-accent);
+  color: var(--accent);
+  border-radius: 0;
+}
+.mp-meta li,
+.mp-into {
+  border: var(--rule-w) solid var(--on-accent);
+  border-radius: 0;
+  background: transparent;
+  backdrop-filter: none;
+  color: inherit;
+}
+.mp-avatar {
+  border: var(--rule-w) solid var(--on-accent);
+  border-radius: 0;
+  background: var(--paper-fixed);
+  box-shadow: 10px 10px 0 var(--on-accent);
+}
+.mp-quote {
+  font-style: italic;
+}
+.mp-tile {
+  background: var(--bg);
+}
+.mp-tile--fav {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.mp-tile--fav .mp-h--small,
+.mp-tile--fav .mp-fav-cap {
+  color: inherit;
+}
+.mp-works a,
+.mp-socials a,
+.mp-tags li {
+  border: var(--rule-w) solid var(--text);
+  border-radius: 0;
+}
+.mp-works a {
+  background: transparent;
+}
+.mp-works a:hover {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.mp-work-n {
+  color: inherit;
+}
+.mp-journey::before {
+  background: var(--text);
+}
+.mp-journey li::before {
+  border-color: var(--text);
+  border-radius: 0;
+  background: var(--sun);
+}
+.skill-bar {
+  border-radius: 0;
+  background: var(--surface-3);
+}
+.skill-bar i {
+  border-radius: 0;
+}
+.mp-next,
+.s-next {
+  background: var(--accent);
+  color: var(--on-accent);
+  border-top: var(--rule-w) solid var(--on-accent);
+}
+.mp-next-sub,
+.s-next-sum {
+  color: inherit;
+}
+.mp-next-peek {
+  border-radius: 0;
+  border: var(--rule-w) solid var(--on-accent);
+  background: var(--paper-fixed);
+}
+.s-team .s-avatar {
+  border-radius: 0;
+  border: var(--rule-w) solid var(--text);
+}
+.cert-page {
+  background: var(--accent);
+}
+.cert-frame {
+  background: var(--paper-fixed);
+  color: var(--ink-fixed);
+  border: var(--rule-w) solid var(--ink-fixed);
+  border-radius: 0;
+  box-shadow: 12px 12px 0 var(--ink-fixed);
+}
+.cert-frame::before {
+  content: none;
+}
+.cert-to,
+.cert-desc,
+.cert-facts dt {
+  color: var(--ink-soft);
+}
+.cert-to strong {
+  color: var(--ink-fixed);
+}
+.cert-facts > div {
+  border-top: var(--rule-w) solid var(--ink-fixed);
+}
+.cert-kicker {
+  color: #7a5c1c;
+}
+.cert-note {
+  color: inherit;
+}
+.cert-page .s-eyebrow {
+  color: inherit;
+}
+.radar polygon,
+.radar line {
+  stroke: var(--text);
+  stroke-opacity: 0.25;
+}
+.el {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.el-n,
+.el-w {
+  color: inherit;
+}
+.el:hover {
+  border-color: var(--text);
+  box-shadow: 4px 4px 0 var(--text);
+}
+
+/* Paper slips (certificate, credit card) stay paper in both themes, so their soft text stays dark too. */
+.cert-frame,
+.lp-credit {
+  --ink-soft: #4a443d;
+  --text-soft: #4a443d;
+}
+.el--next {
+  color: var(--text);
 }

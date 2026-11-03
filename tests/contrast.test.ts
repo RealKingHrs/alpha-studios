@@ -7,13 +7,13 @@ const block = (selector: string) => {
   if (start < 0) throw new Error(`block ${selector} not found`);
   return css.slice(start, css.indexOf('\n}', start));
 };
-const dark = block(':root');
-const light = block(":root[data-theme='light']");
+const light = block(':root');
+const dark = block(":root[data-theme='dark']");
 
-/** A token's hex value in a theme, falling back to the dark root for tokens the light theme leaves alone. */
+/** A token's hex value in a theme, falling back to the light root for tokens the dark theme leaves alone. */
 const hex = (theme: string, name: string) => {
   const re = new RegExp(`--${name}:\\s*(#[0-9a-fA-F]{6})`);
-  const m = re.exec(theme) ?? re.exec(dark);
+  const m = re.exec(theme) ?? re.exec(light);
   if (!m) throw new Error(`token --${name} not found`);
   return m[1];
 };
@@ -61,7 +61,7 @@ describe.each([
 describe('the accents', () => {
   it('carry their on-accent text at 4.5:1 or better', () => {
     for (const a of accents)
-      expect(ratio(hex(dark, 'on-accent'), hex(dark, a)), a).toBeGreaterThanOrEqual(4.5);
+      expect(ratio(hex(light, 'on-accent'), hex(light, a)), a).toBeGreaterThanOrEqual(4.5);
   });
 
   it('read as text on the dark ground at 4.5:1 or better', () => {

@@ -11,7 +11,6 @@ import { Magnetic } from './motion/Magnetic';
 import { useMotionOn } from './motion/context';
 import { SplitText } from './motion/SplitText';
 import type { LinkFn } from './parts';
-import { Aurora } from './fx/Aurora';
 import { popTheme } from './popTheme';
 import { Reveal } from './Reveal';
 import { SkillRadar } from './SkillRadar';
@@ -75,7 +74,6 @@ export function MemberPage({ snap, slug, link }: { snap: Snapshot; slug: string;
         aria-labelledby="pt"
         onPointerMove={onMove}
       >
-        <Aurora />
         <motion.span
           className="mp-giant display"
           aria-hidden="true"

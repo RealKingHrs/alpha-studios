@@ -47,7 +47,7 @@ export function CertificatePage({
           <a href={link('/crew/')}>Crew</a> / <a href={link(`/crew/${slug}/`)}>{m.name}</a> /
           Certificate
         </p>
-        <div className="cert-frame fx-shine">
+        <div className="cert-frame">
           <span className="cert-corner cert-corner--tl" aria-hidden="true" />
           <span className="cert-corner cert-corner--tr" aria-hidden="true" />
           <span className="cert-corner cert-corner--bl" aria-hidden="true" />
