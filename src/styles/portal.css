@@ -642,3 +642,100 @@ button:disabled {
   gap: 0.6rem;
   margin-bottom: 0.6rem;
 }
+
+/* ---------------------------------------------------------------- zine look (batch 21)
+   The portal keeps its screens and behaviour; only the materials change. Gold still marks admin-only controls. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.card,
+.panel,
+.row {
+  background: var(--paper-fixed);
+  border: 2.5px solid var(--ink-fixed);
+  border-radius: 8px 20px 8px 20px;
+  box-shadow: 5px 5px 0 var(--ink-fixed);
+}
+.card {
+  position: relative;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  width: 84px;
+  height: 24px;
+  translate: -50% 0;
+  rotate: -3deg;
+  background: rgb(255 200 61 / 0.78);
+  box-shadow: 0 1px 2px rgb(20 17 15 / 0.2);
+}
+.panel h2,
+.panel legend {
+  display: inline-block;
+  width: auto;
+  float: none;
+  padding: 2px 10px;
+  background: var(--sun);
+  border: 2px solid var(--ink-fixed);
+  border-radius: 6px;
+  rotate: -1.5deg;
+}
+.badge {
+  background: var(--mint);
+  color: var(--ink-fixed);
+  border-width: 2px;
+  box-shadow: 2px 2px 0 var(--ink-fixed);
+  font-weight: 600;
+}
+.primary {
+  background: var(--ink-fixed);
+  color: var(--paper-fixed);
+  box-shadow: 4px 4px 0 var(--tomato);
+}
+.secondary {
+  background: var(--paper-fixed);
+  box-shadow: 4px 4px 0 var(--ink-fixed);
+}
+.primary:hover:not(:disabled) {
+  box-shadow: 7px 7px 0 var(--tomato);
+}
+.secondary:hover:not(:disabled) {
+  background: var(--sun);
+  box-shadow: 7px 7px 0 var(--ink-fixed);
+}
+.primary:active:not(:disabled),
+.secondary:active:not(:disabled) {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 var(--ink-fixed);
+}
+.primary.admin-only,
+.admin-only {
+  box-shadow: 4px 4px 0 var(--gold);
+}
+.wordmark::before {
+  content: '';
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 8px;
+  background: var(--tomato);
+  border: 2px solid var(--ink-fixed);
+  border-radius: 50%;
+}
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    display: none;
+  }
+}
+html.reduce-motion body::before {
+  display: none;
+}

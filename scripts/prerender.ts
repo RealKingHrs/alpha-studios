@@ -65,6 +65,10 @@ async function shareImage(path: string, title: string, description: string) {
 <rect width="1200" height="630" fill="${paper}"/>
 <rect x="0" y="0" width="440" height="630" fill="${accent}"/>
 <rect x="440" y="0" width="4" height="630" fill="${ink}"/>
+<circle cx="232" cy="363" r="170" fill="${ink}"/>
+<circle cx="220" cy="351" r="170" fill="${paper}" stroke="${ink}" stroke-width="6"/>
+<g transform="rotate(-8 600 40)"><rect x="520" y="22" width="160" height="40" fill="${hex('sun')}" opacity="0.85"/></g>
+<rect x="6" y="6" width="1188" height="618" fill="none" stroke="${ink}" stroke-width="12"/>
 ${titleLines.map((l, i) => `<text x="500" y="${170 + i * 66}" fill="${ink}" font-family="Georgia, 'Times New Roman', serif" font-weight="bold" font-size="56">${xml(l)}</text>`).join('\n')}
 ${lines.map((l, i) => `<text x="500" y="${170 + titleLines.length * 66 + 20 + i * 38}" fill="${hex('ink-soft')}" font-family="Helvetica, Arial, sans-serif" font-size="29">${xml(l)}</text>`).join('\n')}
 <text x="500" y="570" fill="${ink}" font-family="Helvetica, Arial, sans-serif" font-size="22" letter-spacing="6">ALPHA STUDIOS</text>

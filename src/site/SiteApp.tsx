@@ -24,6 +24,7 @@ import {
 } from './pages';
 import { AboutPage } from './AboutPage';
 import { Cryptex, useCryptexTriggers } from './Cryptex';
+import { FoundToast } from './zine/Zine';
 import { useSpotlight } from './Spotlight';
 import { CertificatePage } from './CertificatePage';
 import { LaunchpadPage } from './Launchpad';
@@ -176,6 +177,7 @@ export function SiteApp({
         <SmoothScroll enabled={enabled} />
         {enabled && fine && <Cursor />}
         <PageWipe phase={phase} />
+        <FoundToast route={route} />
         {cryptex && <Cryptex link={link} onClose={() => setCryptex(false)} />}
         <div className="visually-hidden" role="status" aria-live="polite">
           {announce}

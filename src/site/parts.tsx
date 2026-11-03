@@ -12,6 +12,7 @@ import { Magnetic } from './motion/Magnetic';
 import { scrollToTop } from './motion/SmoothScroll';
 import { SplitText } from './motion/SplitText';
 import { Reveal } from './Reveal';
+import { Doodle } from './zine/Zine';
 import { WorkStage } from './WorkStage';
 
 export type LinkFn = (path: string) => string;
@@ -205,6 +206,9 @@ export function Footer({ link }: { link: LinkFn }) {
             <Mark className="s-footer-mark" />
             <span className="display">Alpha Studios</span>
           </a>
+          <p className="s-footer-credit mono">
+            Post-credit scene: you scrolled all the way down. Go build something.
+          </p>
           <p className="s-footer-line">
             Software people rely on, and a home for young builders with something worth finishing.
           </p>
@@ -329,7 +333,7 @@ export function Hero({ snap, link }: { snap: Snapshot; link: LinkFn }) {
         </motion.div>
         <div className="s-play" aria-hidden="true">
           <span className="play-seal">
-            <Sticker text="ALPHA STUDIOS" className="play-sticker" />
+            <Sticker text="ALPHA STUDIOS" className="play-sticker" draw />
           </span>
           <span className="play-chip play-chip--1 a-sun">Native iOS</span>
           <span className="play-chip play-chip--2 a-mint">macOS</span>
@@ -341,7 +345,10 @@ export function Hero({ snap, link }: { snap: Snapshot; link: LinkFn }) {
           <svg className="play-squig" viewBox="0 0 160 30">
             <path d="M4 15 Q24 -2 44 15 T84 15 T124 15 T156 15" />
           </svg>
+          <Doodle name="spark" className="play-spark" />
+          <Doodle name="heart" className="play-heart" />
         </div>
+        <Doodle name="arrow" />
         <a className="s-scroll-cue mono" href="#work">
           <span>Scroll</span>
           <i aria-hidden="true" />

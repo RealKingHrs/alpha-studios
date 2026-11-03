@@ -56,7 +56,15 @@ export function Mark({
 }
 
 /** The round sticker: text set on a circle around a small mark. It spins by CSS. */
-export function Sticker({ text, className = '' }: { text: string; className?: string }) {
+export function Sticker({
+  text,
+  className = '',
+  draw = false,
+}: {
+  text: string;
+  className?: string;
+  draw?: boolean;
+}) {
   const id = `ring-${text.replace(/\W+/g, '').slice(0, 8)}`;
   const line = `${text} • ${text} • `;
   return (
@@ -71,7 +79,7 @@ export function Sticker({ text, className = '' }: { text: string; className?: st
           </textPath>
         </text>
       </svg>
-      <Mark className="sticker-mark" />
+      <Mark className="sticker-mark" draw={draw} />
     </div>
   );
 }

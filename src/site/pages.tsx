@@ -34,6 +34,15 @@ function Hello({ snap, link, page = false }: { snap: Snapshot; link: LinkFn; pag
       aria-labelledby="hello-title"
     >
       <div className="s-wrap">
+        {page && (
+          <span className="zn-postmark" aria-hidden="true">
+            Alpha Studios
+            <br />
+            postbox
+            <br />
+            2026
+          </span>
+        )}
         <Reveal>
           <p className="s-eyebrow mono">
             {page ? (
@@ -427,6 +436,7 @@ export function NotFoundPage({ link }: { link: LinkFn }) {
   return (
     <section className="s-hello a-tomato s-lost" aria-labelledby="pt">
       <div className="s-wrap">
+        <p className="s-eyebrow mono">Season finale</p>
         <p className="s-lost-code display" aria-hidden="true">
           404
         </p>
@@ -435,7 +445,7 @@ export function NotFoundPage({ link }: { link: LinkFn }) {
         </h1>
         <p className="s-lede">
           This address does not lead anywhere on the site. It may have moved, or the link may have a
-          typo.
+          typo. The credits are rolling, but you can still get back to the good scenes.
         </p>
         <p className="s-actions">
           <Magnetic>

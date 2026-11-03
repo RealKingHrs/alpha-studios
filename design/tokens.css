@@ -120,3 +120,15 @@ html {
   outline: 3px solid var(--focus-color);
   outline-offset: var(--focus-offset);
 }
+
+/* Zine materials (batch 21): hard shadows, die-cut margins, tape and the torn paper edge. */
+:root {
+  --pop-1: 3px 3px 0 var(--ink-fixed);
+  --pop-2: 6px 6px 0 var(--ink-fixed);
+  --pop-3: 10px 10px 0 var(--ink-fixed);
+  --diecut: 0 0 0 4px var(--paper-fixed);
+  --tape: rgb(255 200 61 / 0.78);
+  --outline: 2px solid var(--ink-fixed);
+  --tilt-1: -1.6deg;
+  --tilt-2: 1.2deg;
+}

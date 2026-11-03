@@ -61,6 +61,9 @@ export function CrewCard({
         <span className="mcard-word display">{first}</span>
         <span className="mcard-glare" />
       </span>
+      <span className="mcard-rare" aria-hidden="true">
+        {member.age ? `Age ${member.age}` : 'Crew'}
+      </span>
       <span className="mcard-index mono" aria-hidden="true">
         {String(index + 1).padStart(2, '0')}
       </span>
