@@ -3,6 +3,7 @@ import {
   motion,
   useMotionValueEvent,
   useScroll,
+  useSpring,
   useTransform,
 } from 'motion/react';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
@@ -15,6 +16,7 @@ import { useMotionOn, useWide } from './motion/context';
 import { coverAmount, coverProgress, currentSection } from './motion/helpers';
 import { STACK_STEP, canStack, stickyTopFor } from './motion/viewport';
 import { Magnetic } from './motion/Magnetic';
+import { scrollToTop } from './motion/SmoothScroll';
 import { SplitText } from './motion/SplitText';
 import { Reveal } from './Reveal';
 import { WorkStage } from './WorkStage';
@@ -58,6 +60,7 @@ export function Header({ route, link }: { route: Route; link: LinkFn }) {
         <Mark className="s-brand-mark" />
         <span>Alpha Studios</span>
       </a>
+      <MenuButton link={link} here={here} />
       <nav aria-label="Main" className="s-nav">
         <ul>
           {NAV.map(([path, label]) => (
@@ -78,7 +81,105 @@ export function Header({ route, link }: { route: Route; link: LinkFn }) {
           </li>
         </ul>
       </nav>
+      <ProgressLine />
     </header>
+  );
+}
+
+/** A thin line under the header that fills as you read down the page. */
+function ProgressLine() {
+  const { scrollYProgress } = useScroll();
+  const x = useSpring(scrollYProgress, { stiffness: 220, damping: 40 });
+  const on = useMotionOn();
+  return (
+    <motion.span
+      className="s-progress"
+      aria-hidden="true"
+      style={on ? { scaleX: x } : { scaleX: 0 }}
+    />
+  );
+}
+
+/** The phone menu: a button that opens a full-screen overlay. Escape closes it and focus stays inside while open. */
+function MenuButton({ link, here }: { link: LinkFn; here: string | null }) {
+  const [open, setOpen] = useState(false);
+  const panel = useRef<HTMLDivElement>(null);
+  const opener = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const root = document.documentElement;
+    root.style.overflow = 'hidden';
+    const items = () => [...(panel.current?.querySelectorAll<HTMLElement>('a,button') ?? [])];
+    items()[0]?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false);
+      if (e.key === 'Tab') {
+        const list = items();
+        const first = list[0];
+        const last = list[list.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+    document.addEventListener('keydown', onKey);
+    const button = opener.current;
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      root.style.overflow = '';
+      button?.focus();
+    };
+  }, [open]);
+  const links = [
+    ...NAV.filter(([path]) => path !== '/contact/'),
+    ['/contact/', 'Say hello'] as const,
+  ];
+  return (
+    <>
+      <button
+        ref={opener}
+        type="button"
+        className="s-menu-btn"
+        aria-expanded={open}
+        aria-controls="s-menu"
+        onClick={() => setOpen((o) => !o)}
+      >
+        <span className="visually-hidden">{open ? 'Close menu' : 'Open menu'}</span>
+        <i aria-hidden="true" />
+        <i aria-hidden="true" />
+      </button>
+      {open && (
+        <div
+          id="s-menu"
+          ref={panel}
+          className="s-menu"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Menu"
+        >
+          <ul>
+            {links.map(([path, label], i) => (
+              <li key={path} style={{ '--i': i } as React.CSSProperties}>
+                <a
+                  href={link(path)}
+                  aria-current={here === path ? 'page' : undefined}
+                  onClick={() => setOpen(false)}
+                >
+                  <span className="mono" aria-hidden="true">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  {label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </>
   );
 }
 
@@ -107,6 +208,14 @@ export function Footer({ link }: { link: LinkFn }) {
         </nav>
         <div className="s-footer-meta">
           <span className="mono">© 2026 Alpha Studios</span>
+          <button
+            type="button"
+            className="s-top"
+            onClick={() => scrollToTop(false)}
+            aria-label="Back to the top"
+          >
+            <span aria-hidden="true">↑</span> Top
+          </button>
         </div>
       </div>
     </footer>
@@ -228,6 +337,10 @@ export function Hero({ snap }: { snap: Snapshot }) {
             </Magnetic>
           </p>
         </motion.div>
+        <a className="s-scroll-cue mono" href="#work">
+          <span>Scroll</span>
+          <i aria-hidden="true" />
+        </a>
         <div className="s-hero-art" aria-hidden="true">
           <motion.div
             className="s-hero-mark-wrap"
@@ -271,11 +384,7 @@ export function WorkPanel({
   const buttons = projectLinks(project);
   const shots = stackOrder(project.screenshots);
   return (
-    <article
-      className={`s-work a-${accent}`}
-      data-cursor="Open"
-      style={{ '--i': index } as React.CSSProperties}
-    >
+    <article className={`s-work a-${accent}`} style={{ '--i': index } as React.CSSProperties}>
       <div className="s-work-copy">
         <span className="s-work-num display" aria-hidden="true">
           {String(index + 1).padStart(2, '0')}

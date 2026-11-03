@@ -1,27 +1,25 @@
 import { motion, useMotionValue, useSpring } from 'motion/react';
 import { useEffect, useState } from 'react';
 
-const HOT = 'a, button, [role="button"], summary, label, select, input, textarea';
+const HOT = 'a, button, [role="button"], summary, label, select';
+const TEXT = 'input:not([type="checkbox"]):not([type="radio"]), textarea';
+
+type Mode = 'rest' | 'hot' | 'text';
 
 /**
- * A small dot that follows the pointer closely and a ring that trails it. The ring swells over anything you
- * can act on, and becomes a labelled bubble over elements marked data-cursor="Open". Mouse only.
+ * A small dot that follows the pointer and a thin ring that stays close behind it. Over anything you can act on
+ * the ring grows a little and the dot shrinks; over a text field it becomes a thin bar. It never fills in or
+ * shows words, so it can never cover what you are aiming at. Mouse only.
  */
 export function Cursor() {
   const x = useMotionValue(-100);
   const y = useMotionValue(-100);
-  const dx = useSpring(x, { stiffness: 900, damping: 45 });
-  const dy = useSpring(y, { stiffness: 900, damping: 45 });
-  const rx = useSpring(x, { stiffness: 150, damping: 19 });
-  const ry = useSpring(y, { stiffness: 150, damping: 19 });
-  const [state, setState] = useState<{
-    hot: boolean;
-    label: string | null;
-    down: boolean;
-    gone: boolean;
-  }>({
-    hot: false,
-    label: null,
+  const dx = useSpring(x, { stiffness: 1100, damping: 50 });
+  const dy = useSpring(y, { stiffness: 1100, damping: 50 });
+  const rx = useSpring(x, { stiffness: 420, damping: 32 });
+  const ry = useSpring(y, { stiffness: 420, damping: 32 });
+  const [state, setState] = useState<{ mode: Mode; down: boolean; gone: boolean }>({
+    mode: 'rest',
     down: false,
     gone: true,
   });
@@ -32,11 +30,8 @@ export function Cursor() {
       x.set(e.clientX);
       y.set(e.clientY);
       const t = e.target as Element | null;
-      const label = t?.closest?.('[data-cursor]')?.getAttribute('data-cursor') ?? null;
-      const hot = !!t?.closest?.(HOT);
-      setState((s) =>
-        s.hot === hot && s.label === label && !s.gone ? s : { ...s, hot, label, gone: false },
-      );
+      const mode: Mode = t?.closest?.(TEXT) ? 'text' : t?.closest?.(HOT) ? 'hot' : 'rest';
+      setState((s) => (s.mode === mode && !s.gone ? s : { ...s, mode, gone: false }));
     };
     const down = () => setState((s) => ({ ...s, down: true }));
     const up = () => setState((s) => ({ ...s, down: false }));
@@ -56,14 +51,10 @@ export function Cursor() {
   return (
     <div className={`cursor ${state.gone ? 'is-gone' : ''}`} aria-hidden="true">
       <motion.div className="cursor-ring-wrap" style={{ x: rx, y: ry }}>
-        <div
-          className={`cursor-ring ${state.hot ? 'is-hot' : ''} ${state.label ? 'has-label' : ''} ${state.down ? 'is-down' : ''}`}
-        >
-          {state.label && <span>{state.label}</span>}
-        </div>
+        <div className={`cursor-ring is-${state.mode} ${state.down ? 'is-down' : ''}`} />
       </motion.div>
       <motion.div className="cursor-dot-wrap" style={{ x: dx, y: dy }}>
-        <div className={`cursor-dot ${state.label ? 'is-hidden' : ''}`} />
+        <div className={`cursor-dot is-${state.mode}`} />
       </motion.div>
     </div>
   );

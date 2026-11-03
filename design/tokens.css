@@ -61,6 +61,13 @@
   --radius-s: 8px;
   --radius-m: 12px;
   --radius-l: 16px;
+  --radius-xl: 28px;
+  /* One elevation scale: a soft resting shadow for large surfaces, a hard ink offset for things you can press. */
+  --shadow-1: 0 18px 40px -22px rgb(20 17 15 / 0.35);
+  --shadow-2: 6px 8px 0 var(--ink);
+  --shadow-3: 10px 14px 0 var(--ink);
+  --reveal-distance: 24px;
+  --reveal-step: 80ms;
 
   /* Motion: one curve, three durations. Nothing bounces. */
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);

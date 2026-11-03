@@ -90,7 +90,7 @@ export function LaunchpadPage({ snap, link }: { snap: Snapshot; link: LinkFn }) 
               </p>
               <p className="s-actions">
                 <Magnetic>
-                  <a className="s-btn s-btn--ink" href={pitch} data-cursor="Pitch">
+                  <a className="s-btn s-btn--ink" href={pitch}>
                     Pitch your idea
                   </a>
                 </Magnetic>
@@ -238,7 +238,7 @@ export function LaunchpadPage({ snap, link }: { snap: Snapshot; link: LinkFn }) 
           </h2>
           <p className="s-actions">
             <Magnetic>
-              <a className="s-btn s-btn--ink" href={pitch} data-cursor="Pitch">
+              <a className="s-btn s-btn--ink" href={pitch}>
                 Pitch your idea
               </a>
             </Magnetic>

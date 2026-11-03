@@ -61,7 +61,7 @@ function Hello({
         </Title>
         {mail ? (
           <Magnetic strength={0.5}>
-            <a className="s-hello-mail display" href={`mailto:${mail}`} data-cursor="Write">
+            <a className="s-hello-mail display" href={`mailto:${mail}`}>
               {mail}
             </a>
           </Magnetic>
@@ -98,7 +98,7 @@ export function Home({ snap, link, asset }: PageProps) {
       >
         <div className="s-wrap">
           <SectionHead num="02" eyebrow="Crew" title="The people behind it" id="crew-title" />
-          <CrewLineup members={snap.members} link={link} />
+          <CrewLineup members={snap.members} link={link} snap={snap} />
         </div>
       </section>
       <Hello snap={snap} link={link} />
@@ -167,7 +167,7 @@ export function CrewPage({ snap, link }: PageProps) {
       />
       <section className="s-section">
         <div className="s-wrap">
-          <CrewLineup members={snap.members} link={link} />
+          <CrewLineup members={snap.members} link={link} snap={snap} />
         </div>
       </section>
     </>
@@ -238,6 +238,31 @@ export function CaseStudy({ snap, slug, link, asset }: PageProps & { slug: strin
           </div>
           <WorkStage shots={shots} name={p.name} asset={asset} className="s-work-stage--case" />
         </div>
+      </section>
+
+      <section className="s-facts" aria-label="At a glance">
+        <dl className="s-wrap">
+          <div>
+            <dt className="mono">Status</dt>
+            <dd>{statusLabel[p.status]}</dd>
+          </div>
+          <div>
+            <dt className="mono">Platforms</dt>
+            <dd>{p.platforms.map((x) => platformLabel[x]).join(', ') || 'To be announced'}</dd>
+          </div>
+          <div>
+            <dt className="mono">Built with</dt>
+            <dd>
+              {p.tech.length} {p.tech.length === 1 ? 'technology' : 'technologies'}
+            </dd>
+          </div>
+          <div>
+            <dt className="mono">Team</dt>
+            <dd>
+              {team.length} {team.length === 1 ? 'person' : 'people'}
+            </dd>
+          </div>
+        </dl>
       </section>
 
       <section className="s-section" aria-labelledby="story-title">
@@ -358,11 +383,7 @@ export function CaseStudy({ snap, slug, link, asset }: PageProps & { slug: strin
       <section className="s-next" aria-label="Next case study">
         <div className="s-wrap">
           <p className="s-eyebrow mono">Next</p>
-          <a
-            className="display s-next-link"
-            href={link(`/projects/${next.slug}/`)}
-            data-cursor="Go"
-          >
+          <a className="display s-next-link" href={link(`/projects/${next.slug}/`)}>
             {next.name} <span aria-hidden="true">→</span>
           </a>
         </div>

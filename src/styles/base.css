@@ -57,13 +57,12 @@ html.reduce-motion {
   html.fx body,
   html.fx a,
   html.fx button,
-  html.fx [data-cursor] {
-    cursor: none !important;
-  }
+  html.fx summary,
+  html.fx label,
+  html.fx select,
   html.fx input,
-  html.fx textarea,
-  html.fx select {
-    cursor: text;
+  html.fx textarea {
+    cursor: none !important;
   }
 }
 .ripple {

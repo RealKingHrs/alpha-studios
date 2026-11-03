@@ -3,7 +3,7 @@ import type { LinkFn } from './parts';
 
 const SLOTS = 4;
 
-/** Skill bars: five pips per skill, filled to the member's level. */
+/** Skill bars: a slim bar per skill that fills to the member's level (out of 5). */
 export function Skills({ skills }: { skills: Member['skills'] }) {
   if (skills.length === 0) return null;
   return (
@@ -11,10 +11,8 @@ export function Skills({ skills }: { skills: Member['skills'] }) {
       {skills.map((s) => (
         <li key={s.name}>
           <span>{s.name}</span>
-          <span className="pips" role="img" aria-label={`${s.level} out of 5`}>
-            {[1, 2, 3, 4, 5].map((n) => (
-              <i key={n} className={n <= s.level ? 'on' : ''} />
-            ))}
+          <span className="skill-bar" role="img" aria-label={`${s.level} out of 5`}>
+            <i style={{ '--w': `${s.level * 20}%` } as React.CSSProperties} />
           </span>
         </li>
       ))}
