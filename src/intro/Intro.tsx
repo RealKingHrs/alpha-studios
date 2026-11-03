@@ -80,9 +80,14 @@ export function Intro({ ready, reduceMotion, firstVisit, onDone }: Props) {
     );
 
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && skip();
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    // Capture phase, so skipping the intro never also triggers the vault's own Escape shortcut.
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      e.stopPropagation();
+      skip();
+    };
+    window.addEventListener('keydown', onKey, true);
+    return () => window.removeEventListener('keydown', onKey, true);
   });
 
   if (phase === 'gone') return null;

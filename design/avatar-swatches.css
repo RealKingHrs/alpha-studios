@@ -1,0 +1,40 @@
+/* Avatar colours: skin tones, hair, frames and outfits. These are content colours chosen by crew,
+   kept apart from the brand tokens. Entries are numbered so stored records stay valid: add new
+   swatches at the end and never reorder or change an existing one. */
+:root {
+  --skin-0: #f1c9a5;
+  --skin-1: #e8b98f;
+  --skin-2: #d9a070;
+  --skin-3: #c48a5b;
+  --skin-4: #a8704a;
+  --skin-5: #8a5a3c;
+  --skin-6: #6b432c;
+  --skin-7: #4a2e1f;
+
+  --hair-0: #1b1b1d;
+  --hair-1: #3a2a20;
+  --hair-2: #6b4a2e;
+  --hair-3: #a9743f;
+  --hair-4: #d6b25e;
+  --hair-5: #b33a2e;
+  --hair-6: #8c8f94;
+  --hair-7: #e6e3dc;
+
+  --glasses-0: #1b1b1d;
+  --glasses-1: #e9ecef;
+  --glasses-2: #a9afb6;
+  --glasses-3: #6b4a2e;
+  --glasses-4: #2c4a7a;
+
+  --outfit-0: #26292d;
+  --outfit-1: #16181b;
+  --outfit-2: #3b4a5c;
+  --outfit-3: #5b3b3b;
+  --outfit-4: #2e4b3c;
+  --outfit-5: #7a6a4f;
+  --outfit-6: #e9ecef;
+  --outfit-7: #4c3b6b;
+
+  /* Warm studio light for the avatar builder */
+  --light-warm: #ffe2c4;
+}

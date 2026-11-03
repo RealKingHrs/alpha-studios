@@ -5,4 +5,8 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   base: process.env.SITE_BASE ?? '/alpha-studios/',
   plugins: [react()],
+  build: {
+    manifest: true,
+    rollupOptions: { input: { main: 'index.html', portal: 'portal/app/index.html' } },
+  },
 });

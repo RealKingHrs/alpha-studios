@@ -619,6 +619,8 @@ export default function Scene(props: SceneProps) {
             tokens={tokens}
             position={pos}
             rotY={rotY}
+            record={mem.avatar}
+            reduce={ctrl.reduce}
             onPick={() => onPick(`/crew/${mem.slug}/`)}
           />
         );

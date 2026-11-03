@@ -136,6 +136,8 @@ export default function Room({ snap, index, tokens, reduce, base, onReady, onPic
           tokens={tokens}
           position={[-hw + 1.4, 0, -3 + k * 1.8]}
           rotY={Math.PI / 2}
+          record={m.avatar}
+          reduce={reduce}
           onPick={() => onPick(`/crew/${m.slug}/`)}
         />
       ))}

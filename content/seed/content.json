@@ -17,8 +17,21 @@
       "avatar": {
         "version": 1,
         "options": {
-          "hairStyle": 1,
-          "skinTone": 3
+          "head": 0,
+          "skin": 1,
+          "eyes": 0,
+          "brows": 0,
+          "nose": 0,
+          "mouth": 0,
+          "hair": 1,
+          "hairColor": 1,
+          "facialHair": 0,
+          "glasses": 0,
+          "glassesColor": 0,
+          "earrings": 0,
+          "chain": 0,
+          "outfit": 0,
+          "outfitColor": 0
         }
       },
       "githubUsername": "placeholder-member-one"
@@ -32,8 +45,21 @@
       "avatar": {
         "version": 1,
         "options": {
-          "hairStyle": 2,
-          "skinTone": 4
+          "head": 1,
+          "skin": 5,
+          "eyes": 1,
+          "brows": 1,
+          "nose": 1,
+          "mouth": 1,
+          "hair": 3,
+          "hairColor": 0,
+          "facialHair": 2,
+          "glasses": 1,
+          "glassesColor": 1,
+          "earrings": 1,
+          "chain": 1,
+          "outfit": 1,
+          "outfitColor": 2
         }
       },
       "githubUsername": "placeholder-member-two"
@@ -47,8 +73,21 @@
       "avatar": {
         "version": 1,
         "options": {
-          "hairStyle": 3,
-          "skinTone": 5
+          "head": 2,
+          "skin": 3,
+          "eyes": 3,
+          "brows": 3,
+          "nose": 2,
+          "mouth": 4,
+          "hair": 4,
+          "hairColor": 5,
+          "facialHair": 0,
+          "glasses": 0,
+          "glassesColor": 0,
+          "earrings": 2,
+          "chain": 2,
+          "outfit": 2,
+          "outfitColor": 3
         }
       },
       "githubUsername": "placeholder-member-three"
@@ -62,8 +101,21 @@
       "avatar": {
         "version": 1,
         "options": {
-          "hairStyle": 4,
-          "skinTone": 6
+          "head": 3,
+          "skin": 0,
+          "eyes": 2,
+          "brows": 2,
+          "nose": 3,
+          "mouth": 2,
+          "hair": 6,
+          "hairColor": 4,
+          "facialHair": 3,
+          "glasses": 2,
+          "glassesColor": 3,
+          "earrings": 0,
+          "chain": 0,
+          "outfit": 0,
+          "outfitColor": 4
         }
       },
       "githubUsername": "placeholder-member-four"
@@ -77,8 +129,21 @@
       "avatar": {
         "version": 1,
         "options": {
-          "hairStyle": 5,
-          "skinTone": 7
+          "head": 4,
+          "skin": 6,
+          "eyes": 4,
+          "brows": 4,
+          "nose": 0,
+          "mouth": 3,
+          "hair": 5,
+          "hairColor": 2,
+          "facialHair": 1,
+          "glasses": 3,
+          "glassesColor": 4,
+          "earrings": 1,
+          "chain": 1,
+          "outfit": 1,
+          "outfitColor": 7
         }
       },
       "githubUsername": "placeholder-member-five"
