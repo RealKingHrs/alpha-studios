@@ -26,7 +26,11 @@ d('built site', () => {
     'projects/bioscanner/index.html',
     'projects/velocity/index.html',
     'crew/hari-rudran-sunil/index.html',
-    'crew/hari-rudran-sunil/certificates/c1/index.html',
+    // A certificate page: its id comes from whatever content was built (the seed or the live database), not a fixed one.
+    ...walk('dist')
+      .map((f) => f.replace(/^dist\//, ''))
+      .filter((f) => /^crew\/[^/]+\/certificates\/[^/]+\/index\.html$/.test(f))
+      .slice(0, 1),
   ];
 
   it.each(routes)('%s serves readable HTML with title and share image', (r) => {
