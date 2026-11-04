@@ -31,15 +31,16 @@ export function Stamp({
       <g filter={`url(#f${id})`}>
         <circle cx="100" cy="100" r="92" className="fx-stamp-ring" />
         <circle cx="100" cy="100" r="58" className="fx-stamp-ring fx-stamp-ring--thin" />
-        <g className="fx-stamp-turn">
-          <text className="fx-stamp-text">
-            <textPath href={`#r${id}`} startOffset="0" textLength="440" lengthAdjust="spacing">
-              {text}
-            </textPath>
-          </text>
-        </g>
         <text x="96" y="124" textAnchor="middle" className="fx-stamp-a">
           a<tspan className="fx-stamp-dot">.</tspan>
+        </text>
+      </g>
+      {/* Outside the filter: it turns every frame, and a filter would be redrawn every frame with it. */}
+      <g className="fx-stamp-turn">
+        <text className="fx-stamp-text">
+          <textPath href={`#r${id}`} startOffset="0" textLength="440" lengthAdjust="spacing">
+            {text}
+          </textPath>
         </text>
       </g>
     </svg>

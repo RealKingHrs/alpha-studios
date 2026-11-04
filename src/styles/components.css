@@ -614,6 +614,7 @@
   z-index: 1;
 }
 .s-work-list[data-stack='on'] .s-work {
+  will-change: transform;
   position: sticky;
   top: calc(var(--sticky, 92px) + var(--i, 0) * 20px);
   transform: scale(calc(1 - var(--cover, 0) * 0.05));
@@ -1528,20 +1529,6 @@ html.reduce-motion .fx-shape {
 [data-spot]:hover::before {
   opacity: 1;
 }
-@keyframes float-y {
-  50% {
-    translate: 0 -10px;
-  }
-}
-.d0 .device {
-  animation: float-y 6s var(--ease-in-out) infinite;
-}
-.d1 .device {
-  animation: float-y 7.5s var(--ease-in-out) -2s infinite;
-}
-.d2 .device {
-  animation: float-y 9s var(--ease-in-out) -4s infinite;
-}
 @supports (animation-timeline: view()) {
   .s-rule,
   .s-hero-top,
@@ -2027,68 +2014,10 @@ body::after {
   inset: 0;
   z-index: 170;
   pointer-events: none;
-  opacity: 0.045;
-  mix-blend-mode: multiply;
+  opacity: 0.03;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* parallax: the devices and the footer wordmark move at their own pace as you scroll (where the browser can) */
-@supports (animation-timeline: view()) {
-  .d0.device-slot {
-    animation: par-a linear both;
-    animation-timeline: view();
-    animation-range: cover;
-  }
-  .d1.device-slot {
-    animation: par-b linear both;
-    animation-timeline: view();
-    animation-range: cover;
-  }
-  .d2.device-slot {
-    animation: par-c linear both;
-    animation-timeline: view();
-    animation-range: cover;
-  }
-  .s-footer-logo {
-    animation: footer-slide linear both;
-    animation-timeline: view();
-    animation-range: entry 0% cover 60%;
-  }
-}
-@keyframes par-a {
-  from {
-    translate: 0 30px;
-  }
-  to {
-    translate: 0 -30px;
-  }
-}
-@keyframes par-b {
-  from {
-    translate: 0 60px;
-  }
-  to {
-    translate: 0 -60px;
-  }
-}
-@keyframes par-c {
-  from {
-    translate: 0 15px;
-  }
-  to {
-    translate: 0 -15px;
-  }
-}
-@keyframes footer-slide {
-  from {
-    translate: 8% 0;
-    opacity: 0.4;
-  }
-  to {
-    translate: 0 0;
-    opacity: 1;
-  }
-}
 @media (prefers-reduced-motion: reduce) {
   .s-btn:hover::before,
   .s-make-card:hover::after,
