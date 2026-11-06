@@ -1,0 +1,389 @@
+/* Faces, project cards, avatar pickers and certificate rows. Flat colour blocks with ink text; motion is off when the
+   reader asks for less. */
+
+/* ---------------------------------------------------------------- a face */
+.face {
+  position: relative;
+  display: inline-block;
+  flex: none;
+  width: var(--face, 44px);
+  height: var(--face, 44px);
+  background: var(--face-bg, var(--sun));
+  border: var(--rule-w) solid var(--ink);
+  border-radius: 50%;
+}
+.face-clip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 50%;
+}
+.face-clip .portrait {
+  position: absolute;
+  left: -18%;
+  top: 4%;
+  width: 136%;
+  height: auto;
+}
+.face-dot {
+  position: absolute;
+  right: -3px;
+  bottom: -3px;
+  width: 28%;
+  height: 28%;
+  min-width: 11px;
+  min-height: 11px;
+  background: var(--paper);
+  border: var(--rule-w) solid var(--ink);
+  border-radius: 50%;
+}
+.face-dot.is-online {
+  background: var(--mint);
+}
+
+/* ---------------------------------------------------------------- project cards */
+.proj-list {
+  list-style: none;
+  margin: 0 0 var(--space-4);
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr));
+  gap: var(--space-3);
+  align-items: start;
+}
+.proj {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-bottom: var(--space-3);
+  background: var(--surface-1);
+  border: var(--rule-w) solid var(--ink);
+  border-radius: var(--radius-l);
+  box-shadow: 4px 4px 0 var(--ink);
+  overflow: hidden;
+  transition:
+    translate var(--dur-fast) var(--ease),
+    box-shadow var(--dur-fast) var(--ease);
+}
+.proj.is-open {
+  grid-column: 1 / -1;
+}
+.proj > :not(.proj-head) {
+  margin-inline: var(--space-3);
+}
+.proj:hover {
+  box-shadow: 6px 6px 0 var(--ink);
+}
+.proj-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
+  padding: var(--space-3);
+  background-color: var(--status);
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgb(20 17 15 / 0.07) 0 12px,
+    transparent 12px 24px
+  );
+  background-size: 34px 34px;
+  color: var(--on-accent);
+  border-bottom: var(--rule-w) solid var(--ink);
+}
+.proj-tag {
+  order: 1;
+  padding: 2px var(--space-2);
+  background: var(--paper);
+  border: var(--rule-w) solid var(--ink);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  rotate: -3deg;
+}
+.proj-head .badge {
+  order: 1;
+}
+.proj-name {
+  order: 2;
+  flex: 1 1 100%;
+  margin: 0;
+  font-size: var(--step-3);
+  line-height: 1.05;
+}
+.proj-sum {
+  margin-block: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  color: var(--ink-soft);
+}
+.proj-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
+}
+.proj .editor,
+.proj .assign {
+  max-width: none;
+}
+
+.team {
+  display: inline-flex;
+  align-items: center;
+}
+.team-face + .team-face {
+  margin-left: -12px;
+}
+.team-face {
+  display: inline-flex;
+  transition: translate var(--dur-fast) var(--ease);
+}
+.team-more {
+  margin-left: var(--space-1);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+}
+.team:hover .team-face {
+  translate: 0 -4px;
+}
+.team:hover .team-face:nth-child(2) {
+  transition-delay: 40ms;
+}
+.team:hover .team-face:nth-child(3) {
+  transition-delay: 80ms;
+}
+.team:hover .team-face:nth-child(4) {
+  transition-delay: 120ms;
+}
+.team:hover .team-face:nth-child(5) {
+  transition-delay: 160ms;
+}
+
+/* choosing people by face */
+.pick-grid {
+  list-style: none;
+  margin: var(--space-1) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+  gap: var(--space-1);
+}
+.pick {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  width: 100%;
+  padding: var(--space-2) var(--space-1) var(--space-1);
+  background: none;
+  border: var(--rule-w) dashed var(--line-strong);
+  border-radius: var(--radius-m);
+  color: var(--ink);
+  cursor: pointer;
+  transition:
+    background var(--dur-fast) var(--ease),
+    translate var(--dur-fast) var(--ease);
+}
+.pick:hover {
+  translate: 0 -2px;
+  background: var(--paper);
+}
+.pick .face {
+  opacity: 0.55;
+  filter: grayscale(0.7);
+  transition:
+    opacity var(--dur-fast) var(--ease),
+    filter var(--dur-fast) var(--ease);
+}
+.pick-name {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+.pick[aria-pressed='true'] {
+  border-style: solid;
+  border-color: var(--ink);
+  background: var(--paper);
+}
+.pick[aria-pressed='true'] .face {
+  opacity: 1;
+  filter: none;
+}
+.pick-tick {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 18px;
+  height: 18px;
+  border: var(--rule-w) solid var(--ink);
+  border-radius: 50%;
+  background: var(--paper);
+}
+.pick[aria-pressed='true'] .pick-tick {
+  background: var(--mint);
+}
+.pick[aria-pressed='true'] .pick-tick::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 1px;
+  width: 4px;
+  height: 9px;
+  border: solid var(--ink);
+  border-width: 0 2px 2px 0;
+  rotate: 40deg;
+}
+
+/* ---------------------------------------------------------------- certificates */
+.cert-list {
+  list-style: none;
+  margin: 0 0 var(--space-4);
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+  gap: var(--space-2);
+}
+.cert {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  background: var(--surface-1);
+  border: var(--rule-w) solid var(--ink);
+  border-radius: var(--radius-l);
+  box-shadow: 3px 3px 0 var(--ink);
+  transition:
+    translate var(--dur-fast) var(--ease),
+    box-shadow var(--dur-fast) var(--ease);
+}
+.cert:hover {
+  translate: -2px -2px;
+  box-shadow: 5px 5px 0 var(--ink);
+}
+.cert-mark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  background: var(--sun);
+  color: var(--on-accent);
+  border: var(--rule-w) solid var(--ink);
+  border-radius: var(--radius-m);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 800;
+  font-size: 1.6rem;
+}
+.cert-mark span {
+  color: var(--gold);
+}
+.cert-text {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+}
+.cert-text strong {
+  overflow-wrap: anywhere;
+}
+.icon-btn {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: none;
+  color: var(--ink);
+  border: var(--rule-w) solid var(--line-strong);
+  border-radius: 50%;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background var(--dur-fast) var(--ease),
+    rotate var(--dur-fast) var(--ease);
+}
+.icon-btn:hover {
+  background: var(--tomato);
+  border-color: var(--ink);
+  rotate: 90deg;
+}
+
+/* ---------------------------------------------------------------- motion */
+@media (prefers-reduced-motion: no-preference) {
+  .proj,
+  .cert {
+    animation: card-in var(--dur-slow) var(--ease) backwards;
+    animation-delay: calc(var(--i, 0) * 70ms);
+  }
+  .proj:hover .proj-head {
+    animation: stripes 1.2s linear infinite;
+  }
+  .proj .editor,
+  .proj .assign {
+    animation: reveal-in var(--dur-base) var(--ease) both;
+  }
+  .pick[aria-pressed='true'] .face {
+    animation: pop var(--dur-base) var(--ease);
+  }
+  .face-dot.is-online {
+    animation: pulse 2.4s ease-out infinite;
+  }
+  @keyframes card-in {
+    from {
+      opacity: 0;
+      translate: 0 22px;
+      rotate: 0.8deg;
+    }
+  }
+  @keyframes reveal-in {
+    from {
+      opacity: 0;
+      translate: 0 -8px;
+    }
+  }
+  @keyframes stripes {
+    to {
+      background-position: 34px 0;
+    }
+  }
+  @keyframes pop {
+    0% {
+      scale: 0.7;
+    }
+    60% {
+      scale: 1.12;
+    }
+  }
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgb(79 214 160 / 0.7);
+    }
+    70%,
+    100% {
+      box-shadow: 0 0 0 7px rgb(79 214 160 / 0);
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .proj,
+  .cert,
+  .pick,
+  .team-face,
+  .icon-btn {
+    transition: none;
+  }
+  .proj:hover,
+  .cert:hover,
+  .pick:hover,
+  .team:hover .team-face,
+  .icon-btn:hover {
+    translate: 0 0;
+    rotate: 0deg;
+  }
+}

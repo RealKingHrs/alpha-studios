@@ -13,7 +13,6 @@ import {
   type OptionKey,
 } from '../../avatar/kit';
 import type { AvatarStore } from '../../avatar/store';
-import { PhotoReference } from './PhotoReference';
 
 /** Colour options show a swatch from design/avatar-swatches.css instead of a name. */
 const SWATCH: Partial<Record<OptionKey, string>> = {
@@ -141,8 +140,6 @@ export function Builder({ store, reduce }: { store: AvatarStore; reduce: boolean
             {status.kind === 'idle' && dirty && 'You have unsaved changes.'}
           </span>
         </div>
-
-        <PhotoReference />
       </div>
     </div>
   );

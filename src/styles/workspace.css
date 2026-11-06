@@ -1,0 +1,397 @@
+/* The crew workspace: messages first. Same paper and ink as the rest of the portal; gold only marks admin-only controls. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.nav-unread {
+  margin-left: var(--space-1);
+  background: var(--tomato);
+  color: var(--on-accent);
+}
+
+.msg-privacy {
+  max-width: 62ch;
+}
+.msg-oversight {
+  max-width: 62ch;
+}
+
+.msg {
+  display: grid;
+  grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
+  gap: var(--space-3);
+  height: min(78vh, 780px);
+  min-height: 540px;
+}
+.msg-side,
+.msg-main {
+  min-width: 0;
+  min-height: 0;
+  padding: var(--space-3);
+  border: var(--rule-w) solid var(--ink);
+  border-radius: var(--radius-l);
+}
+.msg-side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  overflow-y: auto;
+  background: var(--paper-2);
+}
+.msg-main {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-1);
+  border-top: 6px solid var(--page-accent, var(--sky));
+}
+.msg-group {
+  margin: 0 0 var(--space-1);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.msg-rows {
+  display: grid;
+  gap: var(--space-3);
+}
+
+/* the crew, as faces: tap one to open a direct thread */
+.people-strip {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-2);
+}
+.person {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  padding: var(--space-half);
+  background: none;
+  border: 0;
+  border-radius: var(--radius-m);
+  color: var(--ink);
+  cursor: pointer;
+}
+.person-name {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+.person.is-waiting {
+  cursor: help;
+}
+.person.is-waiting .face {
+  opacity: 0.5;
+  filter: grayscale(0.8);
+}
+.person.is-waiting .person-name {
+  color: var(--ink-soft);
+}
+.msg-waiting {
+  margin: var(--space-1) 0 0;
+  font-size: 0.8rem;
+}
+.person .face {
+  transition:
+    translate var(--dur-fast) var(--ease),
+    rotate var(--dur-fast) var(--ease);
+}
+.person:hover:not(:disabled) .face,
+.person:focus-visible .face {
+  translate: 0 -4px;
+  rotate: -5deg;
+}
+
+.msg-list,
+.msg-hits {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-half);
+}
+.msg-list a,
+.msg-hits a {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  border: var(--rule-w) solid transparent;
+  border-radius: var(--radius-m);
+  color: var(--ink);
+  text-decoration: none;
+  transition:
+    background var(--dur-fast) var(--ease),
+    translate var(--dur-fast) var(--ease);
+}
+.msg-list a:hover,
+.msg-hits a:hover {
+  background: var(--paper);
+  translate: 3px 0;
+}
+.msg-list a[aria-current='page'] {
+  background: var(--surface-1);
+  border-color: var(--ink);
+  box-shadow: 3px 3px 0 var(--ink);
+  translate: 0 0;
+}
+.msg-rowtext {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+}
+.msg-title {
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+.msg-note {
+  font-size: 0.8rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.msg-unread {
+  background: var(--tomato);
+  color: var(--on-accent);
+  border-color: var(--ink);
+}
+.msg-hits a {
+  flex-wrap: wrap;
+}
+.msg-snippet {
+  flex-basis: 100%;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  overflow-wrap: anywhere;
+}
+
+/* a room's square mark, in a steady colour */
+.room-mark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  background: var(--face-bg, var(--sun));
+  color: var(--on-accent);
+  border: var(--rule-w) solid var(--ink);
+  border-radius: var(--radius-m);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 800;
+  font-size: 1.3rem;
+}
+.room-mark--lg {
+  width: 52px;
+  height: 52px;
+  font-size: 1.6rem;
+}
+
+.msg-status,
+.msg-search {
+  display: grid;
+  gap: var(--space-half);
+}
+.msg-status {
+  margin-top: auto;
+  padding-top: var(--space-2);
+  border-top: var(--rule-w) solid var(--line-strong);
+}
+.msg-status label,
+.msg-search label {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+.msg-status-row {
+  display: flex;
+  gap: var(--space-1);
+}
+.msg-status-row input {
+  flex: 1;
+  min-width: 0;
+}
+
+/* the conversation */
+.msg-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-bottom: var(--space-2);
+  border-bottom: var(--rule-w) solid var(--line-strong);
+}
+.msg-head h2 {
+  margin: 0;
+}
+.msg-head p {
+  margin: 0;
+}
+.msg-log {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  align-content: start;
+  gap: 0;
+  overflow-y: auto;
+  padding: var(--space-2);
+  margin: var(--space-2) 0;
+  background: var(--paper);
+  border: var(--line-w) solid var(--line-strong);
+  border-radius: var(--radius-m);
+}
+.msg-day,
+.msg-new {
+  margin: var(--space-2) 0 var(--space-1);
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+}
+.msg-new {
+  color: var(--ink);
+  border-top: 2px solid var(--tomato);
+  padding-top: var(--space-half);
+}
+.msg-run {
+  margin-top: var(--space-2);
+}
+.msg-cont {
+  margin-top: 3px;
+}
+.msg-line {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-1);
+}
+.msg-line.is-mine {
+  justify-content: flex-end;
+}
+.msg-face {
+  flex: none;
+  width: 34px;
+}
+.msg-item {
+  max-width: min(62ch, 82%);
+  padding: var(--space-1) var(--space-2);
+  background: var(--surface-1);
+  border: var(--rule-w) solid var(--line-strong);
+  border-radius: var(--radius-m);
+}
+.msg-item.is-mine {
+  background: var(--sky);
+  color: var(--on-accent);
+  border-color: var(--ink);
+}
+.msg-meta {
+  margin: 0;
+  font-size: 0.82rem;
+}
+.msg-body {
+  margin: var(--space-half) 0 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.msg-meta + .msg-body {
+  margin-top: var(--space-half);
+}
+.msg-item .link {
+  font-size: 0.8rem;
+  padding: 0;
+  color: inherit;
+}
+.msg-composer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-1) var(--space-2);
+  align-items: end;
+}
+.msg-composer textarea {
+  resize: none;
+  border-radius: var(--radius-l);
+  padding: var(--space-2);
+}
+.msg-keys {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+.msg-composer .error {
+  grid-column: 1 / -1;
+}
+.msg-readonly {
+  margin: 0;
+}
+.msg-none {
+  flex: 1;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--space-2);
+  text-align: center;
+  color: var(--ink-soft);
+}
+.msg-none p {
+  margin: 0;
+  max-width: 30ch;
+}
+.msg-none-mark {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 800;
+  font-size: 5rem;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  color: var(--ink);
+}
+.msg-none-mark span {
+  color: var(--gold);
+}
+
+@media (max-width: 899px) {
+  .msg {
+    grid-template-columns: minmax(0, 1fr);
+    height: auto;
+    min-height: 0;
+  }
+  .msg-side {
+    overflow: visible;
+  }
+  .msg-log {
+    height: min(60vh, 520px);
+    flex: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .msg-item {
+    animation: msg-in var(--dur-base) var(--ease) both;
+  }
+  @keyframes msg-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px) scale(0.98);
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .person .face,
+  .msg-list a {
+    transition: none;
+  }
+  .person:hover:not(:disabled) .face,
+  .msg-list a:hover {
+    translate: 0 0;
+    rotate: 0deg;
+  }
+}

@@ -127,6 +127,34 @@ Review policy (Proposed): crew edits go live immediately and are audited; the ad
 
 Dashboard screens: Home (activity, drafts, anything awaiting the admin); My profile (bio, links, avatar builder); Projects (list and editor: name, summary, status, platforms, screenshots, tech used, store and GitHub links, optional demo link, team); Crew (admin: members, invite codes, access); Site settings (admin: studio text, contact email, intro, featured project).
 
+## 7a. Crew workspace (added 7 November 2026)
+
+The portal grows from a control panel into a private office for the crew. It is built in two milestones (see section 9). Workspace data is private: it is never put in the content snapshot and public pages never read it.
+
+Milestone 7, messaging:
+
+- **Direct messages** between two active members, one thread per pair.
+- **Project channels**: one per project, readable and writable by that project's members and the admin.
+- **Crew room**: one room for all active members.
+- Unread counts per conversation, a status line per member (up to 80 characters), and online or away presence.
+- Search across the messages the person is allowed to read.
+- Plain text only, up to 4,000 characters, sent at most 30 a minute. An author can delete their own message; nobody can edit another person's.
+- No replies, reactions, pins, file sharing or notifications yet (see `docs/IDEAS.md`).
+
+Milestone 8, workspace: a task board per project, plain-text project notes, a shared calendar, an activity feed (never containing message text) and search across everything.
+
+Who can read what, enforced by database rules (row-level security):
+
+| Conversation    | Who can read                                                       | Who can write   |
+| --------------- | ------------------------------------------------------------------ | --------------- |
+| Direct message  | The two members. The admin only while oversight is on (read-only). | The two members |
+| Project channel | The project's members and the admin                                | Same            |
+| Crew room       | All active members                                                 | Same            |
+
+Admin oversight (decided 7 November 2026): direct messages are private from the admin by default. The admin has a switch that lets them read direct messages. It is silent (crew are not told when it is switched on) and every switch is written to the audit log. The Messages screen carries a permanent line telling crew that the admin can enable oversight, so "private" is never untrue. The admin can never post as someone else.
+
+Honest limits: messages are protected by HTTPS in transit and encrypted at rest by the host, but they are not end-to-end encrypted, so the owner of the backend project can technically read the database. End-to-end encryption for direct messages is a possible later milestone.
+
 ## 8. Architecture and data model
 
 The public site reads a static content snapshot and never calls the backend, so it stays up when the free backend is asleep. Only the portal uses the backend. A publish job turns approved content into a fresh snapshot.
@@ -143,6 +171,7 @@ Flow: Visitors use the site, which reads the snapshot. Crew and admin use the po
 | Repo cache         | Stars, languages, recent commits, contributors per repo                                                        | The publish job                                     |
 | Audit log          | Who changed what and when, with the previous value                                                             | The system only                                     |
 | Content snapshot   | A public JSON copy of members, projects, repo details and avatar records                                       | The publish job only                                |
+| Conversations      | Direct, project and crew-room threads, their messages, read marks, member status lines and the oversight flag  | Members of the thread; admin for the oversight flag |
 
 GitHub integration: project cards show stars, languages, recent commits and contributors. The publish job fetches them with a server-side token and stores them in the snapshot, so visitors' browsers never call the GitHub API. A contributor whose GitHub username matches a crew profile appears as that member's bust. Crew can sign in with GitHub.
 
@@ -156,14 +185,16 @@ Milestones 2 and 3 were built as a 3D vault and project rooms, then retired in t
 
 Each step ends with something the user can open and test. A step is finished only when its "Done when" is true. Briefs are in `docs/milestones/`.
 
-| Step                | Done when                                                                                                                                                                                                                              |
-| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1 Foundation        | Repo, free hosting and backend set up; the admin can sign in; database rules enforce the three roles; the publish job builds a snapshot and the empty site loads from it; direct links work on the host; the bolder favicon cut exists |
-| 2 Vault v1          | Intro plays and can be skipped; the camera travels the five beats by scroll, keys and touch; pedestals and busts are placeholders; lite mode and reduced-motion mode work; every address also serves readable HTML                     |
-| 3 Project rooms     | Both projects open in rooms with device mockups, store and GitHub buttons and repo details from the snapshot; each room has its own working link                                                                                       |
-| 4 Avatars           | A member can build, save and reload an avatar; all five busts appear in the crew gallery from stored, versioned records                                                                                                                |
-| 5 Portal            | Admin can issue an invite code and a member can redeem it; crew can edit their profile and join or leave projects; only the admin can add or delete projects; the audit log shows changes and the admin can revert one                 |
-| 6 Polish and launch | Sound, cursor and hover physics done; performance targets met or gaps listed; accessibility checks pass; trademark search complete; real content in; site published                                                                    |
+| Step                | Done when                                                                                                                                                                                                                                 |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1 Foundation        | Repo, free hosting and backend set up; the admin can sign in; database rules enforce the three roles; the publish job builds a snapshot and the empty site loads from it; direct links work on the host; the bolder favicon cut exists    |
+| 2 Vault v1          | Intro plays and can be skipped; the camera travels the five beats by scroll, keys and touch; pedestals and busts are placeholders; lite mode and reduced-motion mode work; every address also serves readable HTML                        |
+| 3 Project rooms     | Both projects open in rooms with device mockups, store and GitHub buttons and repo details from the snapshot; each room has its own working link                                                                                          |
+| 4 Avatars           | A member can build, save and reload an avatar; all five busts appear in the crew gallery from stored, versioned records                                                                                                                   |
+| 5 Portal            | Admin can issue an invite code and a member can redeem it; crew can edit their profile and join or leave projects; only the admin can add or delete projects; the audit log shows changes and the admin can revert one                    |
+| 6 Polish and launch | Sound, cursor and hover physics done; performance targets met or gaps listed; accessibility checks pass; trademark search complete; real content in; site published                                                                       |
+| 7 Messaging         | Direct messages, project channels and the crew room work live between two signed-in members; the database blocks everyone else (see section 7a); unread counts, status and presence work; the admin oversight switch works and is audited |
+| 8 Workspace         | Task board, project notes, shared calendar, activity feed and search work for project members and are blocked for everyone else                                                                                                           |
 
 ## 10. Risks and mitigations
 

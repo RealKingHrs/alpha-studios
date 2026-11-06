@@ -72,12 +72,23 @@ export function Certificates({ me }: { me: MemberRow }) {
       </p>
       {list.data?.length ? (
         <ul className="cert-list" aria-label="Your certificates">
-          {list.data.map((c) => (
-            <li key={c.id} className="card">
-              <strong>{c.title}</strong>
-              <span className="hint">{[c.issuer, c.issued_on].filter(Boolean).join(' · ')}</span>
-              <button type="button" className="secondary" onClick={() => void remove(c.id)}>
-                Remove {c.title}
+          {list.data.map((c, i) => (
+            <li key={c.id} className="cert" style={{ '--i': i } as React.CSSProperties}>
+              <span className="cert-mark" aria-hidden="true">
+                a<span>.</span>
+              </span>
+              <span className="cert-text">
+                <strong>{c.title}</strong>
+                <span className="hint">{[c.issuer, c.issued_on].filter(Boolean).join(' · ')}</span>
+              </span>
+              <button
+                type="button"
+                className="icon-btn"
+                aria-label={`Remove ${c.title}`}
+                title="Remove"
+                onClick={() => void remove(c.id)}
+              >
+                <span aria-hidden="true">×</span>
               </button>
             </li>
           ))}

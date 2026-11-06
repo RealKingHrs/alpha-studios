@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { PIN_HANDOFF_KEY, isPin } from '../../ui/pin';
 import { supabase } from '../supabase';
+import { AuthFrame } from '../ui';
 
 const fnUrl = `${import.meta.env.VITE_SUPABASE_URL as string}/functions/v1/portal-pin`;
 const apikey = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
@@ -90,19 +91,19 @@ export function PinLogin() {
 
   if (step === 'checking')
     return (
-      <main className="auth">
+      <AuthFrame>
         <section className="card" aria-labelledby="login-title">
           <h1 id="login-title">Checking your PIN</h1>
           <p role="status" className="hint">
             One moment. We are sending your code.
           </p>
         </section>
-      </main>
+      </AuthFrame>
     );
 
   if (step === 'none')
     return (
-      <main className="auth">
+      <AuthFrame>
         <section className="card" aria-labelledby="login-title">
           <p className="mono hint">Crew only</p>
           <h1 id="login-title">Enter your PIN</h1>
@@ -114,11 +115,11 @@ export function PinLogin() {
             Open the PIN wheels
           </a>
         </section>
-      </main>
+      </AuthFrame>
     );
 
   return (
-    <main className="auth">
+    <AuthFrame>
       <section className="card" aria-labelledby="login-title">
         <p className="mono hint">Crew only</p>
         <h1 id="login-title">Check your email</h1>
@@ -154,6 +155,6 @@ export function PinLogin() {
           </p>
         )}
       </section>
-    </main>
+    </AuthFrame>
   );
 }

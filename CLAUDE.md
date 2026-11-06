@@ -41,6 +41,11 @@ Read `docs/SPEC.md` before any work. It is the source of truth. If this file and
 - `assets/logo/`: the wordmark lockup, the "a." icon cut (`alpha-a-icon.png`) and the favicon.
 - `content/CONTENT-TEMPLATE.md`: the words and images the user must supply.
 
+## Crew workspace notes
+
+- Messages, channels, status and every later workspace table are private. They are never read by the publish job or put in `content.json`; `tests/messaging.test.ts` fails if the snapshot code touches them.
+- The admin's oversight switch for direct messages is silent but always audited, and the Messages screen always carries the notice that it exists. Never remove either.
+
 ## Batch 9 notes
 
 - Founder credit is locked in the database and cannot be changed from the app; never add app code that tries.
