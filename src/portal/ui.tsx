@@ -1,4 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react';
+import { Wordmark } from '../brand/Wordmark';
+import { Stamp } from '../site/fx/Stamp';
 
 /** A loading state keeps the page's heading, so the page never loses its structure while data arrives. */
 export const Loading = ({ what = 'Loading.', title }: { what?: string; title?: string }) => (
@@ -34,7 +36,28 @@ export function ErrorState({
   );
 }
 
-export const Empty = ({ children }: { children: ReactNode }) => <p className="state">{children}</p>;
+export const Empty = ({ children }: { children: ReactNode }) => (
+  <p className="state empty">
+    <span className="empty-mark" aria-hidden="true">
+      a<span>.</span>
+    </span>
+    {children}
+  </p>
+);
+
+/** The frame around sign-in screens: the studio's mark and stamp on one side, the form on the other. */
+export function AuthFrame({ children }: { children: ReactNode }) {
+  return (
+    <main className="auth">
+      <aside className="auth-brand">
+        <Wordmark />
+        <p className="auth-line">The crew's private office.</p>
+        <Stamp className="auth-stamp" />
+      </aside>
+      <div className="auth-body">{children}</div>
+    </main>
+  );
+}
 
 export function Field({
   label,

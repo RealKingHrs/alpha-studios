@@ -1,0 +1,89 @@
+/* The studio's marks inside the portal: the "alpha." wordmark and the round rubber stamp.
+   The same rules the public site uses; the portal does not load the site's stylesheets, so they live here too. */
+.wm {
+  display: inline-grid;
+  justify-items: end;
+  line-height: 0.8;
+  color: currentColor;
+}
+.wm-word {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 800;
+  font-size: 1.9em;
+  letter-spacing: -0.06em;
+  padding-right: 0.04em;
+}
+.wm-dot {
+  color: var(--gold);
+}
+.wm-sub {
+  margin-top: 0.42em;
+  font-family: var(--font-mono);
+  font-size: 0.42em;
+  letter-spacing: 0.46em;
+  text-transform: uppercase;
+  margin-right: -0.46em;
+}
+
+.fx-stamp {
+  width: 128px;
+  color: var(--ink-fixed);
+  rotate: -9deg;
+  overflow: visible;
+}
+.fx-stamp-ring {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 4;
+}
+.fx-stamp-ring--thin {
+  stroke-width: 2;
+}
+.fx-stamp-text {
+  fill: currentColor;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.fx-stamp-a {
+  fill: currentColor;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 800;
+  font-size: 84px;
+  letter-spacing: -0.06em;
+}
+.fx-stamp-dot {
+  fill: var(--gold);
+}
+.fx-stamp-turn {
+  transform-origin: 100px 100px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .fx-stamp-turn {
+    animation: stamp-turn 40s linear infinite;
+  }
+  .fx-stamp {
+    animation: stamp-thump var(--dur-slow) var(--ease) 0.4s both;
+    transition: rotate var(--dur-base) var(--ease);
+  }
+  .fx-stamp:hover {
+    rotate: 4deg;
+  }
+}
+@keyframes stamp-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes stamp-thump {
+  from {
+    scale: 1.7;
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+}

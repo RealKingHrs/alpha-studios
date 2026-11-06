@@ -30,7 +30,20 @@ export function useAsync<T>(load: () => Promise<T>, key: string) {
 
   const reload = useCallback(() => setTick((t) => t + 1), []);
   const current = result && result.key === full ? result : null;
-  return { data: current?.data, error: current?.error ?? null, loading: current === null, reload };
+  // A reload of the same data keeps the last result on screen, so saving something does not blank the page,
+  // replay its entrance animations or lose the reader's place. Only new data (a different key) shows loading.
+  const stale =
+    !current && result && result.key.startsWith(`${key}#`) && result.data !== undefined
+      ? result
+      : null;
+  const shown = current ?? stale;
+  return {
+    data: shown?.data,
+    error: current?.error ?? null,
+    loading: shown === null,
+    refreshing: stale !== null,
+    reload,
+  };
 }
 
 /** Turns a Supabase result into data or a thrown, readable error. */

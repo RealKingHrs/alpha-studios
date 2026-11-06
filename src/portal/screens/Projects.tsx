@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, type CSSProperties } from 'react';
+import { Face } from '../Face';
 import { supabase } from '../supabase';
 import type { MemberRow, ProjectRow } from '../types';
 import { must, useAsync } from '../useAsync';
@@ -6,6 +7,16 @@ import { ConfirmButton, Empty, ErrorState, Field, Loading, SAVED } from '../ui';
 
 const PLATFORMS = ['ios', 'macos', 'android', 'web'] as const;
 const DEVICES = ['iphone', 'android', 'mac', 'browser'] as const;
+const STATUS_LABEL: Record<string, string> = {
+  live: 'Live',
+  beta: 'Beta',
+  'in-development': 'In development',
+};
+const STATUS_ACCENT: Record<string, string> = {
+  live: 'mint',
+  beta: 'sun',
+  'in-development': 'sky',
+};
 const slugify = (s: string) =>
   s
     .toLowerCase()
@@ -25,8 +36,8 @@ export function Projects({ me }: { me: MemberRow }) {
       must<Array<{ project_id: string; member_id: string; role: string }>>(
         db.from('project_members').select('project_id, member_id, role'),
       ),
-      must<Array<{ id: string; name: string }>>(
-        db.from('members').select('id, name').order('name'),
+      must<Array<{ id: string; name: string; avatar?: unknown }>>(
+        db.from('members').select('id, name, avatar').order('name'),
       ),
     ]);
     const mine = all.filter((m) => m.member_id === me.id);
@@ -63,17 +74,30 @@ export function Projects({ me }: { me: MemberRow }) {
       {data.projects.length === 0 && (
         <Empty>No projects yet.{admin ? ' Add the first one below.' : ''}</Empty>
       )}
-      <ul className="rows">
-        {data.projects.map((p) => {
+      <ul className="proj-list">
+        {data.projects.map((p, idx) => {
           const member = data.mine.has(p.id);
           const canEdit = admin || member;
           return (
-            <li key={p.id} className="row">
-              <div className="row-head">
-                <strong>{p.name}</strong>
-                <span className="mono hint">{p.status}</span>
-                <span className="grow" />
+            <li
+              key={p.id}
+              className={`proj${editing === p.id ? ' is-open' : ''}`}
+              style={
+                {
+                  '--i': idx,
+                  '--status': `var(--${STATUS_ACCENT[p.status] ?? 'sky'})`,
+                } as CSSProperties
+              }
+            >
+              <header className="proj-head">
+                <span className="proj-tag">{STATUS_LABEL[p.status] ?? p.status}</span>
+                <h2 className="proj-name">{p.name}</h2>
                 {member && !admin && <span className="badge">Assigned to you</span>}
+              </header>
+              {p.summary && <p className="proj-sum">{p.summary}</p>}
+              <div className="proj-foot">
+                <TeamFaces ids={[...(data.onProject.get(p.id) ?? [])]} people={data.people} />
+                <span className="grow" />
                 {canEdit && (
                   <button
                     type="button"
@@ -104,38 +128,42 @@ export function Projects({ me }: { me: MemberRow }) {
                   <p className="hint">
                     Only the people you pick can edit this project. Crew cannot add themselves.
                   </p>
-                  <div className="s-brief-chips assign-chips">
+                  <ul className="pick-grid">
                     {data.people.map((m) => {
                       const on = data.onProject.get(p.id)?.has(m.id) ?? false;
                       return (
-                        <button
-                          key={m.id}
-                          type="button"
-                          className="chip"
-                          aria-pressed={on}
-                          onClick={() =>
-                            act(
-                              () =>
+                        <li key={m.id}>
+                          <button
+                            type="button"
+                            className="pick"
+                            aria-pressed={on}
+                            title={on ? `Remove ${m.name}` : `Add ${m.name}`}
+                            onClick={() =>
+                              act(
+                                () =>
+                                  on
+                                    ? db
+                                        .from('project_members')
+                                        .delete()
+                                        .eq('project_id', p.id)
+                                        .eq('member_id', m.id)
+                                    : db
+                                        .from('project_members')
+                                        .insert({ project_id: p.id, member_id: m.id }),
                                 on
-                                  ? db
-                                      .from('project_members')
-                                      .delete()
-                                      .eq('project_id', p.id)
-                                      .eq('member_id', m.id)
-                                  : db
-                                      .from('project_members')
-                                      .insert({ project_id: p.id, member_id: m.id }),
-                              on
-                                ? `${m.name} was removed from ${p.name}.`
-                                : `${m.name} was added to ${p.name}.`,
-                            )
-                          }
-                        >
-                          {m.name}
-                        </button>
+                                  ? `${m.name} was removed from ${p.name}.`
+                                  : `${m.name} was added to ${p.name}.`,
+                              )
+                            }
+                          >
+                            <Face person={m} size={46} />
+                            <span className="pick-name">{m.name.split(' ')[0]}</span>
+                            <span className="pick-tick" aria-hidden="true" />
+                          </button>
+                        </li>
                       );
                     })}
-                  </div>
+                  </ul>
                 </fieldset>
               )}
               {member && (
@@ -484,5 +512,36 @@ function RoleField({
       />
       <span className="hint">Saved when you leave the box. Example: Backend lead.</span>
     </div>
+  );
+}
+
+/** The faces of the people on a project, overlapping, with a count for the rest. */
+function TeamFaces({
+  ids,
+  people,
+}: {
+  ids: string[];
+  people: Array<{ id: string; name: string; avatar?: unknown }>;
+}) {
+  const team = ids
+    .map((id) => people.find((p) => p.id === id))
+    .filter((p): p is { id: string; name: string; avatar?: unknown } => Boolean(p));
+  if (!team.length) return <span className="hint">Nobody assigned yet</span>;
+  const shown = team.slice(0, 5);
+  return (
+    <span
+      className="team"
+      role="img"
+      aria-label={`On this project: ${team.map((t) => t.name).join(', ')}`}
+    >
+      {shown.map((t) => (
+        <span key={t.id} className="team-face" title={t.name}>
+          <Face person={t} size={36} />
+        </span>
+      ))}
+      {team.length > shown.length && (
+        <span className="team-more">+{team.length - shown.length}</span>
+      )}
+    </span>
   );
 }

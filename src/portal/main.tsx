@@ -1,20 +1,33 @@
 import { createRoot } from 'react-dom/client';
 import '../styles/base.css';
 import '../styles/wheels.css';
+import '../styles/brand.css';
 import '../styles/portal.css';
+import '../styles/shell.css';
+import '../styles/workspace.css';
+import '../styles/cards.css';
+import { Wordmark } from '../brand/Wordmark';
 import { AuthProvider, useAuth } from './auth';
 import { PinLogin } from './screens/PinLogin';
 import { Shell } from './Shell';
 import { configured } from './supabase';
-import { Loading, OfflineBanner } from './ui';
+import { AuthFrame, OfflineBanner } from './ui';
 
 function Gate() {
   const { state, signOut } = useAuth();
-  if (state.status === 'loading') return <Loading what="Checking your sign-in." />;
+  if (state.status === 'loading')
+    return (
+      <main className="boot">
+        <Wordmark />
+        <p role="status" className="state">
+          Checking your sign-in.
+        </p>
+      </main>
+    );
   if (state.status === 'signed-out') return <PinLogin />;
   if (state.status === 'no-profile')
     return (
-      <main className="auth">
+      <AuthFrame>
         <section className="card">
           <h1>No profile on this login</h1>
           <p className="hint">
@@ -25,7 +38,7 @@ function Gate() {
             Sign out
           </button>
         </section>
-      </main>
+      </AuthFrame>
     );
   return <Shell me={state.me} />;
 }
