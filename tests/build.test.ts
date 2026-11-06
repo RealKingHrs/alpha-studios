@@ -13,6 +13,14 @@ function walk(dir: string): string[] {
   });
 }
 
+/** Up to `n` built pages whose path (inside dist) matches. */
+const pick = (re: RegExp, n: number) =>
+  walk('dist')
+    .map((f) => f.replace(/^dist\//, ''))
+    .filter((f) => re.test(f))
+    .sort()
+    .slice(0, n);
+
 d('built site', () => {
   const routes = [
     'index.html',
@@ -23,15 +31,17 @@ d('built site', () => {
     'launchpad/index.html',
     'about/index.html',
     'portal/index.html',
-    'projects/bioscanner/index.html',
-    'projects/velocity/index.html',
-    'crew/hari-rudran-sunil/index.html',
-    // A certificate page: its id comes from whatever content was built (the seed or the live database), not a fixed one.
-    ...walk('dist')
-      .map((f) => f.replace(/^dist\//, ''))
-      .filter((f) => /^crew\/[^/]+\/certificates\/[^/]+\/index\.html$/.test(f))
-      .slice(0, 1),
+    // Project, crew and certificate pages come from whatever content was built (the seed or the live database), so
+    // adding, renaming or deleting one in the portal never breaks a publish.
+    ...pick(/^projects\/[^/]+\/index\.html$/, 2),
+    ...pick(/^crew\/[^/]+\/index\.html$/, 1),
+    ...pick(/^crew\/[^/]+\/certificates\/[^/]+\/index\.html$/, 1),
   ];
+
+  it('builds at least one project page and one crew page', () => {
+    expect(pick(/^projects\/[^/]+\/index\.html$/, 1)).toHaveLength(1);
+    expect(pick(/^crew\/[^/]+\/index\.html$/, 1)).toHaveLength(1);
+  });
 
   it.each(routes)('%s serves readable HTML with title and share image', (r) => {
     const html = readFileSync(join('dist', r), 'utf8');
