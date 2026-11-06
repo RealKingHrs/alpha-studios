@@ -397,29 +397,21 @@
   font-size: 0.86rem;
   white-space: nowrap;
   transform: translate(-50%, -50%) rotate(var(--a)) translateY(-210px) rotate(calc(var(--a) * -1));
-  animation: node-orbit 55s linear infinite;
   box-shadow: 0 10px 30px -10px color-mix(in srgb, var(--accent) 60%, transparent);
 }
 .lp-node b {
   font-size: 0.66rem;
   opacity: 0.7;
 }
-/* Each node starts a third of a turn further on, by delaying the same loop. */
+/* The three steps sit a third of a turn apart on the ring, still, so every browser draws them the same. */
+.lp-node--1 {
+  --a: 0deg;
+}
 .lp-node--2 {
-  animation-delay: -18.333s;
+  --a: 120deg;
 }
 .lp-node--3 {
-  animation-delay: -36.667s;
-}
-@property --a {
-  syntax: '<angle>';
-  inherits: false;
-  initial-value: 0deg;
-}
-@keyframes node-orbit {
-  to {
-    --a: 360deg;
-  }
+  --a: 240deg;
 }
 .lp-ring--1 {
   animation: ring-turn 89s linear infinite;
@@ -427,20 +419,6 @@
 @keyframes ring-turn {
   to {
     rotate: 360deg;
-  }
-}
-html.reduce-motion .lp-node--2 {
-  --a: 120deg;
-}
-html.reduce-motion .lp-node--3 {
-  --a: 240deg;
-}
-@media (prefers-reduced-motion: reduce) {
-  .lp-node--2 {
-    --a: 120deg;
-  }
-  .lp-node--3 {
-    --a: 240deg;
   }
 }
 @media (max-width: 520px) {

@@ -1,4 +1,4 @@
-import { motion, useMotionValueEvent, useScroll, useSpring, useTransform } from 'motion/react';
+import { motion, useMotionValueEvent, useScroll } from 'motion/react';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import type { Project, Snapshot } from '../content/schema';
@@ -15,8 +15,8 @@ import { Shapes } from './fx/Shapes';
 import { Stamp } from './fx/Stamp';
 import { WordLoop } from './fx/WordLoop';
 import { useMotionOn, useWide } from './motion/context';
-import { coverAmount, coverProgress, currentSection } from './motion/helpers';
-import { STACK_STEP, canStack, stickyTopFor } from './motion/viewport';
+import { currentSection } from './motion/helpers';
+import { canStack, stickyTopFor } from './motion/viewport';
 import { Magnetic } from './motion/Magnetic';
 import { scrollToTop } from './motion/SmoothScroll';
 import { SplitText } from './motion/SplitText';
@@ -72,7 +72,11 @@ export function Header({ route, link, snap }: { route: Route; link: LinkFn; snap
         <nav aria-label="Main" className="s-nav" onPointerLeave={() => setHover(null)}>
           <ul>
             {NAV.map(([path, label], i) => (
-              <li key={path} className={`a-${accentFor(i)}`} onPointerEnter={() => setHover(path)}>
+              <li
+                key={path}
+                className={`a-${accentFor(i)} ${pill === path ? 'is-on' : ''}`}
+                onPointerEnter={() => setHover(path)}
+              >
                 {pill === path &&
                   (on ? (
                     <motion.span
@@ -102,13 +106,12 @@ export function Header({ route, link, snap }: { route: Route; link: LinkFn; snap
 /** A thin line under the header that fills as you read down the page. */
 function ProgressLine() {
   const { scrollYProgress } = useScroll();
-  const x = useSpring(scrollYProgress, { stiffness: 220, damping: 40 });
   const on = useMotionOn();
   return (
     <motion.span
       className="s-progress"
       aria-hidden="true"
-      style={on ? { scaleX: x } : { scaleX: 0 }}
+      style={on ? { scaleX: scrollYProgress } : { scaleX: 0 }}
     />
   );
 }
@@ -272,10 +275,6 @@ export function Footer({ link }: { link: LinkFn }) {
  */
 export function Hero({ snap, link }: { snap: Snapshot; link: LinkFn }) {
   const ref = useRef<HTMLElement>(null);
-  const on = useMotionOn();
-  const { scrollYProgress: p } = useScroll({ target: ref, offset: ['start start', 'end start'] });
-  const lineA = useTransform(p, [0, 1], ['0%', '-12%']);
-  const lineB = useTransform(p, [0, 1], ['0%', '10%']);
 
   const platforms = new Set(snap.projects.flatMap((x) => x.platforms)).size;
   const proof = [
@@ -287,7 +286,7 @@ export function Hero({ snap, link }: { snap: Snapshot; link: LinkFn }) {
 
   return (
     <section ref={ref} className="s-hero" aria-labelledby="hero-title">
-      <Shapes progress={p} />
+      <Shapes />
       <div className="s-wrap s-hero-top">
         <p className="s-eyebrow mono">Native apps · Web platforms · APIs</p>
         {latest && (
@@ -300,12 +299,12 @@ export function Hero({ snap, link }: { snap: Snapshot; link: LinkFn }) {
       <h1 id="hero-title" className="display s-hero-title">
         <span className="visually-hidden">{headlineText()}</span>
         <span aria-hidden="true">
-          <motion.span className="s-hero-line" style={on ? { x: lineA } : undefined}>
+          <span className="s-hero-line">
             <SplitText text={HEADLINE[0]} delay={0.1} step={0.06} />
-          </motion.span>
-          <motion.span className="s-hero-line s-hero-accent" style={on ? { x: lineB } : undefined}>
+          </span>
+          <span className="s-hero-line s-hero-accent">
             <WordLoop words={HEADLINE_LOOP} />
-          </motion.span>
+          </span>
         </span>
       </h1>
       <div className="s-wrap s-hero-body">
@@ -476,8 +475,6 @@ export function WorkList({ snap, link, asset }: { snap: Snapshot; link: LinkFn; 
   const on = useMotionOn();
   const ref = useRef<HTMLDivElement>(null);
   const [stack, setStack] = useState(false);
-  const { scrollY } = useScroll();
-
   useEffect(() => {
     const list = ref.current;
     if (!on || !list) {
@@ -505,26 +502,6 @@ export function WorkList({ snap, link, asset }: { snap: Snapshot; link: LinkFn; 
     };
   }, [on]);
 
-  useMotionValueEvent(scrollY, 'change', () => {
-    const list = ref.current;
-    if (!list) return;
-    const panels = [...list.children] as HTMLElement[];
-    const top = stickyTopFor(innerHeight);
-    panels.forEach((el, i) => {
-      const next = panels[i + 1];
-      const amount =
-        stack && next
-          ? coverAmount(
-              coverProgress(
-                next.getBoundingClientRect().top,
-                innerHeight,
-                top + (i + 1) * STACK_STEP,
-              ),
-            )
-          : 0;
-      el.style.setProperty('--cover', amount.toFixed(3));
-    });
-  });
   return (
     <div className="s-work-list" ref={ref} data-stack={stack ? 'on' : 'off'}>
       {snap.projects.map((p, i) => (

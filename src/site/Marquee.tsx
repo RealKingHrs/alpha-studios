@@ -1,14 +1,7 @@
-import {
-  motion,
-  useAnimationFrame,
-  useScroll,
-  useSpring,
-  useTransform,
-  useVelocity,
-} from 'motion/react';
+import { useAnimationFrame } from 'motion/react';
 import { useRef } from 'react';
 import { useMotionOn } from './motion/context';
-import { marqueeStep, velocitySkew } from './motion/helpers';
+import { marqueeStep } from './motion/helpers';
 import { marqueeBase } from './motion/viewport';
 
 /**
@@ -31,16 +24,13 @@ export function Marquee({
   const track = useRef<HTMLDivElement>(null);
   const first = useRef<HTMLUListElement>(null);
   const x = useRef(0);
-  const { scrollY } = useScroll();
-  const velocity = useSpring(useVelocity(scrollY), { stiffness: 300, damping: 60 });
-  const skewX = useTransform(velocity, (v) => velocitySkew(v));
 
   useAnimationFrame((_, delta) => {
     if (!on || !track.current || !first.current) return;
     x.current = marqueeStep(
       x.current,
       delta / 1000,
-      velocity.get(),
+      0,
       first.current.offsetWidth,
       marqueeBase(innerWidth),
     );
@@ -64,13 +54,13 @@ export function Marquee({
       className={`marquee a-${accent} ${reverse ? 'marquee--reverse' : ''} ${on ? 'is-js' : ''}`}
       aria-label={label}
     >
-      <motion.div style={on ? { skewX } : undefined}>
+      <div>
         <div className="marquee-track" ref={track}>
           {row(false, first)}
           {row(true)}
           {row(true)}
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

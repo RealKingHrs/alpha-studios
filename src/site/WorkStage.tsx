@@ -1,10 +1,9 @@
-import { motion, useMotionValue, useScroll, useSpring, useTransform } from 'motion/react';
+import { motion, useMotionValue, useSpring } from 'motion/react';
 import { useRef } from 'react';
 import type { Project } from '../content/schema';
 import { DeviceMock } from './DeviceMock';
 import { useMotionOn } from './motion/context';
 import { tiltFor } from './motion/helpers';
-import { driftPercent } from './motion/viewport';
 
 type Shots = Project['screenshots'];
 
@@ -25,11 +24,6 @@ export function WorkStage({
 }) {
   const on = useMotionOn();
   const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
-  const y0 = useTransform(scrollYProgress, [0, 1], [driftPercent(0.5), driftPercent(-0.5)]);
-  const y1 = useTransform(scrollYProgress, [0, 1], [driftPercent(1.1), driftPercent(-1.1)]);
-  const y2 = useTransform(scrollYProgress, [0, 1], [driftPercent(-0.2), driftPercent(0.8)]);
-  const ys = [y0, y1, y2];
   const rx = useSpring(useMotionValue(0), { stiffness: 120, damping: 16 });
   const ry = useSpring(useMotionValue(0), { stiffness: 120, damping: 16 });
 
@@ -56,13 +50,9 @@ export function WorkStage({
         style={on ? { rotateX: rx, rotateY: ry, transformPerspective: 1300 } : undefined}
       >
         {shots.map((s, i) => (
-          <motion.div
-            key={s.src}
-            className={`device-slot d${i}`}
-            style={on ? { y: ys[i % 3] } : undefined}
-          >
+          <div key={s.src} className={`device-slot d${i}`}>
             <DeviceMock shot={s} src={asset(`/${s.src}`)} label={name} />
-          </motion.div>
+          </div>
         ))}
       </motion.div>
     </div>

@@ -17,25 +17,15 @@ export function Stamp({
     <svg className={`fx-stamp ${className}`.trim()} viewBox="0 0 200 200" aria-hidden="true">
       <defs>
         <path id={`r${id}`} d={ring} />
-        <filter id={`f${id}`} x="-5%" y="-5%" width="110%" height="110%">
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency="0.9"
-            numOctaves="2"
-            seed="7"
-            result="n"
-          />
-          <feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" />
-        </filter>
       </defs>
-      <g filter={`url(#f${id})`}>
+      <g>
         <circle cx="100" cy="100" r="92" className="fx-stamp-ring" />
         <circle cx="100" cy="100" r="58" className="fx-stamp-ring fx-stamp-ring--thin" />
         <text x="96" y="124" textAnchor="middle" className="fx-stamp-a">
           a<tspan className="fx-stamp-dot">.</tspan>
         </text>
       </g>
-      {/* Outside the filter: it turns every frame, and a filter would be redrawn every frame with it. */}
+      {/* The ring of text turns slowly; the ring and the a. stay still. */}
       <g className="fx-stamp-turn">
         <text className="fx-stamp-text">
           <textPath href={`#r${id}`} startOffset="0" textLength="440" lengthAdjust="spacing">

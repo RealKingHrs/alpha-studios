@@ -47,8 +47,20 @@ export function useCryptexTriggers(open: () => void) {
   }, [open]);
 }
 
+/** Where the portal leaves a message for the door when a PIN was not accepted. Same tab only. */
+export const DOOR_NOTE_KEY = 'alpha:door-note';
+
 export function Cryptex({ link, onClose }: { link: LinkFn; onClose: () => void }) {
   const [letters, setLetters] = useState(PIN_START.split(''));
+  const [note] = useState(() => {
+    try {
+      const n = sessionStorage.getItem(DOOR_NOTE_KEY);
+      sessionStorage.removeItem(DOOR_NOTE_KEY);
+      return n ?? '';
+    } catch {
+      return '';
+    }
+  });
   const panel = useRef<HTMLDivElement>(null);
 
   const go = () => {
@@ -95,14 +107,16 @@ export function Cryptex({ link, onClose }: { link: LinkFn; onClose: () => void }
       <div ref={panel} className="cx" role="dialog" aria-modal="true" aria-labelledby="cx-title">
         <p className="mono cx-kicker">Crew only</p>
         <h2 id="cx-title" className="display">
-          Set your PIN
+          Enter your PIN
         </h2>
         <p className="cx-hint">
           Turn each wheel to your own five-character PIN. Arrow keys, typing and the scroll wheel
           work too.
         </p>
         <PinWheels value={letters} onChange={setLetters} />
-        <p className="cx-status" role="status" />
+        <p className="cx-status" role="status">
+          {note}
+        </p>
         <button type="button" className="s-btn s-btn--ink" onClick={go}>
           Continue to the portal
         </button>

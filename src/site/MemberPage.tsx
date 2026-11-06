@@ -1,4 +1,3 @@
-import { motion, useScroll, useTransform } from 'motion/react';
 import { useRef } from 'react';
 import type { Snapshot } from '../content/schema';
 import { Portrait } from '../avatar/Portrait';
@@ -31,9 +30,6 @@ const SOCIAL: Array<[string, string]> = [
 export function MemberPage({ snap, slug, link }: { snap: Snapshot; slug: string; link: LinkFn }) {
   const on = useMotionOn();
   const hero = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: hero, offset: ['start start', 'end start'] });
-  const giantY = useTransform(scrollYProgress, [0, 1], ['0%', '18%']);
-  const avatarY = useTransform(scrollYProgress, [0, 1], ['0%', '-10%']);
 
   const index = snap.members.findIndex((m) => m.slug === slug);
   const m = snap.members[index];
@@ -74,13 +70,9 @@ export function MemberPage({ snap, slug, link }: { snap: Snapshot; slug: string;
         aria-labelledby="pt"
         onPointerMove={onMove}
       >
-        <motion.span
-          className="mp-giant display"
-          aria-hidden="true"
-          style={on ? { y: giantY } : undefined}
-        >
+        <span className="mp-giant display" aria-hidden="true">
           {first}
-        </motion.span>
+        </span>
         <div className="s-wrap mp-hero-in">
           <p className="s-eyebrow mono">
             <a href={link('/crew/')}>Crew</a> / {m.role}
@@ -96,9 +88,9 @@ export function MemberPage({ snap, slug, link }: { snap: Snapshot; slug: string;
               {m.openTo && <li>Open to: {m.openTo}</li>}
             </ul>
           )}
-          <motion.div className="mp-avatar" style={on ? { y: avatarY } : undefined}>
+          <div className="mp-avatar">
             <WavingPortrait record={m.avatar} />
-          </motion.div>
+          </div>
           <span className="mp-into mono">{m.popPick ? `Into ${m.popPick}` : theme.caption}</span>
         </div>
         <a className="s-scroll-cue mono" href="#about">

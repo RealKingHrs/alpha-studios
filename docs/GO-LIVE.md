@@ -75,7 +75,7 @@ The site reads only a snapshot file, so it keeps working even if the portal's da
 
 1. In the project folder run `npm run admin:sql`. It prints **your PIN once** (write it down) and one block of SQL.
 2. Supabase, **SQL Editor**, paste that SQL and run it. It makes the Hari Rudran Sunil profile the single admin, registered to dustmail20@gmail.com, with your PIN.
-3. Open `https://realkinghrs.github.io/alpha-studios/`, type `cryptex`, set your PIN on the wheels, press Continue. A code arrives at dustmail20@gmail.com; enter it. You are in as admin.
+3. Open `https://realkinghrs.github.io/alpha-studios/`, type `cryptex`, enter your PIN on the wheels, press Continue. A code arrives at dustmail20@gmail.com; enter it. You are in as admin.
 
 ## Run the crew
 

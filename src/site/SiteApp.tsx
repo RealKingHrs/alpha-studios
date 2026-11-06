@@ -9,7 +9,7 @@ import { MotionProvider, useIsoLayoutEffect } from './motion/context';
 import { WIPE } from './motion/helpers';
 import { Cursor } from './motion/Cursor';
 import { useTapRipples } from './motion/ripples';
-import { scrollToTop, SmoothScroll } from './motion/SmoothScroll';
+import { scrollToTop } from './motion/SmoothScroll';
 import { PageWipe, type WipePhase } from './PageWipe';
 import {
   CaseStudy,
@@ -80,8 +80,19 @@ export function SiteApp({
     document.documentElement.classList.add('ready');
   }, [base, snap, firstVisit]);
 
+  // The portal sends people back here with ?door=1 when it needs their PIN, so the wheels live in one place only.
   const [cryptex, setCryptex] = useState(false);
   const openCryptex = useCallback(() => setCryptex(true), []);
+  useEffect(() => {
+    const q = new URLSearchParams(location.search);
+    if (q.get('door') !== '1') return;
+    q.delete('door');
+    const rest = q.toString();
+    history.replaceState(null, '', location.pathname + (rest ? `?${rest}` : '') + location.hash);
+    // Opened after the first paint, so what the server drew and what the browser draws first stay the same.
+    const t = setTimeout(() => setCryptex(true), 0);
+    return () => clearTimeout(t);
+  }, []);
   useCryptexTriggers(openCryptex);
   const enabled = allowed;
   useSpotlight(enabled && fine);
@@ -187,7 +198,6 @@ export function SiteApp({
         </main>
         <Footer link={link} />
         {route.name === 'home' && <SectionIndex labels={HOME_SECTIONS} />}
-        <SmoothScroll enabled={enabled} />
         {enabled && fine && <Cursor />}
         <PageWipe phase={phase} accent={WIPE_ACCENT[route.name] ?? 'sun'} />
         <FoundToast route={route} />

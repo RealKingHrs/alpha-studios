@@ -17,7 +17,7 @@ describe('the hidden crew entrance', () => {
 
   it('has no link to the portal in its markup, and carries no shared secret word', () => {
     expect(html).not.toContain('/portal/');
-    expect(html).toContain('Set your PIN');
+    expect(html).toContain('Enter your PIN');
     expect(html).not.toMatch(/ALPHA/);
   });
 
@@ -33,5 +33,16 @@ describe('the hidden crew entrance', () => {
       expect(page, path || 'home').not.toContain('/portal/app');
       expect(page, path || 'home').not.toMatch(/crew login/i);
     }
+  });
+});
+
+describe('one set of wheels', () => {
+  it('lives on the website only: the portal sends people back to it and never draws wheels of its own', async () => {
+    const { readFileSync } = await import('node:fs');
+    const portal = readFileSync('src/portal/screens/PinLogin.tsx', 'utf8');
+    expect(portal).not.toContain('PinWheels');
+    expect(portal).toContain('?door=1');
+    const site = readFileSync('src/site/SiteApp.tsx', 'utf8');
+    expect(site).toContain("get('door') !== '1'");
   });
 });

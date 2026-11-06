@@ -68,7 +68,7 @@
   inset: 4px 0;
   background: var(--accent);
 }
-.s-nav li:has(.s-nav-pill) a {
+.s-nav li.is-on a {
   color: var(--on-accent);
 }
 .s-dock-end {
@@ -614,19 +614,8 @@
   z-index: 1;
 }
 .s-work-list[data-stack='on'] .s-work {
-  will-change: transform;
   position: sticky;
   top: calc(var(--sticky, 92px) + var(--i, 0) * 20px);
-  transform: scale(calc(1 - var(--cover, 0) * 0.05));
-  transform-origin: 50% 0;
-}
-.s-work-list[data-stack='on'] .s-work::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--on-accent);
-  opacity: calc(var(--cover, 0) * 0.35);
-  pointer-events: none;
 }
 
 /* devices */
@@ -1088,6 +1077,7 @@
 }
 .s-hello--page,
 .s-lost {
+  min-height: 92vh;
   min-height: 92svh;
   display: grid;
   align-items: center;
@@ -1476,7 +1466,6 @@ html.reduce-motion .intro-word > span {
   display: block;
   background: var(--accent);
   border: var(--rule-w) solid var(--text);
-  animation: shape-drift var(--loop, 13s) var(--ease-in-out) infinite alternate;
 }
 .fx-shape--square {
   --loop: 21s;
@@ -1521,58 +1510,12 @@ html.reduce-motion .fx-shape {
     rgb(255 255 255 / 0.5),
     transparent 70%
   );
-  mix-blend-mode: soft-light;
   opacity: 0;
   transition: opacity var(--dur-base) var(--ease);
   pointer-events: none;
 }
 [data-spot]:hover::before {
   opacity: 1;
-}
-@supports (animation-timeline: view()) {
-  .s-rule,
-  .s-hero-top,
-  .s-contents ol {
-    transform-origin: 0 50%;
-    animation: rule-draw linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 90%;
-  }
-  .s-rule {
-    animation-name: rule-draw;
-  }
-  .s-hero-top,
-  .s-contents ol {
-    animation: none;
-  }
-  .s-work-stage {
-    animation: stage-rise linear both;
-    animation-timeline: view();
-    animation-range: entry 0% cover 40%;
-  }
-  .s-make-card,
-  .s-process li {
-    animation: card-rise linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 70%;
-  }
-}
-@keyframes rule-draw {
-  from {
-    transform: scaleX(0);
-  }
-}
-@keyframes stage-rise {
-  from {
-    translate: 0 48px;
-    opacity: 0.2;
-  }
-}
-@keyframes card-rise {
-  from {
-    translate: 0 36px;
-    opacity: 0;
-  }
 }
 @media (prefers-reduced-motion: reduce) {
   .d0 .device,
@@ -2007,17 +1950,6 @@ html.fx .cx-backdrop .cx-letter {
   display: inline-block;
 }
 
-/* paper grain over the whole page, very light */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 170;
-  pointer-events: none;
-  opacity: 0.03;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
 @media (prefers-reduced-motion: reduce) {
   .s-btn:hover::before,
   .s-make-card:hover::after,
@@ -2039,4 +1971,14 @@ html.reduce-motion .d1.device-slot,
 html.reduce-motion .d2.device-slot,
 html.reduce-motion .s-footer-logo {
   animation: none !important;
+}
+
+/* Anchor links glide to their spot the same way in every browser; the page itself scrolls natively. */
+html {
+  scroll-padding-top: 88px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.reduce-motion) {
+    scroll-behavior: smooth;
+  }
 }

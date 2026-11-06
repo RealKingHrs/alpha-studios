@@ -773,3 +773,16 @@ select {
   background: var(--text);
   color: var(--bg);
 }
+
+/* the link that sends people back to the website's PIN wheels looks like the primary button */
+.auth a.primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  background: var(--text);
+  color: var(--bg);
+}

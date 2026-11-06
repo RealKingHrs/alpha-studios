@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
-import { PIN_HANDOFF_KEY, PIN_LENGTH, PIN_START, isPin } from '../../ui/pin';
-import { PinWheels } from '../../ui/PinWheels';
+import { PIN_HANDOFF_KEY, isPin } from '../../ui/pin';
 import { supabase } from '../supabase';
 
 const fnUrl = `${import.meta.env.VITE_SUPABASE_URL as string}/functions/v1/portal-pin`;
 const apikey = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
+const DOOR_NOTE_KEY = 'alpha:door-note';
+/** The website's door, where the wheels are. It is the only place a PIN is set. */
+const DOOR = `${import.meta.env.BASE_URL}?door=1`;
 
 async function call(body: Record<string, unknown>) {
   const res = await fetch(fnUrl, {
@@ -22,49 +24,48 @@ async function call(body: Record<string, unknown>) {
 }
 
 /**
- * Two steps. First the five wheels: the person sets their own PIN. A right PIN sends a six-digit code to the email
- * the admin registered for them (shown masked). Then the code opens the portal. There are no passwords.
+ * The PIN is entered once, on the website's wheels, and handed to this tab. Here it is checked and a six-digit code
+ * is emailed; the code opens the portal. If the PIN is wrong or missing, the person is sent back to the wheels, so
+ * there is never a second set of wheels in the portal.
  */
 export function PinLogin() {
-  const [wheels, setWheels] = useState(PIN_START.split(''));
-  const [step, setStep] = useState<'pin' | 'code'>('pin');
+  const [step, setStep] = useState<'checking' | 'code' | 'none'>('checking');
+  const [pin, setPin] = useState('');
   const [hint, setHint] = useState('');
   const [code, setCode] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const pin = wheels.join('');
   const codeBox = useRef<HTMLInputElement>(null);
-  const handedOff = useRef(false);
+  const started = useRef(false);
 
-  async function start(value: string) {
-    setBusy(true);
-    setError(null);
-    try {
-      const r = await call({ action: 'start', pin: value });
-      setHint(r.hint ?? '');
-      setStep('code');
-    } catch (e) {
-      setError((e as Error).message);
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  // A PIN set on the website's hidden door is waiting in this tab. Take it, clear it, and carry on.
   useEffect(() => {
-    if (handedOff.current) return;
-    handedOff.current = true;
+    if (started.current) return;
+    started.current = true;
+    let waiting = '';
     try {
-      const waiting = sessionStorage.getItem(PIN_HANDOFF_KEY);
+      waiting = sessionStorage.getItem(PIN_HANDOFF_KEY) ?? '';
       sessionStorage.removeItem(PIN_HANDOFF_KEY);
-      if (waiting && isPin(waiting)) {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setWheels(waiting.split(''));
-        void start(waiting);
-      }
     } catch {
-      /* storage blocked: the person sets the wheels here */
+      /* storage blocked: send them to the door */
     }
+    if (!isPin(waiting)) {
+      setStep('none');
+      return;
+    }
+    setPin(waiting);
+    call({ action: 'start', pin: waiting })
+      .then((r) => {
+        setHint(r.hint ?? '');
+        setStep('code');
+      })
+      .catch((e: Error) => {
+        try {
+          sessionStorage.setItem(DOOR_NOTE_KEY, e.message);
+        } catch {
+          /* the door just opens without the note */
+        }
+        location.replace(DOOR);
+      });
   }, []);
 
   useEffect(() => {
@@ -87,63 +88,66 @@ export function PinLogin() {
     }
   }
 
+  if (step === 'checking')
+    return (
+      <main className="auth">
+        <section className="card" aria-labelledby="login-title">
+          <h1 id="login-title">Checking your PIN</h1>
+          <p role="status" className="hint">
+            One moment. We are sending your code.
+          </p>
+        </section>
+      </main>
+    );
+
+  if (step === 'none')
+    return (
+      <main className="auth">
+        <section className="card" aria-labelledby="login-title">
+          <p className="mono hint">Crew only</p>
+          <h1 id="login-title">Enter your PIN</h1>
+          <p className="hint">
+            Your PIN is entered on the wheels on the website. Open them, enter your PIN, and we will
+            email you a six-digit code.
+          </p>
+          <a className="primary wide" href={DOOR}>
+            Open the PIN wheels
+          </a>
+        </section>
+      </main>
+    );
+
   return (
     <main className="auth">
       <section className="card" aria-labelledby="login-title">
         <p className="mono hint">Crew only</p>
-        <h1 id="login-title">{step === 'pin' ? 'Set your PIN' : 'Check your email'}</h1>
-        {step === 'pin' ? (
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              void start(pin);
-            }}
-          >
-            <p className="hint">
-              Turn the {PIN_LENGTH} wheels to your own PIN (arrow keys, typing or the scroll wheel).
-              We will email you a six-digit code.
-            </p>
-            <PinWheels value={wheels} onChange={setWheels} />
-            <button type="submit" className="primary wide" disabled={busy}>
-              {busy ? 'Checking…' : 'Send my code'}
-            </button>
-          </form>
-        ) : (
-          <form onSubmit={verify}>
-            <p className="hint">
-              We sent a six-digit code to <strong>{hint}</strong>. It works for ten minutes.
-            </p>
-            <label htmlFor="otp" className="visually-hidden">
-              Six-digit code
-            </label>
-            <input
-              id="otp"
-              ref={codeBox}
-              className="otp"
-              inputMode="numeric"
-              autoComplete="one-time-code"
-              pattern="[0-9]*"
-              maxLength={8}
-              required
-              value={code}
-              onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
-            />
-            <button type="submit" className="primary wide" disabled={busy || code.length < 6}>
-              {busy ? 'Opening…' : 'Open the portal'}
-            </button>
-            <button
-              type="button"
-              className="link"
-              onClick={() => {
-                setStep('pin');
-                setCode('');
-                setError(null);
-              }}
-            >
-              Use a different PIN
-            </button>
-          </form>
-        )}
+        <h1 id="login-title">Check your email</h1>
+        <form onSubmit={verify}>
+          <p className="hint">
+            We sent a six-digit code to <strong>{hint}</strong>. It works for ten minutes.
+          </p>
+          <label htmlFor="otp" className="visually-hidden">
+            Six-digit code
+          </label>
+          <input
+            id="otp"
+            ref={codeBox}
+            className="otp"
+            inputMode="numeric"
+            autoComplete="one-time-code"
+            pattern="[0-9]*"
+            maxLength={8}
+            required
+            value={code}
+            onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
+          />
+          <button type="submit" className="primary wide" disabled={busy || code.length < 6}>
+            {busy ? 'Opening…' : 'Open the portal'}
+          </button>
+          <a className="link" href={DOOR}>
+            Use a different PIN
+          </a>
+        </form>
         {error && (
           <p role="alert" className="error">
             {error}

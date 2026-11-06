@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from 'motion/react';
+import { motion, useInView } from 'motion/react';
 import { useRef } from 'react';
 import { Reveal } from './Reveal';
 import { SplitText } from './motion/SplitText';
@@ -21,8 +21,7 @@ const STEPS = [
 export function Process() {
   const ref = useRef<HTMLElement>(null);
   const on = useMotionOn();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start 80%', 'end 60%'] });
-  const draw = useTransform(scrollYProgress, [0, 1], [0, 1]);
+  const seen = useInView(ref, { once: true, margin: '0px 0px -25% 0px' });
   return (
     <section
       ref={ref}
@@ -42,7 +41,11 @@ export function Process() {
         </h2>
         <div className="s-process-track">
           <span className="s-process-line" aria-hidden="true">
-            <motion.i style={on ? { scaleX: draw } : undefined} />
+            <motion.i
+              initial={on ? { scaleX: 0 } : false}
+              animate={on ? { scaleX: seen ? 1 : 0 } : undefined}
+              transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+            />
           </span>
           <ol>
             {STEPS.map(([title, text], i) => (
