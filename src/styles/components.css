@@ -942,8 +942,8 @@
 .mcard {
   position: relative;
   display: grid;
+  /* The portrait sets the height. A fixed ratio cut off the project tags whenever the panel grew taller. */
   grid-template-rows: 1fr auto;
-  aspect-ratio: 1 / 1.1;
   overflow: hidden;
   background: var(--accent);
   color: var(--on-accent);
