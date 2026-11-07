@@ -1,8 +1,19 @@
 import { Stamp } from '../../site/fx/Stamp';
+import { Face } from '../Face';
+import { timeLabel } from '../messaging';
 import { supabase } from '../supabase';
 import type { MemberRow } from '../types';
 import { Empty, ErrorState, Loading } from '../ui';
 import { must, useAsync } from '../useAsync';
+import {
+  activityLine,
+  dueLabel,
+  isoDate,
+  upcoming,
+  type ActivityRow,
+  type EventRow,
+  type TaskRow,
+} from '../workspace';
 
 const STATUS: Record<string, string> = {
   live: 'Live',
@@ -26,25 +37,54 @@ export function Home({ me, unread }: { me: MemberRow; unread: number }) {
   const admin = me.role === 'admin';
   const data = useAsync(async () => {
     const db = supabase!;
-    const [mine, projects, ideas, crew] = await Promise.all([
+    const today = isoDate(new Date());
+    const [mine, projects, ideas, crew, tasks, events, feed, people] = await Promise.all([
       must<Array<{ project_id: string }>>(
         db.from('project_members').select('project_id').eq('member_id', me.id),
       ),
       must<ProjectLite[]>(db.from('projects').select('id, name, summary, status').order('name')),
       db.from('submissions').select('id', { count: 'exact', head: true }).eq('status', 'new'),
       db.from('members').select('id', { count: 'exact', head: true }).eq('access_status', 'active'),
+      must<TaskRow[]>(
+        db
+          .from('tasks')
+          .select(
+            'id, project_id, title, details, status, assignee_id, due_on, created_by, created_at, updated_at, done_at',
+          )
+          .neq('status', 'done')
+          .limit(300),
+      ),
+      must<EventRow[]>(
+        db
+          .from('events')
+          .select('id, project_id, title, details, kind, starts_on, ends_on, created_by')
+          .gte('starts_on', today)
+          .order('starts_on')
+          .limit(40),
+      ),
+      must<ActivityRow[]>(
+        db.from('activity').select('*').order('at', { ascending: false }).limit(6),
+      ),
+      must<Array<{ id: string; name: string; avatar?: unknown }>>(
+        db.from('members').select('id, name, avatar'),
+      ),
     ]);
     const ids = new Set(mine.map((m) => m.project_id));
     return {
       projects: admin ? projects : projects.filter((p) => ids.has(p.id)),
       ideas: ideas.count ?? 0,
       crew: crew.count ?? 0,
+      openTasks: admin ? tasks.length : tasks.filter((t) => t.assignee_id === me.id).length,
+      soon: upcoming(events, tasks, today, 5),
+      feed,
+      person: new Map(people.map((p) => [p.id, p])),
     };
   }, me.id);
 
   if (data.loading) return <Loading title="Home" what="Loading your overview." />;
   if (data.error) return <ErrorState title="Home" message={data.error} onRetry={data.reload} />;
-  const { projects, ideas, crew } = data.data!;
+  const { projects, ideas, crew, openTasks, soon, feed, person } = data.data!;
+  const todayIso = isoDate(new Date());
   const first = me.name.split(' ')[0];
   const today = new Date().toLocaleDateString(undefined, {
     weekday: 'long',
@@ -66,6 +106,12 @@ export function Home({ me, unread }: { me: MemberRow; unread: number }) {
       c: 'mint',
     },
     { href: '#/submissions', n: ideas, label: ideas === 1 ? 'new idea' : 'new ideas', c: 'lilac' },
+    {
+      href: '#/board',
+      n: openTasks,
+      label: admin ? 'open tasks' : openTasks === 1 ? 'task for you' : 'tasks for you',
+      c: 'sun',
+    },
     { href: admin ? '#/crew' : '#/profile', n: crew, label: 'active crew', c: 'sky' },
   ];
 
@@ -161,6 +207,54 @@ export function Home({ me, unread }: { me: MemberRow; unread: number }) {
               </>
             )}
           </ul>
+        </section>
+      </div>
+
+      <div className="home-cols home-cols--even">
+        <section className="panel" aria-labelledby="home-soon">
+          <h2 id="home-soon">Coming up</h2>
+          {soon.length ? (
+            <ul className="cal-list">
+              {soon.map((i) => (
+                <li key={i.key} className="cal-item">
+                  <span className={`chip-cal kind-${i.kind}`}>
+                    {i.type === 'task' ? 'Task due' : i.kind}
+                  </span>
+                  <span className="grow">{i.title}</span>
+                  <span className="hint">{dueLabel(i.iso, todayIso)}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <Empty>Nothing on the calendar yet.</Empty>
+          )}
+          <a className="secondary" href="#/calendar">
+            Open the calendar
+          </a>
+        </section>
+        <section className="panel" aria-labelledby="home-feed">
+          <h2 id="home-feed">Recent activity</h2>
+          {feed.length ? (
+            <ul className="feed">
+              {feed.map((r) => {
+                const who = r.actor_id ? person.get(r.actor_id) : undefined;
+                return (
+                  <li key={r.id} className="feed-item">
+                    {who && <Face person={who} size={30} />}
+                    <span className="grow">{activityLine(who?.name.split(' ')[0], r.summary)}</span>
+                    <time className="hint" dateTime={r.at}>
+                      {timeLabel(r.at)}
+                    </time>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <Empty>Nothing yet. Tasks, notes and events show up here.</Empty>
+          )}
+          <a className="secondary" href="#/activity">
+            See all activity
+          </a>
         </section>
       </div>
     </>

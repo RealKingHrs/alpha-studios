@@ -3,14 +3,19 @@ import { Wordmark } from '../brand/Wordmark';
 import { Stamp } from '../site/fx/Stamp';
 import { useAuth } from './auth';
 import { badge, unreadTotal } from './messaging';
+import { Activity } from './screens/Activity';
 import { Audit } from './screens/Audit';
 import { AvatarScreen } from './screens/AvatarScreen';
+import { Board } from './screens/Board';
+import { Calendar } from './screens/Calendar';
 import { Certificates } from './screens/Certificates';
 import { Crew } from './screens/Crew';
 import { Home } from './screens/Home';
 import { Messages } from './screens/Messages';
+import { Notes } from './screens/Notes';
 import { Profile } from './screens/Profile';
 import { Projects } from './screens/Projects';
+import { Search } from './screens/Search';
 import { Submissions } from './screens/Submissions';
 import { SettingsScreen } from './screens/Settings';
 import type { MemberRow } from './types';
@@ -25,14 +30,19 @@ const useRoute = () => {
     addEventListener('hashchange', on);
     return () => removeEventListener('hashchange', on);
   }, []);
-  const [page, sub] = hash.replace(/^#\/?/, '').split('/');
-  return { page: page || 'home', sub: sub ?? '' };
+  const [page, sub, third] = hash.replace(/^#\/?/, '').split('/');
+  return { page: page || 'home', sub: sub ?? '', third: third ?? '' };
 };
 
 /** Each page has a label, a short line above its title, and the accent colour it wears. */
 const PAGES = {
   home: ['Home', 'Overview', 'mint'],
   messages: ['Messages', 'Talk to the crew', 'sky'],
+  board: ['Board', 'Who is doing what', 'mint'],
+  notes: ['Notes', 'Plans and decisions', 'lilac'],
+  calendar: ['Calendar', 'What is coming', 'sun'],
+  activity: ['Activity', 'What just happened', 'sky'],
+  search: ['Search', 'Find anything you can read', 'lilac'],
   projects: ['Projects', 'What we are building', 'sun'],
   submissions: ['Launchpad ideas', 'Pitches from outside', 'lilac'],
   profile: ['My profile', 'About you', 'tomato'],
@@ -45,7 +55,19 @@ const PAGES = {
 type PageKey = keyof typeof PAGES;
 
 const GROUPS: Array<{ label: string; pages: PageKey[] }> = [
-  { label: 'Workspace', pages: ['home', 'messages', 'projects', 'submissions'] },
+  {
+    label: 'Workspace',
+    pages: [
+      'home',
+      'messages',
+      'board',
+      'notes',
+      'calendar',
+      'activity',
+      'projects',
+      'submissions',
+    ],
+  },
   { label: 'You', pages: ['profile', 'avatar', 'certificates'] },
 ];
 const ADMIN_PAGES: PageKey[] = ['crew', 'settings', 'audit'];
@@ -53,7 +75,7 @@ const ORDER: PageKey[] = [...GROUPS.flatMap((g) => g.pages), ...ADMIN_PAGES];
 
 export function Shell({ me }: { me: MemberRow }) {
   const { signOut } = useAuth();
-  const { page: raw, sub } = useRoute();
+  const { page: raw, sub, third } = useRoute();
   const page: PageKey = raw in PAGES ? (raw as PageKey) : 'home';
   const active = me.access_status === 'active';
   useHeartbeat(active);
@@ -77,6 +99,11 @@ export function Shell({ me }: { me: MemberRow }) {
     screen = (
       <Messages me={me} open={sub} unread={unread.counts} onRead={() => void unread.refresh()} />
     );
+  else if (page === 'board') screen = <Board me={me} open={sub} />;
+  else if (page === 'notes') screen = <Notes me={me} project={sub} note={third} />;
+  else if (page === 'calendar') screen = <Calendar me={me} />;
+  else if (page === 'activity') screen = <Activity me={me} />;
+  else if (page === 'search') screen = <Search me={me} query={sub} />;
   else if (page === 'avatar') screen = <AvatarScreen me={me} />;
   else if (page === 'certificates') screen = <Certificates me={me} />;
   else if (page === 'submissions') screen = <Submissions admin={admin} />;
@@ -126,6 +153,21 @@ export function Shell({ me }: { me: MemberRow }) {
         >
           <Wordmark />
         </a>
+        <form
+          className="side-search"
+          role="search"
+          onSubmit={(e) => {
+            e.preventDefault();
+            const q = new FormData(e.currentTarget).get('q');
+            if (typeof q === 'string' && q.trim())
+              location.hash = `#/search/${encodeURIComponent(q.trim())}`;
+          }}
+        >
+          <label htmlFor="side-q" className="sr-only">
+            Search the workspace
+          </label>
+          <input id="side-q" name="q" type="search" maxLength={100} placeholder="Search" />
+        </form>
         <nav className="side-nav" aria-label="Portal">
           {GROUPS.map((g) => (
             <div key={g.label} className="side-group">

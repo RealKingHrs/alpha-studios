@@ -8,3 +8,4 @@ Things that came up but are not in the spec. Nothing here is built until it move
 - A "Publish now" button in the admin screens that calls the publish function directly.
 - Messaging extras left out of milestone 7: replies, reactions and pinned messages, file and image sharing in threads (needs storage buckets and policies), and notifications (an in-portal bell and optional email on a mention or message).
 - Optional end-to-end encryption for direct messages (keys live on each device, so lost devices lose history and server-side search stops working for those threads).
+- Workspace extras left out of milestone 8: drag and drop on the task board, recurring events, comments on tasks, file attachments on tasks and notes, and a rich-text editor for notes.

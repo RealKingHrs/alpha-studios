@@ -6,6 +6,7 @@ import '../styles/portal.css';
 import '../styles/shell.css';
 import '../styles/workspace.css';
 import '../styles/cards.css';
+import '../styles/board.css';
 import { Wordmark } from '../brand/Wordmark';
 import { AuthProvider, useAuth } from './auth';
 import { PinLogin } from './screens/PinLogin';
