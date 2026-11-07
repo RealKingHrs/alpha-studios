@@ -33,7 +33,7 @@ export function SplitText({
             <span className="sw-mask">
               <motion.span
                 className="sw-word"
-                initial={{ y: '110%' }}
+                initial={{ y: '170%' }}
                 animate={seen ? { y: '0%' } : undefined}
                 transition={{
                   duration: 0.62,
