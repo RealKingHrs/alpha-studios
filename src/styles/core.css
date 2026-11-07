@@ -311,12 +311,15 @@ html.reveal-on .reveal.is-waiting {
 .sw-line {
   display: inline;
 }
+/* The mask hides words while they rise. It must be taller and wider than the letters, or it clips descenders
+   (the j in Projects, g and p) and the overhang of heavy serifs (the end of "a" and "e"). The padding gives the
+   letters room and the equal negative margins keep the layout exactly as it was. */
 .sw-mask {
   display: inline-block;
   overflow: hidden;
   vertical-align: top;
-  padding-bottom: 0.1em;
-  margin-bottom: -0.1em;
+  padding: 0.22em 0.14em 0.38em;
+  margin: -0.22em -0.14em -0.38em;
 }
 .sw-word {
   display: inline-block;
