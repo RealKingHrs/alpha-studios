@@ -141,7 +141,14 @@ Milestone 7, messaging:
 - Plain text only, up to 4,000 characters, sent at most 30 a minute. An author can delete their own message; nobody can edit another person's.
 - No replies, reactions, pins, file sharing or notifications yet (see `docs/IDEAS.md`).
 
-Milestone 8, workspace: a task board per project, plain-text project notes, a shared calendar, an activity feed (never containing message text) and search across everything.
+Milestone 8, workspace (built 7 November 2026):
+
+- **Task board** per project: To do, Doing and Done, an assignee who must be on the project, an optional due date. Cards move by buttons, not drag and drop.
+- **Project notes**: plain text, several per project, showing who edited last.
+- **Calendar**: deadlines, launches and meetings, plus task due dates. Crew-wide events are written by the admin only and read by every active member; project events are read and written by the project's members and the admin.
+- **Activity feed**: who added, moved, assigned or removed a task, started or edited a note, or added an event. It is written by database triggers only, never holds message text, and is separate from the admin's audit log. Repeat edits to one note by one person within ten minutes show as one line.
+- **Search** across the messages, tasks and notes a person is allowed to read.
+- Access to tasks, notes, project events and project activity: the project's members and the admin. Paused members and visitors see nothing.
 
 Who can read what, enforced by database rules (row-level security):
 
@@ -161,17 +168,18 @@ The public site reads a static content snapshot and never calls the backend, so 
 
 Flow: Visitors use the site, which reads the snapshot. Crew and admin use the portal, which reads and writes the backend. The backend holds login, database and images. GitHub supplies repo data and sign-in to the backend. The publish job (a GitHub Action) reads content from the backend, writes the snapshot, rebuilds the site, and pings the backend. It runs after each publish and daily; a scheduled run also heals a missed trigger.
 
-| Data               | Holds                                                                                                          | Who can write                                       |
-| ------------------ | -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
-| Members            | Name, role, bio, social links, versioned avatar record, access status                                          | The member for their own row; admin for all         |
-| Projects           | Name, summary, status, platforms, screenshots, tech used, store links, repo, optional demo link, featured flag | Admin; a project's own members can edit its details |
-| Project membership | Which member is on which project                                                                               | The member for themselves; admin for all            |
-| Invites            | Hashed one-time codes, expiry, used flag                                                                       | Admin                                               |
-| Site settings      | Studio text, contact email and intro default                                                                   | Admin                                               |
-| Repo cache         | Stars, languages, recent commits, contributors per repo                                                        | The publish job                                     |
-| Audit log          | Who changed what and when, with the previous value                                                             | The system only                                     |
-| Content snapshot   | A public JSON copy of members, projects, repo details and avatar records                                       | The publish job only                                |
-| Conversations      | Direct, project and crew-room threads, their messages, read marks, member status lines and the oversight flag  | Members of the thread; admin for the oversight flag |
+| Data               | Holds                                                                                                          | Who can write                                                  |
+| ------------------ | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| Members            | Name, role, bio, social links, versioned avatar record, access status                                          | The member for their own row; admin for all                    |
+| Projects           | Name, summary, status, platforms, screenshots, tech used, store links, repo, optional demo link, featured flag | Admin; a project's own members can edit its details            |
+| Project membership | Which member is on which project                                                                               | The member for themselves; admin for all                       |
+| Invites            | Hashed one-time codes, expiry, used flag                                                                       | Admin                                                          |
+| Site settings      | Studio text, contact email and intro default                                                                   | Admin                                                          |
+| Repo cache         | Stars, languages, recent commits, contributors per repo                                                        | The publish job                                                |
+| Audit log          | Who changed what and when, with the previous value                                                             | The system only                                                |
+| Content snapshot   | A public JSON copy of members, projects, repo details and avatar records                                       | The publish job only                                           |
+| Conversations      | Direct, project and crew-room threads, their messages, read marks, member status lines and the oversight flag  | Members of the thread; admin for the oversight flag            |
+| Workspace          | Tasks, project notes, calendar events and the activity feed                                                    | The project's members and the admin; activity by triggers only |
 
 GitHub integration: project cards show stars, languages, recent commits and contributors. The publish job fetches them with a server-side token and stores them in the snapshot, so visitors' browsers never call the GitHub API. A contributor whose GitHub username matches a crew profile appears as that member's bust. Crew can sign in with GitHub.
 

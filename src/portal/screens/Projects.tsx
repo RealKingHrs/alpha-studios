@@ -31,7 +31,7 @@ export function Projects({ me }: { me: MemberRow }) {
   const [note, setNote] = useState<string | null>(null);
 
   const { data, error, loading, reload } = useAsync(async () => {
-    const [projects, all, people] = await Promise.all([
+    const [projects, all, people, channels] = await Promise.all([
       must<ProjectRow[]>(db.from('projects').select('*').order('created_at')),
       must<Array<{ project_id: string; member_id: string; role: string }>>(
         db.from('project_members').select('project_id, member_id, role'),
@@ -39,12 +39,24 @@ export function Projects({ me }: { me: MemberRow }) {
       must<Array<{ id: string; name: string; avatar?: unknown }>>(
         db.from('members').select('id, name, avatar').order('name'),
       ),
+      must<Array<{ id: string; project_id: string | null }>>(
+        db.from('conversations').select('id, project_id').eq('kind', 'project'),
+      ),
+      must<Array<{ id: string; project_id: string | null }>>(
+        db.from('conversations').select('id, project_id').eq('kind', 'project'),
+      ),
     ]);
     const mine = all.filter((m) => m.member_id === me.id);
     const onProject = new Map<string, Set<string>>();
     for (const a of all)
       onProject.set(a.project_id, (onProject.get(a.project_id) ?? new Set()).add(a.member_id));
-    return { projects, people, onProject, mine: new Map(mine.map((m) => [m.project_id, m.role])) };
+    return {
+      projects,
+      people,
+      onProject,
+      mine: new Map(mine.map((m) => [m.project_id, m.role])),
+      channel: new Map(channels.map((c) => [c.project_id ?? '', c.id])),
+    };
   }, 'projects');
 
   async function act(fn: () => PromiseLike<{ error: { message: string } | null }>, ok?: string) {
@@ -98,6 +110,21 @@ export function Projects({ me }: { me: MemberRow }) {
               <div className="proj-foot">
                 <TeamFaces ids={[...(data.onProject.get(p.id) ?? [])]} people={data.people} />
                 <span className="grow" />
+                {canEdit && (
+                  <span className="proj-links">
+                    <a className="link" href={`#/board/${p.id}`}>
+                      Board
+                    </a>
+                    <a className="link" href={`#/notes/${p.id}`}>
+                      Notes
+                    </a>
+                    {data.channel.get(p.id) && (
+                      <a className="link" href={`#/messages/${data.channel.get(p.id)}`}>
+                        Channel
+                      </a>
+                    )}
+                  </span>
+                )}
                 {canEdit && (
                   <button
                     type="button"

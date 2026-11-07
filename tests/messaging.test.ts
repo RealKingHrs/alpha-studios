@@ -155,6 +155,10 @@ describe('privacy guard', () => {
     'read_state',
     'member_status',
     'oversight',
+    'tasks',
+    'project_notes',
+    'events',
+    'activity',
   ];
   const files = (dir: string): string[] =>
     readdirSync(dir).flatMap((f) => {
